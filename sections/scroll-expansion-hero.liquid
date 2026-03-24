@@ -1,0 +1,309 @@
+<div class="scroll-expansion-hero" id="ScrollExpansionHero-{{ section.id }}">
+  <div class="scroll-expansion-hero__sticky-container">
+    {%- if section.settings.background_image != blank -%}
+      {{ section.settings.background_image | image_url: width: 3840 | image_tag: class: 'scroll-expansion-hero__bg', loading: 'lazy' }}
+    {%- else -%}
+      <div class="scroll-expansion-hero__bg scroll-expansion-hero__bg--placeholder">
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {%- endif -%}
+
+    <div class="scroll-expansion-hero__foreground">
+      {%- if section.settings.foreground_video != blank -%}
+        {{ section.settings.foreground_video | video_tag: class: 'scroll-expansion-hero__media', autoplay: true, loop: true, muted: true, controls: false }}
+      {%- elsif section.settings.foreground_image != blank -%}
+        {{ section.settings.foreground_image | image_url: width: 2000 | image_tag: class: 'scroll-expansion-hero__media', loading: 'lazy' }}
+      {%- else -%}
+        <div class="scroll-expansion-hero__media scroll-expansion-hero__media--placeholder">
+           {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="scroll-expansion-hero__title-container" style="--title-color: {{ section.settings.title_color }}; --subtitle-color: {{ section.settings.subtitle_color }};">
+      <div class="scroll-expansion-hero__title-row">
+        {%- if section.settings.title_left != blank -%}
+          <span class="scroll-expansion-hero__title-left">{{ section.settings.title_left }}</span>
+        {%- endif -%}
+        {%- if section.settings.title_right != blank -%}
+          <span class="scroll-expansion-hero__title-right">{{ section.settings.title_right }}</span>
+        {%- endif -%}
+      </div>
+      <div class="scroll-expansion-hero__subtitle-row">
+        {%- if section.settings.subtitle_left != blank -%}
+          <span class="scroll-expansion-hero__title-left scroll-expansion-hero__subtitle">{{ section.settings.subtitle_left }}</span>
+        {%- endif -%}
+        {%- if section.settings.subtitle_right != blank -%}
+          <span class="scroll-expansion-hero__title-right scroll-expansion-hero__subtitle">{{ section.settings.subtitle_right }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #ScrollExpansionHero-{{ section.id }} {
+    --scroll-progress: 0;
+    height: 300vh;
+    position: relative;
+    width: 100%;
+    display: block;
+    background-color: #000;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__sticky-container {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Layer 1: Background */
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__bg--placeholder svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #333;
+  }
+
+  /* Layer 2: Foreground Card */
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__foreground {
+    position: absolute;
+    z-index: 10;
+    width: calc(300px + (100vw - 300px) * var(--scroll-progress));
+    height: calc(400px + (100vh - 400px) * var(--scroll-progress));
+    max-width: 100vw;
+    border-radius: calc(2rem * (1 - var(--scroll-progress)));
+    overflow: hidden;
+    box-shadow:
+      0 25px 50px -12px rgba(0, 0, 0, 0.5),
+      0 0 calc(200px * var(--scroll-progress)) calc(100px * var(--scroll-progress)) rgba(255, 255, 255, calc(0.9 * var(--scroll-progress) * (1 - var(--scroll-progress)) * 4));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  @media screen and (max-width: 850px) {
+    #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__foreground {
+      width: calc(200px + (100vw - 200px) * var(--scroll-progress));
+      height: calc(250px + (100vh - 250px) * var(--scroll-progress));
+    }
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+  
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__media--placeholder {
+    background-color: #eee;
+    width: 100%;
+    height: 100%;
+  }
+  
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__media--placeholder svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Layer 3: Title */
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-container {
+    position: absolute;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.15em;
+    width: 100%;
+    pointer-events: none;
+    color: var(--title-color, #fff);
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    white-space: nowrap;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-row,
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__subtitle-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-row {
+    font-size: clamp(3rem, 8vw, 8rem);
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__subtitle-row {
+    font-size: clamp(1rem, 3vw, 2.5rem);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--subtitle-color, #fff);
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-left {
+    transform: translateX(calc(-100vw * var(--scroll-progress) * 1.5));
+    margin-right: 0.25em;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-right {
+    transform: translateX(calc(100vw * var(--scroll-progress) * 1.5));
+  }
+</style>
+
+<script>
+  (function() {
+    function initScrollExpansionHero() {
+      var sectionEl = document.getElementById('ScrollExpansionHero-{{ section.id }}');
+      if (!sectionEl) return;
+
+      /* Prevent double-init */
+      if (sectionEl.dataset.scrollInit === 'true') return;
+      sectionEl.dataset.scrollInit = 'true';
+
+      var ticking = false;
+
+      function updateProgress() {
+        var rect = sectionEl.getBoundingClientRect();
+        var wh = window.innerHeight;
+
+        /* Section is in the sticky zone: top is above viewport top, bottom still below viewport bottom */
+        if (rect.top <= 0 && rect.bottom >= wh) {
+          var scrollable = rect.height - wh; /* 200vh of travel */
+          var progress = Math.abs(rect.top) / scrollable;
+          progress = Math.max(0, Math.min(1, progress));
+          sectionEl.style.setProperty('--scroll-progress', progress.toFixed(4));
+        } else if (rect.top > 0) {
+          sectionEl.style.setProperty('--scroll-progress', '0');
+        } else {
+          sectionEl.style.setProperty('--scroll-progress', '1');
+        }
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            updateProgress();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+
+      /* Initial calc */
+      updateProgress();
+    }
+
+    /* Run immediately if DOM is already ready, otherwise wait */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initScrollExpansionHero);
+    } else {
+      initScrollExpansionHero();
+    }
+
+    /* Shopify Theme Editor: re-init when the section is loaded / selected */
+    document.addEventListener('shopify:section:load', function(evt) {
+      if (evt.detail && evt.detail.sectionId) {
+        var target = document.getElementById('ScrollExpansionHero-' + evt.detail.sectionId);
+        if (target) {
+          target.dataset.scrollInit = '';
+          initScrollExpansionHero();
+        }
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Scroll Expansion Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image",
+      "info": "Image that stays in the background and fades out."
+    },
+    {
+      "type": "image_picker",
+      "id": "foreground_image",
+      "label": "Foreground Image",
+      "info": "Image that expands. Replaced by video if provided."
+    },
+    {
+      "type": "video",
+      "id": "foreground_video",
+      "label": "Foreground Video",
+      "info": "Video that expands."
+    },
+    {
+      "type": "text",
+      "id": "title_left",
+      "label": "Title — Left",
+      "default": "Cinematic"
+    },
+    {
+      "type": "text",
+      "id": "title_right",
+      "label": "Title — Right",
+      "default": "Scroll"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_left",
+      "label": "Subtitle — Left",
+      "default": "Experience"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_right",
+      "label": "Subtitle — Right",
+      "default": "The Moment"
+    },
+    {
+      "type": "header",
+      "content": "Text Colors"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scroll Expansion Hero"
+    }
+  ]
+}
+{% endschema %}
