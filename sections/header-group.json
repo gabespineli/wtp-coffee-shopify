@@ -13,7 +13,6 @@
   "sections": {
     "header": {
       "type": "header",
-      "disabled": true,
       "settings": {
         "logo_position": "middle-left",
         "mobile_logo_position": "center",
@@ -23,8 +22,13 @@
         "show_line_separator": true,
         "color_scheme": "scheme-1",
         "menu_color_scheme": "scheme-1",
-        "enable_country_selector": true,
-        "enable_language_selector": true,
+        "island_max_width": 1200,
+        "island_bg_color": "#5c6e4c",
+        "island_opacity": 85,
+        "island_blur": 20,
+        "island_logo_scale": 70,
+        "hover_pill_color": "#5c6e4c",
+        "hover_pill_opacity": 6,
         "enable_customer_avatar": true,
         "margin_bottom": 0,
         "padding_top": 20,
