@@ -216,6 +216,20 @@
     width: calc({{ settings.logo_width | default: 100 }}px * {{ section.settings.island_logo_scale | divided_by: 100.0 }}) !important;
   }
 
+  /* Dynamic Island Text & Icon Colors */
+  .section-header.wtp-scrolled .header__menu-item,
+  .section-header.wtp-scrolled .header__menu-item span,
+  .section-header.wtp-scrolled .header__active-menu-item,
+  .section-header.wtp-scrolled .header__heading-link,
+  .section-header.wtp-scrolled .header__icon,
+  .section-header.wtp-scrolled .header__icon svg {
+    color: {{ section.settings.island_text_color }} !important;
+  }
+
+  .section-header.wtp-scrolled .header__icon .svg-wrapper svg path {
+    fill: currentColor;
+  }
+
   /* Dynamic hover pill */
   .wtp-hover-pill {
     background: rgba({{ section.settings.hover_pill_color.red }}, {{ section.settings.hover_pill_color.green }}, {{ section.settings.hover_pill_color.blue }}, {{ section.settings.hover_pill_opacity | divided_by: 100.0 }});
@@ -742,6 +756,12 @@
       "id": "island_bg_color",
       "label": "Island Background",
       "default": "#5c6e4c"
+    },
+    {
+      "type": "color",
+      "id": "island_text_color",
+      "label": "Island Text & Icons",
+      "default": "#ffffff"
     },
     {
       "type": "range",
