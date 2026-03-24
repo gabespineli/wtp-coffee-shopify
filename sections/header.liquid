@@ -17,6 +17,7 @@
 {%- endif -%}
 
 <style>
+  /* ─── Dawn baseline ──────────────────────────────────────────────── */
   header-drawer {
     justify-self: start;
     margin-left: -1.2rem;
@@ -30,66 +31,163 @@
 
   {%- if section.settings.menu_type_desktop != "drawer" -%}
     @media screen and (min-width: 990px) {
-      header-drawer {
-        display: none;
-      }
+      header-drawer { display: none; }
     }
   {%- endif -%}
 
-  .menu-drawer-container {
-    display: flex;
-  }
-
-  .list-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .list-menu--inline {
-    display: inline-flex;
-    flex-wrap: wrap;
-  }
-
-  summary.list-menu__item {
-    padding-right: 2.7rem;
-  }
-
+  .menu-drawer-container { display: flex; }
+  .list-menu { list-style: none; padding: 0; margin: 0; }
+  .list-menu--inline { display: inline-flex; flex-wrap: wrap; }
+  summary.list-menu__item { padding-right: 2.7rem; }
   .list-menu__item {
     display: flex;
     align-items: center;
     line-height: calc(1 + 0.3 / var(--font-body-scale));
   }
-
   .list-menu__item--link {
     text-decoration: none;
     padding-bottom: 1rem;
     padding-top: 1rem;
     line-height: calc(1 + 0.8 / var(--font-body-scale));
   }
-
   @media screen and (min-width: 750px) {
     .list-menu__item--link {
       padding-bottom: 0.5rem;
       padding-top: 0.5rem;
     }
   }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     SCROLL-MORPHING ISLAND HEADER
+     ═══════════════════════════════════════════════════════════════════
+
+     STATE 1 — At top:
+       Full-width, flat white, flush to top edge.
+       Logo far-left · icons far-right (natural page-width grid).
+
+     STATE 2 — Scrolled (JS adds .wtp-scrolled):
+       Shrinks to max-width island, snaps 1.5rem from top,
+       glassmorphism, rounded pill, items drawn closer together.
+
+     All transitions are CSS — JS only toggles one class.
+  ════════════════════════════════════════════════════════════════════ */
+
+  /* ── Section wrapper: always fixed, pointer-events off outside pill */
+  .section-header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    pointer-events: none;
+    /* animate vertical offset when snapping to island */
+    transition: top 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Transparent pass-through wrapper */
+  .header-wrapper {
+    background: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    pointer-events: none;
+    /* Wrapper handles the centering so the island can scale from its middle smoothly */
+    display: flex;
+    justify-content: center;
+  }
+
+  /* ── THE HEADER PILL ── */
+  .header {
+    /* Layout */
+    width: 100%;
+    max-width: 100%;
+    margin: 0 !important;
+    pointer-events: all;
+
+    /* GPU hint for composited transitions */
+    will-change: max-width, border-radius, background, backdrop-filter, box-shadow;
+
+    /* STATE 1: flat white, flush, wide padding */
+    background: rgba(255, 255, 255, 1) !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07) !important;
+    backdrop-filter: blur(0px) saturate(100%);
+    -webkit-backdrop-filter: blur(0px) saturate(100%);
+
+    /* Smooth transitions for every morphing property — all one declaration */
+    transition:
+      max-width     0.6s cubic-bezier(0.25, 1, 0.5, 1),
+      width         0.6s cubic-bezier(0.25, 1, 0.5, 1),
+      margin        0.6s cubic-bezier(0.25, 1, 0.5, 1),
+      border-radius 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+      padding       0.5s cubic-bezier(0.25, 1, 0.5, 1),
+      background    0.5s ease,
+      box-shadow    0.5s ease,
+      backdrop-filter 0.5s ease !important;
+  }
+
+  /* ── STATE 2: Scrolled → compact glassmorphic island ── */
+  .section-header.wtp-scrolled {
+    top: 1.5rem;
+  }
+
+  .section-header.wtp-scrolled .header {
+    width: calc(100% - 3rem); /* breathing room on narrow viewports */
+    border-radius: 50px !important;
+
+  }
+
+  /* ── Compact Logo in Island State ── */
+  .section-header .header__heading-logo {
+    /* Base width fallback */
+    width: {{ settings.logo_width | default: 100 }}px;
+    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: width;
+  }
+
+
+
+  /* ── HOVER PILL (sliding nav indicator) ── */
+  .header__inline-menu {
+    position: relative;
+  }
+
+  .wtp-hover-pill {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 32px;
+    border-radius: 50px;
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      opacity 0.2s ease,
+      left    0.32s cubic-bezier(0.15, 1, 0.25, 1),
+      width   0.32s cubic-bezier(0.15, 1, 0.25, 1);
+  }
+
+  /* Only show hover pill in island state */
+  .section-header:not(.wtp-scrolled) .wtp-hover-pill {
+    display: none;
+  }
+
+  /* ── MOBILE ── */
+  @media screen and (max-width: 989px) {
+    .section-header.wtp-scrolled {
+      top: 0.75rem;
+    }
+
+    .section-header.wtp-scrolled .header {
+      max-width: calc(100vw - 1.25rem);
+      border-radius: 28px !important;
+    }
+  }
 </style>
 
 {%- style -%}
+  /* Default (top) header padding — wide & spacious */
   .header {
     padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 3rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 3rem;
-  }
-
-  .section-header {
-    position: sticky; /* This is for fixing a Safari z-index issue. PR #2147 */
-    margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-header {
-      margin-bottom: {{ section.settings.margin_bottom }}px;
-    }
   }
 
   @media screen and (min-width: 990px) {
@@ -97,6 +195,30 @@
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
+  }
+
+  /* Island state: tighter padding to compress items closer together */
+  .section-header.wtp-scrolled .header {
+    max-width: {{ section.settings.island_max_width }}px !important;
+    padding: 0.4rem 1.4rem !important;
+    background: rgba({{ section.settings.island_bg_color.red }}, {{ section.settings.island_bg_color.green }}, {{ section.settings.island_bg_color.blue }}, {{ section.settings.island_opacity | divided_by: 100.0 }}) !important;
+    backdrop-filter: blur({{ section.settings.island_blur }}px) saturate(200%);
+    -webkit-backdrop-filter: blur({{ section.settings.island_blur }}px) saturate(200%);
+    border: 1px solid rgba({{ section.settings.island_bg_color.red }}, {{ section.settings.island_bg_color.green }}, {{ section.settings.island_bg_color.blue }}, 0.35) !important;
+    box-shadow:
+      0 2px 16px rgba({{ section.settings.island_bg_color.red }}, {{ section.settings.island_bg_color.green }}, {{ section.settings.island_bg_color.blue }}, 0.25),
+      0 6px 32px rgba({{ section.settings.island_bg_color.red }}, {{ section.settings.island_bg_color.green }}, {{ section.settings.island_bg_color.blue }}, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.20) !important;
+  }
+
+  /* Dynamic logo sizing */
+  .section-header.wtp-scrolled .header__heading-logo {
+    width: calc({{ settings.logo_width | default: 100 }}px * {{ section.settings.island_logo_scale | divided_by: 100.0 }}) !important;
+  }
+
+  /* Dynamic hover pill */
+  .wtp-hover-pill {
+    background: rgba({{ section.settings.hover_pill_color.red }}, {{ section.settings.hover_pill_color.green }}, {{ section.settings.hover_pill_color.blue }}, {{ section.settings.hover_pill_opacity | divided_by: 100.0 }});
   }
 {%- endstyle -%}
 
@@ -112,7 +234,6 @@
 
 {% liquid
   assign header_tag = 'div'
-
   if section.settings.sticky_header_type != 'none'
     assign header_tag = 'sticky-header'
   endif
@@ -136,6 +257,7 @@
       assign localization_forms = true
     endif
   -%}
+
   <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
     {%- liquid
       if section.settings.menu != blank
@@ -223,30 +345,7 @@
       {%- endif -%}
     {%- endif -%}
 
-    <div class="header__icons{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header__icons--localization header-localization{% endif %}">
-      <div class="desktop-localization-wrapper">
-        {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
-          <localization-form class="small-hide medium-hide" data-prevent-hide>
-            {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
-              <div>
-                <h2 class="visually-hidden" id="HeaderCountryLabel">{{ 'localization.country_label' | t }}</h2>
-                {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
-              </div>
-            {%- endform -%}
-          </localization-form>
-        {% endif %}
-
-        {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
-          <localization-form class="small-hide medium-hide" data-prevent-hide>
-            {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
-              <div>
-                <h2 class="visually-hidden" id="HeaderLanguageLabel">{{ 'localization.language_label' | t }}</h2>
-                {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
-              </div>
-            {%- endform -%}
-          </localization-form>
-        {%- endif -%}
-      </div>
+    <div class="header__icons">
       {% render 'header-search', input_id: 'Search-In-Modal' %}
 
       {%- if shop.customer_accounts_enabled -%}
@@ -360,7 +459,6 @@
         this.headerBounds = entries[0].intersectionRect;
         observer.disconnect();
       });
-
       observer.observe(this.header);
     }
 
@@ -379,11 +477,7 @@
           requestAnimationFrame(this.reveal.bind(this));
         } else {
           window.clearTimeout(this.isScrolling);
-
-          this.isScrolling = setTimeout(() => {
-            this.preventReveal = false;
-          }, 66);
-
+          this.isScrolling = setTimeout(() => { this.preventReveal = false; }, 66);
           requestAnimationFrame(this.hide.bind(this));
         }
       } else if (scrollTop <= this.headerBounds.top) {
@@ -425,6 +519,89 @@
 
   customElements.define('sticky-header', StickyHeader);
 {% endjavascript %}
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SCROLL-MORPH ENGINE
+     Toggles .wtp-scrolled on .section-header to drive the CSS morph.
+     Also injects the hover-pill for the island nav links.
+════════════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ─── 1. Scroll-morph toggle with hysteresis ───────────────────── */
+  /*
+   * Two thresholds prevent oscillation / jitter near the snap point:
+   *   ACTIVATE  — scrolled far enough down → snap into island
+   *   DEACTIVATE — scrolled back close to top → revert to flat bar
+   * Because DEACTIVATE < ACTIVATE, the header "latches" until the
+   * user has clearly returned to the top, giving a smooth revert.
+   */
+  var ACTIVATE   = 80;  /* px — snap into island */
+  var DEACTIVATE = 16;  /* px — revert to flat bar */
+  var section    = document.querySelector('.section-header');
+  var isIsland   = false;
+
+  function onScroll() {
+    if (!section) return;
+    var y = window.scrollY;
+    if (!isIsland && y > ACTIVATE) {
+      isIsland = true;
+      section.classList.add('wtp-scrolled');
+    } else if (isIsland && y < DEACTIVATE) {
+      isIsland = false;
+      section.classList.remove('wtp-scrolled');
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); /* evaluate on load (e.g. hard-refresh mid-page) */
+
+  /* ─── 2. Hover-pill for desktop nav links ──────────────────────── */
+  function initHoverPill() {
+    var nav = document.querySelector('.header__inline-menu');
+    if (!nav) return;
+    if (nav.querySelector('.wtp-hover-pill')) return; /* already set up */
+
+    var pill = document.createElement('div');
+    pill.className = 'wtp-hover-pill';
+    pill.setAttribute('aria-hidden', 'true');
+    nav.insertBefore(pill, nav.firstChild);
+
+    var targets = nav.querySelectorAll(
+      'a.header__menu-item, summary.header__menu-item'
+    );
+
+    targets.forEach(function (el) {
+      el.addEventListener('mouseenter', function () {
+        var navRect = nav.getBoundingClientRect();
+        var elRect  = el.getBoundingClientRect();
+        var padX    = 10;
+        pill.style.left    = (elRect.left - navRect.left - padX) + 'px';
+        pill.style.width   = (elRect.width + padX * 2) + 'px';
+        pill.style.opacity = '1';
+      });
+    });
+
+    nav.addEventListener('mouseleave', function () {
+      pill.style.opacity = '0';
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHoverPill);
+  } else {
+    initHoverPill();
+  }
+
+  /* Re-init after Shopify theme editor live-reloads the section */
+  document.addEventListener('shopify:section:load', function (e) {
+    if (e.target && e.target.querySelector('.header__inline-menu')) {
+      initHoverPill();
+    }
+  });
+})();
+</script>
 
 <script type="application/ld+json">
   {
@@ -476,22 +653,10 @@
       "type": "select",
       "id": "logo_position",
       "options": [
-        {
-          "value": "top-left",
-          "label": "t:sections.header.settings.logo_position.options__2.label"
-        },
-        {
-          "value": "top-center",
-          "label": "t:sections.header.settings.logo_position.options__3.label"
-        },
-        {
-          "value": "middle-left",
-          "label": "t:sections.header.settings.logo_position.options__1.label"
-        },
-        {
-          "value": "middle-center",
-          "label": "t:sections.header.settings.logo_position.options__4.label"
-        }
+        { "value": "top-left",    "label": "t:sections.header.settings.logo_position.options__2.label" },
+        { "value": "top-center",  "label": "t:sections.header.settings.logo_position.options__3.label" },
+        { "value": "middle-left", "label": "t:sections.header.settings.logo_position.options__1.label" },
+        { "value": "middle-center","label": "t:sections.header.settings.logo_position.options__4.label" }
       ],
       "default": "middle-left",
       "label": "t:sections.header.settings.logo_position.label",
@@ -501,14 +666,8 @@
       "type": "select",
       "id": "mobile_logo_position",
       "options": [
-        {
-          "value": "center",
-          "label": "t:sections.header.settings.mobile_logo_position.options__1.label"
-        },
-        {
-          "value": "left",
-          "label": "t:sections.header.settings.mobile_logo_position.options__2.label"
-        }
+        { "value": "center", "label": "t:sections.header.settings.mobile_logo_position.options__1.label" },
+        { "value": "left",   "label": "t:sections.header.settings.mobile_logo_position.options__2.label" }
       ],
       "default": "center",
       "label": "t:sections.header.settings.mobile_logo_position.label"
@@ -523,18 +682,9 @@
       "type": "select",
       "id": "menu_type_desktop",
       "options": [
-        {
-          "value": "dropdown",
-          "label": "t:sections.header.settings.menu_type_desktop.options__1.label"
-        },
-        {
-          "value": "mega",
-          "label": "t:sections.header.settings.menu_type_desktop.options__2.label"
-        },
-        {
-          "value": "drawer",
-          "label": "t:sections.header.settings.menu_type_desktop.options__3.label"
-        }
+        { "value": "dropdown", "label": "t:sections.header.settings.menu_type_desktop.options__1.label" },
+        { "value": "mega",     "label": "t:sections.header.settings.menu_type_desktop.options__2.label" },
+        { "value": "drawer",   "label": "t:sections.header.settings.menu_type_desktop.options__3.label" }
       ],
       "default": "dropdown",
       "label": "t:sections.header.settings.menu_type_desktop.label"
@@ -543,22 +693,10 @@
       "type": "select",
       "id": "sticky_header_type",
       "options": [
-        {
-          "value": "none",
-          "label": "t:sections.header.settings.sticky_header_type.options__1.label"
-        },
-        {
-          "value": "on-scroll-up",
-          "label": "t:sections.header.settings.sticky_header_type.options__2.label"
-        },
-        {
-          "value": "always",
-          "label": "t:sections.header.settings.sticky_header_type.options__3.label"
-        },
-        {
-          "value": "reduce-logo-size",
-          "label": "t:sections.header.settings.sticky_header_type.options__4.label"
-        }
+        { "value": "none",            "label": "t:sections.header.settings.sticky_header_type.options__1.label" },
+        { "value": "on-scroll-up",    "label": "t:sections.header.settings.sticky_header_type.options__2.label" },
+        { "value": "always",          "label": "t:sections.header.settings.sticky_header_type.options__3.label" },
+        { "value": "reduce-logo-size","label": "t:sections.header.settings.sticky_header_type.options__4.label" }
       ],
       "default": "on-scroll-up",
       "label": "t:sections.header.settings.sticky_header_type.label"
@@ -587,21 +725,69 @@
     },
     {
       "type": "header",
-      "content": "t:sections.header.settings.header__utilities.content"
+      "content": "Scroll-Morph Island Settings"
     },
     {
-      "type": "checkbox",
-      "id": "enable_country_selector",
-      "default": true,
-      "label": "t:sections.header.settings.enable_country_selector.label",
-      "info": "t:sections.header.settings.enable_country_selector.info"
+      "type": "range",
+      "id": "island_max_width",
+      "min": 700,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Island Max-Width",
+      "default": 1200
     },
     {
-      "type": "checkbox",
-      "id": "enable_language_selector",
-      "default": true,
-      "label": "t:sections.header.settings.enable_language_selector.label",
-      "info": "t:sections.header.settings.enable_language_selector.info"
+      "type": "color",
+      "id": "island_bg_color",
+      "label": "Island Background",
+      "default": "#5c6e4c"
+    },
+    {
+      "type": "range",
+      "id": "island_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Island Opacity",
+      "default": 85
+    },
+    {
+      "type": "range",
+      "id": "island_blur",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Island Blur",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "island_logo_scale",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Logo Scale on Scroll",
+      "default": 70
+    },
+    {
+      "type": "color",
+      "id": "hover_pill_color",
+      "label": "Hover Pill Color",
+      "default": "#5c6e4c"
+    },
+    {
+      "type": "range",
+      "id": "hover_pill_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "label": "Hover Pill Opacity",
+      "default": 6
     },
     {
       "type": "checkbox",
@@ -650,9 +836,7 @@
     }
   ],
   "blocks": [
-    {
-      "type": "@app"
-    }
+    { "type": "@app" }
   ]
 }
 {% endschema %}
