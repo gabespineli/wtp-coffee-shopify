@@ -60,6 +60,27 @@
   {%- endif -%}
   <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} page-width">
     <div class="email-signup-banner__box banner__box newsletter newsletter__wrapper isolate{% if section.settings.show_background_image == false %} email-signup-banner__box--no-image{% endif %} content-container color-{{ section.settings.color_scheme }} gradient content-container--full-width-mobile">
+      {%- if settings.logo != blank -%}
+        <style type="text/css">
+          .password-logo {
+            max-width: {{ 150 }}px;
+          }
+        </style>
+        <div class="password-logo-wrapper" style="margin-bottom: 2rem; display: flex; justify-content: center; align-items: center; width: 100%;">
+          {{
+            settings.logo
+            | image_url: width: 500
+            | image_tag:
+              class: 'password-logo',
+              widths: '50, 100, 150, 200, 250, 300, 400, 500',
+              width: settings.logo_width,
+              alt: settings.logo.alt | default: shop.name | escape
+          }}
+        </div>
+      {%- else -%}
+        <h1 class="h2" style="margin-bottom: 2rem;">{{ shop.name }}</h1>
+      {%- endif -%}
+
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'heading' -%}
