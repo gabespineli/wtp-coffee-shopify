@@ -136,7 +136,7 @@
     }
 
     .header__heading,
-    header > .header__heading-link, 
+    header > .header__heading-link,
     .header__heading-logo-wrapper,
     header-drawer {
       grid-area: logo;
@@ -194,8 +194,8 @@
     opacity: 0;
     transition:
       opacity 0.2s ease,
-      left    0.32s cubic-bezier(0.15, 1, 0.25, 1),
-      width   0.32s cubic-bezier(0.15, 1, 0.25, 1);
+      left    0.32s cubic-bezier(0.15, 1, 0.85, 1),
+      width   0.32s cubic-bezier(0.15, 1, 0.85, 1);
   }
 
   /* Only show hover pill in island state */
@@ -256,6 +256,11 @@
   .header__active-menu-item::after { display: none !important; }
   .list-menu__item--active::after { display: none !important; }
 
+  /* ── MAIN CONTENT OFFSET ── */
+  /* Push pages down by half the navigation's height to prevent full overlay, as requested */
+  main#MainContent {
+    padding-top: calc(var(--header-height, 90px));
+  }
 </style>
 
 {%- style -%}
@@ -273,7 +278,7 @@
 
   /* Island state: tighter padding to compress items closer together */
   .section-header.wtp-scrolled .header {
-    max-width: {{ section.settings.island_max_width }}px !important;
+    max-width: calc(100% - 3rem) !important;
     padding: 0.4rem 1.4rem !important;
     background: rgba({{ section.settings.island_bg_color.red }}, {{ section.settings.island_bg_color.green }}, {{ section.settings.island_bg_color.blue }}, {{ section.settings.island_opacity | divided_by: 100.0 }}) !important;
     backdrop-filter: blur({{ section.settings.island_blur }}px) saturate(200%);
@@ -565,7 +570,9 @@
           requestAnimationFrame(this.reveal.bind(this));
         } else {
           window.clearTimeout(this.isScrolling);
-          this.isScrolling = setTimeout(() => { this.preventReveal = false; }, 66);
+          this.isScrolling = setTimeout(() => {
+            this.preventReveal = false;
+          }, 66);
           requestAnimationFrame(this.hide.bind(this));
         }
       } else if (scrollTop <= this.headerBounds.top) {
@@ -608,87 +615,87 @@
   customElements.define('sticky-header', StickyHeader);
 {% endjavascript %}
 
-<!-- ═══════════════════════════════════════════════════════════════════
-     SCROLL-MORPH ENGINE
-     Toggles .wtp-scrolled on .section-header to drive the CSS morph.
-     Also injects the hover-pill for the island nav links.
-════════════════════════════════════════════════════════════════════ -->
+<!--
+  ═══════════════════════════════════════════════════════════════════
+       SCROLL-MORPH ENGINE
+       Toggles .wtp-scrolled on .section-header to drive the CSS morph.
+       Also injects the hover-pill for the island nav links.
+  ════════════════════════════════════════════════════════════════════
+-->
 <script>
-(function () {
-  'use strict';
+  (function () {
+    'use strict';
 
-  /* ─── 1. Scroll-morph toggle with hysteresis ───────────────────── */
-  /*
-   * Two thresholds prevent oscillation / jitter near the snap point:
-   *   ACTIVATE  — scrolled far enough down → snap into island
-   *   DEACTIVATE — scrolled back close to top → revert to flat bar
-   * Because DEACTIVATE < ACTIVATE, the header "latches" until the
-   * user has clearly returned to the top, giving a smooth revert.
-   */
-  var ACTIVATE   = 80;  /* px — snap into island */
-  var DEACTIVATE = 16;  /* px — revert to flat bar */
-  var section    = document.querySelector('.section-header');
-  var isIsland   = false;
+    /* ─── 1. Scroll-morph toggle with hysteresis ───────────────────── */
+    /*
+     * Two thresholds prevent oscillation / jitter near the snap point:
+     *   ACTIVATE  — scrolled far enough down → snap into island
+     *   DEACTIVATE — scrolled back close to top → revert to flat bar
+     * Because DEACTIVATE < ACTIVATE, the header "latches" until the
+     * user has clearly returned to the top, giving a smooth revert.
+     */
+    var ACTIVATE = 80; /* px — snap into island */
+    var DEACTIVATE = 16; /* px — revert to flat bar */
+    var section = document.querySelector('.section-header');
+    var isIsland = false;
 
-  function onScroll() {
-    if (!section) return;
-    var y = window.scrollY;
-    if (!isIsland && y > ACTIVATE) {
-      isIsland = true;
-      section.classList.add('wtp-scrolled');
-    } else if (isIsland && y < DEACTIVATE) {
-      isIsland = false;
-      section.classList.remove('wtp-scrolled');
+    function onScroll() {
+      if (!section) return;
+      var y = window.scrollY;
+      if (!isIsland && y > ACTIVATE) {
+        isIsland = true;
+        section.classList.add('wtp-scrolled');
+      } else if (isIsland && y < DEACTIVATE) {
+        isIsland = false;
+        section.classList.remove('wtp-scrolled');
+      }
     }
-  }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll(); /* evaluate on load (e.g. hard-refresh mid-page) */
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); /* evaluate on load (e.g. hard-refresh mid-page) */
 
-  /* ─── 2. Hover-pill for desktop nav links ──────────────────────── */
-  function initHoverPill() {
-    var nav = document.querySelector('.header__inline-menu');
-    if (!nav) return;
-    if (nav.querySelector('.wtp-hover-pill')) return; /* already set up */
+    /* ─── 2. Hover-pill for desktop nav links ──────────────────────── */
+    function initHoverPill() {
+      var nav = document.querySelector('.header__inline-menu');
+      if (!nav) return;
+      if (nav.querySelector('.wtp-hover-pill')) return; /* already set up */
 
-    var pill = document.createElement('div');
-    pill.className = 'wtp-hover-pill';
-    pill.setAttribute('aria-hidden', 'true');
-    nav.insertBefore(pill, nav.firstChild);
+      var pill = document.createElement('div');
+      pill.className = 'wtp-hover-pill';
+      pill.setAttribute('aria-hidden', 'true');
+      nav.insertBefore(pill, nav.firstChild);
 
-    var targets = nav.querySelectorAll(
-      'a.header__menu-item, summary.header__menu-item'
-    );
+      var targets = nav.querySelectorAll('a.header__menu-item, summary.header__menu-item');
 
-    targets.forEach(function (el) {
-      el.addEventListener('mouseenter', function () {
-        var navRect = nav.getBoundingClientRect();
-        var elRect  = el.getBoundingClientRect();
-        var padX    = 10;
-        pill.style.left    = (elRect.left - navRect.left - padX) + 'px';
-        pill.style.width   = (elRect.width + padX * 2) + 'px';
-        pill.style.opacity = '1';
+      targets.forEach(function (el) {
+        el.addEventListener('mouseenter', function () {
+          var navRect = nav.getBoundingClientRect();
+          var elRect = el.getBoundingClientRect();
+          var padX = 10;
+          pill.style.left = elRect.left - navRect.left - padX + 'px';
+          pill.style.width = elRect.width + padX * 2 + 'px';
+          pill.style.opacity = '1';
+        });
       });
-    });
 
-    nav.addEventListener('mouseleave', function () {
-      pill.style.opacity = '0';
-    });
-  }
+      nav.addEventListener('mouseleave', function () {
+        pill.style.opacity = '0';
+      });
+    }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHoverPill);
-  } else {
-    initHoverPill();
-  }
-
-  /* Re-init after Shopify theme editor live-reloads the section */
-  document.addEventListener('shopify:section:load', function (e) {
-    if (e.target && e.target.querySelector('.header__inline-menu')) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHoverPill);
+    } else {
       initHoverPill();
     }
-  });
-})();
+
+    /* Re-init after Shopify theme editor live-reloads the section */
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.target && e.target.querySelector('.header__inline-menu')) {
+        initHoverPill();
+      }
+    });
+  })();
 </script>
 
 <script type="application/ld+json">
@@ -741,10 +748,10 @@
       "type": "select",
       "id": "logo_position",
       "options": [
-        { "value": "top-left",    "label": "t:sections.header.settings.logo_position.options__2.label" },
-        { "value": "top-center",  "label": "t:sections.header.settings.logo_position.options__3.label" },
+        { "value": "top-left", "label": "t:sections.header.settings.logo_position.options__2.label" },
+        { "value": "top-center", "label": "t:sections.header.settings.logo_position.options__3.label" },
         { "value": "middle-left", "label": "t:sections.header.settings.logo_position.options__1.label" },
-        { "value": "middle-center","label": "t:sections.header.settings.logo_position.options__4.label" }
+        { "value": "middle-center", "label": "t:sections.header.settings.logo_position.options__4.label" }
       ],
       "default": "middle-left",
       "label": "t:sections.header.settings.logo_position.label",
@@ -755,7 +762,7 @@
       "id": "mobile_logo_position",
       "options": [
         { "value": "center", "label": "t:sections.header.settings.mobile_logo_position.options__1.label" },
-        { "value": "left",   "label": "t:sections.header.settings.mobile_logo_position.options__2.label" }
+        { "value": "left", "label": "t:sections.header.settings.mobile_logo_position.options__2.label" }
       ],
       "default": "center",
       "label": "t:sections.header.settings.mobile_logo_position.label"
@@ -771,8 +778,8 @@
       "id": "menu_type_desktop",
       "options": [
         { "value": "dropdown", "label": "t:sections.header.settings.menu_type_desktop.options__1.label" },
-        { "value": "mega",     "label": "t:sections.header.settings.menu_type_desktop.options__2.label" },
-        { "value": "drawer",   "label": "t:sections.header.settings.menu_type_desktop.options__3.label" }
+        { "value": "mega", "label": "t:sections.header.settings.menu_type_desktop.options__2.label" },
+        { "value": "drawer", "label": "t:sections.header.settings.menu_type_desktop.options__3.label" }
       ],
       "default": "dropdown",
       "label": "t:sections.header.settings.menu_type_desktop.label"
@@ -781,10 +788,10 @@
       "type": "select",
       "id": "sticky_header_type",
       "options": [
-        { "value": "none",            "label": "t:sections.header.settings.sticky_header_type.options__1.label" },
-        { "value": "on-scroll-up",    "label": "t:sections.header.settings.sticky_header_type.options__2.label" },
-        { "value": "always",          "label": "t:sections.header.settings.sticky_header_type.options__3.label" },
-        { "value": "reduce-logo-size","label": "t:sections.header.settings.sticky_header_type.options__4.label" }
+        { "value": "none", "label": "t:sections.header.settings.sticky_header_type.options__1.label" },
+        { "value": "on-scroll-up", "label": "t:sections.header.settings.sticky_header_type.options__2.label" },
+        { "value": "always", "label": "t:sections.header.settings.sticky_header_type.options__3.label" },
+        { "value": "reduce-logo-size", "label": "t:sections.header.settings.sticky_header_type.options__4.label" }
       ],
       "default": "on-scroll-up",
       "label": "t:sections.header.settings.sticky_header_type.label"
@@ -929,8 +936,6 @@
       "default": 20
     }
   ],
-  "blocks": [
-    { "type": "@app" }
-  ]
+  "blocks": [{ "type": "@app" }]
 }
 {% endschema %}

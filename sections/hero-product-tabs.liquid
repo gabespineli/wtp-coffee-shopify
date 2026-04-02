@@ -1,0 +1,740 @@
+{% comment %}
+  Hero Product Tabs — WTP Coffee
+  Full-viewport hero with crossfading background product images,
+  vertical indexed tabs, and floating mini product card.
+{% endcomment %}
+
+{%- liquid
+  assign bg = section.settings.bg_color | default: '#1B3A2D'
+  assign pad = section.settings.section_padding | default: 80
+-%}
+
+<style>
+  /* ── Palette ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} {
+    --color-bg: {{ bg }};
+    --color-cream: #F5F0E8;
+    --color-cream-muted: rgba(245, 240, 232, 0.35);
+    --color-accent: #C8A96E;
+    --color-dark: #0F2318;
+    --color-divider: rgba(245, 240, 232, 0.15);
+    --color-card-bg: rgba(245, 240, 232, 0.08);
+  }
+
+  /* ── Section shell ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} {
+    position: relative;
+    display: flex;
+    background-color: var(--color-bg);
+    justify-content: center;
+    align-items: stretch;
+    width: 95%;
+    margin: 2rem auto;
+    min-height: 85vh;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 24px;
+    z-index: 1;
+  }
+
+  /* ── Stacked background images (one per block, crossfade) ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__bg.is-active {
+    opacity: 1;
+  }
+
+  /* ── Dark overlay for legibility ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1;
+  }
+
+  /* ── Layout (sits above bg + overlay) ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__layout {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    min-height: 80vh;
+  }
+
+  /* ── Right column — tabs + card ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__content {
+    width: 45%;
+    position: relative;
+    z-index: 2;
+    min-height: 80vh;
+    padding: {{ pad }}px 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    /* seamless gradient overlay for readability */
+    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.6) 100%);
+  }
+
+  /* ── Tab container ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs {
+    display: flex;
+    gap: 0;
+    position: relative;
+  }
+
+  /* ── Tab list ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-left: 2.5rem;
+  }
+
+  /* ── Individual tab item ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab {
+    padding: 1.8rem 0;
+    cursor: pointer;
+    border-bottom: 1px solid var(--color-divider);
+    transition: opacity 0.35s ease;
+    user-select: none;
+    position: relative;
+  }
+
+  /* ── Progression Line ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -2.5rem;
+    width: 2px;
+    height: 100%;
+    background: #ffffff;
+    transform: scaleY(0);
+    transform-origin: top;
+    z-index: 2;
+  }
+
+  /* ── Static Base Line (Grey) ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -2.5rem;
+    width: 2px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.35);
+    z-index: 1;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab.is-active::before {
+    animation: wtpTabProgress 5s linear forwards;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs:hover .wtp-ht__tab.is-active::before {
+    animation-play-state: paused;
+  }
+
+  @keyframes wtpTabProgress {
+    0% { transform: scaleY(0); }
+    100% { transform: scaleY(1); }
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab:first-child {
+    padding-top: 0;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab:last-child {
+    border-bottom: none;
+  }
+
+  /* ── Index label — explicit Poppins ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__index {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.7rem;
+    color: var(--color-cream-muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  /* ── Blend name — explicit Grava ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__name {
+    font-family: var(--font-heading-family);
+    text-transform: uppercase;
+    color: var(--color-cream);
+    line-height: 1.15;
+    margin: 0;
+    transition: font-size 0.35s ease, opacity 0.35s ease;
+    font-size: 2.8rem;
+    opacity: 0.3;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab.is-active .wtp-ht__name {
+    font-size: 4rem;
+    opacity: 1;
+  }
+
+  /* ── Descriptor — explicit Poppins ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    line-height: 1.65;
+    color: var(--color-cream);
+    margin: 0;
+    max-width: 70ch;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, margin-top 0.35s ease;
+    margin-top: 0;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab.is-active .wtp-ht__desc {
+    max-height: 200px;
+    margin-top: 0.75rem;
+  }
+
+  /* ── Mini product card ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card {
+    position: absolute;
+    bottom: 4rem;
+    left: 4rem;
+    background: var(--color-card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(245, 240, 232, 0.12);
+    border-radius: 20px;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    width: calc(100% - 8rem);
+    max-width: 500px;
+    overflow: hidden;
+    z-index: 5;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Overlay that sweeps across */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--color-bg);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    z-index: 10;
+    transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card.is-animating .wtp-ht__card-overlay {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card.is-animating .wtp-ht__card-content {
+    opacity: 0;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-thumb {
+    width: 156px;
+    height: 156px;
+    border-radius: 14px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--color-dark);
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── Card text — all explicit Poppins ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--color-cream);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    padding-bottom: 0.15rem;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    color: var(--color-cream-muted);
+    margin: 0;
+    padding-bottom: 0.35rem;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-price {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc,
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-view {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border-radius: 50px;
+    padding: 0.85rem 1.75rem;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.15s ease, color 0.25s ease, border-color 0.25s ease;
+    white-space: nowrap;
+    text-align: center;
+    text-decoration: none;
+    align-self: flex-start;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc {
+    color: var(--color-dark);
+    background: var(--color-accent);
+    border: none;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-view {
+    color: var(--color-cream);
+    background: transparent;
+    border: 1px solid var(--color-cream-muted);
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc:hover {
+    background: var(--color-cream);
+    transform: scale(1.03);
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-view:hover {
+    background: rgba(245, 240, 232, 0.1);
+    color: #fff;
+    border-color: rgba(245, 240, 232, 0.6);
+    transform: scale(1.03);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .wtp-hero-tabs-wrapper-{{ section.id }} {
+      border-radius: 16px;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__layout {
+      flex-direction: column;
+      justify-content: center;
+      min-height: auto;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__content {
+      width: 100%;
+      min-height: 80vh;
+      padding: 3rem 1.5rem 6rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%);
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab.is-active .wtp-ht__name {
+      font-size: 2.2rem;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__name {
+      font-size: 1.5rem;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card {
+      left: 1rem;
+      bottom: 1rem;
+      width: calc(100% - 2rem);
+      max-width: none;
+    }
+  }
+</style>
+
+<section id="wtp-hero-tabs-{{ section.id }}" class="wtp-hero-tabs-wrapper-{{ section.id }}">
+  <!-- Stacked background images (one per block) -->
+  {%- for block in section.blocks -%}
+    {%- assign bg_src = block.settings.bg_image -%}
+    {%- if bg_src == blank and block.settings.product != blank -%}
+      {%- assign bg_src = block.settings.product.featured_image -%}
+    {%- endif -%}
+
+    {%- if bg_src != blank -%}
+      <div
+        class="wtp-ht__bg{% if forloop.first %} is-active{% endif %}"
+        data-tab-bg="{{ forloop.index0 }}"
+      >
+        {%- assign bg_pos_x = block.settings.bg_position_x | default: 50 | append: '%' -%}
+        {%- assign bg_pos_y = block.settings.bg_position_y | default: 50 | append: '%' -%}
+        {%- assign bg_scale = block.settings.bg_scale | default: 100 | divided_by: 100.0 -%}
+        {%- assign bg_style = 'object-position: '
+          | append: bg_pos_x
+          | append: ' '
+          | append: bg_pos_y
+          | append: '; transform: scale('
+          | append: bg_scale
+          | append: ');'
+        -%}
+        {{ bg_src | image_url: width: 2000 | image_tag: class: 'wtp-ht__bg-img', style: bg_style }}
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+
+  <!-- Dark overlay -->
+  <div class="wtp-ht__overlay"></div>
+
+  <!-- Layout container (aligned to the right) -->
+  <div class="wtp-ht__layout">
+    <!-- Right — Tabs + Card -->
+    <div class="wtp-ht__content">
+      <div class="wtp-ht__tabs" id="wtp-tab-container-{{ section.id }}">
+        <div class="wtp-ht__tab-list">
+          {%- for block in section.blocks -%}
+            <div class="wtp-ht__tab{% if forloop.first %} is-active{% endif %}" data-tab-index="{{ forloop.index0 }}">
+              <span class="wtp-ht__index">/{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              <h3 class="wtp-ht__name">{{ block.settings.tab_name }}</h3>
+              <p class="wtp-ht__desc">{{ block.settings.descriptor }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- Mini product card -->
+      <div class="wtp-ht__card" id="wtp-card-{{ section.id }}">
+        <div class="wtp-ht__card-overlay"></div>
+        <div class="wtp-ht__card-content">
+          <div class="wtp-ht__card-thumb">
+            <img
+              id="wtp-card-img-{{ section.id }}"
+              src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+              alt=""
+              width="64"
+              height="64"
+            >
+          </div>
+          <div class="wtp-ht__card-body">
+            <p class="wtp-ht__card-title" id="wtp-card-title-{{ section.id }}"></p>
+            <p class="wtp-ht__card-subtitle" id="wtp-card-sub-{{ section.id }}"></p>
+            <p class="wtp-ht__card-price" id="wtp-card-price-{{ section.id }}"></p>
+            <div class="wtp-ht__card-actions">
+              <button class="wtp-ht__card-atc" id="wtp-card-atc-{{ section.id }}" type="button" data-variant-id="">
+                Add to Cart
+              </button>
+              <a href="#" class="wtp-ht__card-view" id="wtp-card-view-{{ section.id }}">View More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Data bridge — Liquid → JS -->
+<script type="application/json" id="wtp-tabs-data-{{ section.id }}">
+  [
+    {%- for block in section.blocks -%}
+      {%- assign prod = block.settings.product -%}
+      {%- assign v = prod.selected_or_first_available_variant -%}
+      {%- if block.settings.variant_title != blank -%}
+        {%- for var in prod.variants -%}
+          {%- assign var_title_down = var.title | downcase -%}
+          {%- assign target_down = block.settings.variant_title | downcase -%}
+          {%- if var_title_down == target_down -%}
+            {%- assign v = var -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {
+        "tabName": {{ block.settings.tab_name | json }},
+        "descriptor": {{ block.settings.descriptor | json }},
+        "cardTitle": {{ prod.title | default: '' | json }},
+        "cardSubtitle": {{ block.settings.card_subtitle | default: '' | json }},
+        "cardImage": "{% if v.featured_image %}{{ v.featured_image | image_url: width: 300 }}{% elsif prod.featured_image %}{{ prod.featured_image | image_url: width: 300 }}{% endif %}",
+        "bgImage": "{% if block.settings.bg_image %}{{ block.settings.bg_image | image_url: width: 2000 }}{% endif %}",
+        "price": {{ v.price | default: 0 | money | json }},
+        "variantId": {{ v.id | default: 0 | json }},
+        "productUrl": {{ v.url | default: prod.url | default: '#' | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+</script>
+
+<script>
+  (function () {
+    var SECTION_ID = {{ section.id | json }};
+
+    document.addEventListener('DOMContentLoaded', function () {
+      /* ── Data ── */
+      var dataEl = document.getElementById('wtp-tabs-data-' + SECTION_ID);
+      if (!dataEl) return;
+      var products = [];
+      try { products = JSON.parse(dataEl.textContent); } catch (e) { return; }
+      if (!products.length) return;
+
+      /* ── DOM refs ── */
+      var sectionEl = document.getElementById('wtp-hero-tabs-' + SECTION_ID);
+      var container = document.getElementById('wtp-tab-container-' + SECTION_ID);
+      var tabs      = sectionEl.querySelectorAll('.wtp-ht__tab');
+      var bgs       = sectionEl.querySelectorAll('.wtp-ht__bg');
+      var card      = document.getElementById('wtp-card-' + SECTION_ID);
+      var cardImg   = document.getElementById('wtp-card-img-' + SECTION_ID);
+      var cardTitle = document.getElementById('wtp-card-title-' + SECTION_ID);
+      var cardSub   = document.getElementById('wtp-card-sub-' + SECTION_ID);
+      var cardPrice = document.getElementById('wtp-card-price-' + SECTION_ID);
+      var cardAtc   = document.getElementById('wtp-card-atc-' + SECTION_ID);
+      var cardView  = document.getElementById('wtp-card-view-' + SECTION_ID);
+
+      var activeIndex = 0;
+
+      /* ── Activate tab ── */
+      function activate(index) {
+        if (index < 0 || index >= products.length) index = 0;
+        activeIndex = index;
+
+        /* Tabs */
+        tabs.forEach(function (tab, i) {
+          if (i === index) {
+            tab.classList.remove('is-active');
+            void tab.offsetWidth; /* force reflow to restart animation */
+            tab.classList.add('is-active');
+          } else {
+            tab.classList.remove('is-active');
+          }
+        });
+
+        /* Background images */
+        bgs.forEach(function (bg) {
+          bg.classList.toggle('is-active', parseInt(bg.getAttribute('data-tab-bg'), 10) === index);
+        });
+
+        /* Card — overlay animation, swap content, slide overlay out */
+        var p = products[index];
+        card.classList.add('is-animating');
+
+        setTimeout(function () {
+          /* Thumbnail */
+          if (p.cardImage) {
+            cardImg.src = p.cardImage;
+            cardImg.alt = p.cardTitle || '';
+          }
+
+          /* Text fields */
+          cardTitle.textContent = p.cardTitle || '';
+          cardSub.textContent   = p.cardSubtitle || '';
+          cardPrice.textContent = p.price || '';
+
+          /* Variant ID on the button & URL link */
+          cardAtc.setAttribute('data-variant-id', p.variantId || '');
+          cardAtc.textContent = 'Add to Cart';
+          cardAtc.disabled = false;
+
+          cardView.href = p.productUrl || '#';
+
+          /* Remove overlay */
+          card.classList.remove('is-animating');
+        }, 400);
+      }
+
+      /* ── Click handling ── */
+      tabs.forEach(function (tab, i) {
+        tab.addEventListener('click', function () {
+          activate(i);
+        });
+
+        tab.addEventListener('animationend', function (e) {
+          if (e.animationName === 'wtpTabProgress') {
+            activate((activeIndex + 1) % products.length);
+          }
+        });
+      });
+
+      /* ── Add to Cart ── */
+      cardAtc.addEventListener('click', function (e) {
+        e.preventDefault();
+        var vid = parseInt(this.getAttribute('data-variant-id'), 10);
+        if (!vid) return;
+
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Adding…';
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: vid, quantity: 1 })
+        })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Cart error');
+          btn.textContent = 'Added ✓';
+          setTimeout(function () {
+            btn.textContent = 'Add to Cart';
+            btn.disabled = false;
+          }, 1500);
+        })
+        .catch(function () {
+          btn.textContent = 'Error';
+          setTimeout(function () {
+            btn.textContent = 'Add to Cart';
+            btn.disabled = false;
+          }, 1500);
+        });
+      });
+
+      /* ── Init — activate first tab immediately (no fade delay) ── */
+      var p0 = products[0];
+      if (p0.cardImage) {
+        cardImg.src = p0.cardImage;
+        cardImg.alt = p0.cardTitle || '';
+      }
+      cardTitle.textContent = p0.cardTitle || '';
+      cardSub.textContent   = p0.cardSubtitle || '';
+      cardPrice.textContent = p0.price || '';
+      cardAtc.setAttribute('data-variant-id', p0.variantId || '');
+      cardView.href = p0.productUrl || '#';
+
+      bgs.forEach(function (bg) { bg.classList.toggle('is-active', parseInt(bg.getAttribute('data-tab-bg'), 10) === 0); });
+
+      // Add is-active safely to start progress bar
+      if (tabs[0]) {
+        void tabs[0].offsetWidth;
+        tabs[0].classList.add('is-active');
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Product Tabs",
+  "tag": "section",
+  "class": "wtp-hero-product-tabs",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding (px)",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured_product",
+      "name": "Featured Product",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "variant_title",
+          "label": "Specific Variant Title",
+          "info": "Optional. Enter the exact variant name (e.g., '1KG' or '250g'). Leaves blank to use the default variant."
+        },
+        {
+          "type": "text",
+          "id": "tab_name",
+          "label": "Tab Heading (e.g. Community)"
+        },
+        {
+          "type": "textarea",
+          "id": "descriptor",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "card_subtitle",
+          "label": "Card Subtitle (e.g. Whole Bean · 250g)"
+        },
+        {
+          "type": "image_picker",
+          "id": "bg_image",
+          "label": "Background Image"
+        },
+        {
+          "type": "range",
+          "id": "bg_position_x",
+          "label": "Background Focal Point (Horizontal)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50,
+          "unit": "%"
+        },
+        {
+          "type": "range",
+          "id": "bg_position_y",
+          "label": "Background Focal Point (Vertical)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50,
+          "unit": "%"
+        },
+        {
+          "type": "range",
+          "id": "bg_scale",
+          "label": "Background Image Zoom",
+          "min": 50,
+          "max": 200,
+          "step": 2,
+          "default": 100,
+          "unit": "%"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Product Tabs"
+    }
+  ]
+}
+{% endschema %}
