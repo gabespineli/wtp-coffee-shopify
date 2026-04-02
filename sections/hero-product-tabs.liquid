@@ -85,10 +85,10 @@
     position: relative;
     z-index: 2;
     min-height: 80vh;
-    padding: {{ pad }}px 4rem;
+    padding: {{ pad }}px 4rem 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     box-sizing: border-box;
     /* seamless gradient overlay for readability */
     background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.6) 100%);
@@ -214,9 +214,11 @@
 
   /* ── Mini product card ── */
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card {
-    position: absolute;
-    bottom: 4rem;
-    left: 4rem;
+    position: relative;
+    bottom: unset;
+    left: unset;
+    margin-top: auto;
+    margin-bottom: 3rem;
     background: var(--color-card-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -224,7 +226,7 @@
     border-radius: 20px;
     padding: 2rem 2.5rem;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-    width: calc(100% - 8rem);
+    width: 100%;
     max-width: 500px;
     overflow: hidden;
     z-index: 5;
