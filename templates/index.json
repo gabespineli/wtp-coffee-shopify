@@ -9,23 +9,50 @@
  */
 {
   "sections": {
-    "scroll_expansion_hero_zPqHLK": {
-      "type": "scroll-expansion-hero",
-      "name": "Scroll Expansion Hero",
+    "hero_product_tabs_pjfVTt": {
+      "type": "hero-product-tabs",
+      "blocks": {
+        "featured_product_9cpayX": {
+          "type": "featured_product",
+          "settings": {
+            "product": "community-blend",
+            "variant_title": "250g",
+            "tab_name": "Community",
+            "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "card_subtitle": "Whole Bean · 250g",
+            "bg_image": "shopify://shop_images/COMMUNITY_459ab149-53bd-45a7-bf9f-d0c6f3b5c7ee.png",
+            "bg_position_x": 50,
+            "bg_position_y": 50,
+            "bg_scale": 100
+          }
+        },
+        "featured_product_W6b9en": {
+          "type": "featured_product",
+          "settings": {
+            "product": "cosmopolitan-blend",
+            "variant_title": "250g",
+            "tab_name": "Cosmopolitan",
+            "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "card_subtitle": "Whole Bean · 250g",
+            "bg_image": "shopify://shop_images/COSMOPOLITAN_2e79e6f7-cd5b-4a9b-a1b5-878c509713ad.png",
+            "bg_position_x": 50,
+            "bg_position_y": 50,
+            "bg_scale": 100
+          }
+        }
+      },
+      "block_order": [
+        "featured_product_9cpayX",
+        "featured_product_W6b9en"
+      ],
+      "name": "Hero Product Tabs",
       "settings": {
-        "background_image": "shopify://shop_images/branch-alabang.jpg",
-        "foreground_image": "shopify://shop_images/WTP_Coffee_SQUARE.png",
-        "foreground_video": "shopify://files/videos/roastery-hero_9dde533b-6807-43f9-89ad-9f673311be55.mp4",
-        "title_left": "WE THE",
-        "title_right": "PEOPLE",
-        "subtitle_left": "WHERE COFFEE",
-        "subtitle_right": "CREATES COMMUNITY",
-        "title_color": "#fcfaed",
-        "subtitle_color": "#fcfaed"
+        "bg_color": "#1B3A2D",
+        "section_padding": 80
       }
     }
   },
   "order": [
-    "scroll_expansion_hero_zPqHLK"
+    "hero_product_tabs_pjfVTt"
   ]
 }
