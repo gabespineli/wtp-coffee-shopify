@@ -11,30 +11,13 @@
   "sections": {
     "main": {
       "type": "main-page",
-      "disabled": true,
       "settings": {
         "padding_top": 28,
         "padding_bottom": 28
       }
-    },
-    "scroll_expansion_hero_tHe4jx": {
-      "type": "scroll-expansion-hero",
-      "name": "Scroll Expansion Hero",
-      "settings": {
-        "background_image": "shopify://shop_images/branch-alabang_b761a117-5270-46ba-8f31-5ca0303b644f.jpg",
-        "foreground_image": "shopify://shop_images/WTP_Coffee_SQUARE.png",
-        "foreground_video": "shopify://files/videos/roastery-hero_9dde533b-6807-43f9-89ad-9f673311be55.mp4",
-        "title_left": "WE THE",
-        "title_right": "PEOPLE",
-        "subtitle_left": "WHERE COFFEE",
-        "subtitle_right": "CREATES COMMUNITY",
-        "title_color": "#fcfaed",
-        "subtitle_color": "#fcfaed"
-      }
     }
   },
   "order": [
-    "main",
-    "scroll_expansion_hero_tHe4jx"
+    "main"
   ]
 }
