@@ -25,7 +25,7 @@
             "bg_position_y": 50,
             "bg_scale": 100,
             "bg_image_mobile": "shopify://shop_images/COMMUNITY_SQAURE.png",
-            "mobile_content_bg": "#5c6e4c",
+            "mobile_content_bg": "#1b3a2d",
             "mobile_content_text": "#fcfaed"
           }
         },
