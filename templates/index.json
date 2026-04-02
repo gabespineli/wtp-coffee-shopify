@@ -20,10 +20,13 @@
             "tab_name": "Community",
             "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             "card_subtitle": "Whole Bean · 200g",
-            "bg_image": "shopify://shop_images/COMMUNITY_459ab149-53bd-45a7-bf9f-d0c6f3b5c7ee.png",
+            "bg_image": "shopify://shop_images/COMMUNITY.png",
             "bg_position_x": 50,
             "bg_position_y": 50,
-            "bg_scale": 100
+            "bg_scale": 100,
+            "bg_image_mobile": "shopify://shop_images/COMMUNITY_SQAURE.png",
+            "mobile_content_bg": "#5c6e4c",
+            "mobile_content_text": "#fcfaed"
           }
         },
         "featured_product_W6b9en": {
@@ -37,7 +40,10 @@
             "bg_image": "shopify://shop_images/COSMOPOLITAN_2e79e6f7-cd5b-4a9b-a1b5-878c509713ad.png",
             "bg_position_x": 50,
             "bg_position_y": 50,
-            "bg_scale": 100
+            "bg_scale": 100,
+            "bg_image_mobile": "shopify://shop_images/COSMOPOLITAN_SQAURE.png",
+            "mobile_content_bg": "#fcfaed",
+            "mobile_content_text": "#1b3a2d"
           }
         }
       },
