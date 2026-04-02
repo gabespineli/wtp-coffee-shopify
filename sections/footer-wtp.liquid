@@ -1,0 +1,476 @@
+{% comment %}
+  WTP Coffee Custom Footer
+{% endcomment %}
+
+{%- liquid
+  assign footer_bg = section.settings.bg_color
+-%}
+
+<style>
+  .wtp-footer {
+    /* Map to theme standard variables identified from base.css */
+    --footer-bg: rgba({{ footer_bg.red }}, {{ footer_bg.green }}, {{ footer_bg.blue }}, 1);
+    --footer-text: #FFFFFF;
+    --footer-text-muted: rgba(255, 255, 255, 0.75);
+    --footer-accent: rgb(var(--color-button));
+    --footer-divider: rgba(255, 255, 255, 0.15);
+    --footer-heading-font: var(--font-heading-family);
+    --footer-body-font: var(--font-body-family);
+
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    font-family: var(--footer-body-font);
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .wtp-footer *, .wtp-footer *::before, .wtp-footer *::after {
+    box-sizing: border-box;
+  }
+
+  /* ── Desktop Layout ── */
+  .wtp-footer__main {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 3.5rem 4rem;
+    gap: 2rem;
+  }
+
+  .wtp-footer__left {
+    flex: 0 0 35%;
+    max-width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wtp-footer__nav-groups {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .wtp-footer__nav-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Left Column Elements ── */
+  .wtp-footer__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1.25rem;
+    text-decoration: none;
+  }
+
+  .wtp-footer__logo img {
+    display: block;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .wtp-footer__brand-name {
+    font-family: var(--footer-heading-font);
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--footer-text);
+    margin: 0;
+    line-height: 1;
+  }
+
+  .wtp-footer__tagline {
+    font-size: 0.875rem;
+    color: var(--footer-text-muted);
+    margin: 0 0 2rem 0;
+  }
+
+  /* ── Newsletter Form ── */
+  .wtp-footer__newsletter {
+    width: 100%;
+    position: relative;
+  }
+
+  .wtp-footer__newsletter-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .wtp-footer__newsletter-input {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--footer-divider);
+    border-radius: 8px;
+    padding: 0.75rem 3rem 0.75rem 1rem;
+    color: var(--footer-text);
+    font-family: var(--footer-body-font);
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .wtp-footer__newsletter-input::placeholder {
+    color: var(--footer-text-muted);
+  }
+
+  .wtp-footer__newsletter-input:focus {
+    border-color: var(--footer-accent);
+  }
+
+  .wtp-footer__newsletter-btn {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--footer-accent);
+    color: rgb(var(--color-background));
+    border: none;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .wtp-footer__newsletter-btn:hover {
+    opacity: 0.85;
+  }
+
+  .wtp-footer__newsletter-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  .wtp-footer__newsletter-success {
+    display: none;
+    font-size: 0.875rem;
+    color: var(--footer-accent);
+    margin-top: 1rem;
+  }
+
+  .wtp-footer__newsletter.is-success .wtp-footer__newsletter-wrapper {
+    display: none;
+  }
+
+  .wtp-footer__newsletter.is-success .wtp-footer__newsletter-success {
+    display: block;
+  }
+
+  /* ── Nav Columns Elements ── */
+  .wtp-footer__heading {
+    font-family: var(--footer-heading-font);
+    color: var(--footer-accent);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .wtp-footer__menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .wtp-footer__menu-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .wtp-footer__bull {
+    color: var(--footer-accent);
+    font-size: 0.5rem;
+    margin-right: 0.75rem;
+    line-height: 1;
+  }
+
+  .wtp-footer__link {
+    font-size: 0.875rem;
+    color: var(--footer-text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .wtp-footer__link:hover {
+    color: var(--footer-text);
+  }
+
+  /* ── Bottom Bar ── */
+  .wtp-footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 4rem;
+    border-top: 1px solid var(--footer-divider);
+  }
+
+  .wtp-footer__copyright {
+    font-size: 0.875rem;
+    color: var(--footer-text-muted);
+    margin: 0;
+  }
+
+  .wtp-footer__socials {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  .wtp-footer__social-link {
+    color: var(--footer-text-muted);
+    display: flex;
+    transition: color 0.2s ease;
+  }
+
+  .wtp-footer__social-link:hover {
+    color: var(--footer-text);
+  }
+
+  .wtp-footer__social-link svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  /* ── Mobile Layout (< 768px) ── */
+  @media (max-width: 768px) {
+    .wtp-footer__main {
+      flex-direction: column;
+      padding: 2.5rem 1.5rem;
+      gap: 2.5rem;
+    }
+
+    .wtp-footer__left,
+    .wtp-footer__nav-groups {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+
+    .wtp-footer__nav-groups {
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .wtp-footer__nav-group {
+      padding-top: 2rem;
+      border-top: 1px solid var(--footer-divider);
+    }
+
+    .wtp-footer__bottom {
+      flex-direction: column;
+      padding: 1.5rem;
+      gap: 1.5rem;
+      text-align: center;
+    }
+  }
+</style>
+
+<footer class="wtp-footer">
+  <div class="wtp-footer__main">
+    <div class="wtp-footer__left">
+      <div class="wtp-footer__brand">
+        {%- if section.settings.logo != blank -%}
+          <div class="wtp-footer__logo">
+            {{ section.settings.logo | image_url: width: 80 | image_tag: alt: section.settings.logo.alt }}
+          </div>
+        {%- endif -%}
+        <p class="wtp-footer__brand-name">WTP Coffee</p>
+      </div>
+
+      {%- if section.settings.tagline != blank -%}
+        <p class="wtp-footer__tagline">{{ section.settings.tagline }}</p>
+      {%- endif -%}
+
+      <div class="wtp-footer__newsletter" id="wtp-footer-newsletter-{{ section.id }}">
+        {%- form 'customer', id: 'footer-newsletter-form', class: 'wtp-footer__newsletter-form' -%}
+          <div class="wtp-footer__newsletter-wrapper">
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input 
+              type="email" 
+              name="contact[email]" 
+              class="wtp-footer__newsletter-input" 
+              placeholder="{{ section.settings.newsletter_placeholder | escape }}" 
+              required
+            >
+            <button type="submit" class="wtp-footer__newsletter-btn" aria-label="Subscribe">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </button>
+          </div>
+          <div class="wtp-footer__newsletter-success">
+            You're in ✓
+          </div>
+        {%- endform -%}
+      </div>
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="wtp-footer__nav-groups">
+        {%- for block in section.blocks -%}
+          <div class="wtp-footer__nav-group" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <h2 class="wtp-footer__heading">{{ block.settings.heading }}</h2>
+            {%- endif -%}
+
+            {%- if block.settings.menu != blank -%}
+              <ul class="wtp-footer__menu">
+                {%- for link in linklists[block.settings.menu].links -%}
+                  <li class="wtp-footer__menu-item">
+                    <span class="wtp-footer__bull">&#9679;</span>
+                    <a href="{{ link.url }}" class="wtp-footer__link">{{ link.title }}</a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="wtp-footer__bottom">
+    <p class="wtp-footer__copyright">
+      &copy; {{ section.settings.copyright_year }} {{ section.settings.copyright_brand }}. All rights reserved.
+    </p>
+    
+    <div class="wtp-footer__socials">
+      {%- if section.settings.instagram_url != blank -%}
+        <a href="{{ section.settings.instagram_url }}" class="wtp-footer__social-link" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm5.25-2.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+          </svg>
+        </a>
+      {%- endif -%}
+      
+      {%- if section.settings.facebook_url != blank -%}
+        <a href="{{ section.settings.facebook_url }}" class="wtp-footer__social-link" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 12.06c0-5.52-4.48-10-10-10S2 6.54 2 12.06c0 4.99 3.66 9.12 8.44 9.88v-6.99h-2.54V12.06h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.89h-2.34v6.99C18.34 21.18 22 17.05 22 12.06z"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var form = document.querySelector('#wtp-footer-newsletter-{{ section.id }} .wtp-footer__newsletter-form');
+    var container = document.getElementById('wtp-footer-newsletter-{{ section.id }}');
+    
+    if (form && container) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = new FormData(form);
+        fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(function() {
+          container.classList.add('is-success');
+        })
+        .catch(function(err) {
+          console.error('Newsletter error', err);
+          container.classList.add('is-success'); // Still show success for UX fallback
+        });
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "WTP Footer",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Footer Background Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Footer Logo"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Where Coffee Creates Community"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Newsletter Input Placeholder",
+      "default": "Enter your email..."
+    },
+    {
+      "type": "text",
+      "id": "copyright_brand",
+      "label": "Brand Name for Copyright",
+      "default": "WTP Coffee"
+    },
+    {
+      "type": "text",
+      "id": "copyright_year",
+      "label": "Copyright Year",
+      "default": "2025"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_column",
+      "name": "Navigation Column",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Column Heading"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Navigation Menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WTP Footer"
+    }
+  ]
+}
+{% endschema %}
