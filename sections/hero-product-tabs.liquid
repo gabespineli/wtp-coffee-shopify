@@ -39,6 +39,15 @@
   }
 
   /* ── Stacked background images (one per block, crossfade) ── */
+  /* The .wtp-ht__bgs wrapper fills the whole section on desktop */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__bgs {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__bg {
     position: absolute;
     inset: 0;
@@ -149,7 +158,8 @@
     animation: wtpTabProgress 5s linear forwards;
   }
 
-  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs:hover .wtp-ht__tab.is-active::before {
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs:hover .wtp-ht__tab.is-active::before,
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs.is-paused .wtp-ht__tab.is-active::before {
     animation-play-state: paused;
   }
 
@@ -224,10 +234,10 @@
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(245, 240, 232, 0.12);
     border-radius: 20px;
-    padding: 2rem 2.5rem;
+    padding: 2.25rem 3rem;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
     width: 100%;
-    max-width: 500px;
+    max-width: 540px;
     overflow: hidden;
     z-index: 5;
   }
@@ -235,7 +245,7 @@
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-content {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
     transition: opacity 0.3s ease, transform 0.3s ease;
     opacity: 1;
     transform: translateY(0);
@@ -262,8 +272,8 @@
   }
 
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-thumb {
-    width: 156px;
-    height: 156px;
+    width: 164px;
+    height: 164px;
     border-radius: 14px;
     overflow: hidden;
     flex-shrink: 0;
@@ -278,29 +288,36 @@
   }
 
   /* ── Card text — all explicit Poppins ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-title {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     color: var(--color-cream);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
-    padding-bottom: 0.15rem;
+    padding-bottom: 0.25rem;
   }
 
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-subtitle {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     color: var(--color-cream-muted);
     margin: 0;
-    padding-bottom: 0.35rem;
+    padding-bottom: 0.75rem;
   }
 
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-price {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: var(--color-accent);
     margin: 0;
@@ -308,18 +325,18 @@
 
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-actions {
     display: flex;
-    gap: 0.75rem;
-    margin-top: 1rem;
+    gap: 1rem;
+    margin-top: 1.25rem;
   }
 
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc,
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-view {
     font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 600;
     letter-spacing: 0.04em;
     border-radius: 50px;
-    padding: 0.85rem 1.75rem;
+    padding: 0.95rem 1.85rem;
     cursor: pointer;
     transition: background 0.25s ease, transform 0.15s ease, color 0.25s ease, border-color 0.25s ease;
     white-space: nowrap;
@@ -352,70 +369,242 @@
     transform: scale(1.03);
   }
 
-  /* ── Responsive ── */
+  /* ── Tablet (900px and below) — minor tweaks only ── */
   @media (max-width: 900px) {
     .wtp-hero-tabs-wrapper-{{ section.id }} {
       border-radius: 16px;
     }
+  }
 
+  /* ── Mobile (768px and below) — full vertical stack ── */
+  @media (max-width: 768px) {
+    /* Outer shell: switch to vertical stack on mobile */
+    .wtp-hero-tabs-wrapper-{{ section.id }} {
+      border-radius: 20px;
+      overflow: hidden;
+      width: 95%;
+      margin: 1rem auto;
+      /* Switch the section itself to a vertical flex stack */
+      flex-direction: column;
+      min-height: auto;
+      align-items: stretch;
+    }
+
+    /* Layout layer sits below .wtp-ht__bgs; remove its min-height */
     .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__layout {
       flex-direction: column;
-      justify-content: center;
       min-height: auto;
+      /* Layout only wraps the content panel; it's after the bgs block */
+      position: relative;
+      z-index: 2;
     }
 
-    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__content {
+    /* Overlay: on mobile scope it to just the image region */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__overlay {
+      position: absolute;
+      inset: 0;
+      /* Only overlay the square image block — clip to the bgs area */
+      height: 100vw; /* same as the 1/1 square */
+      max-height: 100vw;
+      pointer-events: none;
+    }
+
+    /* ── Top block: bg image area — square on mobile ── */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__bgs {
+      position: relative;
       width: 100%;
-      min-height: 80vh;
-      padding: 3rem 1.5rem 6rem;
-      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%);
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      overflow: hidden;
     }
 
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* On mobile always center the image (mobile image is composed for this viewport) */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__bg-img {
+      object-position: center !important;
+    }
+
+    /* ── Bottom block: tabs panel ── */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__content {
+      position: relative;
+      width: 100%;
+      min-height: auto;
+      padding: 1.5rem 1.25rem;
+      background: var(--mobile-content-bg, var(--color-bg));
+      color: var(--mobile-content-text, var(--color-cream));
+      justify-content: flex-start;
+      box-sizing: border-box;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__name,
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__desc,
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-title {
+      color: currentColor;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__index,
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-subtitle {
+      color: currentColor;
+      opacity: 0.6;
+    }
+
+    /* Selection Lines on Mobile */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab::before {
+      background: currentColor;
+    }
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab::after {
+      background: currentColor;
+      opacity: 0.2;
+    }
+
+    /* View More Button on Mobile */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-view {
+      color: currentColor;
+      border-color: currentColor;
+    }
+
+    /* Tab items: reduce vertical padding */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab {
+      padding: 0.85rem 0;
+    }
+
+    /* Index label */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__index {
+      font-size: 0.6rem;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Active tab name */
     .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab.is-active .wtp-ht__name {
-      font-size: 2.2rem;
+      font-size: 1.6rem;
     }
 
+    /* Inactive tab names */
     .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__name {
-      font-size: 1.5rem;
+      font-size: 1.1rem;
     }
 
-    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card {
-      left: 1rem;
-      bottom: 1rem;
-      width: calc(100% - 2rem);
+    /* Description: cut font and cap to 3 lines */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab.is-active .wtp-ht__desc {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      max-height: 90px;
       max-width: none;
+      margin-top: 0.5rem;
+    }
+
+    /* ── Mini product card: static flow, compact ── */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card {
+      position: static !important;
+      bottom: unset !important;
+      left: unset !important;
+      margin-top: 1.25rem;
+      margin-bottom: 0;
+      width: 100%;
+      max-width: none;
+      padding: 1rem 1.25rem;
+      border-radius: 14px;
+    }
+
+    /* Card content: tighter gap */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-content {
+      gap: 0.85rem;
+    }
+
+    /* Smaller thumbnail on mobile */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Card body: allow text to truncate instead of overflow */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-body {
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-title {
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-subtitle {
+      font-size: 0.75rem;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-price {
+      font-size: 0.95rem;
+    }
+
+    /* Buttons: smaller and full-row wrap if needed */
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-actions {
+      margin-top: 0.6rem;
+      gap: 0.5rem;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc,
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-view {
+      font-size: 0.75rem;
+      padding: 0.55rem 1rem;
     }
   }
 </style>
 
 <section id="wtp-hero-tabs-{{ section.id }}" class="wtp-hero-tabs-wrapper-{{ section.id }}">
   <!-- Stacked background images (one per block) -->
-  {%- for block in section.blocks -%}
-    {%- assign bg_src = block.settings.bg_image -%}
-    {%- if bg_src == blank and block.settings.product != blank -%}
-      {%- assign bg_src = block.settings.product.featured_image -%}
-    {%- endif -%}
+  <div class="wtp-ht__bgs">
+    {%- for block in section.blocks -%}
+      {%- assign bg_src = block.settings.bg_image -%}
+      {%- if bg_src == blank and block.settings.product != blank -%}
+        {%- assign bg_src = block.settings.product.featured_image -%}
+      {%- endif -%}
 
-    {%- if bg_src != blank -%}
-      <div
-        class="wtp-ht__bg{% if forloop.first %} is-active{% endif %}"
-        data-tab-bg="{{ forloop.index0 }}"
-      >
-        {%- assign bg_pos_x = block.settings.bg_position_x | default: 50 | append: '%' -%}
-        {%- assign bg_pos_y = block.settings.bg_position_y | default: 50 | append: '%' -%}
-        {%- assign bg_scale = block.settings.bg_scale | default: 100 | divided_by: 100.0 -%}
-        {%- assign bg_style = 'object-position: '
-          | append: bg_pos_x
-          | append: ' '
-          | append: bg_pos_y
-          | append: '; transform: scale('
-          | append: bg_scale
-          | append: ');'
-        -%}
-        {{ bg_src | image_url: width: 2000 | image_tag: class: 'wtp-ht__bg-img', style: bg_style }}
-      </div>
-    {%- endif -%}
-  {%- endfor -%}
+      {%- if bg_src != blank -%}
+        {%- assign mobile_bg_src = block.settings.bg_image_mobile -%}
+        {%- assign desktop_img_url = bg_src | image_url: width: 2000 -%}
+        {%- if mobile_bg_src != blank -%}
+          {%- assign mobile_img_url = mobile_bg_src | image_url: width: 1200 -%}
+        {%- else -%}
+          {%- assign mobile_img_url = desktop_img_url -%}
+        {%- endif -%}
+        <div
+          class="wtp-ht__bg{% if forloop.first %} is-active{% endif %}"
+          data-tab-bg="{{ forloop.index0 }}"
+          data-desktop-src="{{ desktop_img_url }}"
+          data-mobile-src="{{ mobile_img_url }}"
+        >
+          {%- assign bg_pos_x = block.settings.bg_position_x | default: 50 | append: '%' -%}
+          {%- assign bg_pos_y = block.settings.bg_position_y | default: 50 | append: '%' -%}
+          {%- assign bg_scale = block.settings.bg_scale | default: 100 | divided_by: 100.0 -%}
+          {%- assign bg_style = 'object-position: '
+            | append: bg_pos_x
+            | append: ' '
+            | append: bg_pos_y
+            | append: '; transform: scale('
+            | append: bg_scale
+            | append: ');'
+          -%}
+          {{ bg_src | image_url: width: 2000 | image_tag: class: 'wtp-ht__bg-img', style: bg_style }}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  <!-- /.wtp-ht__bgs -->
 
   <!-- Dark overlay -->
   <div class="wtp-ht__overlay"></div>
@@ -489,9 +678,12 @@
         "cardSubtitle": {{ block.settings.card_subtitle | default: '' | json }},
         "cardImage": "{% if v.featured_image %}{{ v.featured_image | image_url: width: 300 }}{% elsif prod.featured_image %}{{ prod.featured_image | image_url: width: 300 }}{% endif %}",
         "bgImage": "{% if block.settings.bg_image %}{{ block.settings.bg_image | image_url: width: 2000 }}{% endif %}",
+        "bgImageMobile": "{% if block.settings.bg_image_mobile %}{{ block.settings.bg_image_mobile | image_url: width: 1200 }}{% elsif block.settings.bg_image %}{{ block.settings.bg_image | image_url: width: 1200 }}{% endif %}",
         "price": {{ v.price | default: 0 | money | json }},
         "variantId": {{ v.id | default: 0 | json }},
-        "productUrl": {{ v.url | default: prod.url | default: '#' | json }}
+        "productUrl": {{ v.url | default: prod.url | default: '#' | json }},
+        "mobileContentBg": {{ block.settings.mobile_content_bg | default: '' | json }},
+        "mobileContentText": {{ block.settings.mobile_content_text | default: '' | json }}
       }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
   ]
@@ -511,9 +703,50 @@
 
       /* ── DOM refs ── */
       var sectionEl = document.getElementById('wtp-hero-tabs-' + SECTION_ID);
+      var contentPanel = sectionEl.querySelector('.wtp-ht__content');
       var container = document.getElementById('wtp-tab-container-' + SECTION_ID);
       var tabs      = sectionEl.querySelectorAll('.wtp-ht__tab');
       var bgs       = sectionEl.querySelectorAll('.wtp-ht__bg');
+
+      /* ── Mobile bg src swap ── */
+      var mobileBreak = window.matchMedia('(max-width: 768px)');
+
+      function syncBgSrcs() {
+        var isMobile = mobileBreak.matches;
+        bgs.forEach(function (bg) {
+          var img = bg.querySelector('.wtp-ht__bg-img');
+          if (!img) return;
+
+          /* Stash the original srcset once so we can restore it on desktop */
+          if (!bg.hasAttribute('data-srcset-cache') && img.srcset) {
+            bg.setAttribute('data-srcset-cache', img.srcset);
+          }
+
+          if (isMobile) {
+            var mobileSrc = bg.getAttribute('data-mobile-src') || bg.getAttribute('data-desktop-src');
+            if (mobileSrc) {
+              /* Must clear srcset first — browsers prefer srcset over src */
+              img.removeAttribute('srcset');
+              img.src = mobileSrc;
+            }
+          } else {
+            var desktopSrc = bg.getAttribute('data-desktop-src');
+            if (desktopSrc) {
+              img.src = desktopSrc;
+              /* Restore srcset for responsive desktop delivery */
+              var cachedSrcset = bg.getAttribute('data-srcset-cache');
+              if (cachedSrcset) img.srcset = cachedSrcset;
+            }
+          }
+        });
+      }
+
+      syncBgSrcs();
+      if (mobileBreak.addEventListener) {
+        mobileBreak.addEventListener('change', syncBgSrcs);
+      } else {
+        mobileBreak.addListener(syncBgSrcs); /* Safari <14 fallback */
+      }
       var card      = document.getElementById('wtp-card-' + SECTION_ID);
       var cardImg   = document.getElementById('wtp-card-img-' + SECTION_ID);
       var cardTitle = document.getElementById('wtp-card-title-' + SECTION_ID);
@@ -528,6 +761,19 @@
       function activate(index) {
         if (index < 0 || index >= products.length) index = 0;
         activeIndex = index;
+        var p = products[index];
+
+        /* Mobile color updates */
+        if (p.mobileContentBg) {
+          contentPanel.style.setProperty('--mobile-content-bg', p.mobileContentBg);
+        } else {
+          contentPanel.style.removeProperty('--mobile-content-bg');
+        }
+        if (p.mobileContentText) {
+          contentPanel.style.setProperty('--mobile-content-text', p.mobileContentText);
+        } else {
+          contentPanel.style.removeProperty('--mobile-content-text');
+        }
 
         /* Tabs */
         tabs.forEach(function (tab, i) {
@@ -546,7 +792,6 @@
         });
 
         /* Card — overlay animation, swap content, slide overlay out */
-        var p = products[index];
         card.classList.add('is-animating');
 
         setTimeout(function () {
@@ -585,6 +830,12 @@
           }
         });
       });
+
+      /* ── Card Hover Pause ── */
+      card.addEventListener('mouseenter', function () { container.classList.add('is-paused'); });
+      card.addEventListener('mouseleave', function () { container.classList.remove('is-paused'); });
+      card.addEventListener('touchstart', function () { container.classList.add('is-paused'); }, {passive: true});
+      card.addEventListener('touchend', function () { container.classList.remove('is-paused'); }, {passive: true});
 
       /* ── Add to Cart ── */
       cardAtc.addEventListener('click', function (e) {
@@ -729,6 +980,30 @@
           "step": 2,
           "default": 100,
           "unit": "%"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Background"
+        },
+        {
+          "type": "image_picker",
+          "id": "bg_image_mobile",
+          "label": "Background Image (Mobile)",
+          "info": "Square image recommended. Falls back to the desktop image if left blank."
+        },
+        {
+          "type": "header",
+          "content": "Mobile Colors"
+        },
+        {
+          "type": "color",
+          "id": "mobile_content_bg",
+          "label": "Mobile Content Background"
+        },
+        {
+          "type": "color",
+          "id": "mobile_content_text",
+          "label": "Mobile Content Text"
         }
       ]
     }
