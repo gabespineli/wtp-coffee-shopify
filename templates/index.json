@@ -9,6 +9,52 @@
  */
 {
   "sections": {
+    "scroll_expansion_hero_mDakNp": {
+      "type": "scroll-expansion-hero",
+      "name": "Scroll Expansion Hero",
+      "settings": {
+        "background_image": "shopify://shop_images/branch-alabang_b761a117-5270-46ba-8f31-5ca0303b644f.jpg",
+        "foreground_image": "shopify://shop_images/WTP_Coffee_SQUARE.png",
+        "foreground_video": "shopify://files/videos/roastery-hero_9dde533b-6807-43f9-89ad-9f673311be55.mp4",
+        "title_left": "WE THE",
+        "title_right": "PEOPLE",
+        "subtitle_left": "WHERE COFFEE",
+        "subtitle_right": "CREATES COMMUNITY",
+        "title_color": "#fcfaed",
+        "subtitle_color": "#fcfaed"
+      }
+    },
+    "rich_text_kttX4Y": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_aehxXf": {
+          "type": "heading",
+          "settings": {
+            "heading": "Take a look at our signature brands.",
+            "heading_size": "h1"
+          }
+        },
+        "text_fjr7Up": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_aehxXf",
+        "text_fjr7Up"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
     "hero_product_tabs_pjfVTt": {
       "type": "hero-product-tabs",
       "blocks": {
@@ -20,10 +66,13 @@
             "tab_name": "Community",
             "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             "card_subtitle": "Whole Bean · 200g",
-            "bg_image": "shopify://shop_images/COMMUNITY_459ab149-53bd-45a7-bf9f-d0c6f3b5c7ee.png",
+            "bg_image": "shopify://shop_images/COMMUNITY.png",
             "bg_position_x": 50,
             "bg_position_y": 50,
-            "bg_scale": 100
+            "bg_scale": 100,
+            "bg_image_mobile": "shopify://shop_images/COMMUNITY_SQAURE.png",
+            "mobile_content_bg": "#1b3a2d",
+            "mobile_content_text": "#fcfaed"
           }
         },
         "featured_product_W6b9en": {
@@ -37,7 +86,10 @@
             "bg_image": "shopify://shop_images/COSMOPOLITAN_2e79e6f7-cd5b-4a9b-a1b5-878c509713ad.png",
             "bg_position_x": 50,
             "bg_position_y": 50,
-            "bg_scale": 100
+            "bg_scale": 100,
+            "bg_image_mobile": "shopify://shop_images/COSMOPOLITAN_SQAURE.png",
+            "mobile_content_bg": "#fcfaed",
+            "mobile_content_text": "#1b3a2d"
           }
         }
       },
@@ -50,53 +102,11 @@
         "bg_color": "#1b3a2d",
         "section_padding": 80
       }
-    },
-    "rich_text_kttX4Y": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_aehxXf": {
-          "type": "heading",
-          "settings": {
-            "heading": "Talk about your brand",
-            "heading_size": "h1"
-          }
-        },
-        "text_fjr7Up": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
-          }
-        },
-        "button_49xaFz": {
-          "type": "button",
-          "settings": {
-            "button_label": "Button label",
-            "button_link": "",
-            "button_style_secondary": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_aehxXf",
-        "text_fjr7Up",
-        "button_49xaFz"
-      ],
-      "name": "t:sections.rich-text.presets.name",
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 52
-      }
     }
   },
   "order": [
-    "hero_product_tabs_pjfVTt",
-    "rich_text_kttX4Y"
+    "scroll_expansion_hero_mDakNp",
+    "rich_text_kttX4Y",
+    "hero_product_tabs_pjfVTt"
   ]
 }
