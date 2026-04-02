@@ -16,7 +16,7 @@
           "type": "featured_product",
           "settings": {
             "product": "community-blend",
-            "variant_title": "250g",
+            "variant_title": "200g",
             "tab_name": "Community",
             "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             "card_subtitle": "Whole Bean · 250g",
@@ -30,7 +30,7 @@
           "type": "featured_product",
           "settings": {
             "product": "cosmopolitan-blend",
-            "variant_title": "250g",
+            "variant_title": "200g",
             "tab_name": "Cosmopolitan",
             "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             "card_subtitle": "Whole Bean · 250g",
@@ -47,7 +47,7 @@
       ],
       "name": "Hero Product Tabs",
       "settings": {
-        "bg_color": "#1B3A2D",
+        "bg_color": "#1b3a2d",
         "section_padding": 80
       }
     }
