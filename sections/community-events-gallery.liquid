@@ -1,0 +1,484 @@
+{% comment %}
+  Community Events Gallery — WTP Coffee
+  Editorial grid of past event cards with badge, title, date, price/free, and optional CTA.
+{% endcomment %}
+
+{%- liquid
+  assign bg                = section.settings.bg_color
+  assign header_text_col   = section.settings.header_text_color
+  assign card_text_col     = section.settings.card_text_color
+  assign accent            = section.settings.accent_color
+  assign card_bg           = section.settings.card_bg_color
+-%}
+
+<style>
+  /* ── Palette ── */
+  #wtp-comm-gallery-{{ section.id }} {
+    --cg-bg:           rgba({{ bg.red }}, {{ bg.green }}, {{ bg.blue }}, 1);
+    --cg-header-text:  rgba({{ header_text_col.red }}, {{ header_text_col.green }}, {{ header_text_col.blue }}, 1);
+    --cg-header-muted: rgba({{ header_text_col.red }}, {{ header_text_col.green }}, {{ header_text_col.blue }}, 0.65);
+    --cg-card-text:    rgba({{ card_text_col.red }}, {{ card_text_col.green }}, {{ card_text_col.blue }}, 1);
+    --cg-card-muted:   rgba({{ card_text_col.red }}, {{ card_text_col.green }}, {{ card_text_col.blue }}, 0.6);
+    --cg-accent:       rgba({{ accent.red }}, {{ accent.green }}, {{ accent.blue }}, 1);
+    --cg-card-bg:      rgba({{ card_bg.red }}, {{ card_bg.green }}, {{ card_bg.blue }}, 1);
+    --cg-divider:      rgba({{ header_text_col.red }}, {{ header_text_col.green }}, {{ header_text_col.blue }}, 0.1);
+  }
+
+  /* ── Shell ── */
+  #wtp-comm-gallery-{{ section.id }} {
+    background-color: var(--cg-bg);
+    color: var(--cg-header-text);
+    font-family: var(--font-body-family);
+    box-sizing: border-box;
+  }
+
+  #wtp-comm-gallery-{{ section.id }} *,
+  #wtp-comm-gallery-{{ section.id }} *::before,
+  #wtp-comm-gallery-{{ section.id }} *::after {
+    box-sizing: border-box;
+  }
+
+  /* ── Section header ── */
+  .cg-header {
+    padding: 6rem 5% 3.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .cg-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cg-headline {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.7rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    margin: 0;
+    color: var(--cg-header-text);
+  }
+
+  .cg-subheadline {
+    font-size: 1.25rem;
+    color: var(--cg-header-muted);
+    margin: 0;
+    max-width: 52ch;
+  }
+
+  .cg-view-all {
+    font-family: var(--font-body-family);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    color: var(--cg-accent);
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+  }
+
+  .cg-view-all:hover { opacity: 0.7; }
+
+  /* ── Grid ── */
+  .cg-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: auto;
+    gap: 1.5rem;
+    padding: 0 5% 6rem;
+  }
+
+  /* Card sizing: first card is hero-large, rest alternate */
+  .cg-card:nth-child(1) { grid-column: span 7; }
+  .cg-card:nth-child(2) { grid-column: span 5; }
+  .cg-card:nth-child(3) { grid-column: span 5; }
+  .cg-card:nth-child(4) { grid-column: span 7; }
+  .cg-card:nth-child(5),
+  .cg-card:nth-child(6),
+  .cg-card:nth-child(n+5) { grid-column: span 4; }
+
+  /* ── Individual card ── */
+  .cg-card {
+    background: var(--cg-card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .cg-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+  }
+
+  /* ── Card image ── */
+  .cg-card__img-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* Tall for the large 7-col cards */
+  .cg-card:nth-child(1) .cg-card__img-wrap,
+  .cg-card:nth-child(4) .cg-card__img-wrap {
+    aspect-ratio: 16 / 10;
+  }
+
+  /* Medium for 5-col */
+  .cg-card:nth-child(2) .cg-card__img-wrap,
+  .cg-card:nth-child(3) .cg-card__img-wrap {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* Square-ish for 4-col */
+  .cg-card:nth-child(n+5) .cg-card__img-wrap {
+    aspect-ratio: 1 / 1;
+  }
+
+  .cg-card__img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .cg-card:hover .cg-card__img-wrap img {
+    transform: scale(1.03);
+  }
+
+  .cg-card__img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--cg-divider);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+  }
+
+  /* Gradient shade on image */
+  .cg-card__img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* ── Badge (overlaid on image) ── */
+  .cg-badge {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    z-index: 2;
+    padding: 0.5rem 1.1rem;
+    background: var(--cg-accent);
+    color: #fff;
+    font-family: var(--font-body-family);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 50px;
+    white-space: nowrap;
+  }
+
+  /* ── Overlay meta (title + date on image) ── */
+  .cg-card__overlay-meta {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: 1.5rem 1.75rem;
+  }
+
+  .cg-card__overlay-title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    color: #fff;
+    margin: 0 0 0.2rem;
+    line-height: 1.2;
+  }
+
+  .cg-card__overlay-date {
+    font-family: var(--font-body-family);
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.75);
+    margin: 0;
+  }
+
+  /* ── Card body (below image) ── */
+  .cg-card__body {
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 1rem;
+  }
+
+  .cg-card__note {
+    font-family: var(--font-body-family);
+    font-size: 1.15rem;
+    line-height: 1.5;
+    color: var(--cg-card-muted);
+    margin: 0;
+  }
+
+  .cg-card__doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-body-family);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--cg-accent);
+    text-decoration: none;
+    margin-top: auto;
+    align-self: flex-start;
+    transition: opacity 0.2s ease;
+  }
+
+  .cg-card__doc-link:hover {
+    opacity: 0.7;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 768px) {
+    .cg-header {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 2.5rem 1.25rem 1.5rem;
+    }
+
+    .cg-grid {
+      grid-template-columns: 1fr;
+      padding: 0 1.25rem 2.5rem;
+    }
+
+    .cg-card:nth-child(n) {
+      grid-column: span 1;
+    }
+
+    .cg-card:nth-child(n) .cg-card__img-wrap {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .cg-card:nth-child(1) { grid-column: span 12; }
+    .cg-card:nth-child(2) { grid-column: span 6; }
+    .cg-card:nth-child(3) { grid-column: span 6; }
+    .cg-card:nth-child(4) { grid-column: span 12; }
+    .cg-card:nth-child(n+5) { grid-column: span 6; }
+  }
+</style>
+
+<section id="wtp-comm-gallery-{{ section.id }}" aria-label="{{ section.settings.headline | escape }}">
+
+  {%- if section.settings.headline != blank or section.settings.subheadline != blank -%}
+    <div class="cg-header">
+      <div class="cg-header-left">
+        {%- if section.settings.headline != blank -%}
+          <h2 class="cg-headline">{{ section.settings.headline | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheadline != blank -%}
+          <p class="cg-subheadline">{{ section.settings.subheadline | escape }}</p>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.view_all_label != blank -%}
+        <a href="{{ section.settings.view_all_url | default: '#' }}" class="cg-view-all">
+          {{ section.settings.view_all_label | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="cg-grid">
+      {%- for block in section.blocks -%}
+        <article class="cg-card" {{ block.shopify_attributes }}>
+
+          <div class="cg-card__img-wrap">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: block.settings.image.alt }}
+            {%- else -%}
+              <div class="cg-card__img-placeholder">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.badge_label != blank -%}
+              <span class="cg-badge">{{ block.settings.badge_label | escape }}</span>
+            {%- endif -%}
+
+            <div class="cg-card__overlay-meta">
+              {%- if block.settings.title != blank -%}
+                <h3 class="cg-card__overlay-title">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.date != blank -%}
+                <p class="cg-card__overlay-date">
+                  {{- block.settings.date | escape -}}
+                </p>
+              {%- endif -%}
+            </div>
+          </div>
+
+          <div class="cg-card__body">
+            {%- if block.settings.archival_note != blank -%}
+              <p class="cg-card__note">
+                {{ block.settings.archival_note | escape }}
+              </p>
+            {%- endif -%}
+
+            {%- if block.settings.doc_link_label != blank -%}
+              <a href="{{ block.settings.doc_link_url | default: '#' }}" class="cg-card__doc-link">
+                {{ block.settings.doc_link_label | escape }}
+                <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+              </a>
+            {%- endif -%}
+          </div>
+
+        </article>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+</section>
+
+{% schema %}
+{
+  "name": "Community Archive",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "Header Text Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card Text Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#C8A96E"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Section Headline",
+      "default": "The Archive"
+    },
+    {
+      "type": "text",
+      "id": "subheadline",
+      "label": "Subheadline",
+      "default": "A retrospective of sessions, cuppings, and community moments."
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View All Label",
+      "default": "View Full Archive"
+    },
+    {
+      "type": "url",
+      "id": "view_all_url",
+      "label": "View All URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "event_card",
+      "name": "Event Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Event Image"
+        },
+        {
+          "type": "text",
+          "id": "badge_label",
+          "label": "Badge Label",
+          "info": "e.g. Advanced Series, Free Event, Guest Artist",
+          "default": "Signature Series"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Event Title",
+          "default": "The Chemistry of Filtration"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "Nov 2024"
+        },
+        {
+          "type": "text",
+          "id": "archival_note",
+          "label": "Archival Note",
+          "default": "Archival Records Available",
+          "info": "e.g. Completed Nov 2024 • Archival Records Available"
+        },
+        {
+          "type": "text",
+          "id": "doc_link_label",
+          "label": "Doc Link Label",
+          "default": "See the Story"
+        },
+        {
+          "type": "url",
+          "id": "doc_link_url",
+          "label": "Doc Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Community Archive",
+      "blocks": [
+        { "type": "event_card" },
+        { "type": "event_card" },
+        { "type": "event_card" }
+      ]
+    }
+  ]
+}
+{% endschema %}

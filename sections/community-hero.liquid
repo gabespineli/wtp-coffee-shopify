@@ -1,0 +1,447 @@
+{% comment %}
+  Community Hero — WTP Coffee
+  Two-column split: left copy + CTAs, right featured image with floating event card.
+{% endcomment %}
+
+{%- liquid
+  assign bg = section.settings.bg_color
+  assign text_col = section.settings.text_color
+  assign accent = section.settings.accent_color
+-%}
+
+<style>
+  /* ── Palette ── */
+  #wtp-comm-hero-{{ section.id }} {
+    --ch-bg:        rgba({{ bg.red }}, {{ bg.green }}, {{ bg.blue }}, 1);
+    --ch-text:      rgba({{ text_col.red }}, {{ text_col.green }}, {{ text_col.blue }}, 1);
+    --ch-accent:    rgba({{ accent.red }}, {{ accent.green }}, {{ accent.blue }}, 1);
+    --ch-muted:     rgba({{ text_col.red }}, {{ text_col.green }}, {{ text_col.blue }}, 0.6);
+    --ch-divider:   rgba({{ text_col.red }}, {{ text_col.green }}, {{ text_col.blue }}, 0.12);
+    --ch-card-bg:   rgba({{ bg.red }}, {{ bg.green }}, {{ bg.blue }}, 0.9);
+  }
+
+  /* ── Shell ── */
+  #wtp-comm-hero-{{ section.id }} {
+    background-color: var(--ch-bg);
+    color: var(--ch-text);
+    font-family: var(--font-body-family);
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  #wtp-comm-hero-{{ section.id }} *,
+  #wtp-comm-hero-{{ section.id }} *::before,
+  #wtp-comm-hero-{{ section.id }} *::after {
+    box-sizing: border-box;
+  }
+
+  /* ── Layout ── */
+  .ch-layout {
+    display: flex;
+    align-items: center;
+    min-height: 80vh;
+    padding: 7.5rem 5%;
+    gap: 6rem;
+  }
+
+  /* ── Left column ── */
+  .ch-left {
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .ch-eyebrow {
+    font-family: var(--font-body-family);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ch-accent);
+    margin: 0;
+  }
+
+  .ch-headline {
+    font-family: var(--font-body-family);
+    font-size: clamp(3.75rem, 7vw, 6.75rem);
+    line-height: 1.05;
+    margin: 0;
+    color: var(--ch-text);
+  }
+
+  .ch-body {
+    font-size: 1.3rem;
+    line-height: 1.7;
+    color: var(--ch-muted);
+    margin: 0;
+    max-width: 50ch;
+  }
+
+  /* ── CTAs ── */
+  .ch-ctas {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+
+  .ch-btn-primary {
+    display: inline-block;
+    padding: 1.25rem 2.75rem;
+    background-color: var(--ch-accent);
+    color: var(--ch-bg);
+    font-family: var(--font-body-family);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+  }
+
+  .ch-btn-primary:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+
+  .ch-btn-primary:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+
+  /* ── Right column ── */
+  .ch-right {
+    flex: 1 1 45%;
+    position: relative;
+    /* Remove overflow:hidden to allow card to offset */
+    perspective: 1200px;
+  }
+
+  .ch-right__media {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    min-height: 520px;
+    max-height: 640px;
+    width: 100%;
+  }
+
+  .ch-right__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    min-height: 520px;
+  }
+
+  .ch-right-placeholder {
+    width: 100%;
+    min-height: 520px;
+    background: var(--ch-divider);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ch-muted);
+  }
+
+  /* Image shade so card is legible */
+  .ch-right__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ── Floating event card ── */
+  .ch-event-card {
+    position: absolute;
+    bottom: -3.75rem;
+    left: -3.75rem;
+    width: 420px;
+    background: var(--ch-bg);
+    border: 1px solid var(--ch-divider);
+    border-radius: 16px;
+    padding: 2.25rem 2.5rem;
+    z-index: 5;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease;
+  }
+
+  .ch-event-card:hover {
+    transform: rotateX(8deg) rotateY(-8deg) translateZ(30px);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.15);
+  }
+
+  .ch-event-name {
+    font-family: var(--font-heading-family);
+    font-size: 2rem;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--ch-text);
+    margin: 0 0 0.5rem;
+    transform: translateZ(20px);
+  }
+
+  .ch-event-location {
+    font-family: var(--font-body-family);
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--ch-muted);
+    margin: 0 0 1.75rem;
+    transform: translateZ(10px);
+  }
+
+  .ch-card-btn {
+    display: inline-block;
+    padding: 1rem 1.8rem;
+    background: var(--ch-accent);
+    color: var(--ch-bg);
+    font-family: var(--font-body-family);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    transform: translateZ(30px);
+  }
+
+  .ch-card-btn:hover {
+    opacity: 0.9;
+  }
+
+  .ch-event-location svg {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    fill: var(--ch-accent);
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 768px) {
+    .ch-layout {
+      flex-direction: column;
+      min-height: auto;
+      padding: 3rem 1.25rem 2rem;
+      gap: 2.5rem;
+    }
+
+    .ch-left,
+    .ch-right {
+      flex: 1 1 100%;
+      width: 100%;
+    }
+
+    .ch-right {
+      min-height: auto;
+      max-height: none;
+      padding-bottom: 2rem;
+    }
+
+    .ch-right__media {
+      min-height: 320px;
+      max-height: 400px;
+    }
+
+    .ch-right__media img {
+      min-height: 320px;
+    }
+
+    .ch-event-card {
+      position: relative;
+      bottom: auto;
+      left: auto;
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      box-shadow: none;
+      border: none;
+      background: transparent;
+      padding-left: 0;
+    }
+
+    .ch-event-name {
+      font-size: 1.25rem;
+    }
+
+    .ch-headline {
+      font-size: clamp(2rem, 8vw, 3rem);
+    }
+  }
+</style>
+
+<section id="wtp-comm-hero-{{ section.id }}" aria-label="{{ section.settings.headline | escape }}">
+  <div class="ch-layout">
+    {%- comment -%} LEFT {%- endcomment -%}
+    <div class="ch-left">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="ch-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.headline != blank -%}
+        <h1 class="ch-headline">{{ section.settings.headline }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.body != blank -%}
+        <p class="ch-body">{{ section.settings.body }}</p>
+      {%- endif -%}
+
+      <div class="ch-ctas">
+        {%- if section.settings.cta_primary_label != blank -%}
+          <a href="{{ section.settings.cta_primary_url | default: '#' }}" class="ch-btn-primary">
+            {{ section.settings.cta_primary_label | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} RIGHT {%- endcomment -%}
+    <div class="ch-right">
+      <div class="ch-right__media">
+        {%- if section.settings.featured_image != blank -%}
+          {{
+            section.settings.featured_image
+            | image_url: width: 1200
+            | image_tag: loading: 'lazy', alt: section.settings.featured_image.alt
+          }}
+        {%- else -%}
+          <div class="ch-right-placeholder">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.card_title != blank or section.settings.card_location != blank -%}
+        <div class="ch-event-card">
+          {%- if section.settings.card_title != blank -%}
+            <p class="ch-event-name">{{ section.settings.card_title | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.card_location != blank -%}
+            <p class="ch-event-location">
+              {{ section.settings.card_location | escape }}
+            </p>
+          {%- endif -%}
+          {%- if section.settings.card_cta_label != blank -%}
+            <a href="{{ section.settings.card_cta_url | default: '#' }}" class="ch-card-btn">
+              {{ section.settings.card_cta_label | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Community Hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#C8A96E"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "WTP for Everyone"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Where Coffee Creates Community"
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body Copy",
+      "default": "A space dedicated to the curious, the enthusiasts, and the connoisseurs. Join our journey from bean to cup through immersive tastings, classes, and social events."
+    },
+    {
+      "type": "header",
+      "content": "Primary CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Button Label",
+      "default": "Explore Events"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Featured Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "featured_image",
+      "label": "Featured Image"
+    },
+    {
+      "type": "header",
+      "content": "Floating Event Card"
+    },
+    {
+      "type": "text",
+      "id": "card_title",
+      "label": "Event Name",
+      "default": "Upcoming"
+    },
+    {
+      "type": "text",
+      "id": "card_location",
+      "label": "Location",
+      "default": "WTP Studio, Makati"
+    },
+    {
+      "type": "text",
+      "id": "card_cta_label",
+      "label": "Card Button Label",
+      "default": "View Details"
+    },
+    {
+      "type": "url",
+      "id": "card_cta_url",
+      "label": "Card Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Community Hero"
+    }
+  ]
+}
+{% endschema %}
