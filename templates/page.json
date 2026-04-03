@@ -36,6 +36,24 @@
         "card_cta_url": ""
       }
     },
+    "community_calendar_GwEMbj": {
+      "type": "community-calendar",
+      "name": "Community Calendar",
+      "settings": {
+        "bg_color": "#1b3a2d",
+        "text_color": "#fcfaed",
+        "accent_color": "#C8A96E",
+        "card_bg_color": "#FFFFFF",
+        "headline": "Community Calendar",
+        "description": "Open events for the WTP community. We keep it personal. Every stage offers curated tastings and brews for all.",
+        "klaviyo_list_id": "",
+        "optin_label": "Automated Reminders",
+        "optin_desc": "Never miss an event. We'll send you calendar updates for every stage.",
+        "optin_placeholder": "Enter your email",
+        "optin_btn_label": "Keep Me Notified",
+        "events_collection": "events"
+      }
+    },
     "community_events_gallery_UEFVKi": {
       "type": "community-events-gallery",
       "blocks": {
@@ -106,30 +124,12 @@
         "view_all_label": "View Full Archive",
         "view_all_url": ""
       }
-    },
-    "community_calendar_GwEMbj": {
-      "type": "community-calendar",
-      "name": "Community Calendar",
-      "settings": {
-        "bg_color": "#F5F0E8",
-        "text_color": "#1B3A2D",
-        "accent_color": "#C8A96E",
-        "card_bg_color": "#FFFFFF",
-        "headline": "Community Calendar",
-        "description": "Open events for the WTP community. We keep it personal. Every stage offers curated tastings and brews for all.",
-        "klaviyo_list_id": "",
-        "optin_label": "Automated Reminders",
-        "optin_desc": "Never miss an event. We'll send you calendar updates for every stage.",
-        "optin_placeholder": "Enter your email",
-        "optin_btn_label": "Keep Me Notified",
-        "events_collection": "events"
-      }
     }
   },
   "order": [
     "main",
     "community_hero_hNMpgx",
-    "community_events_gallery_UEFVKi",
-    "community_calendar_GwEMbj"
+    "community_calendar_GwEMbj",
+    "community_events_gallery_UEFVKi"
   ]
 }
