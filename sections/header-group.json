@@ -13,6 +13,7 @@
   "sections": {
     "header": {
       "type": "header",
+      "disabled": true,
       "settings": {
         "logo_position": "middle-left",
         "mobile_logo_position": "center",
@@ -24,6 +25,7 @@
         "menu_color_scheme": "scheme-1",
         "island_max_width": 1200,
         "island_bg_color": "#5c6e4c",
+        "island_text_color": "#ffffff",
         "island_opacity": 85,
         "island_blur": 20,
         "island_logo_scale": 70,
