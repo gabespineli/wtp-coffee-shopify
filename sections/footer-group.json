@@ -11,6 +11,32 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
+    "footer_wtp_LzXWiW": {
+      "type": "footer-wtp",
+      "blocks": {
+        "nav_column_TzdzLF": {
+          "type": "nav_column",
+          "settings": {
+            "heading": "LOCATIONS",
+            "menu": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "nav_column_TzdzLF"
+      ],
+      "name": "WTP Footer",
+      "settings": {
+        "bg_color": "#5c6e4c",
+        "logo": "shopify://shop_images/WTP_Coffee_LOGO.png",
+        "tagline": "Where Coffee Creates Community",
+        "newsletter_placeholder": "Enter your email...",
+        "copyright_brand": "WTP Coffee",
+        "copyright_year": "2025",
+        "instagram_url": "",
+        "facebook_url": ""
+      }
+    },
     "footer": {
       "type": "footer",
       "disabled": true,
@@ -31,6 +57,7 @@
     }
   },
   "order": [
+    "footer_wtp_LzXWiW",
     "footer"
   ]
 }
