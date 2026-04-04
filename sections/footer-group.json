@@ -13,18 +13,6 @@
   "sections": {
     "footer_wtp_LzXWiW": {
       "type": "footer-wtp",
-      "blocks": {
-        "nav_column_TzdzLF": {
-          "type": "nav_column",
-          "settings": {
-            "heading": "LOCATIONS",
-            "menu": "footer"
-          }
-        }
-      },
-      "block_order": [
-        "nav_column_TzdzLF"
-      ],
       "name": "WTP Footer",
       "settings": {
         "bg_color": "#5c6e4c",

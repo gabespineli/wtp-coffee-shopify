@@ -30,14 +30,14 @@
         "heading_aehxXf": {
           "type": "heading",
           "settings": {
-            "heading": "Take a look at our signature brands.",
+            "heading": "The Pour Is Personal.",
             "heading_size": "h1"
           }
         },
         "text_fjr7Up": {
           "type": "text",
           "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+            "text": "<p>Your morning ritual deserves better than ordinary. We've built a collection of coffees and ceramics around the idea that the best cup you'll ever have is the one you make yourself.</p>"
           }
         }
       },
@@ -102,11 +102,54 @@
         "bg_color": "#1b3a2d",
         "section_padding": 80
       }
+    },
+    "wtp_brand_story_3Vdqdj": {
+      "type": "wtp-brand-story",
+      "name": "WTP Brand Story",
+      "settings": {
+        "eyebrow": "Our Philosophy",
+        "headline_plain": "Perfecting",
+        "headline_italic": "The Art of the Roast",
+        "body_1": "At We The People (WTP), our journey begins long before the first pour. We are relentless in our pursuit of the perfect profile, continuously developing our own roasting processes to honor the unique character of every harvest.",
+        "body_2": "",
+        "cta_label": "Discover Our Roasting Journey",
+        "cta_url": "",
+        "main_image": "shopify://shop_images/about-drink-1.jpg",
+        "stat_number": "15+",
+        "stat_label": "Local Producers Supported"
+      }
+    },
+    "wtp_product_marquee_UNzYca": {
+      "type": "wtp-product-marquee",
+      "name": "Product Marquee",
+      "settings": {
+        "products_collection": "ceramic-mugs",
+        "eyebrow": "The Collection",
+        "headline": "Crafted for the Ritual",
+        "description": "Every piece designed to elevate your daily pour. Ceramics and saucers made for the community.",
+        "cta_label": "View More",
+        "cta_url": ""
+      }
+    },
+    "wtp_newsletter_6Vd4a7": {
+      "type": "wtp-newsletter",
+      "name": "WTP Newsletter",
+      "settings": {
+        "eyebrow": "Stay in the Loop",
+        "headline": "Never Miss a Pour",
+        "description": "Seasonal releases, community events, and brewing notes — delivered straight to your inbox.",
+        "placeholder": "Your email address",
+        "btn_label": "Subscribe",
+        "klaviyo_list_id": ""
+      }
     }
   },
   "order": [
     "scroll_expansion_hero_mDakNp",
     "rich_text_kttX4Y",
-    "hero_product_tabs_pjfVTt"
+    "hero_product_tabs_pjfVTt",
+    "wtp_brand_story_3Vdqdj",
+    "wtp_product_marquee_UNzYca",
+    "wtp_newsletter_6Vd4a7"
   ]
 }
