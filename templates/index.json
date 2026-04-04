@@ -142,6 +142,17 @@
         "btn_label": "Subscribe",
         "klaviyo_list_id": ""
       }
+    },
+    "wtp_collab_banner_eLzHUq": {
+      "type": "wtp-collab-banner",
+      "name": "Collab Banner",
+      "settings": {
+        "image": "shopify://shop_images/june-digan.jpg",
+        "eyebrow": "Limited Collaboration",
+        "headline": "WTP x June Digan",
+        "cta_label": "Discover the Collection",
+        "cta_url": ""
+      }
     }
   },
   "order": [
@@ -150,6 +161,7 @@
     "hero_product_tabs_pjfVTt",
     "wtp_brand_story_3Vdqdj",
     "wtp_product_marquee_UNzYca",
+    "wtp_collab_banner_eLzHUq",
     "wtp_newsletter_6Vd4a7"
   ]
 }
