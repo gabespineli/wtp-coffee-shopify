@@ -5,10 +5,10 @@
 {% endcomment %}
 
 {%- liquid
-  assign bg       = section.settings.bg_color
+  assign bg = section.settings.bg_color
   assign text_col = section.settings.text_color
-  assign accent   = section.settings.accent_color
-  assign card_bg  = section.settings.card_bg_color
+  assign accent = section.settings.accent_color
+  assign card_bg = section.settings.card_bg_color
 -%}
 
 <style>
@@ -72,7 +72,7 @@
   }
 
   /* ── Opt-in form ── */
-  .cc-optin {
+  #wtp-comm-cal-{{ section.id }} .cc-optin {
     background: var(--cc-card-bg);
     border-radius: 20px;
     padding: 2.5rem;
@@ -80,42 +80,43 @@
     flex-direction: column;
     gap: 1.8rem;
     border: 1px solid var(--cc-divider);
+    color: #1B3A2D;
   }
 
-  .cc-optin__label {
+  #wtp-comm-cal-{{ section.id }} .cc-optin__label {
     font-size: 1.15rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--cc-accent);
+    color: #C8A96E;
     margin: 0;
   }
 
-  .cc-optin__desc {
+  #wtp-comm-cal-{{ section.id }} .cc-optin__desc {
     font-size: 1.25rem;
-    color: var(--cc-muted);
+    color: #1B3A2D;
     margin: 0;
     line-height: 1.5;
   }
 
-  .cc-optin__input {
+  #wtp-comm-cal-{{ section.id }} .cc-optin__input {
     width: 100%;
-    background: var(--cc-input-bg);
-    border: 1px solid var(--cc-divider);
+    background: #f5f0e8;
+    border: 1px solid rgba(27, 58, 45, 0.2);
     border-radius: 12px;
     padding: 1.25rem 1.5rem;
-    color: var(--cc-text);
+    color: #1B3A2D;
     font-family: var(--font-body-family);
     font-size: 1.2rem;
     outline: none;
     transition: border-color 0.2s ease;
   }
 
-  .cc-optin__input::placeholder {
-    color: var(--cc-muted);
+  #wtp-comm-cal-{{ section.id }} .cc-optin__input::placeholder {
+    color: rgba(27, 58, 45, 0.5);
   }
 
-  .cc-optin__input:focus {
+  #wtp-comm-cal-{{ section.id }} .cc-optin__input:focus {
     border-color: var(--cc-accent);
   }
 
@@ -268,11 +269,11 @@
     min-width: 220px;
   }
 
-  .cc-event__tag {
+  #wtp-comm-cal-{{ section.id }} .cc-event__tag {
     display: inline-block;
     padding: 0.5rem 1.2rem;
-    background: #1B3A2D;
-    color: #fff;
+    background: #fff;
+    color: #1B3A2D;
     border-radius: 50px;
     font-family: var(--font-body-family);
     font-size: 0.85rem;
@@ -343,6 +344,14 @@
     opacity: 0.9;
   }
 
+  .cc-event__register.is-sold-out {
+    background: var(--cc-input-bg);
+    color: var(--cc-muted);
+    cursor: not-allowed;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
   .cc-event__viewdetails {
     background: transparent;
     border: 1px solid var(--cc-divider);
@@ -409,7 +418,6 @@
 
 <section id="wtp-comm-cal-{{ section.id }}" aria-label="{{ section.settings.headline | escape }}">
   <div class="cc-layout">
-
     {%- comment -%} LEFT — headline + optin {%- endcomment -%}
     <div class="cc-left">
       {%- if section.settings.headline != blank -%}
@@ -423,7 +431,13 @@
       {%- comment -%} Klaviyo opt-in {%- endcomment -%}
       <div class="cc-optin" id="wtp-cc-optin-{{ section.id }}">
         <p class="cc-optin__label">{{ section.settings.optin_label | default: 'Automated Reminders' | escape }}</p>
-        <p class="cc-optin__desc">{{ section.settings.optin_desc | default: "Never miss an event. We'll send you calendar updates for every stage." | escape }}</p>
+        <p class="cc-optin__desc">
+          {{
+            section.settings.optin_desc
+            | default: "Never miss an event. We'll send you calendar updates for every stage."
+            | escape
+          }}
+        </p>
 
         <form
           class="cc-optin__form-body"
@@ -455,7 +469,7 @@
     {%- comment -%} RIGHT — upcoming events {%- endcomment -%}
     <div class="cc-right">
       {%- assign today = 'now' | date: '%s' | plus: 0 -%}
-      
+
       {%- comment -%} Robust Sort by Metafield: Earliest First {%- endcomment -%}
       {%- assign raw_events = collections[section.settings.events_collection].products -%}
       {%- capture events_with_dates -%}
@@ -467,7 +481,11 @@
       {%- endcapture -%}
       {%- assign sorted_event_strings = events_with_dates | split: ',' | sort -%}
 
+      {%- assign events_shown = 0 -%}
       {%- for event_string in sorted_event_strings -%}
+        {%- if events_shown >= section.settings.events_limit -%}
+          {%- break -%}
+        {%- endif -%}
         {%- assign handle = event_string | split: '|' | last -%}
         {%- for p in raw_events -%}
           {%- if p.handle == handle -%}
@@ -478,13 +496,13 @@
 
         {%- assign event_date_raw = product.metafields.custom.event_date -%}
         {%- assign event_date = event_date_raw | date: '%s' | plus: 0 -%}
-        
+
         {%- if event_date >= today -%}
+          {%- assign events_shown = events_shown | plus: 1 -%}
           {%- liquid
             assign raw_tag = product.metafields.custom.event_tag
           -%}
           <div class="cc-event">
-
             {%- comment -%} Date {%- endcomment -%}
             <div class="cc-event__date">
               {%- if event_date_raw != blank -%}
@@ -513,12 +531,10 @@
             {%- comment -%} Right: tag + Actions {%- endcomment -%}
             <div class="cc-event__right" style="align-items: flex-end;">
               <div class="cc-event__tag-row">
-                {%- if product.price > 0 -%}
-                  {%- if product.variants.first.inventory_quantity > 0 -%}
-                    <span class="cc-event__spots">{{ product.variants.first.inventory_quantity }} spots left</span>
-                  {%- endif -%}
+                {%- if product.variants.first.inventory_quantity > 0 -%}
+                  {%- comment -%} Inventory left {%- endcomment -%}
                 {%- else -%}
-                  <span class="cc-event__spots">Free</span>
+                  <span class="cc-event__spots cc-event__spots--sold">SOLD OUT</span>
                 {%- endif -%}
 
                 {%- if raw_tag != blank -%}
@@ -532,23 +548,23 @@
                 {%- endif -%}
                 {%- if product.variants.first.inventory_quantity > 0 -%}
                   <a href="{{ routes.cart_url }}/{{ product.variants.first.id }}:1?checkout" class="cc-event__register">Register Now</a>
+                {%- else -%}
+                  <span class="cc-event__register is-sold-out">FULLY BOOKED</span>
                 {%- endif -%}
                 <a href="{{ product.url }}" class="cc-event__viewdetails">View Details</a>
               </div>
             </div>
-
           </div>
         {%- endif -%}
       {%- endfor -%}
     </div>
-
   </div>
 </section>
 
 <script>
   (function () {
     var optin = document.getElementById('wtp-cc-optin-{{ section.id }}');
-    var form  = document.getElementById('wtp-cc-optin-form-{{ section.id }}');
+    var form = document.getElementById('wtp-cc-optin-form-{{ section.id }}');
     if (!form || !optin) return;
 
     form.addEventListener('submit', function (e) {
@@ -561,15 +577,15 @@
       fetch('https://manage.kmail-lists.com/subscriptions/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'g=' + encodeURIComponent(listId) + '&email=' + encodeURIComponent(email) + '&$fields=$email'
+        body: 'g=' + encodeURIComponent(listId) + '&email=' + encodeURIComponent(email) + '&$fields=$email',
       })
-      .then(function () {
-        optin.classList.add('is-success');
-      })
-      .catch(function () {
-        /* Still show success to avoid UX friction on CORS pre-flight */
-        optin.classList.add('is-success');
-      });
+        .then(function () {
+          optin.classList.add('is-success');
+        })
+        .catch(function () {
+          /* Still show success to avoid UX friction on CORS pre-flight */
+          optin.classList.add('is-success');
+        });
     });
   })();
 </script>
@@ -655,6 +671,15 @@
       "id": "optin_btn_label",
       "label": "Submit Button Label",
       "default": "Keep Me Notified"
+    },
+    {
+      "type": "range",
+      "id": "events_limit",
+      "label": "Max Events to Show",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
     },
     {
       "type": "collection",
