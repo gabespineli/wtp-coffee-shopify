@@ -1,0 +1,285 @@
+{% comment %}
+  WTP Brand Story Section
+  Two-column layout: Left text, Right image with overlapping stat card.
+{% endcomment %}
+
+<style>
+  #wtp-brand-story-{{ section.id }} {
+    background: var(--color-background, #F5F0E8);
+    padding: 7rem 5%;
+    overflow: hidden;
+  }
+
+  .bs-layout {
+    display: flex;
+    gap: 5rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── LEFT ── */
+  .bs-left {
+    flex: 0 0 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .bs-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #C8A96E;
+    margin: 0;
+  }
+
+  .bs-headline {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #1B3A2D;
+    margin: 0;
+  }
+
+  .bs-headline em {
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .bs-body {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(27,58,45,0.65);
+    margin: 0;
+  }
+
+  .bs-cta {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1B3A2D;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    margin-top: 0.5rem;
+    display: inline-block;
+  }
+
+  /* ── RIGHT ── */
+  .bs-right {
+    flex: 1 1 auto;
+    position: relative;
+  }
+
+  .bs-image-wrapper {
+    border-radius: 16px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .bs-image {
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .bs-stat-card {
+    position: absolute;
+    bottom: -2rem;
+    left: -3rem;
+    background: #1B3A2D;
+    color: #fff;
+    border-radius: 14px;
+    padding: 1.75rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 180px;
+    z-index: 2;
+  }
+
+  .bs-stat-card__number {
+    font-family: var(--font-heading-family);
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #C8A96E;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .bs-stat-card__label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin: 0;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 768px) {
+    #wtp-brand-story-{{ section.id }} {
+      padding: 4rem 5%;
+    }
+
+    .bs-layout {
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .bs-left {
+      flex: 1 1 100%;
+      text-align: center;
+      align-items: center;
+    }
+
+    .bs-image {
+      height: 320px;
+    }
+
+    .bs-stat-card {
+      position: absolute;
+      bottom: -1.5rem;
+      left: 1rem;
+      padding: 1.25rem 1.5rem;
+      min-width: 150px;
+    }
+
+    .bs-stat-card__number {
+      font-size: 2.2rem;
+    }
+  }
+</style>
+
+<section id="wtp-brand-story-{{ section.id }}" aria-label="{{ section.settings.headline_plain | escape }} {{ section.settings.headline_italic | escape }}">
+  <div class="bs-layout">
+
+    <!-- LEFT -->
+    <div class="bs-left">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="bs-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      
+      <h2 class="bs-headline">
+        {{ section.settings.headline_plain | escape }}<br>
+        <em>{{ section.settings.headline_italic | escape }}</em>
+      </h2>
+
+      {%- if section.settings.body_1 != blank -%}
+        <p class="bs-body">{{ section.settings.body_1 | escape }}</p>
+      {%- endif -%}
+      
+      {%- if section.settings.body_2 != blank -%}
+        <p class="bs-body">{{ section.settings.body_2 | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.cta_label != blank -%}
+        <a href="#" class="bs-cta">{{ section.settings.cta_label | escape }}</a>
+      {%- endif -%}
+    </div>
+
+    <!-- RIGHT -->
+    <div class="bs-right">
+      {%- if section.settings.main_image != blank -%}
+        <div class="bs-image-wrapper">
+          {{ section.settings.main_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'bs-image' }}
+        </div>
+      {%- else -%}
+        <div class="bs-image-wrapper">
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'bs-image' }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.stat_number != blank -%}
+        <div class="bs-stat-card">
+          <p class="bs-stat-card__number">{{ section.settings.stat_number | escape }}</p>
+          <p class="bs-stat-card__label">{{ section.settings.stat_label | escape }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "WTP Brand Story",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Our Philosophy"
+    },
+    {
+      "type": "text",
+      "id": "headline_plain",
+      "label": "Headline (Plain)",
+      "default": "Perfecting"
+    },
+    {
+      "type": "text",
+      "id": "headline_italic",
+      "label": "Headline (Italic)",
+      "default": "The Art of the Roast"
+    },
+    {
+      "type": "textarea",
+      "id": "body_1",
+      "label": "Body Paragraph 1",
+      "default": "At We The People (WTP), our journey begins long before the first pour. We are relentless in our pursuit of the perfect profile, continuously developing our own roasting processes to honor the unique character of every harvest."
+    },
+    {
+      "type": "textarea",
+      "id": "body_2",
+      "label": "Body Paragraph 2",
+      "default": "By mastering the delicate science behind the bean, we transform raw potential into a shared experience, ensuring every cup reflects our dedication to the craft and our community."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Button Label",
+      "default": "Discover Our Roasting Journey"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA URL"
+    },
+    {
+      "type": "header",
+      "content": "Visuals & Stats"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Image"
+    },
+    {
+      "type": "text",
+      "id": "stat_number",
+      "label": "Stat Number",
+      "default": "15+"
+    },
+    {
+      "type": "text",
+      "id": "stat_label",
+      "label": "Stat Label",
+      "default": "Local Producers Supported"
+    }
+  ],
+  "presets": [
+    {
+      "name": "WTP Brand Story"
+    }
+  ]
+}
+{% endschema %}

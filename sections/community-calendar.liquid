@@ -99,17 +99,33 @@
     line-height: 1.5;
   }
 
-  #wtp-comm-cal-{{ section.id }} .cc-optin__input {
+  #wtp-comm-cal-{{ section.id }} .pill-form {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 50px;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    gap: 0.5rem;
     width: 100%;
-    background: #f5f0e8;
-    border: 1px solid rgba(27, 58, 45, 0.2);
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    color: #1B3A2D;
-    font-family: var(--font-body-family);
-    font-size: 1.2rem;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  #wtp-comm-cal-{{ section.id }} .pill-form__icon {
+    color: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  #wtp-comm-cal-{{ section.id }} .cc-optin__input {
+    flex: 1;
+    border: none;
+    background: transparent;
     outline: none;
-    transition: border-color 0.2s ease;
+    font-size: 1.15rem;
+    color: #1B3A2D;
+    padding: 0.6rem 0;
   }
 
   #wtp-comm-cal-{{ section.id }} .cc-optin__input::placeholder {
@@ -117,20 +133,19 @@
   }
 
   #wtp-comm-cal-{{ section.id }} .cc-optin__input:focus {
-    border-color: var(--cc-accent);
+    border-color: transparent;
   }
 
   .cc-optin__btn {
-    width: 100%;
-    padding: 1.4rem 1.8rem;
-    background: var(--cc-accent);
+    background: #1B3A2D;
     color: #fff;
-    font-family: var(--font-body-family);
-    font-size: 1.35rem;
-    font-weight: 600;
     border: none;
-    border-radius: 12px;
+    border-radius: 50px;
+    padding: 1.15rem 2.75rem;
+    font-size: 1.05rem;
+    font-weight: 700;
     cursor: pointer;
+    flex-shrink: 0;
     transition: opacity 0.2s ease;
   }
 
@@ -450,16 +465,24 @@
         >
           <input type="hidden" name="g" value="{{ section.settings.klaviyo_list_id | escape }}">
           <input type="hidden" name="$fields" value="$email">
-          <input
-            type="email"
-            name="email"
-            class="cc-optin__input"
-            placeholder="{{ section.settings.optin_placeholder | default: 'Enter your email' | escape }}"
-            required
-          >
-          <button type="submit" class="cc-optin__btn">
-            {{ section.settings.optin_btn_label | default: 'Keep Me Notified' | escape }}
-          </button>
+          <div class="pill-form">
+            <span class="pill-form__icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="M2 7l10 7 10-7"/>
+              </svg>
+            </span>
+            <input
+              type="email"
+              name="email"
+              class="cc-optin__input"
+              placeholder="{{ section.settings.optin_placeholder | default: 'Enter your email' | escape }}"
+              required
+            >
+            <button type="submit" class="cc-optin__btn">
+              {{ section.settings.optin_btn_label | default: 'Keep Me Notified' | escape }}
+            </button>
+          </div>
         </form>
 
         <p class="cc-optin__success">You're in! 🎉 We'll keep you updated.</p>

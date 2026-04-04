@@ -177,26 +177,34 @@
     box-shadow: 0 40px 80px rgba(0,0,0,0.15);
   }
 
-  .ch-event-name {
+  .ch-event-card__label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cc-muted, rgba(0,0,0,0.4));
+    margin: 0 0 0.35rem 0;
+  }
+
+  .ch-event-card__title {
     font-family: var(--font-heading-family);
-    font-size: 2rem;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
     font-style: italic;
-    font-weight: 500;
-    color: var(--ch-text);
-    margin: 0 0 0.5rem;
+    font-weight: 700;
+    color: #1B3A2D;
+    margin: 0 0 0.35rem 0;
+    line-height: 1.15;
     transform: translateZ(20px);
   }
 
-  .ch-event-location {
-    font-family: var(--font-body-family);
-    font-size: 1.25rem;
-    line-height: 1.6;
-    color: var(--ch-muted);
-    margin: 0 0 1.75rem;
+  .ch-event-card__location {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.5);
+    margin: 0 0 1rem 0;
     transform: translateZ(10px);
   }
 
-  .ch-card-btn {
+  .ch-event-card__cta {
     display: inline-block;
     padding: 1rem 1.8rem;
     background: var(--ch-accent);
@@ -212,7 +220,7 @@
     transform: translateZ(30px);
   }
 
-  .ch-card-btn:hover {
+  .ch-event-card__cta:hover {
     opacity: 0.9;
   }
 
@@ -266,7 +274,7 @@
       padding-left: 0;
     }
 
-    .ch-event-name {
+    .ch-event-card__title {
       font-size: 1.25rem;
     }
 
@@ -319,19 +327,16 @@
 
       {%- if section.settings.card_title != blank or section.settings.card_location != blank -%}
         <div class="ch-event-card">
+          <p class="ch-event-card__label">Upcoming</p>
           {%- if section.settings.card_title != blank -%}
-            <p class="ch-event-name">{{ section.settings.card_title | escape }}</p>
+            <h3 class="ch-event-card__title">{{ section.settings.card_title | escape }}</h3>
           {%- endif -%}
           {%- if section.settings.card_location != blank -%}
-            <p class="ch-event-location">
-              {{ section.settings.card_location | escape }}
-            </p>
+            <p class="ch-event-card__location">{{ section.settings.card_location | escape }}</p>
           {%- endif -%}
-          {%- if section.settings.card_cta_label != blank -%}
-            <a href="{{ section.settings.card_cta_url | default: '#' }}" class="ch-card-btn">
-              {{ section.settings.card_cta_label | escape }}
-            </a>
-          {%- endif -%}
+          <a href="{{ section.settings.card_cta_url | default: '#' }}" class="ch-event-card__cta">
+            {{ section.settings.card_cta_label | default: 'View Details' | escape }}
+          </a>
         </div>
       {%- endif -%}
     </div>

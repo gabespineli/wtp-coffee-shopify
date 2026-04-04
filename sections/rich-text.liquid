@@ -12,6 +12,29 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  .section-{{ section.id }}-padding .rich-text__heading {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1.15;
+    color: #1B3A2D;
+    margin: 0;
+  }
+
+  .section-{{ section.id }}-padding .rich-text__text {
+    font-family: var(--font-body-family);
+    line-height: 1.75;
+    font-size: 1.1rem;
+    color: #1B3A2D;
+  }
+
+  .section-{{ section.id }}-padding .rich-text__caption {
+    font-family: var(--font-body-family);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #1B3A2D;
+  }
 {%- endstyle -%}
 
 <div class="isolate{% unless section.settings.full_width %} page-width{% endunless %}">

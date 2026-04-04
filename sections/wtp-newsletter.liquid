@@ -5,10 +5,10 @@
 
 <style>
   #wtp-newsletter-{{ section.id }} {
-    background: #1B3A2D;
-    padding: 6rem 5%;
+    background: var(--color-background, #F5F0E8);
+    padding: 3rem 5%;
     text-align: center;
-    color: #fff;
+    color: #1B3A2D;
     font-family: var(--font-body-family);
   }
 
@@ -16,6 +16,19 @@
   #wtp-newsletter-{{ section.id }} *::before,
   #wtp-newsletter-{{ section.id }} *::after {
     box-sizing: border-box;
+  }
+
+  .wn-card {
+    background: #F5F0E8;
+    border-radius: 24px;
+    padding: 5rem 4rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
   }
 
   .wn-inner {
@@ -40,60 +53,72 @@
     font-family: var(--font-heading-family);
     font-size: clamp(2.2rem, 5vw, 3.5rem);
     font-weight: 700;
-    color: #fff;
+    color: #1B3A2D;
     margin: 0;
     line-height: 1.1;
   }
 
   .wn-desc {
     font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(27, 58, 45, 0.6);
     margin: 0;
     line-height: 1.7;
     max-width: 520px;
   }
 
   .wn-form {
-    display: flex;
-    gap: 0.75rem;
     width: 100%;
-    max-width: 540px;
+    max-width: 480px;
     margin-top: 0.5rem;
+  }
+
+  .wn-form-pill {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 50px;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .wn-form-pill__icon {
+    color: rgba(0,0,0,0.35);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   .wn-input {
     flex: 1;
-    padding: 1rem 1.4rem;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    color: #fff;
-    font-size: 1rem;
+    border: none;
+    background: transparent;
     outline: none;
-    font-family: var(--font-body-family);
-    transition: border-color 0.2s ease;
+    font-size: 1.15rem;
+    color: #1B3A2D;
+    padding: 0.6rem 0;
   }
 
   .wn-input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(0,0,0,0.35);
   }
 
   .wn-input:focus {
-    border-color: rgba(255, 255, 255, 0.5);
+    border-color: transparent;
   }
 
   .wn-btn {
-    padding: 1rem 2rem;
-    background: #F5F0E8;
-    color: #1B3A2D;
-    font-size: 1rem;
-    font-weight: 700;
+    background: #1B3A2D;
+    color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 50px;
+    padding: 1.15rem 2.75rem;
+    font-size: 1.05rem;
+    font-weight: 700;
     cursor: pointer;
     white-space: nowrap;
     transition: opacity 0.2s ease;
-    font-family: var(--font-body-family);
+    flex-shrink: 0;
   }
 
   .wn-btn:hover {
@@ -102,7 +127,7 @@
 
   .wn-success {
     display: none;
-    color: #C8A96E;
+    color: #1B3A2D;
     font-size: 1.1rem;
     margin-top: 0.5rem;
     font-weight: 600;
@@ -117,43 +142,51 @@
   }
 
   @media (max-width: 600px) {
-    .wn-form {
-      flex-direction: column;
-    }
-    .wn-btn {
-      width: 100%;
+    .wn-card {
+      padding: 3.5rem 1.25rem;
+      border-radius: 16px;
     }
   }
 </style>
 
 <section id="wtp-newsletter-{{ section.id }}" aria-label="Newsletter Subscription">
-  <div class="wn-inner" id="wn-inner-{{ section.id }}">
-    {%- if section.settings.eyebrow != blank -%}
-      <p class="wn-eyebrow">{{ section.settings.eyebrow | escape }}</p>
-    {%- endif -%}
-    
-    {%- if section.settings.headline != blank -%}
-      <h2 class="wn-headline">{{ section.settings.headline | escape }}</h2>
-    {%- endif -%}
-    
-    {%- if section.settings.description != blank -%}
-      <p class="wn-desc">{{ section.settings.description | escape }}</p>
-    {%- endif -%}
+  <div class="wn-card">
+    <div class="wn-inner" id="wn-inner-{{ section.id }}">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="wn-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      
+      {%- if section.settings.headline != blank -%}
+        <h2 class="wn-headline">{{ section.settings.headline | escape }}</h2>
+      {%- endif -%}
+      
+      {%- if section.settings.description != blank -%}
+        <p class="wn-desc">{{ section.settings.description | escape }}</p>
+      {%- endif -%}
 
-    <form class="wn-form" id="wtp-nl-form-{{ section.id }}">
-      <input type="hidden" name="g" value="{{ section.settings.klaviyo_list_id | escape }}">
-      <input 
-        type="email" 
-        name="email" 
-        class="wn-input" 
-        placeholder="{{ section.settings.placeholder | escape }}" 
-        required
-        aria-label="Email Address"
-      >
-      <button type="submit" class="wn-btn">{{ section.settings.btn_label | escape }}</button>
-    </form>
-    
-    <p class="wn-success" id="wtp-nl-success-{{ section.id }}">You're in. Welcome to the community.</p>
+      <form class="wn-form" id="wtp-nl-form-{{ section.id }}">
+        <input type="hidden" name="g" value="{{ section.settings.klaviyo_list_id | escape }}">
+        <div class="wn-form-pill">
+          <span class="wn-form-pill__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="M2 7l10 7 10-7"/>
+            </svg>
+          </span>
+          <input 
+            type="email" 
+            name="email" 
+            class="wn-input" 
+            placeholder="{{ section.settings.placeholder | escape }}" 
+            required
+            aria-label="Email Address"
+          >
+          <button type="submit" class="wn-btn">{{ section.settings.btn_label | escape }}</button>
+        </div>
+      </form>
+      
+      <p class="wn-success" id="wtp-nl-success-{{ section.id }}">You're in. Welcome to the community.</p>
+    </div>
   </div>
 </section>
 
