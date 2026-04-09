@@ -249,7 +249,9 @@
       if (!foreground || !video) return;
 
       function onReady() {
-        foreground.classList.add('is-loaded');
+        setTimeout(function() {
+          foreground.classList.add('is-loaded');
+        }, 500);
         video.removeEventListener('canplaythrough', onReady);
         video.removeEventListener('loadeddata', onReady);
       }
