@@ -17,119 +17,175 @@
         "padding_bottom": 28
       }
     },
-    "community_hero_hNMpgx": {
-      "type": "community-hero",
-      "name": "Community Hero",
+    "wtp_collab_banner_qhrXEe": {
+      "type": "wtp-collab-banner",
+      "name": "Collab Banner",
       "settings": {
-        "bg_color": "#F5F0E8",
-        "text_color": "#1B3A2D",
-        "accent_color": "#C8A96E",
-        "eyebrow": "WTP for Everyone",
-        "headline": "Where Coffee Creates Community",
-        "body": "A space dedicated to the curious, the enthusiasts, and the connoisseurs. Join our journey from bean to cup through immersive tastings, classes, and social events.",
-        "cta_primary_label": "Explore Events",
-        "cta_primary_url": "",
-        "featured_image": "shopify://shop_images/product-drink-1.jpg",
-        "card_title": "Upcoming",
-        "card_location": "WTP Studio, Makati",
-        "card_cta_label": "View Details",
-        "card_cta_url": ""
+        "eyebrow": "Limited Collaboration",
+        "headline": "WTP x June Digan",
+        "cta_label": "Discover the Collection",
+        "cta_url": ""
       }
     },
-    "community_calendar_GwEMbj": {
-      "type": "community-calendar",
-      "name": "Community Calendar",
+    "wtp_brand_story_8YmRyp": {
+      "type": "wtp-brand-story",
+      "name": "WTP Brand Story",
       "settings": {
-        "bg_color": "#1b3a2d",
-        "text_color": "#fcfaed",
-        "accent_color": "#C8A96E",
-        "card_bg_color": "#FFFFFF",
-        "headline": "Community Calendar",
-        "description": "Open events for the WTP community. We keep it personal. Every stage offers curated tastings and brews for all.",
-        "klaviyo_list_id": "",
-        "optin_label": "Automated Reminders",
-        "optin_desc": "Never miss an event. We'll send you calendar updates for every stage.",
-        "optin_placeholder": "Enter your email",
-        "optin_btn_label": "Keep Me Notified",
-        "events_collection": "events"
+        "layout": "text_first",
+        "eyebrow": "Our Philosophy",
+        "headline_plain": "Perfecting",
+        "headline_italic": "The Art of the Roast",
+        "body_1": "At We The People (WTP), our journey begins long before the first pour. We are relentless in our pursuit of the perfect profile, continuously developing our own roasting processes to honor the unique character of every harvest.",
+        "body_2": "By mastering the delicate science behind the bean, we transform raw potential into a shared experience, ensuring every cup reflects our dedication to the craft and our community.",
+        "cta_label": "Discover Our Roasting Journey",
+        "cta_url": "",
+        "stat_number": "15+",
+        "stat_label": "Local Producers Supported"
       }
     },
-    "community_events_gallery_UEFVKi": {
-      "type": "community-events-gallery",
+    "wtp_timeline_aRd9U7": {
+      "type": "wtp-timeline",
       "blocks": {
-        "event_card_nx3zxd": {
-          "type": "event_card",
+        "event_MTphhp": {
+          "type": "event",
           "settings": {
-            "image": "shopify://shop_images/about-drink-0.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
+            "date": "PRESENT DAY",
+            "title": "Where We Stand Today",
+            "description": "From a single roaster to a full-fledged community coffee house, WTP Coffee continues to push the boundaries of specialty coffee culture."
           }
         },
-        "event_card_TkHtFd": {
-          "type": "event_card",
+        "event_DTcfgK": {
+          "type": "event",
           "settings": {
-            "image": "shopify://shop_images/about-roastery-1.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
+            "date": "Sept 2024",
+            "title": "The Flagship Opens",
+            "description": "Our first permanent home opened its doors, bringing together roasters, baristas, and a vibrant community under one roof."
           }
         },
-        "event_card_hz4VAp": {
-          "type": "event_card",
+        "event_6wPnCx": {
+          "type": "event",
           "settings": {
-            "image": "shopify://shop_images/Copy_of_3_Lifestyle.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
+            "date": "2022",
+            "title": "Sourcing the Origin",
+            "description": "We established direct relationships with local producers, ensuring every harvest reflects our commitment to quality and transparency."
           }
         },
-        "event_card_Te9HpY": {
-          "type": "event_card",
+        "event_fn9ePd": {
+          "type": "event",
           "settings": {
-            "image": "shopify://shop_images/about-drink-3.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
+            "date": "THE BEGINNING",
+            "title": "A Roaster With a Mission",
+            "description": "Founded with a singular passion: to create coffee that tells a story. WTP started as a small-batch roaster with big editorial ambitions."
           }
         }
       },
       "block_order": [
-        "event_card_nx3zxd",
-        "event_card_TkHtFd",
-        "event_card_hz4VAp",
-        "event_card_Te9HpY"
+        "event_MTphhp",
+        "event_DTcfgK",
+        "event_6wPnCx",
+        "event_fn9ePd"
       ],
-      "name": "Community Stories",
+      "name": "WTP Timeline",
       "settings": {
+        "eyebrow": "Our Story",
+        "heading": "The Archival Timeline",
         "bg_color": "#F5F0E8",
-        "header_text_color": "#1B3A2D",
-        "card_text_color": "#1B3A2D",
-        "accent_color": "#C8A96E",
-        "card_bg_color": "#FFFFFF",
-        "headline": "Community Stories",
-        "subheadline": "A collection of cuppings, creative moments, and partner features.",
-        "view_all_label": "View Full Archive",
-        "view_all_url": ""
+        "text_color": "#1B3A2D",
+        "accent_color": "#C8A96E"
+      }
+    },
+    "wtp_ethos_nzQcGw": {
+      "type": "wtp-ethos",
+      "name": "WTP Ethos",
+      "settings": {
+        "bg_color": "#1B3A2D",
+        "watermark": "Ethos",
+        "vision_heading": "Our Vision",
+        "vision_text": "To redefine the local coffee landscape by elevating the craft to an art form.",
+        "mission_heading": "Our Mission",
+        "mission_text": "Empowering local producers while delivering a meticulously curated cup to our community."
+      }
+    },
+    "wtp_values_b7X8yn": {
+      "type": "wtp-values",
+      "blocks": {
+        "value_card_3Wk7Fd": {
+          "type": "value_card",
+          "settings": {
+            "title": "INTEGRITY",
+            "description": "We commit to radical transparency in our sourcing, roasting, and brewing processes."
+          }
+        },
+        "value_card_Lg6hVh": {
+          "type": "value_card",
+          "settings": {
+            "title": "RELATIONSHIP",
+            "description": "Deep connections with partner farmers ensure a vibrant, thriving ecosystem."
+          }
+        },
+        "value_card_TAz8Uf": {
+          "type": "value_card",
+          "settings": {
+            "title": "CRAFT",
+            "description": "We treat every bean as an opportunity to experiment and elevate the final cup."
+          }
+        }
+      },
+      "block_order": [
+        "value_card_3Wk7Fd",
+        "value_card_Lg6hVh",
+        "value_card_TAz8Uf"
+      ],
+      "name": "WTP Values",
+      "settings": {
+        "eyebrow": "FRAMEWORK / VALUES",
+        "heading": "The Way We Work",
+        "bg_color": "#F5F0E8",
+        "icon_bg_color": "#EFE6D8",
+        "text_color": "#1B3A2D",
+        "accent_color": "#C8A96E"
+      }
+    },
+    "wtp_partner_spotlight_eDTQRj": {
+      "type": "wtp-partner-spotlight",
+      "blocks": {
+        "partner_card_rYRHTi": {
+          "type": "partner_card",
+          "settings": {
+            "title": "Kalsada Coffee",
+            "description": "Pioneering the specialty coffee movement in the Philippines through direct trade."
+          }
+        },
+        "partner_card_HPKhwg": {
+          "type": "partner_card",
+          "settings": {
+            "title": "Mount Coffee",
+            "description": "Sustainable sourcing focused on quality and the preservation of highland crops."
+          }
+        }
+      },
+      "block_order": [
+        "partner_card_rYRHTi",
+        "partner_card_HPKhwg"
+      ],
+      "name": "Partner Spotlight",
+      "settings": {
+        "eyebrow": "Our Partners",
+        "heading": "Rooted in Local Soil.",
+        "text": "We believe in the power of community and mutual respect. Our partnerships highlight the very best of what our local ecosystem has to offer.",
+        "bg_color": "#F5F0E8",
+        "text_color": "#1B3A2D",
+        "accent_color": "#C8A96E"
       }
     }
   },
   "order": [
     "main",
-    "community_hero_hNMpgx",
-    "community_calendar_GwEMbj",
-    "community_events_gallery_UEFVKi"
+    "wtp_collab_banner_qhrXEe",
+    "wtp_brand_story_8YmRyp",
+    "wtp_timeline_aRd9U7",
+    "wtp_ethos_nzQcGw",
+    "wtp_values_b7X8yn",
+    "wtp_partner_spotlight_eDTQRj"
   ]
 }
