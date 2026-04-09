@@ -15,7 +15,8 @@
       "settings": {
         "background_image": "shopify://shop_images/branch-alabang_b761a117-5270-46ba-8f31-5ca0303b644f.jpg",
         "foreground_image": "shopify://shop_images/WTP_Coffee_SQUARE.png",
-        "foreground_video": "shopify://files/videos/roastery-hero_9dde533b-6807-43f9-89ad-9f673311be55.mp4",
+        "foreground_video": "shopify://files/videos/roastery-hero.mp4",
+        "loading_logo_image": "shopify://shop_images/LOGO.png",
         "title_left": "WE THE",
         "title_right": "PEOPLE",
         "subtitle_left": "WHERE COFFEE",
@@ -131,6 +132,17 @@
         "cta_url": ""
       }
     },
+    "wtp_collab_banner_eLzHUq": {
+      "type": "wtp-collab-banner",
+      "name": "Collab Banner",
+      "settings": {
+        "image": "shopify://shop_images/june-digan.jpg",
+        "eyebrow": "Limited Collaboration",
+        "headline": "WTP x June Digan",
+        "cta_label": "Discover the Collection",
+        "cta_url": ""
+      }
+    },
     "wtp_newsletter_6Vd4a7": {
       "type": "wtp-newsletter",
       "name": "WTP Newsletter",
@@ -141,17 +153,6 @@
         "placeholder": "Your email address",
         "btn_label": "Subscribe",
         "klaviyo_list_id": ""
-      }
-    },
-    "wtp_collab_banner_eLzHUq": {
-      "type": "wtp-collab-banner",
-      "name": "Collab Banner",
-      "settings": {
-        "image": "shopify://shop_images/june-digan.jpg",
-        "eyebrow": "Limited Collaboration",
-        "headline": "WTP x June Digan",
-        "cta_label": "Discover the Collection",
-        "cta_url": ""
       }
     }
   },
