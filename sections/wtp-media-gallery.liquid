@@ -93,17 +93,9 @@
     display: block; /* keeps anchor semantics */
   }
 
-  /* Stagger: every 3rd item is taller via aspect-ratio on the image */
-  .mg-item:nth-child(3n) .mg-img {
-    aspect-ratio: 3 / 4;
-  }
-
-  .mg-item:nth-child(3n + 1) .mg-img {
-    aspect-ratio: 4 / 5;
-  }
-
-  .mg-item:nth-child(3n + 2) .mg-img {
-    aspect-ratio: 1 / 1;
+  /* strict portrait aspect ratio for all media */
+  .mg-img, .mg-placeholder {
+    aspect-ratio: 9 / 16;
   }
 
   /* ─── Image / Placeholder ─── */
@@ -184,12 +176,6 @@
     .mg-grid {
       columns: 1;
     }
-
-    .mg-item:nth-child(3n) .mg-img,
-    .mg-item:nth-child(3n + 1) .mg-img,
-    .mg-item:nth-child(3n + 2) .mg-img {
-      aspect-ratio: 4 / 3;
-    }
   }
 {%- endstyle -%}
 
@@ -231,7 +217,19 @@
             {{ block.shopify_attributes }}
             {%- if block.settings.open_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}
           >
-            {%- if block.settings.image != blank -%}
+            {%- if block.settings.video != blank -%}
+              {{
+                block.settings.video
+                | video_tag:
+                  class: 'mg-img',
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  controls: false,
+                  playsinline: true,
+                  image_size: '800x'
+              }}
+            {%- elsif block.settings.image != blank -%}
               {{
                 block.settings.image
                 | image_url: width: 1200
@@ -252,7 +250,19 @@
           </a>
         {%- else -%}
           <div class="mg-item" role="listitem" {{ block.shopify_attributes }}>
-            {%- if block.settings.image != blank -%}
+            {%- if block.settings.video != blank -%}
+              {{
+                block.settings.video
+                | video_tag:
+                  class: 'mg-img',
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  controls: false,
+                  playsinline: true,
+                  image_size: '800x'
+              }}
+            {%- elsif block.settings.image != blank -%}
               {{
                 block.settings.image
                 | image_url: width: 1200
@@ -339,9 +349,14 @@
       "name": "Gallery Image",
       "settings": [
         {
+          "type": "video",
+          "id": "video",
+          "label": "Video (MP4)"
+        },
+        {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Fallback Poster Image"
         },
         {
           "type": "text",
