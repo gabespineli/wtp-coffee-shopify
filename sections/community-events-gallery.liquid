@@ -356,7 +356,7 @@
 
 {% schema %}
 {
-  "name": "Community Archive",
+  "name": "Community Stories",
   "settings": [
     {
       "type": "header",
@@ -400,13 +400,13 @@
       "type": "text",
       "id": "headline",
       "label": "Section Headline",
-      "default": "The Archive"
+      "default": "Community Stories"
     },
     {
       "type": "text",
       "id": "subheadline",
       "label": "Subheadline",
-      "default": "A retrospective of sessions, cuppings, and community moments."
+      "default": "A collection of cuppings, creative moments, and partner features."
     },
     {
       "type": "text",
@@ -472,11 +472,53 @@
   ],
   "presets": [
     {
-      "name": "Community Archive",
+      "name": "Community Stories",
       "blocks": [
-        { "type": "event_card" },
-        { "type": "event_card" },
-        { "type": "event_card" }
+        { 
+          "type": "event_card",
+          "settings": {
+            "badge_label": "Cupping Series",
+            "title": "We Cup For The People - A look into our Community Cupping",
+            "archival_note": "A look into our monthly cupping zines.",
+            "doc_link_label": "Read the Zine"
+          }
+        },
+        { 
+          "type": "event_card",
+          "settings": {
+            "badge_label": "WTP Spaces",
+            "title": "We The People as Your Creative Space",
+            "archival_note": "Archival records of the different events held at We The People.",
+            "doc_link_label": "View Archive"
+          }
+        },
+        { 
+          "type": "event_card",
+          "settings": {
+            "badge_label": "Roots",
+            "title": "Rooted in Community. Served with Soul.",
+            "archival_note": "Our partner farms feature (Featuring Kalsada Coffee).",
+            "doc_link_label": "Meet the Producers"
+          }
+        },
+        { 
+          "type": "event_card",
+          "settings": {
+            "badge_label": "Partners",
+            "title": "Collaboration with different brands",
+            "archival_note": "Archiving our creative cross-over projects.",
+            "doc_link_label": "See Collaborations"
+          }
+        },
+        { 
+          "type": "event_card",
+          "settings": {
+            "badge_label": "Single Origin",
+            "title": "Know Your Cup - Single Origin Series",
+            "archival_note": "Videos of our SO features, brew recommendations, and House Blend features.",
+            "doc_link_label": "Watch Series"
+          }
+        }
       ]
     }
   ]

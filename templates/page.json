@@ -112,15 +112,15 @@
         "event_card_hz4VAp",
         "event_card_Te9HpY"
       ],
-      "name": "Community Archive",
+      "name": "Community Stories",
       "settings": {
         "bg_color": "#F5F0E8",
         "header_text_color": "#1B3A2D",
         "card_text_color": "#1B3A2D",
         "accent_color": "#C8A96E",
         "card_bg_color": "#FFFFFF",
-        "headline": "The Archive",
-        "subheadline": "A retrospective of sessions, cuppings, and community moments.",
+        "headline": "Community Stories",
+        "subheadline": "A collection of cuppings, creative moments, and partner features.",
         "view_all_label": "View Full Archive",
         "view_all_url": ""
       }

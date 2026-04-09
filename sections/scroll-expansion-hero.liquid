@@ -14,10 +14,21 @@
 
     <div class="scroll-expansion-hero__foreground">
       {%- if section.settings.foreground_video != blank -%}
-        {{
-          section.settings.foreground_video
-          | video_tag: class: 'scroll-expansion-hero__media', autoplay: true, loop: true, muted: true, controls: false
-        }}
+        <div class="scroll-expansion-hero__video-wrapper">
+          <div class="wtp-video-loader" style="background: #1B3A2D;">
+            {%- if section.settings.loading_logo_image != blank -%}
+              {{
+                section.settings.loading_logo_image
+                | image_url: width: 400
+                | image_tag: class: 'wtp-video-loader__logo', loading: 'eager'
+              }}
+            {%- endif -%}
+          </div>
+          {{
+            section.settings.foreground_video
+            | video_tag: class: 'scroll-expansion-hero__media scroll-expansion-hero__media--video', autoplay: true, loop: true, muted: true, controls: false
+          }}
+        </div>
       {%- elsif section.settings.foreground_image != blank -%}
         {{
           section.settings.foreground_image
@@ -140,6 +151,46 @@
     object-fit: cover;
   }
 
+  /* Video Loading State */
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .wtp-video-loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    opacity: 1;
+    transition: opacity 0.8s ease;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .wtp-video-loader__logo {
+    width: clamp(80px, 20%, 160px);
+    height: auto;
+    object-fit: contain;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__media--video {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__foreground.is-loaded .scroll-expansion-hero__media--video {
+    opacity: 1;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__foreground.is-loaded .wtp-video-loader {
+    opacity: 0;
+    pointer-events: none;
+  }
+
   /* Layer 3: Title */
   #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-container {
     position: absolute;
@@ -192,6 +243,27 @@
 
 <script>
   (function () {
+    function initVideoLoader(sectionEl) {
+      var foreground = sectionEl.querySelector('.scroll-expansion-hero__foreground');
+      var video = sectionEl.querySelector('.scroll-expansion-hero__media--video');
+      if (!foreground || !video) return;
+
+      function onReady() {
+        foreground.classList.add('is-loaded');
+        video.removeEventListener('canplaythrough', onReady);
+        video.removeEventListener('loadeddata', onReady);
+      }
+
+      /* canplaythrough covers most browsers; loadeddata is a reliable Safari fallback */
+      video.addEventListener('canplaythrough', onReady, { once: true });
+      video.addEventListener('loadeddata', onReady, { once: true });
+
+      /* If the video is already buffered enough (e.g. cached), fire immediately */
+      if (video.readyState >= 3) {
+        onReady();
+      }
+    }
+
     function initScrollExpansionHero() {
       var sectionEl = document.getElementById('ScrollExpansionHero-{{ section.id }}');
       if (!sectionEl) return;
@@ -234,6 +306,9 @@
 
       /* Initial calc */
       updateProgress();
+
+      /* Cinematic video loading state */
+      initVideoLoader(sectionEl);
     }
 
     /* Run immediately if DOM is already ready, otherwise wait */
@@ -277,6 +352,12 @@
       "id": "foreground_video",
       "label": "Foreground Video",
       "info": "Video that expands."
+    },
+    {
+      "type": "image_picker",
+      "id": "loading_logo_image",
+      "label": "Loading State Logo",
+      "info": "Logo displayed on the dark green overlay while the video loads."
     },
     {
       "type": "text",
