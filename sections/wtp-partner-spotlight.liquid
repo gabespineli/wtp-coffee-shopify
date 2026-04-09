@@ -1,0 +1,342 @@
+{%- style -%}
+  #wtp-partner-spotlight-{{ section.id }} {
+    background: {{ section.settings.bg_color }};
+    padding: 8rem 5%;
+    overflow: hidden;
+  }
+
+  .ps-container {
+    max-width: 1380px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6rem;
+  }
+
+  /* ─── Left Column: Text & Cards ─── */
+  .ps-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .ps-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .ps-eyebrow {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: {{ section.settings.accent_color }};
+    margin: 0;
+  }
+
+  .ps-heading {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.6rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.05;
+    color: {{ section.settings.text_color }};
+    margin: 0;
+  }
+
+  .ps-text {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: {{ section.settings.text_color }};
+    opacity: 0.7;
+    margin: 0;
+    max-width: 540px;
+  }
+
+  .ps-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .ps-card {
+    background: rgba(27, 58, 45, 0.04);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+
+  .ps-card:hover {
+    background: rgba(27, 58, 45, 0.08);
+    transform: translateY(-4px);
+  }
+
+  .ps-card-title {
+    font-family: var(--font-heading-family);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: {{ section.settings.text_color }};
+    margin: 0 0 0.5rem;
+  }
+
+  .ps-card-desc {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: {{ section.settings.text_color }};
+    opacity: 0.7;
+    margin: 0;
+  }
+
+  /* ─── Right Column: Images ─── */
+  .ps-visual {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 600px;
+  }
+
+  .ps-visual-inner {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+  }
+
+  .ps-img-left,
+  .ps-img-right {
+    position: absolute;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(27, 58, 45, 0.15);
+  }
+
+  .ps-img-left {
+    top: 0;
+    left: 0;
+    width: 65%;
+    aspect-ratio: 4 / 5;
+    z-index: 2;
+  }
+
+  .ps-img-right {
+    top: 20%;
+    right: 0;
+    width: 55%;
+    aspect-ratio: 3 / 4;
+    z-index: 1;
+  }
+
+  .ps-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ps-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(27, 58, 45, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ps-placeholder svg {
+    width: 50%;
+    height: auto;
+    opacity: 0.5;
+  }
+
+  /* ─── Responsive ─── */
+  @media screen and (max-width: 990px) {
+    .ps-container {
+      flex-direction: column;
+      gap: 4rem;
+    }
+    .ps-visual {
+      width: 100%;
+      min-height: 500px;
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    #wtp-partner-spotlight-{{ section.id }} {
+      padding: 5rem 5%;
+    }
+    .ps-visual {
+      min-height: 400px;
+    }
+    .ps-img-left {
+      width: 70%;
+    }
+    .ps-img-right {
+      width: 60%;
+      top: 15%;
+    }
+  }
+{%- endstyle -%}
+
+<section id="wtp-partner-spotlight-{{ section.id }}">
+  <div class="ps-container">
+    
+    <div class="ps-content">
+      <div class="ps-header">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="ps-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="ps-heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <p class="ps-text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="ps-cards">
+          {%- for block in section.blocks -%}
+            <div class="ps-card" {{ block.shopify_attributes }}>
+              {%- if block.settings.title != blank -%}
+                <h3 class="ps-card-title">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <p class="ps-card-desc">{{ block.settings.description | escape }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="ps-visual">
+      <div class="ps-visual-inner">
+        <div class="ps-img-left">
+          {%- if section.settings.image_left != blank -%}
+            {{ section.settings.image_left | image_url: width: 800 | image_tag: class: 'ps-img', loading: 'lazy' }}
+          {%- else -%}
+            <div class="ps-placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+          {%- endif -%}
+        </div>
+        <div class="ps-img-right">
+          {%- if section.settings.image_right != blank -%}
+            {{ section.settings.image_right | image_url: width: 800 | image_tag: class: 'ps-img', loading: 'lazy' }}
+          {%- else -%}
+            <div class="ps-placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Partner Spotlight",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Our Partners"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Rooted in Local Soil."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Paragraph",
+      "default": "We believe in the power of community and mutual respect. Our partnerships highlight the very best of what our local ecosystem has to offer."
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_left",
+      "label": "Left Image (Front)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_right",
+      "label": "Right Image (Offset/Back)"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#C8A96E"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "partner_card",
+      "name": "Partner Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Partner Name",
+          "default": "Kalsada Coffee"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Champions of Philippine specialty coffee, working directly with local farmers."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Partner Spotlight",
+      "blocks": [
+        {
+          "type": "partner_card",
+          "settings": {
+            "title": "Kalsada Coffee",
+            "description": "Pioneering the specialty coffee movement in the Philippines through direct trade."
+          }
+        },
+        {
+          "type": "partner_card",
+          "settings": {
+            "title": "Mount Coffee",
+            "description": "Sustainable sourcing focused on quality and the preservation of highland crops."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

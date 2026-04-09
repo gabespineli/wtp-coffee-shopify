@@ -1,0 +1,382 @@
+{%- style -%}
+  /* ─── Section Shell ─── */
+  #wtp-media-gallery-{{ section.id }} {
+    background: {{ section.settings.bg_color }};
+    padding: 8rem 5%;
+    overflow: hidden;
+  }
+
+  /* ─── Top Header ─── */
+  .mg-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    max-width: 1380px;
+    margin: 0 auto 4rem;
+  }
+
+  .mg-header__left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .mg-heading {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: {{ section.settings.text_color }};
+    margin: 0;
+  }
+
+  .mg-subheading {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: {{ section.settings.text_color }};
+    opacity: 0.55;
+    margin: 0;
+    max-width: 38ch;
+  }
+
+  .mg-header__right {
+    flex-shrink: 0;
+  }
+
+  .mg-journal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: {{ section.settings.text_color }};
+    text-decoration: none;
+    border-bottom: 1.5px solid {{ section.settings.accent_color }};
+    padding-bottom: 2px;
+    transition: color 0.25s ease, opacity 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .mg-journal-link:hover {
+    opacity: 0.65;
+  }
+
+  /* Arrow glyph */
+  .mg-journal-link::after {
+    content: '→';
+    color: {{ section.settings.accent_color }};
+    transition: transform 0.25s ease;
+  }
+
+  .mg-journal-link:hover::after {
+    transform: translateX(4px);
+  }
+
+  /* ─── Masonry Grid (CSS columns) ─── */
+  .mg-grid {
+    max-width: 1380px;
+    margin: 0 auto;
+    columns: 4;
+    column-gap: 1.25rem;
+  }
+
+  /* ─── Individual Item ─── */
+  .mg-item {
+    break-inside: avoid;
+    margin-bottom: 1.25rem;
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    display: block; /* keeps anchor semantics */
+  }
+
+  /* Stagger: every 3rd item is taller via aspect-ratio on the image */
+  .mg-item:nth-child(3n) .mg-img {
+    aspect-ratio: 3 / 4;
+  }
+
+  .mg-item:nth-child(3n + 1) .mg-img {
+    aspect-ratio: 4 / 5;
+  }
+
+  .mg-item:nth-child(3n + 2) .mg-img {
+    aspect-ratio: 1 / 1;
+  }
+
+  /* ─── Image / Placeholder ─── */
+  .mg-img {
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 14px;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.5s ease;
+  }
+
+  .mg-item:hover .mg-img {
+    transform: scale(1.03);
+    box-shadow: 0 20px 45px -10px rgba(27, 58, 45, 0.28);
+  }
+
+  /* Placeholder SVG treatment */
+  .mg-placeholder {
+    width: 100%;
+    display: block;
+    border-radius: 14px;
+    background: rgba(27, 58, 45, 0.06);
+  }
+
+  .mg-placeholder svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 14px;
+  }
+
+  /* ─── Overlay caption strip (optional alt text) ─── */
+  .mg-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 1.25rem 1.25rem;
+    background: linear-gradient(to top, rgba(27, 58, 45, 0.55) 0%, transparent 100%);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+    border-radius: 0 0 14px 14px;
+  }
+
+  .mg-item:hover .mg-caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── Tablet: 2 columns ─── */
+  @media screen and (max-width: 900px) {
+    .mg-grid {
+      columns: 2;
+    }
+
+    .mg-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+      margin-bottom: 3rem;
+    }
+  }
+
+  /* ─── Mobile: 1 column ─── */
+  @media screen and (max-width: 600px) {
+    #wtp-media-gallery-{{ section.id }} {
+      padding: 5rem 5%;
+    }
+
+    .mg-grid {
+      columns: 1;
+    }
+
+    .mg-item:nth-child(3n) .mg-img,
+    .mg-item:nth-child(3n + 1) .mg-img,
+    .mg-item:nth-child(3n + 2) .mg-img {
+      aspect-ratio: 4 / 3;
+    }
+  }
+{%- endstyle -%}
+
+<section id="wtp-media-gallery-{{ section.id }}" aria-label="{{ section.settings.heading | escape }}">
+
+  {%- comment -%} ── Top header ── {%- endcomment -%}
+  <header class="mg-header">
+    <div class="mg-header__left">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="mg-heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="mg-subheading">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.journal_label != blank -%}
+      <div class="mg-header__right">
+        <a
+          href="{{ section.settings.journal_url | default: '#' }}"
+          class="mg-journal-link"
+          {% if section.settings.journal_url != blank %}aria-label="{{ section.settings.journal_label | escape }}"{% endif %}
+        >
+          {{- section.settings.journal_label | escape -}}
+        </a>
+      </div>
+    {%- endif -%}
+  </header>
+
+  {%- comment -%} ── Masonry grid ── {%- endcomment -%}
+  {%- if section.blocks.size > 0 -%}
+    <div class="mg-grid" role="list">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.image_url != blank -%}
+          <a
+            href="{{ block.settings.image_url }}"
+            class="mg-item"
+            role="listitem"
+            {{ block.shopify_attributes }}
+            {%- if block.settings.open_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}
+          >
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'mg-img',
+                  loading: 'lazy',
+                  widths: '400, 600, 800, 1000, 1200',
+                  sizes: '(max-width: 600px) 100vw, (max-width: 900px) 50vw, 25vw'
+              }}
+            {%- else -%}
+              <div class="mg-placeholder">
+                {{ 'lifestyle-' | append: forloop.index | placeholder_svg_tag }}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.caption != blank -%}
+              <span class="mg-caption" aria-hidden="true">{{ block.settings.caption | escape }}</span>
+            {%- endif -%}
+          </a>
+        {%- else -%}
+          <div class="mg-item" role="listitem" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'mg-img',
+                  loading: 'lazy',
+                  widths: '400, 600, 800, 1000, 1200',
+                  sizes: '(max-width: 600px) 100vw, (max-width: 900px) 50vw, 25vw'
+              }}
+            {%- else -%}
+              <div class="mg-placeholder">
+                {{ 'lifestyle-' | append: forloop.index | placeholder_svg_tag }}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.caption != blank -%}
+              <span class="mg-caption" aria-hidden="true">{{ block.settings.caption | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+</section>
+
+{% schema %}
+{
+  "name": "WTP Media Gallery",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Documenting the Day"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "A visual chronicle of the craft, the community, and the cup."
+    },
+    {
+      "type": "text",
+      "id": "journal_label",
+      "label": "Link Label",
+      "default": "View our journal"
+    },
+    {
+      "type": "url",
+      "id": "journal_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#C8A96E"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Gallery Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption (hover overlay)",
+          "info": "Optional. Appears as a subtle overlay on hover."
+        },
+        {
+          "type": "url",
+          "id": "image_url",
+          "label": "Image Link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Open link in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WTP Media Gallery",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

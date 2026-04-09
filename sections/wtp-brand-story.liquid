@@ -18,6 +18,10 @@
     margin: 0 auto;
   }
 
+  .bs-layout--image-first {
+    flex-direction: row-reverse;
+  }
+
   /* ── LEFT ── */
   .bs-left {
     flex: 0 0 45%;
@@ -157,7 +161,7 @@
 </style>
 
 <section id="wtp-brand-story-{{ section.id }}" aria-label="{{ section.settings.headline_plain | escape }} {{ section.settings.headline_italic | escape }}">
-  <div class="bs-layout">
+  <div class="bs-layout {% if section.settings.layout == 'image_first' %}bs-layout--image-first{% endif %}">
 
     <!-- LEFT -->
     <div class="bs-left">
@@ -210,6 +214,22 @@
 {
   "name": "WTP Brand Story",
   "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout Direction",
+      "options": [
+        {
+          "value": "image_first",
+          "label": "Image first"
+        },
+        {
+          "value": "text_first",
+          "label": "Text first"
+        }
+      ],
+      "default": "text_first"
+    },
     {
       "type": "header",
       "content": "Text Content"

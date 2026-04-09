@@ -1,0 +1,290 @@
+{%- style -%}
+  #wtp-timeline-{{ section.id }} {
+    background: {{ section.settings.bg_color }};
+    padding: 9rem 5%;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .tl-header {
+    text-align: center;
+    margin-bottom: 6rem;
+  }
+
+  .tl-eyebrow {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: {{ section.settings.accent_color }};
+    margin: 0 0 1rem;
+  }
+
+  .tl-heading {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.1;
+    color: {{ section.settings.text_color }};
+    margin: 0;
+  }
+
+  /* ── Timeline wrapper ── */
+  .tl-track {
+    max-width: 760px;
+    margin: 0 auto;
+    position: relative;
+    padding-left: 3rem;
+  }
+
+  /* Continuous vertical rule */
+  .tl-track::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0.55rem;
+    bottom: 0;
+    width: 2px;
+    background: {{ section.settings.accent_color }};
+    opacity: 0.35;
+  }
+
+  /* ── Individual node ── */
+  .tl-node {
+    position: relative;
+    margin-bottom: 4rem;
+  }
+
+  .tl-node:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Dot on the line */
+  .tl-node::before {
+    content: '';
+    position: absolute;
+    left: -2.55rem;
+    top: 0.4rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: {{ section.settings.accent_color }};
+    box-shadow: 0 0 0 3px {{ section.settings.bg_color }}, 0 0 0 5px {{ section.settings.accent_color }};
+    z-index: 1;
+  }
+
+  /* First node gets a larger anchor dot */
+  .tl-node:first-child::before {
+    width: 16px;
+    height: 16px;
+    left: -2.65rem;
+    top: 0.25rem;
+  }
+
+  /* Date label */
+  .tl-date {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: {{ section.settings.accent_color }};
+    margin: 0 0 0.4rem;
+  }
+
+  /* Title */
+  .tl-title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: {{ section.settings.text_color }};
+    margin: 0 0 0.6rem;
+  }
+
+  /* Description */
+  .tl-desc {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: {{ section.settings.text_color }};
+    opacity: 0.65;
+    margin: 0;
+    max-width: 640px;
+  }
+
+  /* ── Mobile ── */
+  @media screen and (max-width: 750px) {
+    #wtp-timeline-{{ section.id }} {
+      padding: 5rem 5%;
+    }
+
+    .tl-header {
+      margin-bottom: 4rem;
+    }
+
+    .tl-track {
+      padding-left: 2.25rem;
+    }
+
+    .tl-track::before {
+      left: 0.4rem;
+    }
+
+    .tl-node::before {
+      left: -1.95rem;
+    }
+
+    .tl-node:first-child::before {
+      left: -2.05rem;
+    }
+
+    .tl-node {
+      margin-bottom: 3rem;
+    }
+  }
+{%- endstyle -%}
+
+<section id="wtp-timeline-{{ section.id }}" aria-label="{{ section.settings.heading | escape }}">
+
+  {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+    <header class="tl-header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="tl-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="tl-heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+    </header>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="tl-track" role="list">
+      {%- for block in section.blocks -%}
+        <article class="tl-node" role="listitem" {{ block.shopify_attributes }}>
+          {%- if block.settings.date != blank -%}
+            <p class="tl-date">{{ block.settings.date | escape }}</p>
+          {%- endif -%}
+          {%- if block.settings.title != blank -%}
+            <h3 class="tl-title">{{ block.settings.title | escape }}</h3>
+          {%- endif -%}
+          {%- if block.settings.description != blank -%}
+            <p class="tl-desc">{{ block.settings.description | escape }}</p>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+</section>
+
+{% schema %}
+{
+  "name": "WTP Timeline",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Archival Timeline"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent / Line Color",
+      "default": "#C8A96E"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "event",
+      "name": "Timeline Event",
+      "settings": [
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date / Era",
+          "default": "PRESENT DAY"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Event Title",
+          "default": "A New Chapter"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Event Description",
+          "default": "Describe what happened during this milestone in the WTP Coffee journey."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WTP Timeline",
+      "blocks": [
+        {
+          "type": "event",
+          "settings": {
+            "date": "PRESENT DAY",
+            "title": "Where We Stand Today",
+            "description": "From a single roaster to a full-fledged community coffee house, WTP Coffee continues to push the boundaries of specialty coffee culture."
+          }
+        },
+        {
+          "type": "event",
+          "settings": {
+            "date": "Sept 2024",
+            "title": "The Flagship Opens",
+            "description": "Our first permanent home opened its doors, bringing together roasters, baristas, and a vibrant community under one roof."
+          }
+        },
+        {
+          "type": "event",
+          "settings": {
+            "date": "2022",
+            "title": "Sourcing the Origin",
+            "description": "We established direct relationships with local producers, ensuring every harvest reflects our commitment to quality and transparency."
+          }
+        },
+        {
+          "type": "event",
+          "settings": {
+            "date": "THE BEGINNING",
+            "title": "A Roaster With a Mission",
+            "description": "Founded with a singular passion: to create coffee that tells a story. WTP started as a small-batch roaster with big editorial ambitions."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
