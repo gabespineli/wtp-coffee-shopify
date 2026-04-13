@@ -101,32 +101,16 @@
   .ps-visual-inner {
     position: relative;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     height: 100%;
   }
 
-  .ps-img-left,
-  .ps-img-right {
-    position: absolute;
-    border-radius: 16px;
+  .ps-img-wrapper {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(27, 58, 45, 0.15);
-  }
-
-  .ps-img-left {
-    top: 0;
-    left: 0;
-    width: 65%;
-    aspect-ratio: 4 / 5;
-    z-index: 2;
-  }
-
-  .ps-img-right {
-    top: 20%;
-    right: 0;
-    width: 55%;
-    aspect-ratio: 3 / 4;
-    z-index: 1;
   }
 
   .ps-img {
@@ -170,13 +154,6 @@
     .ps-visual {
       min-height: 400px;
     }
-    .ps-img-left {
-      width: 70%;
-    }
-    .ps-img-right {
-      width: 60%;
-      top: 15%;
-    }
   }
 {%- endstyle -%}
 
@@ -214,18 +191,11 @@
 
     <div class="ps-visual">
       <div class="ps-visual-inner">
-        <div class="ps-img-left">
-          {%- if section.settings.image_left != blank -%}
-            {{ section.settings.image_left | image_url: width: 800 | image_tag: class: 'ps-img', loading: 'lazy' }}
+        <div class="ps-img-wrapper">
+          {%- if section.settings.image != blank -%}
+            {{ section.settings.image | image_url: width: 1200 | image_tag: class: 'ps-img', loading: 'lazy' }}
           {%- else -%}
             <div class="ps-placeholder">{{ 'image' | placeholder_svg_tag }}</div>
-          {%- endif -%}
-        </div>
-        <div class="ps-img-right">
-          {%- if section.settings.image_right != blank -%}
-            {{ section.settings.image_right | image_url: width: 800 | image_tag: class: 'ps-img', loading: 'lazy' }}
-          {%- else -%}
-            <div class="ps-placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
           {%- endif -%}
         </div>
       </div>
@@ -262,17 +232,12 @@
     },
     {
       "type": "header",
-      "content": "Images"
+      "content": "Image"
     },
     {
       "type": "image_picker",
-      "id": "image_left",
-      "label": "Left Image (Front)"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_right",
-      "label": "Right Image (Offset/Back)"
+      "id": "image",
+      "label": "Featured Image"
     },
     {
       "type": "header",
