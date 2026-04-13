@@ -11,13 +11,58 @@
   "sections": {
     "main": {
       "type": "main-page",
+      "disabled": true,
       "settings": {
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "wtp_locations_fLUPhe": {
+      "type": "wtp-locations",
+      "blocks": {
+        "location_PkLfhR": {
+          "type": "location",
+          "settings": {
+            "title": "Madrigal Business Park",
+            "address": "32nd St. corner 5th Ave., BGC, Taguig City",
+            "hours": "Mon - Sun, 7:00 AM - 10:00 PM",
+            "map_link": ""
+          }
+        },
+        "location_W8TA8g": {
+          "type": "location",
+          "settings": {
+            "title": "Opus Mall",
+            "address": "32nd St. corner 5th Ave., BGC, Taguig City",
+            "hours": "Mon - Sun, 7:00 AM - 10:00 PM",
+            "map_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "location_PkLfhR",
+        "location_W8TA8g"
+      ],
+      "name": "WTP Locations",
+      "settings": {
+        "eyebrow": "Find Us",
+        "heading": "The Archipelago of Brew",
+        "subtext": "Each WTP outpost is a destination in itself. Find your nearest sanctuary, pull up a chair, and let the coffee do the talking.",
+        "map_embed_url": "",
+        "cat_eyebrow": "Experience Excellence Anywhere",
+        "cat_heading": "Host an Event with WTP Coffee.",
+        "cat_desc": "From intimate gatherings to grand corporate affairs, we bring our craft directly to you. Every cup served is a reflection of our commitment to quality.",
+        "bullet_1": "Coffee Cart Service",
+        "bullet_2": "Wholesale Programs",
+        "cat_cta_label": "Inquire for Bookings",
+        "cat_cta_url": "",
+        "quote_text": "The attention to detail was extraordinary. Our guests are still raving about it.",
+        "quote_author": "Maria S., Event Organizer"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "wtp_locations_fLUPhe"
   ]
 }

@@ -110,44 +110,44 @@
     "wtp_values_b7X8yn": {
       "type": "wtp-values",
       "blocks": {
-        "value_card_3Wk7Fd": {
-          "type": "value_card",
+        "value_column_JA6TVx": {
+          "type": "value_column",
           "settings": {
             "image": "shopify://shop_images/integrity.png",
-            "title": "INTEGRITY",
+            "title": "Integrity",
             "description": "We do what’s right—with honesty, \naccountability, and respect for \nour craft, our people, and our \ncommunity."
           }
         },
-        "value_card_Lg6hVh": {
-          "type": "value_card",
+        "value_column_W8tzgJ": {
+          "type": "value_column",
           "settings": {
             "image": "shopify://shop_images/intentional.png",
-            "title": "INTENTIONAL",
+            "title": "Intentional",
             "description": "We act with purpose and care, \ncreating meaningful experiences \nthat reflect our values and \ngenuine hospitality."
           }
         },
-        "value_card_TAz8Uf": {
-          "type": "value_card",
+        "value_column_zcdxic": {
+          "type": "value_column",
           "settings": {
             "image": "shopify://shop_images/innovative.png",
-            "title": "INNOVATIVE",
+            "title": "Innovative",
             "description": "We stay curious and open to \ngrowth. Constantly learning, \nimproving, and finding better \nways to serve and connect."
           }
         }
       },
       "block_order": [
-        "value_card_3Wk7Fd",
-        "value_card_Lg6hVh",
-        "value_card_TAz8Uf"
+        "value_column_JA6TVx",
+        "value_column_W8tzgJ",
+        "value_column_zcdxic"
       ],
       "name": "WTP Values",
       "settings": {
-        "eyebrow": "FRAMEWORK / VALUES",
-        "heading": "The Way We Work",
-        "bg_color": "#f5f0e8",
-        "icon_bg_color": "#efe6d8",
-        "text_color": "#1b3a2d",
-        "accent_color": "#c8a96e"
+        "word_1": "Core",
+        "word_1_color": "#c8a96e",
+        "word_2": "Values",
+        "word_2_color": "#ffffff",
+        "bg_color": "#1b3a2d",
+        "text_color": "#fcfaed"
       }
     },
     "wtp_media_gallery_M7UnAb": {
@@ -202,9 +202,9 @@
         "subheading": "A visual chronicle of the craft, the community, and the cup.",
         "journal_label": "View our journal",
         "journal_url": "",
-        "bg_color": "#F5F0E8",
-        "text_color": "#1B3A2D",
-        "accent_color": "#C8A96E"
+        "bg_color": "#f5f0e8",
+        "text_color": "#1b3a2d",
+        "accent_color": "#c8a96e"
       }
     },
     "wtp_partner_spotlight_eDTQRj": {
@@ -234,7 +234,7 @@
         "eyebrow": "Our Partners",
         "heading": "Rooted in Local Soil.",
         "text": "We believe in the power of community and mutual respect. Our partnerships highlight the very best of what our local ecosystem has to offer.",
-        "image_left": "shopify://shop_images/kalsada_coffee.jpg",
+        "image": "shopify://shop_images/kalsada_coffee.jpg",
         "bg_color": "#f5f0e8",
         "text_color": "#1b3a2d",
         "accent_color": "#c8a96e"
