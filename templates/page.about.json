@@ -21,9 +21,10 @@
       "type": "wtp-collab-banner",
       "name": "Collab Banner",
       "settings": {
-        "eyebrow": "Limited Collaboration",
-        "headline": "WTP x June Digan",
-        "cta_label": "Discover the Collection",
+        "image": "shopify://shop_images/beans_on_hand_4180007a-6847-4270-a5d7-4f853f59da4e.jpg",
+        "eyebrow": "ABOUT US",
+        "headline": "We Create Coffee.",
+        "cta_label": "KNOW MORE",
         "cta_url": ""
       }
     },
@@ -89,17 +90,17 @@
       "settings": {
         "eyebrow": "Our Story",
         "heading": "The Archival Timeline",
-        "bg_color": "#F5F0E8",
-        "text_color": "#1B3A2D",
-        "accent_color": "#C8A96E"
+        "bg_color": "#f5f0e8",
+        "text_color": "#1b3a2d",
+        "accent_color": "#c8a96e"
       }
     },
     "wtp_ethos_nzQcGw": {
       "type": "wtp-ethos",
       "name": "WTP Ethos",
       "settings": {
-        "bg_color": "#1B3A2D",
-        "watermark": "Ethos",
+        "bg_color": "#1b3a2d",
+        "watermark": "WTP",
         "vision_heading": "Our Vision",
         "vision_text": "To redefine the local coffee landscape by elevating the craft to an art form.",
         "mission_heading": "Our Mission",
@@ -112,22 +113,25 @@
         "value_card_3Wk7Fd": {
           "type": "value_card",
           "settings": {
+            "image": "shopify://shop_images/integrity.png",
             "title": "INTEGRITY",
-            "description": "We commit to radical transparency in our sourcing, roasting, and brewing processes."
+            "description": "We do what’s right—with honesty, \naccountability, and respect for \nour craft, our people, and our \ncommunity."
           }
         },
         "value_card_Lg6hVh": {
           "type": "value_card",
           "settings": {
-            "title": "RELATIONSHIP",
-            "description": "Deep connections with partner farmers ensure a vibrant, thriving ecosystem."
+            "image": "shopify://shop_images/intentional.png",
+            "title": "INTENTIONAL",
+            "description": "We act with purpose and care, \ncreating meaningful experiences \nthat reflect our values and \ngenuine hospitality."
           }
         },
         "value_card_TAz8Uf": {
           "type": "value_card",
           "settings": {
-            "title": "CRAFT",
-            "description": "We treat every bean as an opportunity to experiment and elevate the final cup."
+            "image": "shopify://shop_images/innovative.png",
+            "title": "INNOVATIVE",
+            "description": "We stay curious and open to \ngrowth. Constantly learning, \nimproving, and finding better \nways to serve and connect."
           }
         }
       },
@@ -140,8 +144,65 @@
       "settings": {
         "eyebrow": "FRAMEWORK / VALUES",
         "heading": "The Way We Work",
+        "bg_color": "#f5f0e8",
+        "icon_bg_color": "#efe6d8",
+        "text_color": "#1b3a2d",
+        "accent_color": "#c8a96e"
+      }
+    },
+    "wtp_media_gallery_M7UnAb": {
+      "type": "wtp-media-gallery",
+      "blocks": {
+        "image_MwKL74": {
+          "type": "image",
+          "settings": {
+            "video": "shopify://files/videos/WOFEX REEL.mp4",
+            "caption": "",
+            "image_url": "",
+            "open_new_tab": false
+          }
+        },
+        "image_aAqTt7": {
+          "type": "image",
+          "settings": {
+            "video": "shopify://files/videos/Holiday gift 2025.mp4",
+            "caption": "",
+            "image_url": "",
+            "open_new_tab": false
+          }
+        },
+        "image_7KrPLP": {
+          "type": "image",
+          "settings": {
+            "video": "shopify://files/videos/Banana CrunchEvent.mp4",
+            "caption": "",
+            "image_url": "",
+            "open_new_tab": false
+          }
+        },
+        "image_zFcMij": {
+          "type": "image",
+          "settings": {
+            "video": "shopify://files/videos/A Calm Day at the Cafe.mp4",
+            "caption": "",
+            "image_url": "",
+            "open_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "image_MwKL74",
+        "image_aAqTt7",
+        "image_7KrPLP",
+        "image_zFcMij"
+      ],
+      "name": "WTP Media Gallery",
+      "settings": {
+        "heading": "Documenting the Day",
+        "subheading": "A visual chronicle of the craft, the community, and the cup.",
+        "journal_label": "View our journal",
+        "journal_url": "",
         "bg_color": "#F5F0E8",
-        "icon_bg_color": "#EFE6D8",
         "text_color": "#1B3A2D",
         "accent_color": "#C8A96E"
       }
@@ -173,9 +234,10 @@
         "eyebrow": "Our Partners",
         "heading": "Rooted in Local Soil.",
         "text": "We believe in the power of community and mutual respect. Our partnerships highlight the very best of what our local ecosystem has to offer.",
-        "bg_color": "#F5F0E8",
-        "text_color": "#1B3A2D",
-        "accent_color": "#C8A96E"
+        "image_left": "shopify://shop_images/kalsada_coffee.jpg",
+        "bg_color": "#f5f0e8",
+        "text_color": "#1b3a2d",
+        "accent_color": "#c8a96e"
       }
     }
   },
@@ -186,6 +248,7 @@
     "wtp_timeline_aRd9U7",
     "wtp_ethos_nzQcGw",
     "wtp_values_b7X8yn",
+    "wtp_media_gallery_M7UnAb",
     "wtp_partner_spotlight_eDTQRj"
   ]
 }
