@@ -43,7 +43,7 @@
   .cb-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.35);
+    background: radial-gradient(circle at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 100%);
     z-index: 1;
   }
 
@@ -76,6 +76,7 @@
     color: #fff;
     margin: 0;
     line-height: 1.1;
+    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   }
 
   .cb-cta {
@@ -104,7 +105,7 @@
       height: 320px;
       border-radius: 12px;
     }
-    
+
     .cb-content {
       gap: 1rem;
       padding: 1.5rem;
@@ -124,7 +125,11 @@
 <section id="wtp-collab-banner-{{ section.id }}" aria-label="{{ section.settings.headline | escape }}">
   <div class="cb-inner">
     {%- if section.settings.image != blank -%}
-      {{ section.settings.image | image_url: width: 2400 | image_tag: loading: 'lazy', class: 'cb-bg', alt: section.settings.headline }}
+      {{
+        section.settings.image
+        | image_url: width: 2400
+        | image_tag: loading: 'lazy', class: 'cb-bg', alt: section.settings.headline
+      }}
     {%- else -%}
       <div class="cb-bg cb-bg--placeholder">
         {{ 'lifestyle-2' | placeholder_svg_tag }}
@@ -137,11 +142,11 @@
       {%- if section.settings.eyebrow != blank -%}
         <p class="cb-eyebrow">{{ section.settings.eyebrow | escape }}</p>
       {%- endif -%}
-      
+
       {%- if section.settings.headline != blank -%}
         <h2 class="cb-headline">{{ section.settings.headline | escape }}</h2>
       {%- endif -%}
-      
+
       {%- if section.settings.cta_label != blank -%}
         <a href="{{ section.settings.cta_url | default: '#' }}" class="cb-cta">
           {{ section.settings.cta_label | escape }}
