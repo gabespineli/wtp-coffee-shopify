@@ -132,9 +132,12 @@
             "collection": "retail-coffee-beans-1",
             "title": "",
             "image": "shopify://shop_images/roast_categ.png",
-            "image_size": 70,
-            "offset_right": -10,
-            "offset_bottom": -50
+            "image_size": 80,
+            "image_size_mobile": 80,
+            "offset_right": 0,
+            "offset_right_mobile": 0,
+            "offset_bottom": 30,
+            "offset_bottom_mobile": 36
           }
         },
         "category_nqKXyG": {
@@ -144,8 +147,11 @@
             "title": "",
             "image": "shopify://shop_images/merch_categ.png",
             "image_size": 80,
-            "offset_right": -18,
-            "offset_bottom": -48
+            "image_size_mobile": 80,
+            "offset_right": 0,
+            "offset_right_mobile": 0,
+            "offset_bottom": 28,
+            "offset_bottom_mobile": 30
           }
         },
         "category_EnWc9G": {
@@ -155,8 +161,11 @@
             "title": "",
             "image": "shopify://shop_images/cup_categ.png",
             "image_size": 90,
-            "offset_right": -14,
-            "offset_bottom": -50
+            "image_size_mobile": 90,
+            "offset_right": 4,
+            "offset_right_mobile": 0,
+            "offset_bottom": 30,
+            "offset_bottom_mobile": 36
           }
         }
       },
