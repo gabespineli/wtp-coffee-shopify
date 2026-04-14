@@ -182,7 +182,7 @@
         "accent_color": "#c8a96e",
         "heading": "Shop By Category",
         "explore_label": "Explore All",
-        "explore_url": ""
+        "explore_url": "shopify://collections"
       }
     }
   },
