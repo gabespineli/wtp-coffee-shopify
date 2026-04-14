@@ -1,7 +1,6 @@
-{%- style -%}
   #wtp-map-hero-{{ section.id }} {
     background: {{ section.settings.bg_color }};
-    padding: 7rem 5%;
+    padding: 7rem 5% 2rem;
   }
 
   /* ── Header ── */
@@ -45,37 +44,7 @@
     max-width: 560px;
   }
 
-  /* ── Location Button ── */
-  .mh-location-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.85rem 1.8rem;
-    border: 1.5px solid {{ section.settings.text_color }};
-    border-radius: 50px;
-    color: {{ section.settings.text_color }};
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: transparent;
-    cursor: pointer;
-    white-space: nowrap;
-    flex-shrink: 0;
-    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-  }
 
-  .mh-location-btn:hover {
-    background: {{ section.settings.text_color }};
-    color: {{ section.settings.bg_color }};
-  }
-
-  .mh-location-btn svg {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-  }
 
   /* ── Map Container ── */
   .mh-map-outer {
@@ -160,15 +129,7 @@
       {%- endif -%}
     </div>
 
-    {%- if section.settings.button_label != blank -%}
-      <button class="mh-location-btn" type="button" id="mh-location-btn-{{ section.id }}" aria-label="{{ section.settings.button_label | escape }}">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-          <circle cx="12" cy="9" r="2.5"/>
-        </svg>
-        {{ section.settings.button_label | escape }}
-      </button>
-    {%- endif -%}
+
   </div>
 
   <div class="mh-map-outer">
@@ -188,32 +149,7 @@
 
 </section>
 
-<script>
-(function() {
-  var btn = document.getElementById('mh-location-btn-{{ section.id }}');
-  if (!btn || !navigator.geolocation) return;
 
-  btn.addEventListener('click', function() {
-    btn.setAttribute('disabled', 'disabled');
-    btn.style.opacity = '0.6';
-
-    navigator.geolocation.getCurrentPosition(
-      function(pos) {
-        var lat = pos.coords.latitude;
-        var lng = pos.coords.longitude;
-        var url = 'https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lng;
-        window.open(url, '_blank', 'noopener');
-        btn.removeAttribute('disabled');
-        btn.style.opacity = '';
-      },
-      function() {
-        btn.removeAttribute('disabled');
-        btn.style.opacity = '';
-      }
-    );
-  });
-})();
-</script>
 
 {% schema %}
 {
@@ -263,12 +199,7 @@
       "label": "Description",
       "default": "Each WTP Coffee location is a destination in itself. Find your nearest outpost and experience the craft firsthand."
     },
-    {
-      "type": "text",
-      "id": "button_label",
-      "label": "Location Button Label",
-      "default": "Use Current Location"
-    },
+
     {
       "type": "header",
       "content": "Map Embed"
