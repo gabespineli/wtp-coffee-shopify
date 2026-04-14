@@ -130,21 +130,24 @@
           "type": "category",
           "settings": {
             "collection": "retail-coffee-beans-1",
-            "title": ""
+            "title": "",
+            "image": "shopify://shop_images/roast_categ.png"
           }
         },
         "category_nqKXyG": {
           "type": "category",
           "settings": {
             "collection": "merchandise-1",
-            "title": ""
+            "title": "",
+            "image": "shopify://shop_images/merch_categ.png"
           }
         },
         "category_EnWc9G": {
           "type": "category",
           "settings": {
             "collection": "ceramic-mugs",
-            "title": ""
+            "title": "",
+            "image": "shopify://shop_images/cup_categ.png"
           }
         }
       },
