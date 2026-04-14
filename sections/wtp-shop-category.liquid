@@ -123,6 +123,7 @@
   .sc-card-img {
     position: absolute;
     z-index: 1;
+    width: var(--img-scale-d, 80%);
   }
 
   .sc-card-img img {
@@ -159,6 +160,10 @@
 
     .sc-card {
       min-height: 300px;
+    }
+
+    .sc-card-img {
+      width: var(--img-scale-m, var(--img-scale-d, 80%));
     }
   }
 
@@ -211,7 +216,7 @@
             {%- endif -%}
           </div>
 
-          {%- capture img_style -%}width: {{ block.settings.image_size }}%; right: {{ block.settings.offset_right }}%; bottom: {{ block.settings.offset_bottom }}%;{%- endcapture -%}
+          {%- capture img_style -%}--img-scale-d: {{ block.settings.image_size }}%; --img-scale-m: {{ block.settings.image_size_mobile }}%; right: {{ block.settings.offset_right }}%; bottom: {{ block.settings.offset_bottom }}%;{%- endcapture -%}
           <div class="sc-card-img" style="{{ img_style }}">
             {%- if card_image != blank -%}
               {{
@@ -315,11 +320,21 @@
         {
           "type": "range",
           "id": "image_size",
-          "label": "Image Scale",
+          "label": "Image Scale (Desktop)",
           "min": 40,
           "max": 150,
           "step": 5,
           "default": 80,
+          "unit": "%"
+        },
+        {
+          "type": "range",
+          "id": "image_size_mobile",
+          "label": "Image Scale (Mobile)",
+          "min": 40,
+          "max": 150,
+          "step": 5,
+          "default": 60,
           "unit": "%"
         },
         {
