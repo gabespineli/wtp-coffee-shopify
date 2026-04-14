@@ -28,7 +28,7 @@
         "heading": "The Archipelago of Brew",
         "description": "Each WTP Coffee location is a destination in itself. Find your nearest outpost and experience the craft firsthand.",
         "button_label": "Use Current Location",
-        "map_embed_code": ""
+        "map_embed_code": "<iframe src=\"https://www.google.com/maps/d/u/0/embed?mid=18veoAM0XSn20rsWWDwfjGy7p33Ov_x8&amp;ehbc=2E312F&amp;noprof=1\" width=\"640\" height=\"480\"></iframe>"
       }
     },
     "wtp_location_cards_7rEkw9": {
