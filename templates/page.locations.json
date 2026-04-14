@@ -37,22 +37,24 @@
         "location_NNGGNf": {
           "type": "location",
           "settings": {
+            "image": "shopify://shop_images/branch-alabang_b761a117-5270-46ba-8f31-5ca0303b644f.jpg",
             "title": "Alabang Branch",
             "address": "Industry St. Madrigal Business Park Ayala Alabang, Muntinlupa",
             "display_hours": "Sun-Wed, 7 AM - 7 PM & Thurs-Sat, 7 AM - 9 PM",
             "amenities": "Free WiFi, Parking Available, Dine-in",
-            "map_url": "",
+            "map_url": "https://maps.app.goo.gl/FuTHvNqSsSBECL8R8",
             "hours_json": "{\n  \"sun\": [\"07:00\", \"19:00\"],\n  \"mon\": [\"07:00\", \"19:00\"],\n  \"tue\": [\"07:00\", \"19:00\"],\n  \"wed\": [\"07:00\", \"19:00\"],\n  \"thu\": [\"07:00\", \"21:00\"],\n  \"fri\": [\"07:00\", \"21:00\"],\n  \"sat\": [\"07:00\", \"21:00\"]\n}"
           }
         },
         "location_Ki6bVW": {
           "type": "location",
           "settings": {
+            "image": "shopify://shop_images/kalsada_location.jpg",
             "title": "Opus Branch",
             "address": "2F SPATIO at Opus Mall Bridgetowne, Quezon City",
             "display_hours": "Mon-Fri, 11 AM - 10 PM & Thurs-Sat, 10 AM - 10 PM",
             "amenities": "Free WiFi, Dine-in",
-            "map_url": "",
+            "map_url": "https://maps.app.goo.gl/Ufv1vS3H9tKPwEJQA",
             "hours_json": "{\n  \"mon\": [\"11:00\", \"22:00\"],\n  \"tue\": [\"11:00\", \"22:00\"],\n  \"wed\": [\"11:00\", \"22:00\"],\n  \"thu\": [\"10:00\", \"22:00\"],\n  \"fri\": [\"10:00\", \"22:00\"],\n  \"sat\": [\"10:00\", \"22:00\"]\n}"
           }
         }
@@ -80,6 +82,7 @@
         "bullet_2": "Wholesale Programs",
         "button_label": "Inquire for Bookings",
         "button_url": "",
+        "image": "shopify://shop_images/coffee_cart_b9f346c3-e6ec-48f7-b786-e72e18d5f461.jpg",
         "quote": "Their baristas transformed our wedding morning into something truly unforgettable.",
         "quote_attr": "Angela R., Private Event Client"
       }
