@@ -17,55 +17,78 @@
         "padding_bottom": 28
       }
     },
-    "wtp_locations_fLUPhe": {
-      "type": "wtp-locations",
+    "wtp_map_hero_4bckVm": {
+      "type": "wtp-map-hero",
+      "name": "Map Hero",
+      "settings": {
+        "bg_color": "#F5F0E8",
+        "text_color": "#1B3A2D",
+        "accent_color": "#C8A96E",
+        "eyebrow": "FIND US",
+        "heading": "The Archipelago of Brew",
+        "description": "Each WTP Coffee location is a destination in itself. Find your nearest outpost and experience the craft firsthand.",
+        "button_label": "Use Current Location",
+        "map_embed_code": ""
+      }
+    },
+    "wtp_location_cards_7rEkw9": {
+      "type": "wtp-location-cards",
       "blocks": {
-        "location_PkLfhR": {
+        "location_NNGGNf": {
           "type": "location",
           "settings": {
-            "image": "shopify://shop_images/branch-alabang_b761a117-5270-46ba-8f31-5ca0303b644f.jpg",
-            "title": "WTP Alabang",
-            "address": "Industry St. Madrigal Business Park Ayala Alabang, Muntinlupa",
-            "hours": "Sun - Wed, 7 AM - 7 PM & Thurs - Sat, 7 AM - 9 PM",
-            "map_link": ""
+            "title": "Flagship Roastery",
+            "address": "123 Coffee Avenue, Metro Manila",
+            "display_hours": "Mon-Sun, 8:00 AM - 6:00 PM",
+            "amenities": "Free WiFi, Parking Available, Dine-in",
+            "map_url": "",
+            "hours_json": "{\"mon\":[\"08:00\",\"18:00\"], \"tue\":[\"08:00\",\"18:00\"], \"wed\":[\"08:00\",\"18:00\"], \"thu\":[\"08:00\",\"18:00\"], \"fri\":[\"08:00\",\"18:00\"], \"sat\":[\"09:00\",\"17:00\"], \"sun\":[\"09:00\",\"17:00\"]}"
           }
         },
-        "location_W8TA8g": {
+        "location_Ki6bVW": {
           "type": "location",
           "settings": {
-            "image": "shopify://shop_images/product-drink-2.jpg",
-            "title": "WTP Opus",
-            "address": "2F SPATIO at Opus Mall Bridgetowne, Quezon City",
-            "hours": "Mon - Fri, 11 AM - 10 PM & Thurs - Sat, 10 AM - 10 PM",
-            "map_link": ""
+            "title": "Flagship Roastery",
+            "address": "123 Coffee Avenue, Metro Manila",
+            "display_hours": "Mon-Sun, 8:00 AM - 6:00 PM",
+            "amenities": "Free WiFi, Parking Available, Dine-in",
+            "map_url": "",
+            "hours_json": "{\"mon\":[\"08:00\",\"18:00\"], \"tue\":[\"08:00\",\"18:00\"], \"wed\":[\"08:00\",\"18:00\"], \"thu\":[\"08:00\",\"18:00\"], \"fri\":[\"08:00\",\"18:00\"], \"sat\":[\"09:00\",\"17:00\"], \"sun\":[\"09:00\",\"17:00\"]}"
           }
         }
       },
       "block_order": [
-        "location_PkLfhR",
-        "location_W8TA8g"
+        "location_NNGGNf",
+        "location_Ki6bVW"
       ],
-      "name": "WTP Locations",
+      "name": "Location Cards Grid",
       "settings": {
-        "eyebrow": "Find Us",
-        "heading": "The Archipelago of Brew",
-        "subtext": "Each WTP outpost is a destination in itself. Find your nearest sanctuary, pull up a chair, and let the coffee do the talking.",
-        "map_embed_url": "",
-        "cat_eyebrow": "Experience Excellence Anywhere",
-        "cat_heading": "Host an Event with WTP Coffee.",
-        "cat_desc": "From intimate gatherings to grand corporate affairs, we bring our craft directly to you. Every cup served is a reflection of our commitment to quality.",
+        "bg_color": "#F5F0E8"
+      }
+    },
+    "wtp_catering_teaser_rwLed7": {
+      "type": "wtp-catering-teaser",
+      "name": "Catering Teaser",
+      "settings": {
+        "bg_color": "#1B3A2D",
+        "text_color": "#FFFFFF",
+        "accent_color": "#C8A96E",
+        "eyebrow": "EXPERIENCE EXCELLENCE ANYWHERE",
+        "heading": "Host an Event with WTP Coffee.",
+        "description": "From intimate private gatherings to large-scale corporate functions, our catering and event service brings the complete WTP Coffee experience directly to you.",
         "bullet_1": "Coffee Cart Service",
         "bullet_2": "Wholesale Programs",
-        "cat_cta_label": "Inquire for Bookings",
-        "cat_cta_url": "",
-        "cat_image": "shopify://shop_images/coffee_cart_b9f346c3-e6ec-48f7-b786-e72e18d5f461.jpg",
-        "quote_text": "The attention to detail was extraordinary. Our guests are still raving about it.",
-        "quote_author": "Maria S., Event Organizer"
+        "button_label": "Inquire for Bookings",
+        "button_url": "",
+        "quote": "Their baristas transformed our wedding morning into something truly unforgettable.",
+        "quote_attr": "Angela R., Private Event Client"
       }
     }
   },
   "order": [
     "main",
-    "wtp_locations_fLUPhe"
+    "wtp_map_hero_4bckVm",
+    "wtp_location_cards_7rEkw9",
+    "wtp_catering_teaser_rwLed7"
   ]
 }

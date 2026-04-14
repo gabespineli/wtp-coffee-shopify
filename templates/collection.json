@@ -68,6 +68,7 @@
     },
     "product-grid": {
       "type": "main-collection-product-grid",
+      "disabled": true,
       "settings": {
         "products_per_page": 16,
         "columns_desktop": 4,
@@ -85,11 +86,90 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "wtp_featured_arrivals_tqfAcX": {
+      "type": "wtp-featured-arrivals",
+      "blocks": {
+        "product_card_jFKpkG": {
+          "type": "product_card",
+          "settings": {
+            "product": "antique-safari-cup-6oz"
+          }
+        },
+        "product_card_Um8K6N": {
+          "type": "product_card",
+          "settings": {
+            "product": "wtp-x-june-digan-shirt"
+          }
+        },
+        "product_card_GnDGQV": {
+          "type": "product_card",
+          "settings": {
+            "product": "tall-conical-set"
+          }
+        }
+      },
+      "block_order": [
+        "product_card_jFKpkG",
+        "product_card_Um8K6N",
+        "product_card_GnDGQV"
+      ],
+      "name": "Featured Arrivals",
+      "settings": {
+        "bg_color": "#ffffff",
+        "text_color": "#1B3A2D",
+        "accent_color": "#C8A96E",
+        "eyebrow": "NEW IN STORE",
+        "heading": "Featured Arrivals"
+      }
+    },
+    "wtp_shop_category_MxtXBY": {
+      "type": "wtp-shop-category",
+      "blocks": {
+        "category_iPWdq4": {
+          "type": "category",
+          "settings": {
+            "collection": "retail-coffee-beans-1",
+            "title": ""
+          }
+        },
+        "category_nqKXyG": {
+          "type": "category",
+          "settings": {
+            "collection": "merchandise-1",
+            "title": ""
+          }
+        },
+        "category_EnWc9G": {
+          "type": "category",
+          "settings": {
+            "collection": "ceramic-mugs",
+            "title": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_iPWdq4",
+        "category_nqKXyG",
+        "category_EnWc9G"
+      ],
+      "name": "Shop by Category",
+      "settings": {
+        "bg_color": "#F5F0E8",
+        "card_bg_color": "#EAE7E0",
+        "text_color": "#1B3A2D",
+        "accent_color": "#C8A96E",
+        "heading": "Shop By Category",
+        "explore_label": "Explore All",
+        "explore_url": ""
+      }
     }
   },
   "order": [
     "banner",
     "hero_product_tabs_wfwAit",
-    "product-grid"
+    "product-grid",
+    "wtp_featured_arrivals_tqfAcX",
+    "wtp_shop_category_MxtXBY"
   ]
 }
