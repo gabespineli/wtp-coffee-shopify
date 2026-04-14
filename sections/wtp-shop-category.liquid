@@ -124,6 +124,8 @@
     position: absolute;
     z-index: 1;
     width: var(--img-scale-d, 80%);
+    right: var(--img-right-d, -10%);
+    bottom: var(--img-bottom-d, -10%);
   }
 
   .sc-card-img img {
@@ -164,6 +166,8 @@
 
     .sc-card-img {
       width: var(--img-scale-m, var(--img-scale-d, 80%));
+      right: var(--img-right-m, var(--img-right-d, -10%));
+      bottom: var(--img-bottom-m, var(--img-bottom-d, -10%));
     }
   }
 
@@ -216,7 +220,7 @@
             {%- endif -%}
           </div>
 
-          {%- capture img_style -%}--img-scale-d: {{ block.settings.image_size }}%; --img-scale-m: {{ block.settings.image_size_mobile }}%; right: {{ block.settings.offset_right }}%; bottom: {{ block.settings.offset_bottom }}%;{%- endcapture -%}
+          {%- capture img_style -%}--img-scale-d: {{ block.settings.image_size }}%; --img-scale-m: {{ block.settings.image_size_mobile }}%; --img-right-d: {{ block.settings.offset_right }}%; --img-right-m: {{ block.settings.offset_right_mobile }}%; --img-bottom-d: {{ block.settings.offset_bottom }}%; --img-bottom-m: {{ block.settings.offset_bottom_mobile }}%;{%- endcapture -%}
           <div class="sc-card-img" style="{{ img_style }}">
             {%- if card_image != blank -%}
               {{
@@ -340,7 +344,17 @@
         {
           "type": "range",
           "id": "offset_right",
-          "label": "Horizontal Position (Right)",
+          "label": "Horizontal Position (Desktop)",
+          "min": -50,
+          "max": 50,
+          "step": 2,
+          "default": -10,
+          "unit": "%"
+        },
+        {
+          "type": "range",
+          "id": "offset_right_mobile",
+          "label": "Horizontal Position (Mobile)",
           "min": -50,
           "max": 50,
           "step": 2,
@@ -350,7 +364,17 @@
         {
           "type": "range",
           "id": "offset_bottom",
-          "label": "Vertical Position (Bottom)",
+          "label": "Vertical Position (Desktop)",
+          "min": -50,
+          "max": 50,
+          "step": 2,
+          "default": -10,
+          "unit": "%"
+        },
+        {
+          "type": "range",
+          "id": "offset_bottom_mobile",
+          "label": "Vertical Position (Mobile)",
           "min": -50,
           "max": 50,
           "step": 2,
