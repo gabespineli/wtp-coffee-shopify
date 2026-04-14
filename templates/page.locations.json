@@ -37,23 +37,23 @@
         "location_NNGGNf": {
           "type": "location",
           "settings": {
-            "title": "Flagship Roastery",
-            "address": "123 Coffee Avenue, Metro Manila",
-            "display_hours": "Mon-Sun, 8:00 AM - 6:00 PM",
+            "title": "Alabang Branch",
+            "address": "Industry St. Madrigal Business Park Ayala Alabang, Muntinlupa",
+            "display_hours": "Sun-Wed, 7 AM - 7 PM & Thurs-Sat, 7 AM - 9 PM",
             "amenities": "Free WiFi, Parking Available, Dine-in",
             "map_url": "",
-            "hours_json": "{\"mon\":[\"08:00\",\"18:00\"], \"tue\":[\"08:00\",\"18:00\"], \"wed\":[\"08:00\",\"18:00\"], \"thu\":[\"08:00\",\"18:00\"], \"fri\":[\"08:00\",\"18:00\"], \"sat\":[\"09:00\",\"17:00\"], \"sun\":[\"09:00\",\"17:00\"]}"
+            "hours_json": "{\n  \"sun\": [\"07:00\", \"19:00\"],\n  \"mon\": [\"07:00\", \"19:00\"],\n  \"tue\": [\"07:00\", \"19:00\"],\n  \"wed\": [\"07:00\", \"19:00\"],\n  \"thu\": [\"07:00\", \"21:00\"],\n  \"fri\": [\"07:00\", \"21:00\"],\n  \"sat\": [\"07:00\", \"21:00\"]\n}"
           }
         },
         "location_Ki6bVW": {
           "type": "location",
           "settings": {
-            "title": "Flagship Roastery",
-            "address": "123 Coffee Avenue, Metro Manila",
-            "display_hours": "Mon-Sun, 8:00 AM - 6:00 PM",
-            "amenities": "Free WiFi, Parking Available, Dine-in",
+            "title": "Opus Branch",
+            "address": "2F SPATIO at Opus Mall Bridgetowne, Quezon City",
+            "display_hours": "Mon-Fri, 11 AM - 10 PM & Thurs-Sat, 10 AM - 10 PM",
+            "amenities": "Free WiFi, Dine-in",
             "map_url": "",
-            "hours_json": "{\"mon\":[\"08:00\",\"18:00\"], \"tue\":[\"08:00\",\"18:00\"], \"wed\":[\"08:00\",\"18:00\"], \"thu\":[\"08:00\",\"18:00\"], \"fri\":[\"08:00\",\"18:00\"], \"sat\":[\"09:00\",\"17:00\"], \"sun\":[\"09:00\",\"17:00\"]}"
+            "hours_json": "{\n  \"mon\": [\"11:00\", \"22:00\"],\n  \"tue\": [\"11:00\", \"22:00\"],\n  \"wed\": [\"11:00\", \"22:00\"],\n  \"thu\": [\"10:00\", \"22:00\"],\n  \"fri\": [\"10:00\", \"22:00\"],\n  \"sat\": [\"10:00\", \"22:00\"]\n}"
           }
         }
       },
