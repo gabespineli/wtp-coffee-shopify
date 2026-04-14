@@ -132,7 +132,7 @@
             "collection": "retail-coffee-beans-1",
             "title": "",
             "image": "shopify://shop_images/roast_categ.png",
-            "image_size": 100,
+            "image_size": 70,
             "offset_right": -10,
             "offset_bottom": -50
           }
@@ -143,9 +143,9 @@
             "collection": "merchandise-1",
             "title": "",
             "image": "shopify://shop_images/merch_categ.png",
-            "image_size": 110,
+            "image_size": 80,
             "offset_right": -18,
-            "offset_bottom": -42
+            "offset_bottom": -48
           }
         },
         "category_EnWc9G": {
@@ -154,7 +154,7 @@
             "collection": "ceramic-mugs",
             "title": "",
             "image": "shopify://shop_images/cup_categ.png",
-            "image_size": 105,
+            "image_size": 90,
             "offset_right": -14,
             "offset_bottom": -50
           }
