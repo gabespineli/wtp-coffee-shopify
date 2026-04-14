@@ -1,0 +1,588 @@
+{%- style -%}
+  #wtp-mission-vision-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ════════════════════════════════════════
+     ANIMATIONS
+  ════════════════════════════════════════ */
+  .mv-anim {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .mv-anim.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Staggered delays for children if needed */
+  .mv-delay-1 { transition-delay: 0.1s; }
+  .mv-delay-2 { transition-delay: 0.25s; }
+  .mv-delay-3 { transition-delay: 0.4s; }
+  .mv-delay-4 { transition-delay: 0.55s; }
+  .mv-delay-5 { transition-delay: 0.7s; }
+
+  /* ════════════════════════════════════════
+     PART 1: VISION
+  ════════════════════════════════════════ */
+  .mv-vision {
+    background: {{ section.settings.vision_bg_color }};
+    padding: 8rem 5%;
+    color: {{ section.settings.vision_text_color }};
+  }
+
+  .mv-vision-container {
+    max-width: 1380px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .mv-vision-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .mv-vision-heading {
+    font-family: var(--font-heading-family);
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    color: inherit;
+    margin: 0;
+  }
+
+  .mv-vision-desc {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: inherit;
+    opacity: 0.8;
+    margin: 0;
+    max-width: 500px;
+  }
+
+  /* Vision Images - Masonry Grid */
+  .mv-vision-images {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(120px, auto);
+    gap: 1.5rem;
+  }
+
+  .mv-img-wrap {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+
+  .mv-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mv-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mv-img-placeholder svg {
+    width: 40px;
+    height: 40px;
+    opacity: 0.3;
+  }
+
+  /* Specific positions for Vision 4-image masonry */
+  .mv-v-img-1 { grid-column: 1; grid-row: 1 / span 2; min-height: 400px; }
+  .mv-v-img-2 { grid-column: 2; grid-row: 1; min-height: 200px; }
+  .mv-v-img-3 { grid-column: 2; grid-row: 2; min-height: 240px; }
+  .mv-v-img-4 { grid-column: 3; grid-row: 1 / span 2; min-height: 440px; margin-top: 2rem; }
+
+  /* ════════════════════════════════════════
+     PART 2: MISSION
+  ════════════════════════════════════════ */
+  .mv-mission {
+    background: {{ section.settings.mission_bg_color }};
+    padding: 10rem 5%;
+    color: {{ section.settings.mission_text_color }};
+  }
+
+  .mv-mission-container {
+    max-width: 1380px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .mv-mission-carousel {
+    display: contents;
+  }
+
+  .mv-mission-left { order: 1; }
+  .mv-mission-center { order: 2; }
+  .mv-mission-right { order: 3; }
+
+  .mv-mission-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .mv-mission-center {
+    text-align: center;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .mv-mission-eyebrow {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    font-style: italic;
+    color: {{ section.settings.mission_accent_color }};
+    margin: 0;
+    line-height: 1;
+  }
+
+  .mv-mission-heading {
+    font-family: var(--font-heading-family);
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    color: inherit;
+    margin: 0;
+  }
+
+  .mv-mission-quote {
+    font-size: 1.4rem;
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1.6;
+    color: {{ section.settings.mission_accent_color }};
+    margin: 1rem 0;
+    position: relative;
+    padding: 0 2rem;
+  }
+
+  .mv-mission-quote::before,
+  .mv-mission-quote::after {
+    content: '"';
+    color: rgba(200, 169, 110, 0.3);
+    font-family: var(--font-heading-family);
+    font-size: 4rem;
+    position: absolute;
+    top: -0.5rem;
+    line-height: 1;
+  }
+
+  .mv-mission-quote::before { left: -0.5rem; }
+  .mv-mission-quote::after { right: -0.5rem; }
+
+  .mv-mission-desc {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: inherit;
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  /* Specific positions for Mission images */
+  .mv-m-img-wrap {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
+  
+  .mv-m-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mv-m-img-1 { aspect-ratio: 4/5; }
+  .mv-m-img-2 { aspect-ratio: 1/1; }
+  .mv-m-img-3 { aspect-ratio: 3/4; margin-top: 3rem; }
+  .mv-m-img-4 { aspect-ratio: 4/3; }
+
+  .mv-mission-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ════════════════════════════════════════
+     RESPONSIVE
+  ════════════════════════════════════════ */
+  @media screen and (max-width: 1024px) {
+    .mv-vision-container {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+
+    .mv-vision-text {
+      text-align: center;
+      align-items: center;
+    }
+
+    .mv-mission-container {
+      grid-template-columns: 1fr;
+      gap: 5rem;
+    }
+
+    .mv-mission-center {
+      order: -1;
+      padding: 0;
+    }
+
+    .mv-mission-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    
+    .mv-m-img-3 { margin-top: 0; }
+  }
+
+  @media screen and (max-width: 768px) {
+    .mv-vision { padding: 5rem 5%; }
+    .mv-mission { padding: 5rem 0; overflow: hidden; }
+
+    .mv-mission-center {
+      padding: 0 5%;
+    }
+
+    .mv-vision-images {
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: auto;
+    }
+
+    .mv-v-img-1 { grid-column: 1; grid-row: 1; min-height: 250px; }
+    .mv-v-img-2 { grid-column: 2; grid-row: 1; min-height: 250px; }
+    .mv-v-img-3 { grid-column: 1; grid-row: 2; min-height: 250px; }
+    .mv-v-img-4 { grid-column: 2; grid-row: 2; min-height: 250px; margin-top: 0; }
+
+    .mv-mission-carousel {
+      display: flex;
+      overflow-x: auto;
+      gap: 1rem;
+      scroll-snap-type: x mandatory;
+      padding: 0 5%;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .mv-mission-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .mv-mission-col {
+      display: contents;
+    }
+
+    .mv-m-img-wrap {
+      flex: 0 0 75vw;
+      scroll-snap-align: center;
+      margin-bottom: 0;
+    }
+
+    .mv-m-img-1,
+    .mv-m-img-2,
+    .mv-m-img-3,
+    .mv-m-img-4 {
+      aspect-ratio: 4/3;
+      margin-top: 0;
+    }
+
+    .mv-mission-quote::before,
+    .mv-mission-quote::after {
+      display: none;
+    }
+  }
+{%- endstyle -%}
+
+<section id="wtp-mission-vision-{{ section.id }}" aria-label="Mission and Vision">
+  
+  {%- comment -%} ── PART 1: VISION ── {%- endcomment -%}
+  <div class="mv-vision">
+    <div class="mv-vision-container">
+      
+      <div class="mv-vision-text">
+        {%- if section.settings.vision_heading != blank -%}
+          <h2 class="mv-vision-heading mv-anim">{{ section.settings.vision_heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.vision_desc != blank -%}
+          <p class="mv-vision-desc mv-anim mv-delay-1">{{ section.settings.vision_desc | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="mv-vision-images">
+        <div class="mv-img-wrap mv-v-img-1 mv-anim mv-delay-1">
+          {%- if section.settings.vision_img_1 != blank -%}
+            {{ section.settings.vision_img_1 | image_url: width: 600 | image_tag: loading: 'lazy' }}
+          {%- else -%}
+            <div class="mv-img-placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+          {%- endif -%}
+        </div>
+        <div class="mv-img-wrap mv-v-img-2 mv-anim mv-delay-2">
+          {%- if section.settings.vision_img_2 != blank -%}
+            {{ section.settings.vision_img_2 | image_url: width: 600 | image_tag: loading: 'lazy' }}
+          {%- else -%}
+            <div class="mv-img-placeholder">{{ 'lifestyle-2' | placeholder_svg_tag }}</div>
+          {%- endif -%}
+        </div>
+        <div class="mv-img-wrap mv-v-img-3 mv-anim mv-delay-3">
+          {%- if section.settings.vision_img_3 != blank -%}
+            {{ section.settings.vision_img_3 | image_url: width: 600 | image_tag: loading: 'lazy' }}
+          {%- else -%}
+            <div class="mv-img-placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+          {%- endif -%}
+        </div>
+        <div class="mv-img-wrap mv-v-img-4 mv-anim mv-delay-4">
+          {%- if section.settings.vision_img_4 != blank -%}
+            {{ section.settings.vision_img_4 | image_url: width: 600 | image_tag: loading: 'lazy' }}
+          {%- else -%}
+            <div class="mv-img-placeholder">{{ 'lifestyle-2' | placeholder_svg_tag }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {%- comment -%} ── PART 2: MISSION ── {%- endcomment -%}
+  <div class="mv-mission">
+    <div class="mv-mission-container">
+      
+      {%- comment -%} Center Text {%- endcomment -%}
+      <div class="mv-mission-center">
+        {%- if section.settings.mission_eyebrow != blank -%}
+          <p class="mv-mission-eyebrow mv-anim">{{ section.settings.mission_eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.mission_heading != blank -%}
+          <h2 class="mv-mission-heading mv-anim mv-delay-1">{{ section.settings.mission_heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.mission_quote != blank -%}
+          <p class="mv-mission-quote mv-anim mv-delay-2">{{ section.settings.mission_quote | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.mission_desc != blank -%}
+          <p class="mv-mission-desc mv-anim mv-delay-3">{{ section.settings.mission_desc | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="mv-mission-carousel">
+        {%- comment -%} Left Images (1, 2) {%- endcomment -%}
+        <div class="mv-mission-col mv-mission-left">
+          <div class="mv-m-img-wrap mv-m-img-1 mv-anim mv-delay-1">
+            {%- if section.settings.mission_img_1 != blank -%}
+              {{ section.settings.mission_img_1 | image_url: width: 600 | image_tag: loading: 'lazy' }}
+            {%- else -%}
+              <div class="mv-mission-placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+            {%- endif -%}
+          </div>
+          <div class="mv-m-img-wrap mv-m-img-2 mv-anim mv-delay-2">
+            {%- if section.settings.mission_img_2 != blank -%}
+              {{ section.settings.mission_img_2 | image_url: width: 600 | image_tag: loading: 'lazy' }}
+            {%- else -%}
+              <div class="mv-mission-placeholder">{{ 'lifestyle-2' | placeholder_svg_tag }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- comment -%} Right Images (3, 4) {%- endcomment -%}
+        <div class="mv-mission-col mv-mission-right">
+          <div class="mv-m-img-wrap mv-m-img-3 mv-anim mv-delay-3">
+            {%- if section.settings.mission_img_3 != blank -%}
+              {{ section.settings.mission_img_3 | image_url: width: 600 | image_tag: loading: 'lazy' }}
+            {%- else -%}
+              <div class="mv-mission-placeholder">{{ 'lifestyle-2' | placeholder_svg_tag }}</div>
+            {%- endif -%}
+          </div>
+          <div class="mv-m-img-wrap mv-m-img-4 mv-anim mv-delay-4">
+            {%- if section.settings.mission_img_4 != blank -%}
+              {{ section.settings.mission_img_4 | image_url: width: 600 | image_tag: loading: 'lazy' }}
+            {%- else -%}
+              <div class="mv-mission-placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const animatedElements = document.querySelectorAll('#wtp-mission-vision-{{ section.id }} .mv-anim');
+  
+  if (!animatedElements.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target); // Only animate once
+      }
+    });
+  }, {
+    threshold: 0.2
+  });
+
+  animatedElements.forEach(el => {
+    observer.observe(el);
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Mission and Vision",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Part 1: Vision"
+    },
+    {
+      "type": "color",
+      "id": "vision_bg_color",
+      "label": "Background Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "color",
+      "id": "vision_text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "vision_heading",
+      "label": "Vision Heading",
+      "default": "Our Vision"
+    },
+    {
+      "type": "textarea",
+      "id": "vision_desc",
+      "label": "Vision Description",
+      "default": "To redefine the local coffee landscape by elevating every aspect of the supply chain, ensuring sustainability, and crafting an uncompromisingly premium experience."
+    },
+    {
+      "type": "image_picker",
+      "id": "vision_img_1",
+      "label": "Vision Image 1 (Left Tall)"
+    },
+    {
+      "type": "image_picker",
+      "id": "vision_img_2",
+      "label": "Vision Image 2 (Top Middle)"
+    },
+    {
+      "type": "image_picker",
+      "id": "vision_img_3",
+      "label": "Vision Image 3 (Bottom Middle)"
+    },
+    {
+      "type": "image_picker",
+      "id": "vision_img_4",
+      "label": "Vision Image 4 (Right Tall)"
+    },
+    {
+      "type": "header",
+      "content": "Part 2: Mission"
+    },
+    {
+      "type": "color",
+      "id": "mission_bg_color",
+      "label": "Background Color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "mission_text_color",
+      "label": "Text Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "color",
+      "id": "mission_accent_color",
+      "label": "Accent Color",
+      "default": "#C8A96E"
+    },
+    {
+      "type": "text",
+      "id": "mission_eyebrow",
+      "label": "Mission Eyebrow",
+      "default": "our"
+    },
+    {
+      "type": "text",
+      "id": "mission_heading",
+      "label": "Mission Heading",
+      "default": "Mission"
+    },
+    {
+      "type": "textarea",
+      "id": "mission_quote",
+      "label": "Mission Quote",
+      "default": "Every cup tells a story of craftsmanship, respect, and community."
+    },
+    {
+      "type": "textarea",
+      "id": "mission_desc",
+      "label": "Mission Description",
+      "default": "Our mission is to foster a movement where radical transparency and meticulous sourcing create a ripple effect of positivity. We experiment daily, collaborate often, and serve fearlessly."
+    },
+    {
+      "type": "image_picker",
+      "id": "mission_img_1",
+      "label": "Mission Image 1 (Top Left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mission_img_2",
+      "label": "Mission Image 2 (Bottom Left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mission_img_3",
+      "label": "Mission Image 3 (Top Right)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mission_img_4",
+      "label": "Mission Image 4 (Bottom Right)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mission and Vision"
+    }
+  ]
+}
+{% endschema %}

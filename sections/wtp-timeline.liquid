@@ -38,16 +38,28 @@
     padding-left: 3rem;
   }
 
-  /* Continuous vertical rule */
-  .tl-track::before {
-    content: '';
+  /* ── Vertical line: muted track ── */
+  .tl-line {
     position: absolute;
     top: 0;
     left: 0.55rem;
     bottom: 0;
     width: 2px;
     background: {{ section.settings.accent_color }};
-    opacity: 0.35;
+    opacity: 0.2;
+    z-index: 0;
+  }
+
+  /* Animated fill running down the track */
+  .tl-line-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: {{ section.settings.accent_color }};
+    opacity: 1;
+    transition: height 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
   /* ── Individual node ── */
@@ -60,7 +72,7 @@
     margin-bottom: 0;
   }
 
-  /* Dot on the line */
+  /* Dot: default — hollow outline ── */
   .tl-node::before {
     content: '';
     position: absolute;
@@ -69,17 +81,17 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: {{ section.settings.accent_color }};
-    box-shadow: 0 0 0 3px {{ section.settings.bg_color }}, 0 0 0 5px {{ section.settings.accent_color }};
+    background: transparent;
+    border: 2px solid {{ section.settings.accent_color }};
+    box-shadow: 0 0 0 3px {{ section.settings.bg_color }};
     z-index: 1;
+    transition: background 0.4s ease, box-shadow 0.4s ease;
   }
 
-  /* First node gets a larger anchor dot */
-  .tl-node:first-child::before {
-    width: 16px;
-    height: 16px;
-    left: -2.65rem;
-    top: 0.25rem;
+  /* Dot: active — filled solid ── */
+  .tl-node.is-active::before {
+    background: {{ section.settings.accent_color }};
+    box-shadow: 0 0 0 3px {{ section.settings.bg_color }}, 0 0 0 5px {{ section.settings.accent_color }};
   }
 
   /* Date label */
@@ -112,6 +124,27 @@
     max-width: 640px;
   }
 
+  /* ── Node text block: inactive state ── */
+  .tl-node .tl-date,
+  .tl-node .tl-title,
+  .tl-node .tl-desc {
+    opacity: 0.4;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+
+  /* ── Node text block: active state ── */
+  .tl-node.is-active .tl-date,
+  .tl-node.is-active .tl-title {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .tl-node.is-active .tl-desc {
+    opacity: 0.65;
+    transform: translateY(0);
+  }
+
   /* ── Mobile ── */
   @media screen and (max-width: 750px) {
     #wtp-timeline-{{ section.id }} {
@@ -126,16 +159,12 @@
       padding-left: 2.25rem;
     }
 
-    .tl-track::before {
+    .tl-line {
       left: 0.4rem;
     }
 
     .tl-node::before {
       left: -1.95rem;
-    }
-
-    .tl-node:first-child::before {
-      left: -2.05rem;
     }
 
     .tl-node {
@@ -158,7 +187,10 @@
   {%- endif -%}
 
   {%- if section.blocks.size > 0 -%}
-    <div class="tl-track" role="list">
+    <div class="tl-track" role="list" id="tl-track-{{ section.id }}">
+      <div class="tl-line" aria-hidden="true">
+        <div class="tl-line-fill" id="tl-fill-{{ section.id }}"></div>
+      </div>
       {%- for block in section.blocks -%}
         <article class="tl-node" role="listitem" {{ block.shopify_attributes }}>
           {%- if block.settings.date != blank -%}
@@ -176,6 +208,53 @@
   {%- endif -%}
 
 </section>
+
+<script>
+(function() {
+  var trackEl = document.getElementById('tl-track-{{ section.id }}');
+  var fillEl  = document.getElementById('tl-fill-{{ section.id }}');
+  if (!trackEl || !fillEl) return;
+
+  var nodes = trackEl.querySelectorAll('.tl-node');
+  if (!nodes.length) return;
+
+  /* ── IntersectionObserver: node activation ── */
+  var nodeObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-active');
+      } else {
+        entry.target.classList.remove('is-active');
+      }
+    });
+  }, {
+    rootMargin: '-40% 0px -40% 0px',
+    threshold: 0
+  });
+
+  nodes.forEach(function(node) {
+    nodeObserver.observe(node);
+  });
+
+  /* ── Scroll listener: grow the fill line ── */
+  function updateFill() {
+    var trackRect  = trackEl.getBoundingClientRect();
+    var trackTop   = trackRect.top;
+    var trackH     = trackRect.height;
+    var vpH        = window.innerHeight;
+
+    /* How far the viewport midpoint has traveled into the track */
+    var midpoint   = vpH / 2;
+    var progress   = (midpoint - trackTop) / trackH;
+    progress = Math.min(Math.max(progress, 0), 1);
+
+    fillEl.style.height = (progress * 100) + '%';
+  }
+
+  window.addEventListener('scroll', updateFill, { passive: true });
+  updateFill();
+})();
+</script>
 
 {% schema %}
 {

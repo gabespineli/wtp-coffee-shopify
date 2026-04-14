@@ -28,6 +28,7 @@
     object-fit: cover;
     display: block;
     z-index: 0;
+    filter: brightness(var(--bg-brightness, 0.5));
   }
 
   .cb-bg--placeholder {
@@ -38,13 +39,6 @@
     width: 100%;
     height: 100%;
     opacity: 0.15;
-  }
-
-  .cb-overlay {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 100%);
-    z-index: 1;
   }
 
   .cb-content {
@@ -122,7 +116,7 @@
   }
 </style>
 
-<section id="wtp-collab-banner-{{ section.id }}" aria-label="{{ section.settings.headline | escape }}">
+<section id="wtp-collab-banner-{{ section.id }}" aria-label="{{ section.settings.headline | escape }}" style="--bg-brightness: {{ 100 | minus: section.settings.image_darkness | divided_by: 100.0 }};">
   <div class="cb-inner">
     {%- if section.settings.image != blank -%}
       {{
@@ -135,8 +129,6 @@
         {{ 'lifestyle-2' | placeholder_svg_tag }}
       </div>
     {%- endif -%}
-
-    <div class="cb-overlay"></div>
 
     <div class="cb-content">
       {%- if section.settings.eyebrow != blank -%}
@@ -164,6 +156,16 @@
       "type": "image_picker",
       "id": "image",
       "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "image_darkness",
+      "label": "Image Darkness",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50
     },
     {
       "type": "text",
