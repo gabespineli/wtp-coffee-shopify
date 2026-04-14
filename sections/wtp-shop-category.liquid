@@ -122,9 +122,6 @@
   /* ── Card Image (Bottom Right Bleed) ── */
   .sc-card-img {
     position: absolute;
-    bottom: -10%;
-    right: -10%;
-    width: 70%;
     z-index: 1;
   }
 
@@ -162,10 +159,6 @@
 
     .sc-card {
       min-height: 300px;
-    }
-
-    .sc-card-img {
-      width: 55%;
     }
   }
 
@@ -218,7 +211,8 @@
             {%- endif -%}
           </div>
 
-          <div class="sc-card-img">
+          {%- capture img_style -%}width: {{ block.settings.image_size }}%; right: {{ block.settings.offset_right }}%; bottom: {{ block.settings.offset_bottom }}%;{%- endcapture -%}
+          <div class="sc-card-img" style="{{ img_style }}">
             {%- if card_image != blank -%}
               {{
                 card_image
@@ -317,6 +311,36 @@
           "id": "image",
           "label": "Product Image Override",
           "info": "Leave blank to use the collection's featured image. Use a transparent PNG for the best bleeding effect."
+        },
+        {
+          "type": "range",
+          "id": "image_size",
+          "label": "Image Scale",
+          "min": 40,
+          "max": 150,
+          "step": 5,
+          "default": 80,
+          "unit": "%"
+        },
+        {
+          "type": "range",
+          "id": "offset_right",
+          "label": "Horizontal Position (Right)",
+          "min": -50,
+          "max": 50,
+          "step": 2,
+          "default": -10,
+          "unit": "%"
+        },
+        {
+          "type": "range",
+          "id": "offset_bottom",
+          "label": "Vertical Position (Bottom)",
+          "min": -50,
+          "max": 50,
+          "step": 2,
+          "default": -10,
+          "unit": "%"
         }
       ]
     }
