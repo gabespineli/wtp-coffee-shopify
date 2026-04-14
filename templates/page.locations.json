@@ -21,9 +21,9 @@
       "type": "wtp-map-hero",
       "name": "Map Hero",
       "settings": {
-        "bg_color": "#F5F0E8",
-        "text_color": "#1B3A2D",
-        "accent_color": "#C8A96E",
+        "bg_color": "#f5f0e8",
+        "text_color": "#1b3a2d",
+        "accent_color": "#c8a96e",
         "eyebrow": "FIND US",
         "heading": "The Archipelago of Brew",
         "description": "Each WTP Coffee location is a destination in itself. Find your nearest outpost and experience the craft firsthand.",
@@ -65,16 +65,16 @@
       ],
       "name": "Location Cards Grid",
       "settings": {
-        "bg_color": "#F5F0E8"
+        "bg_color": "#f5f0e8"
       }
     },
     "wtp_catering_teaser_rwLed7": {
       "type": "wtp-catering-teaser",
       "name": "Catering Teaser",
       "settings": {
-        "bg_color": "#1B3A2D",
-        "text_color": "#FFFFFF",
-        "accent_color": "#C8A96E",
+        "bg_color": "#1b3a2d",
+        "text_color": "#ffffff",
+        "accent_color": "#c8a96e",
         "eyebrow": "EXPERIENCE EXCELLENCE ANYWHERE",
         "heading": "Host an Event with WTP Coffee.",
         "description": "From intimate private gatherings to large-scale corporate functions, our catering and event service brings the complete WTP Coffee experience directly to you.",
@@ -86,12 +86,25 @@
         "quote": "Their baristas transformed our wedding morning into something truly unforgettable.",
         "quote_attr": "Angela R., Private Event Client"
       }
+    },
+    "wtp_newsletter_LKh3Mz": {
+      "type": "wtp-newsletter",
+      "name": "WTP Newsletter",
+      "settings": {
+        "eyebrow": "Stay in the Loop",
+        "headline": "Never Miss a Pour",
+        "description": "Seasonal releases, community events, and brewing notes — delivered straight to your inbox.",
+        "placeholder": "Your email address",
+        "btn_label": "Subscribe",
+        "klaviyo_list_id": ""
+      }
     }
   },
   "order": [
     "main",
     "wtp_map_hero_4bckVm",
     "wtp_location_cards_7rEkw9",
-    "wtp_catering_teaser_rwLed7"
+    "wtp_catering_teaser_rwLed7",
+    "wtp_newsletter_LKh3Mz"
   ]
 }
