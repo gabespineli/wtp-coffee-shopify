@@ -23,18 +23,20 @@
         "location_PkLfhR": {
           "type": "location",
           "settings": {
-            "title": "Madrigal Business Park",
-            "address": "32nd St. corner 5th Ave., BGC, Taguig City",
-            "hours": "Mon - Sun, 7:00 AM - 10:00 PM",
+            "image": "shopify://shop_images/branch-alabang_b761a117-5270-46ba-8f31-5ca0303b644f.jpg",
+            "title": "WTP Alabang",
+            "address": "Industry St. Madrigal Business Park Ayala Alabang, Muntinlupa",
+            "hours": "Sun - Wed, 7 AM - 7 PM & Thurs - Sat, 7 AM - 9 PM",
             "map_link": ""
           }
         },
         "location_W8TA8g": {
           "type": "location",
           "settings": {
-            "title": "Opus Mall",
-            "address": "32nd St. corner 5th Ave., BGC, Taguig City",
-            "hours": "Mon - Sun, 7:00 AM - 10:00 PM",
+            "image": "shopify://shop_images/product-drink-2.jpg",
+            "title": "WTP Opus",
+            "address": "2F SPATIO at Opus Mall Bridgetowne, Quezon City",
+            "hours": "Mon - Fri, 11 AM - 10 PM & Thurs - Sat, 10 AM - 10 PM",
             "map_link": ""
           }
         }
