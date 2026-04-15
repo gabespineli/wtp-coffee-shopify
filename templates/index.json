@@ -108,13 +108,14 @@
       "type": "wtp-brand-story",
       "name": "WTP Brand Story",
       "settings": {
+        "layout": "text_first",
         "eyebrow": "Our Philosophy",
         "headline_plain": "Perfecting",
         "headline_italic": "The Art of the Roast",
         "body_1": "At We The People (WTP), our journey begins long before the first pour. We are relentless in our pursuit of the perfect profile, continuously developing our own roasting processes to honor the unique character of every harvest.",
         "body_2": "",
         "cta_label": "Discover Our Roasting Journey",
-        "cta_url": "",
+        "cta_url": "shopify://pages/about-us",
         "main_image": "shopify://shop_images/about-drink-1.jpg",
         "stat_number": "15+",
         "stat_label": "Local Producers Supported"
@@ -137,6 +138,7 @@
       "name": "Collab Banner",
       "settings": {
         "image": "shopify://shop_images/june-digan.jpg",
+        "image_darkness": 50,
         "eyebrow": "Limited Collaboration",
         "headline": "WTP x June Digan",
         "cta_label": "Discover the Collection",
