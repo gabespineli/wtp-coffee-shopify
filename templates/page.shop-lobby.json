@@ -17,119 +17,157 @@
         "padding_bottom": 28
       }
     },
-    "community_hero_hNMpgx": {
-      "type": "community-hero",
-      "name": "Community Hero",
-      "settings": {
-        "bg_color": "#F5F0E8",
-        "text_color": "#1B3A2D",
-        "accent_color": "#C8A96E",
-        "eyebrow": "WTP for Everyone",
-        "headline": "Where Coffee Creates Community",
-        "body": "A space dedicated to the curious, the enthusiasts, and the connoisseurs. Join our journey from bean to cup through immersive tastings, classes, and social events.",
-        "cta_primary_label": "Explore Events",
-        "cta_primary_url": "",
-        "featured_image": "shopify://shop_images/product-drink-1.jpg",
-        "card_title": "Upcoming",
-        "card_location": "WTP Studio, Makati",
-        "card_cta_label": "View Details",
-        "card_cta_url": ""
-      }
-    },
-    "community_calendar_GwEMbj": {
-      "type": "community-calendar",
-      "name": "Community Calendar",
-      "settings": {
-        "bg_color": "#1b3a2d",
-        "text_color": "#fcfaed",
-        "accent_color": "#C8A96E",
-        "card_bg_color": "#FFFFFF",
-        "headline": "Community Calendar",
-        "description": "Open events for the WTP community. We keep it personal. Every stage offers curated tastings and brews for all.",
-        "klaviyo_list_id": "",
-        "optin_label": "Automated Reminders",
-        "optin_desc": "Never miss an event. We'll send you calendar updates for every stage.",
-        "optin_placeholder": "Enter your email",
-        "optin_btn_label": "Keep Me Notified",
-        "events_collection": "events"
-      }
-    },
-    "community_events_gallery_UEFVKi": {
-      "type": "community-events-gallery",
+    "hero_product_tabs_YxERzn": {
+      "type": "hero-product-tabs",
       "blocks": {
-        "event_card_nx3zxd": {
-          "type": "event_card",
+        "featured_product_9LfVkP": {
+          "type": "featured_product",
           "settings": {
-            "image": "shopify://shop_images/about-drink-0.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
+            "product": "community-blend",
+            "variant_title": "200g",
+            "tab_name": "Community",
+            "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "card_subtitle": "Whole Bean · 200g",
+            "bg_image": "shopify://shop_images/COMMUNITY.png",
+            "bg_position_x": 50,
+            "bg_position_y": 50,
+            "bg_scale": 100,
+            "bg_image_mobile": "shopify://shop_images/COMMUNITY_SQAURE.png",
+            "mobile_content_bg": "#1b3a2d",
+            "mobile_content_text": "#fcfaed"
           }
         },
-        "event_card_TkHtFd": {
-          "type": "event_card",
+        "featured_product_iBiaW9": {
+          "type": "featured_product",
           "settings": {
-            "image": "shopify://shop_images/about-roastery-1.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
-          }
-        },
-        "event_card_hz4VAp": {
-          "type": "event_card",
-          "settings": {
-            "image": "shopify://shop_images/Copy_of_3_Lifestyle.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
-          }
-        },
-        "event_card_Te9HpY": {
-          "type": "event_card",
-          "settings": {
-            "image": "shopify://shop_images/about-drink-3.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
+            "product": "cosmopolitan-blend",
+            "variant_title": "200g",
+            "tab_name": "Cosmopolitan",
+            "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "card_subtitle": "Whole Bean · 200g",
+            "bg_image": "shopify://shop_images/COSMOPOLITAN_2e79e6f7-cd5b-4a9b-a1b5-878c509713ad.png",
+            "bg_position_x": 50,
+            "bg_position_y": 50,
+            "bg_scale": 100,
+            "bg_image_mobile": "shopify://shop_images/COSMOPOLITAN_SQAURE.png",
+            "mobile_content_bg": "#fcfaed",
+            "mobile_content_text": "#1b3a2d"
           }
         }
       },
       "block_order": [
-        "event_card_nx3zxd",
-        "event_card_TkHtFd",
-        "event_card_hz4VAp",
-        "event_card_Te9HpY"
+        "featured_product_9LfVkP",
+        "featured_product_iBiaW9"
       ],
-      "name": "Community Stories",
+      "name": "Hero Product Tabs",
       "settings": {
-        "bg_color": "#F5F0E8",
-        "header_text_color": "#1B3A2D",
-        "card_text_color": "#1B3A2D",
-        "accent_color": "#C8A96E",
-        "card_bg_color": "#FFFFFF",
-        "headline": "Community Stories",
-        "subheadline": "A collection of cuppings, creative moments, and partner features.",
-        "view_all_label": "View Full Archive",
-        "view_all_url": ""
+        "bg_color": "#1b3a2d",
+        "section_padding": 80
+      }
+    },
+    "wtp_featured_arrivals_kjnNqL": {
+      "type": "wtp-featured-arrivals",
+      "blocks": {
+        "product_card_kczAaT": {
+          "type": "product_card",
+          "settings": {
+            "product": "antique-safari-cup-6oz"
+          }
+        },
+        "product_card_pGtRM9": {
+          "type": "product_card",
+          "settings": {
+            "product": "wtp-x-june-digan-shirt"
+          }
+        },
+        "product_card_eKWq8G": {
+          "type": "product_card",
+          "settings": {
+            "product": "tall-conical-set"
+          }
+        }
+      },
+      "block_order": [
+        "product_card_kczAaT",
+        "product_card_pGtRM9",
+        "product_card_eKWq8G"
+      ],
+      "name": "Featured Arrivals",
+      "settings": {
+        "bg_color": "#ffffff",
+        "text_color": "#1b3a2d",
+        "accent_color": "#c8a96e",
+        "eyebrow": "NEW IN STORE",
+        "heading": "Featured Arrivals"
+      }
+    },
+    "wtp_shop_category_CibFJi": {
+      "type": "wtp-shop-category",
+      "blocks": {
+        "category_LqwFgY": {
+          "type": "category",
+          "settings": {
+            "collection": "retail-coffee-beans-1",
+            "title": "",
+            "image": "shopify://shop_images/roast_categ.png",
+            "image_size": 80,
+            "image_size_mobile": 80,
+            "offset_right": 0,
+            "offset_right_mobile": 0,
+            "offset_bottom": 30,
+            "offset_bottom_mobile": 36
+          }
+        },
+        "category_PYU8eq": {
+          "type": "category",
+          "settings": {
+            "collection": "merchandise-1",
+            "title": "",
+            "image": "shopify://shop_images/merch_categ.png",
+            "image_size": 80,
+            "image_size_mobile": 80,
+            "offset_right": 0,
+            "offset_right_mobile": 0,
+            "offset_bottom": 28,
+            "offset_bottom_mobile": 30
+          }
+        },
+        "category_BTNLyn": {
+          "type": "category",
+          "settings": {
+            "collection": "ceramic-mugs",
+            "title": "",
+            "image": "shopify://shop_images/cup_categ.png",
+            "image_size": 90,
+            "image_size_mobile": 90,
+            "offset_right": 4,
+            "offset_right_mobile": 0,
+            "offset_bottom": 30,
+            "offset_bottom_mobile": 36
+          }
+        }
+      },
+      "block_order": [
+        "category_LqwFgY",
+        "category_PYU8eq",
+        "category_BTNLyn"
+      ],
+      "name": "Shop by Category",
+      "settings": {
+        "bg_color": "#f5f0e8",
+        "card_bg_color": "#eae7e0",
+        "text_color": "#1b3a2d",
+        "accent_color": "#c8a96e",
+        "heading": "Shop By Category",
+        "explore_label": "Explore All",
+        "explore_url": "shopify://collections"
       }
     }
   },
   "order": [
     "main",
-    "community_hero_hNMpgx",
-    "community_calendar_GwEMbj",
-    "community_events_gallery_UEFVKi"
+    "hero_product_tabs_YxERzn",
+    "wtp_featured_arrivals_kjnNqL",
+    "wtp_shop_category_CibFJi"
   ]
 }

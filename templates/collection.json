@@ -11,64 +11,14 @@
   "sections": {
     "banner": {
       "type": "main-collection-banner",
-      "disabled": true,
       "settings": {
         "show_collection_description": true,
         "show_collection_image": false,
         "color_scheme": "scheme-1"
       }
     },
-    "hero_product_tabs_wfwAit": {
-      "type": "hero-product-tabs",
-      "blocks": {
-        "featured_product_FT87AJ": {
-          "type": "featured_product",
-          "settings": {
-            "product": "community-blend",
-            "variant_title": "200g",
-            "tab_name": "Community",
-            "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "card_subtitle": "Whole Bean · 200g",
-            "bg_image": "shopify://shop_images/COMMUNITY.png",
-            "bg_position_x": 50,
-            "bg_position_y": 50,
-            "bg_scale": 100,
-            "bg_image_mobile": "shopify://shop_images/COMMUNITY_SQAURE.png",
-            "mobile_content_bg": "#1b3a2d",
-            "mobile_content_text": "#fcfaed"
-          }
-        },
-        "featured_product_CTgeRV": {
-          "type": "featured_product",
-          "settings": {
-            "product": "cosmopolitan-blend",
-            "variant_title": "200g",
-            "tab_name": "Cosmopolitan",
-            "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "card_subtitle": "Whole Bean · 200g",
-            "bg_image": "shopify://shop_images/COSMOPOLITAN_2e79e6f7-cd5b-4a9b-a1b5-878c509713ad.png",
-            "bg_position_x": 50,
-            "bg_position_y": 50,
-            "bg_scale": 100,
-            "bg_image_mobile": "shopify://shop_images/COSMOPOLITAN_SQAURE.png",
-            "mobile_content_bg": "#fcfaed",
-            "mobile_content_text": "#1b3a2d"
-          }
-        }
-      },
-      "block_order": [
-        "featured_product_FT87AJ",
-        "featured_product_CTgeRV"
-      ],
-      "name": "Hero Product Tabs",
-      "settings": {
-        "bg_color": "#1b3a2d",
-        "section_padding": 80
-      }
-    },
     "product-grid": {
       "type": "main-collection-product-grid",
-      "disabled": true,
       "settings": {
         "products_per_page": 16,
         "columns_desktop": 4,
@@ -86,111 +36,10 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
-    },
-    "wtp_featured_arrivals_tqfAcX": {
-      "type": "wtp-featured-arrivals",
-      "blocks": {
-        "product_card_jFKpkG": {
-          "type": "product_card",
-          "settings": {
-            "product": "antique-safari-cup-6oz"
-          }
-        },
-        "product_card_Um8K6N": {
-          "type": "product_card",
-          "settings": {
-            "product": "wtp-x-june-digan-shirt"
-          }
-        },
-        "product_card_GnDGQV": {
-          "type": "product_card",
-          "settings": {
-            "product": "tall-conical-set"
-          }
-        }
-      },
-      "block_order": [
-        "product_card_jFKpkG",
-        "product_card_Um8K6N",
-        "product_card_GnDGQV"
-      ],
-      "name": "Featured Arrivals",
-      "settings": {
-        "bg_color": "#ffffff",
-        "text_color": "#1b3a2d",
-        "accent_color": "#c8a96e",
-        "eyebrow": "NEW IN STORE",
-        "heading": "Featured Arrivals"
-      }
-    },
-    "wtp_shop_category_MxtXBY": {
-      "type": "wtp-shop-category",
-      "blocks": {
-        "category_iPWdq4": {
-          "type": "category",
-          "settings": {
-            "collection": "retail-coffee-beans-1",
-            "title": "",
-            "image": "shopify://shop_images/roast_categ.png",
-            "image_size": 80,
-            "image_size_mobile": 80,
-            "offset_right": 0,
-            "offset_right_mobile": 0,
-            "offset_bottom": 30,
-            "offset_bottom_mobile": 36
-          }
-        },
-        "category_nqKXyG": {
-          "type": "category",
-          "settings": {
-            "collection": "merchandise-1",
-            "title": "",
-            "image": "shopify://shop_images/merch_categ.png",
-            "image_size": 80,
-            "image_size_mobile": 80,
-            "offset_right": 0,
-            "offset_right_mobile": 0,
-            "offset_bottom": 28,
-            "offset_bottom_mobile": 30
-          }
-        },
-        "category_EnWc9G": {
-          "type": "category",
-          "settings": {
-            "collection": "ceramic-mugs",
-            "title": "",
-            "image": "shopify://shop_images/cup_categ.png",
-            "image_size": 90,
-            "image_size_mobile": 90,
-            "offset_right": 4,
-            "offset_right_mobile": 0,
-            "offset_bottom": 30,
-            "offset_bottom_mobile": 36
-          }
-        }
-      },
-      "block_order": [
-        "category_iPWdq4",
-        "category_nqKXyG",
-        "category_EnWc9G"
-      ],
-      "name": "Shop by Category",
-      "settings": {
-        "bg_color": "#f5f0e8",
-        "card_bg_color": "#eae7e0",
-        "text_color": "#1b3a2d",
-        "accent_color": "#c8a96e",
-        "heading": "Shop By Category",
-        "explore_label": "Explore All",
-        "explore_url": "shopify://collections"
-      }
     }
   },
   "order": [
     "banner",
-    "hero_product_tabs_wfwAit",
-    "product-grid",
-    "wtp_featured_arrivals_tqfAcX",
-    "wtp_shop_category_MxtXBY"
+    "product-grid"
   ]
 }
