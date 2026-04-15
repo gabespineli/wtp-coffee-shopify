@@ -191,6 +191,29 @@ product-info {
 
 .product-form__submit {
   margin-bottom: 1rem;
+  width: 100%;
+  background-color: #1B3A2D;
+  color: #F5F0E8;
+  border: none !important;
+  padding: 1.4rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.product-form__submit::after {
+  display: none !important;
+}
+
+.product-form__submit:hover {
+  opacity: 0.9;
+  transform: scale(1.01);
 }
 
 .product-form__submit[aria-disabled='true'] + .shopify-payment-button .shopify-payment-button__button[disabled],
@@ -221,6 +244,15 @@ product-info {
   margin: 1.5rem 0;
 }
 
+/* WTP Description Spacing Override */
+.product__info-container .product__description {
+  margin-bottom: 2.5rem;
+  font-family: var(--font-body-family);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #1B3A2D;
+}
+
 .product__info-container iframe {
   max-width: 100%;
 }
@@ -247,7 +279,11 @@ a.product__text {
 
 .product__title {
   word-break: break-word;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-heading-family);
+  font-size: clamp(2.4rem, 4vw, 3.8rem);
+  line-height: 1.1;
+  color: #1B3A2D;
 }
 
 .product__title > * {
@@ -551,6 +587,13 @@ a.product__text {
 .product__media-item > * {
   display: block;
   position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: transparent !important;
+}
+
+.product__media-item img {
+  border-radius: 12px;
 }
 
 .product__media-toggle {
@@ -1491,4 +1534,44 @@ a.product__text {
   .recipient-form > input[type='checkbox']:checked + label .icon-checkmark {
     border: none;
   }
+}
+
+/* -- WTP Quantity Override -- */
+.product-form__quantity .quantity {
+  border: none !important;
+  box-shadow: none !important;
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+.product-form__quantity .quantity::before,
+.product-form__quantity .quantity::after {
+  display: none !important;
+}
+
+.product-form__quantity .quantity__button {
+  border: none !important;
+  background: transparent;
+  padding: 0.5rem;
+  width: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: #1B3A2D;
+}
+
+.product-form__quantity .quantity__input {
+  border: none !important;
+  box-shadow: none !important;
+  font-family: var(--font-body-family);
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  width: 4rem;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: #1B3A2D;
 }
