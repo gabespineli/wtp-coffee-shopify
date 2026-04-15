@@ -33,6 +33,8 @@
   /* ── Left Column: Storytelling ── */
   .event-story {
     width: 100%;
+    /* Critical: prevents grid blowout so inner event-image-grid can form columns */
+    min-width: 0;
   }
 
   .event-story-bannerimg {
@@ -66,57 +68,53 @@
     max-width: 800px;
   }
 
-  /* ── Features Grid (2x2) ── */
-  .event-features-grid {
+  /* ── Image Card Grid (2x2) ── */
+  .event-image-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2rem;
     margin-bottom: 4rem;
   }
 
   @media screen and (min-width: 750px) {
-    .event-features-grid {
+    .event-image-grid {
       grid-template-columns: 1fr 1fr;
     }
   }
 
-  .event-feature-block {
+  .event-image-card {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0;
   }
 
-  .event-feature-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #F5F0E8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #C8A96E;
+  .event-image-card__img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
   }
 
-  .event-feature-icon svg {
-    width: 24px;
-    height: 24px;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 1.5;
+  .event-image-card__text {
+    padding: 1.2rem 0.25rem 0;
   }
 
-  .event-feature-text h4 {
+  .event-image-card__title {
     font-family: var(--font-heading-family);
-    font-size: 1.3rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
     color: #1B3A2D;
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.4rem;
   }
 
-  .event-feature-text p {
+  .event-image-card__desc {
     font-size: 1rem;
-    color: rgba(27, 58, 45, 0.8);
+    line-height: 1.65;
+    color: rgba(27, 58, 45, 0.75);
     margin: 0;
-    line-height: 1.6;
   }
 
   /* ── Right Column: The Transaction (Sticky) ── */
@@ -170,6 +168,87 @@
   .tuition-card .product-form__submit {
     margin-top: 1rem;
     margin-bottom: 0;
+  }
+
+  /* ── Event Meta (Date + Location) ── */
+  .event-meta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(27, 58, 45, 0.1);
+  }
+
+  .event-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1rem;
+    color: rgba(27, 58, 45, 0.7);
+    margin: 0;
+  }
+
+  .event-meta-item svg {
+    width: 14px;
+    height: 14px;
+    stroke: #C8A96E;
+    fill: none;
+    stroke-width: 2;
+    flex-shrink: 0;
+  }
+
+  /* ── Registration Fields (Line Item Properties) ── */
+  .event-reg-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(27, 58, 45, 0.08);
+  }
+
+  .event-reg-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .event-reg-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #1B3A2D;
+  }
+
+  .event-reg-input,
+  .event-reg-select {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    border: 1px solid rgba(27, 58, 45, 0.2);
+    border-radius: 8px;
+    background: #FFFFFF;
+    font-family: var(--font-body-family);
+    font-size: 1rem;
+    color: #1B3A2D;
+    outline: none;
+    transition: border-color 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .event-reg-input:focus,
+  .event-reg-select:focus {
+    border-color: #1B3A2D;
+  }
+
+  .event-reg-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231B3A2D' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.2rem center;
+    padding-right: 3rem;
+    cursor: pointer;
   }
 
   /* ── Strict Testimonial Render ── */
@@ -230,26 +309,38 @@
         {{ product.description }}
       </div>
 
-      <!-- Generate Features Grid from schema blocks -->
-      {%- assign feature_blocks = section.blocks | where: 'type', 'feature' -%}
-      {%- if feature_blocks.size > 0 -%}
-        <div class="event-features-grid">
-          {%- for block in feature_blocks -%}
-            <div class="event-feature-block" {{ block.shopify_attributes }}>
-              {%- if block.settings.icon != 'none' -%}
-                <div class="event-feature-icon">
-                  {% render 'icon-accordion', icon: block.settings.icon %}
+      <!-- Image Card Grid from schema blocks -->
+      {%- assign image_card_blocks = section.blocks | where: 'type', 'image_card' -%}
+      {%- if image_card_blocks.size > 0 -%}
+        <div class="event-image-grid">
+          {%- for block in image_card_blocks -%}
+            {%- case block.type -%}
+              {%- when 'image_card' -%}
+                <div class="event-image-card" {{ block.shopify_attributes }}>
+                  {%- if block.settings.image != blank -%}
+                    {{
+                      block.settings.image
+                      | image_url: width: 600
+                      | image_tag:
+                        class: 'event-image-card__img',
+                        loading: 'lazy',
+                        widths: '300, 450, 600',
+                        sizes: '(min-width: 750px) 30vw, 90vw',
+                        alt: block.settings.title | default: product.title
+                    }}
+                  {%- endif -%}
+                  {%- if block.settings.title != blank or block.settings.description != blank -%}
+                    <div class="event-image-card__text">
+                      {%- if block.settings.title != blank -%}
+                        <h4 class="event-image-card__title">{{ block.settings.title | escape }}</h4>
+                      {%- endif -%}
+                      {%- if block.settings.description != blank -%}
+                        <p class="event-image-card__desc">{{ block.settings.description | escape }}</p>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
                 </div>
-              {%- endif -%}
-              <div class="event-feature-text">
-                {%- if block.settings.title != blank -%}
-                  <h4>{{ block.settings.title | escape }}</h4>
-                {%- endif -%}
-                {%- if block.settings.description != blank -%}
-                  <p>{{ block.settings.description | escape }}</p>
-                {%- endif -%}
-              </div>
-            </div>
+            {%- endcase -%}
           {%- endfor -%}
         </div>
       {%- endif -%}
@@ -259,74 +350,173 @@
     <div class="event-transaction-col">
       
       <div class="tuition-card">
-        <p class="tuition-header">Tuition</p>
+        {%- liquid
+          assign event_tag = product.metafields.custom.event_tag
+          assign event_date_raw = product.metafields.custom.event_date
+          assign event_location = product.metafields.custom.event_location
+          if event_tag != blank
+            assign tuition_eyebrow = event_tag
+          else
+            assign tuition_eyebrow = 'Tuition'
+          endif
+        -%}
+        <p class="tuition-header">{{ tuition_eyebrow | escape | upcase }}</p>
         <p class="tuition-price" id="price-{{ section.id }}">
-          {{ product.price | money }}
+          {%- if product.price == 0 -%}
+            FREE
+          {%- else -%}
+            {{ product.price | money }}
+          {%- endif -%}
         </p>
 
-        <!-- Product Form -->
+        {%- if event_date_raw != blank or event_location != blank -%}
+          <div class="event-meta-block">
+            {%- if event_date_raw != blank -%}
+              <p class="event-meta-item">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                {{ event_date_raw | date: '%B %-d, %Y' }}
+              </p>
+            {%- endif -%}
+            {%- if event_location != blank -%}
+              <p class="event-meta-item">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.686-6-10a6 6 0 1 1 12 0c0 4.314-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>
+                {{ event_location | escape }}
+              </p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <!-- Product Form: Raw HTML form bypasses all Dawn AJAX interception -->
         <div class="product-form-wrapper">
-          {%- assign product_form_id = 'product-form-' | append: section.id -%}
-          
-          <product-info id="ProductInfo-{{ section.id }}" data-section="{{ section.id }}" data-url="{{ product.url }}">
-            
-            {%- unless product.has_only_default_variant -%}
-              <variant-radios class="no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}">
-                {%- for option in product.options_with_values -%}
-                  <fieldset class="js product-form__input product-form__input--pill">
-                    <legend class="form__label">{{ option.name }}</legend>
-                    {% render 'product-variant-options', product: product, option: option %}
-                  </fieldset>
-                {%- endfor -%}
-                <script type="application/json">
-                  {{ product.variants | json }}
-                </script>
-              </variant-radios>
-            {%- endunless -%}
 
-            <product-form class="product-form">
-              <div class="product-form__error-message-wrapper" role="alert" hidden>
-                <svg aria-hidden="true" focusable="false" class="icon icon-error" viewBox="0 0 13 13">
-                  <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
-                  <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
-                  <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
-                  <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
-                </svg>
-                <span class="product-form__error-message"></span>
+          {%- unless product.has_only_default_variant -%}
+            {%- comment -%}
+              Variant selector — rendered outside the form so the JS can update
+              the hidden #id input when the selection changes.
+            {%- endcomment -%}
+            <div class="event-variant-picker">
+              {%- for option in product.options_with_values -%}
+                <fieldset class="js product-form__input product-form__input--pill">
+                  <legend class="form__label">{{ option.name }}</legend>
+                  {%- for value in option.values -%}
+                    {%- assign variant_label_id = 'event-opt-' | append: section.id | append: '-' | append: forloop.index -%}
+                    <input
+                      type="radio"
+                      id="{{ variant_label_id }}"
+                      name="{{ option.name }}"
+                      value="{{ value | escape }}"
+                      class="event-variant-radio"
+                      {% if option.selected_value == value %}checked{% endif %}
+                    >
+                    <label for="{{ variant_label_id }}">{{ value | escape }}</label>
+                  {%- endfor -%}
+                </fieldset>
+              {%- endfor -%}
+            </div>
+          {%- endunless -%}
+
+          <form
+            id="event-form-{{ section.id }}"
+            action="{{ routes.cart_add_url }}"
+            method="POST"
+            novalidate
+          >
+            {%- comment -%} Variant ID — JS updates this when radio selection changes {%- endcomment -%}
+            <input type="hidden" name="id" id="event-variant-id-{{ section.id }}" value="{{ product.selected_or_first_available_variant.id }}">
+            {%- comment -%} Quantity is always 1 for event tickets {%- endcomment -%}
+            <input type="hidden" name="quantity" value="1">
+            {%- comment -%} return_to bypasses the cart page and goes straight to checkout {%- endcomment -%}
+            <input type="hidden" name="return_to" value="/checkout">
+
+            <!-- Registration Fields (Line Item Properties) -->
+            <div class="event-reg-fields">
+              <div class="event-reg-field">
+                <label class="event-reg-label" for="attendee-name-{{ section.id }}">Attendee Full Name <span aria-hidden="true">*</span></label>
+                <input
+                  type="text"
+                  id="attendee-name-{{ section.id }}"
+                  name="properties[Attendee Name]"
+                  class="event-reg-input"
+                  placeholder="e.g. Maria Santos"
+                  required
+                  autocomplete="name"
+                >
               </div>
-
-              {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
-                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled class="product-variant-id">
-                
-                <!-- Explicitly omitting quantity naturally for events, or forcing hidden quantity 1 -->
-                <input type="hidden" name="quantity" value="1">
-
-                <div class="product-form__buttons">
-                  <button
-                    type="submit"
-                    name="add"
-                    class="product-form__submit button button--full-width button--primary"
-                    {% if product.selected_or_first_available_variant.available == false %}
-                      disabled
-                    {% endif %}
+              {%- if section.settings.show_experience_level -%}
+                <div class="event-reg-field">
+                  <label class="event-reg-label" for="experience-level-{{ section.id }}">Experience Level</label>
+                  <select
+                    id="experience-level-{{ section.id }}"
+                    name="properties[Experience Level]"
+                    class="event-reg-select"
                   >
-                    <span>
-                      {%- if product.selected_or_first_available_variant.available -%}
-                        SECURE YOUR SPOT
-                      {%- else -%}
-                        SOLD OUT
-                      {%- endif -%}
-                    </span>
-                    <div class="loading-overlay__spinner hidden">
-                      <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-                        <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                      </svg>
-                    </div>
-                  </button>
+                    <option value="Home Enthusiast">Home Enthusiast</option>
+                    <option value="Working Barista">Working Barista</option>
+                    <option value="Roaster / Professional">Roaster / Professional</option>
+                  </select>
                 </div>
-              {%- endform -%}
-            </product-form>
-          </product-info>
+              {%- endif -%}
+            </div>
+
+            <div class="product-form__buttons">
+              <button
+                type="submit"
+                class="product-form__submit"
+                {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+              >
+                {%- if product.selected_or_first_available_variant.available -%}
+                  SECURE YOUR SPOT
+                {%- else -%}
+                  SOLD OUT
+                {%- endif -%}
+              </button>
+            </div>
+          </form>
+
+          {%- comment -%}
+            Sync variant radio buttons → hidden #id input so the correct variant
+            is always submitted when the user picks a date/time option.
+          {%- endcomment -%}
+          <script>
+            (function () {
+              var formEl = document.getElementById('event-form-{{ section.id }}');
+              var idInput = document.getElementById('event-variant-id-{{ section.id }}');
+              var radios = document.querySelectorAll('.event-variant-radio');
+              var variants = {{ product.variants | json }};
+
+              function updateVariant() {
+                // Build a map of currently-selected option values
+                var selected = {};
+                radios.forEach(function (r) {
+                  if (r.checked) selected[r.name] = r.value;
+                });
+
+                // Find the matching variant
+                var match = variants.find(function (v) {
+                  return v.options.every(function (opt, i) {
+                    return selected[{{ product.options | json }}[i]] === opt;
+                  });
+                });
+
+                if (match) {
+                  idInput.value = match.id;
+                  var btn = formEl.querySelector('button[type="submit"]');
+                  if (match.available) {
+                    btn.disabled = false;
+                    btn.textContent = 'SECURE YOUR SPOT';
+                  } else {
+                    btn.disabled = true;
+                    btn.textContent = 'SOLD OUT';
+                  }
+                }
+              }
+
+              radios.forEach(function (r) {
+                r.addEventListener('change', updateVariant);
+              });
+            })();
+          </script>
+
         </div>
       </div>
 
@@ -362,6 +552,12 @@
   "class": "section",
   "settings": [
     {
+      "type": "checkbox",
+      "id": "show_experience_level",
+      "label": "Show Experience Level Dropdown",
+      "default": false
+    },
+    {
       "type": "range",
       "id": "padding_top",
       "min": 0,
@@ -384,73 +580,24 @@
   ],
   "blocks": [
     {
-      "type": "feature",
-      "name": "Feature / Curriculum",
-      "limit": 6,
+      "type": "image_card",
+      "name": "Image Card",
+      "limit": 4,
       "settings": [
         {
-          "type": "select",
-          "id": "icon",
-          "options": [
-            { "value": "none", "label": "None" },
-            { "value": "apple", "label": "Apple" },
-            { "value": "banana", "label": "Banana" },
-            { "value": "bottle", "label": "Bottle" },
-            { "value": "box", "label": "Box" },
-            { "value": "carrot", "label": "Carrot" },
-            { "value": "chat_bubble", "label": "Chat bubble" },
-            { "value": "check_mark", "label": "Check mark" },
-            { "value": "clipboard", "label": "Clipboard" },
-            { "value": "dairy", "label": "Dairy" },
-            { "value": "dairy_free", "label": "Dairy free" },
-            { "value": "dryer", "label": "Dryer" },
-            { "value": "eye", "label": "Eye" },
-            { "value": "fire", "label": "Fire" },
-            { "value": "gluten_free", "label": "Gluten free" },
-            { "value": "heart", "label": "Heart" },
-            { "value": "iron", "label": "Iron" },
-            { "value": "leaf", "label": "Leaf" },
-            { "value": "leather", "label": "Leather" },
-            { "value": "lightning_bolt", "label": "Lightning bolt" },
-            { "value": "lipstick", "label": "Lipstick" },
-            { "value": "lock", "label": "Lock" },
-            { "value": "map_pin", "label": "Map pin" },
-            { "value": "nut_free", "label": "Nut free" },
-            { "value": "pants", "label": "Pants" },
-            { "value": "paw_print", "label": "Paw print" },
-            { "value": "pepper", "label": "Pepper" },
-            { "value": "perfume", "label": "Perfume" },
-            { "value": "plane", "label": "Plane" },
-            { "value": "plant", "label": "Plant" },
-            { "value": "price_tag", "label": "Price tag" },
-            { "value": "question_mark", "label": "Question mark" },
-            { "value": "recycle", "label": "Recycle" },
-            { "value": "return", "label": "Return" },
-            { "value": "ruler", "label": "Ruler" },
-            { "value": "serving_dish", "label": "Serving dish" },
-            { "value": "shirt", "label": "Shirt" },
-            { "value": "shoe", "label": "Shoe" },
-            { "value": "silhouette", "label": "Silhouette" },
-            { "value": "snowflake", "label": "Snowflake" },
-            { "value": "star", "label": "Star" },
-            { "value": "stopwatch", "label": "Stopwatch" },
-            { "value": "truck", "label": "Truck" },
-            { "value": "washing", "label": "Washing" }
-          ],
-          "default": "check_mark",
-          "label": "Icon"
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card Image"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Heading",
-          "default": "Curriculum Item"
+          "label": "Heading (Optional)"
         },
         {
           "type": "textarea",
           "id": "description",
-          "label": "Description",
-          "default": "Learn the theory behind the extraction."
+          "label": "Description (Optional)"
         }
       ]
     },
@@ -482,12 +629,8 @@
     {
       "name": "Event Product",
       "blocks": [
-        {
-          "type": "feature"
-        },
-        {
-          "type": "feature"
-        }
+        { "type": "image_card" },
+        { "type": "image_card" }
       ]
     }
   ]
