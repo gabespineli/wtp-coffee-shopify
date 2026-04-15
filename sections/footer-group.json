@@ -18,10 +18,10 @@
         "bg_color": "#5c6e4c",
         "logo": "shopify://shop_images/WTP_Coffee_LOGO.png",
         "tagline": "Where Coffee Creates Community",
-        "newsletter_placeholder": "Enter your email...",
+        "newsletter_placeholder": "Enter your email",
         "copyright_brand": "WTP Coffee",
         "copyright_year": "2026",
-        "instagram_url": "",
+        "instagram_url": "https://www.instagram.com/wtpcoffee/",
         "facebook_url": ""
       }
     },
