@@ -1,0 +1,284 @@
+{%- comment -%}
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+  
+  Usage:
+  {% render 'product-card', product: product %}
+{%- endcomment -%}
+
+{%- style -%}
+  .product-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    /* Prevent invalid HTML nesting by letting link overlays handle clicks */
+  }
+
+  .pc-img-wrap {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background-color: #EAE7E0;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+  }
+
+  .pc-main-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+  }
+
+  .pc-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .product-card:hover .pc-img-wrap img {
+    transform: scale(1.05);
+  }
+
+  /* ── Custom Badge ── */
+  .pc-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: #C8A96E;
+    color: #1B3A2D;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.8rem;
+    border-radius: 50px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* ── Quick Add ── */
+  .pc-quick-add-wrap {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    width: max-content;
+    display: flex;
+    justify-content: center;
+  }
+
+  .pc-quick-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    color: #1B3A2D;
+    padding: 0.8rem 1.6rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .pc-quick-add-btn:hover {
+    background-color: #F5F0E8;
+    transform: scale(1.02);
+  }
+
+  .pc-quick-add-form {
+    margin: 0;
+  }
+
+  /* Responsive Hover Logic for Quick Add */
+  @media (hover: hover) {
+    .pc-quick-add-wrap {
+      opacity: 0;
+      transform: translate(-50%, 10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .product-card:hover .pc-quick-add-wrap {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  @media (hover: none) {
+    .pc-quick-add-wrap {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  /* ── Color Swatches ── */
+  .pc-swatches {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .pc-swatch, .pc-swatch-plus {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.1);
+    background-color: #F5F0E8;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  .pc-swatch-plus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #1B3A2D;
+    line-height: 1;
+  }
+
+  /* ── Typography ── */
+  .pc-text-wrap {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .pc-vendor {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #C8A96E;
+    margin: 0 0 0.5rem;
+  }
+
+  .pc-title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.2rem, 1.5vw, 1.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #1B3A2D;
+    margin: 0 0 0.5rem;
+  }
+
+  .pc-price {
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: #1B3A2D;
+    margin: 0;
+  }
+
+  .pc-price s {
+    opacity: 0.6;
+    margin-left: 0.5em;
+    font-size: 0.95rem;
+  }
+{%- endstyle -%}
+
+<div class="product-card">
+  <div class="pc-img-wrap">
+    
+    <a href="{{ product.url }}" class="pc-main-link" aria-label="{{ product.title | escape }}">
+      {%- if product.featured_image != blank -%}
+        {{
+          product.featured_image
+          | image_url: width: 800
+          | image_tag:
+            loading: 'lazy',
+            widths: '400, 600, 800',
+            sizes: '(max-width: 750px) 100vw, (max-width: 990px) 50vw, 33vw',
+            alt: product.featured_image.alt | default: product.title
+        }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag }}
+      {%- endif -%}
+    </a>
+
+    {%- comment -%} Badge Logic {%- endcomment -%}
+    {%- assign badge_text = '' -%}
+    {%- for tag in product.tags -%}
+      {%- if tag contains 'badge_' -%}
+        {%- assign badge_text = tag | remove: 'badge_' -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if badge_text != blank -%}
+      <span class="pc-badge">{{ badge_text | escape }}</span>
+    {%- endif -%}
+
+    {%- comment -%} Quick Add Logic {%- endcomment -%}
+    <div class="pc-quick-add-wrap">
+      {%- if product.has_only_default_variant -%}
+        {%- form 'product', product, id: product.id, class: 'pc-quick-add-form', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <button type="submit" class="pc-quick-add-btn">
+            Quick Add +
+          </button>
+        {%- endform -%}
+      {%- else -%}
+        <a href="{{ product.url }}" class="pc-quick-add-btn">
+          Select Options
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Color Swatches Logic {%- endcomment -%}
+    {%- assign color_option = blank -%}
+    {%- for option in product.options_with_values -%}
+      {%- assign option_name_d = option.name | downcase -%}
+      {%- if option_name_d == 'color' or option_name_d == 'colour' -%}
+        {%- assign color_option = option -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if color_option != blank -%}
+      <div class="pc-swatches">
+        {%- assign total_colors = color_option.values.size -%}
+        {%- for color_val in color_option.values limit: 3 -%}
+          <div class="pc-swatch" style="background-color: {{ color_val | escape | handleize | default: '#cccccc' }};"></div>
+        {%- endfor -%}
+        
+        {%- if total_colors > 3 -%}
+          <div class="pc-swatch-plus">+{{ total_colors | minus: 3 }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+
+  <a href="{{ product.url }}" class="pc-text-wrap" aria-label="{{ product.title | escape }}">
+    {%- if product.vendor != blank -%}
+      <p class="pc-vendor">{{ product.vendor | escape }}</p>
+    {%- endif -%}
+    
+    <h3 class="pc-title">{{ product.title | escape }}</h3>
+    
+    <p class="pc-price">
+      {%- if product.compare_at_price > product.price -%}
+        {{ product.price | money }} <s>{{ product.compare_at_price | money }}</s>
+      {%- else -%}
+        {{ product.price | money }}
+      {%- endif -%}
+    </p>
+  </a>
+</div>

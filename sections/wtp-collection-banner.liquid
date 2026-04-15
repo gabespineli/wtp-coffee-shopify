@@ -1,0 +1,142 @@
+{%- style -%}
+  #wtp-collection-banner-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding: 8rem 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .wcb-title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0;
+    color: inherit;
+  }
+
+  .wcb-desc {
+    margin: 1.5rem auto 0;
+    max-width: 700px;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: inherit;
+    opacity: 0.85;
+  }
+
+  .wcb-nav-wrap {
+    margin-top: 3rem;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .wcb-nav-wrap::-webkit-scrollbar {
+    display: none;
+  }
+
+  .wcb-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.5rem 5%;
+    width: max-content;
+    margin: 0 auto;
+  }
+
+  .wcb-pill {
+    padding: 0.75rem 1.8rem;
+    border: 1.5px solid currentColor;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    opacity: 0.8;
+  }
+
+  .wcb-pill:hover,
+  .wcb-pill.is-active {
+    background-color: {{ section.settings.text_color }};
+    color: {{ section.settings.bg_color }};
+    opacity: 1;
+  }
+  
+  @media screen and (max-width: 750px) {
+    #wtp-collection-banner-{{ section.id }} {
+      padding: 6rem 5%;
+    }
+  }
+{%- endstyle -%}
+
+<div id="wtp-collection-banner-{{ section.id }}" class="wcb-wrapper">
+  <h1 class="wcb-title">
+    <span class="visually-hidden">Collection: </span>
+    {{ collection.title | escape }}
+  </h1>
+  
+  {%- if section.settings.show_collection_description and collection.description != blank -%}
+    <div class="wcb-desc rte">
+      {{ collection.description }}
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.category_menu != blank -%}
+    <div class="wcb-nav-wrap">
+      <nav class="wcb-nav" aria-label="Collection categories">
+        {%- for link in linklists[section.settings.category_menu].links -%}
+          <a href="{{ link.url }}" class="wcb-pill {% if link.active %}is-active{% endif %}">
+            {{ link.title | escape }}
+          </a>
+        {%- endfor -%}
+      </nav>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collection Banner",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "Show collection description"
+    },
+    {
+      "type": "link_list",
+      "id": "category_menu",
+      "label": "Category Switcher Menu",
+      "info": "Display a horizontal list of links to jump between collections."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Banner"
+    }
+  ]
+}
+{% endschema %}

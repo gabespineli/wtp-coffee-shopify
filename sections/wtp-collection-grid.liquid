@@ -1,0 +1,183 @@
+{%- style -%}
+  #wtp-collection-grid-{{ section.id }} {
+    background-color: #F5F0E8;
+    padding: 0 5% 6rem;
+    color: #1B3A2D;
+  }
+
+  .cg-utility-bar {
+    max-width: 1380px;
+    margin: 0 auto 3rem;
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(27, 58, 45, 0.1);
+  }
+
+  .cg-result-count {
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  .cg-grid {
+    max-width: 1380px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+
+
+
+  /* ── Pagination ── */
+  .cg-pagination {
+    max-width: 1380px;
+    margin: 4rem auto 0;
+    text-align: center;
+  }
+
+  .pagination__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pagination__item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    text-decoration: none;
+    color: #1B3A2D;
+    border-radius: 50%;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .pagination__item:hover {
+    background-color: rgba(27, 58, 45, 0.05);
+  }
+
+  .pagination__item--current {
+    background-color: #1B3A2D;
+    color: #F5F0E8;
+  }
+  
+  .pagination__item--current:hover {
+    background-color: #1B3A2D;
+    color: #F5F0E8;
+  }
+
+  /* ── Responsive ── */
+  @media screen and (max-width: 990px) {
+    .cg-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    #wtp-collection-grid-{{ section.id }} {
+      padding: 0 5% 5rem;
+    }
+
+    .cg-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+{%- endstyle -%}
+
+<section id="wtp-collection-grid-{{ section.id }}" aria-label="Collection Products">
+  {%- paginate collection.products by section.settings.products_per_page -%}
+    
+    <div class="cg-utility-bar">
+      <p class="cg-result-count">
+        {{ collection.products_count }} Results
+      </p>
+      <div class="cg-filters-placeholder">
+        {%- comment -%} Placeholder for future sorting/filtering {%- endcomment -%}
+      </div>
+    </div>
+
+    <div class="cg-grid">
+      {%- for product in collection.products -%}
+        {% render 'product-card', product: product %}
+      {%- else -%}
+        <p>No products found in this collection.</p>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <div class="cg-pagination">
+        <nav role="navigation" aria-label="Pagination">
+          <ul class="pagination__list" role="list">
+            {%- if paginate.previous -%}
+              <li>
+                <a href="{{ paginate.previous.url }}" class="pagination__item pagination__item--prev" aria-label="Previous page">
+                  &lt;
+                </a>
+              </li>
+            {%- endif -%}
+
+            {%- for part in paginate.parts -%}
+              <li>
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" class="pagination__item" aria-label="Page {{ part.title }}">{{ part.title }}</a>
+                {%- else -%}
+                  {%- if part.title == paginate.current_page -%}
+                    <span class="pagination__item pagination__item--current" aria-current="page" aria-label="Page {{ part.title }}">{{ part.title }}</span>
+                  {%- else -%}
+                    <span class="pagination__item">{{ part.title }}</span>
+                  {%- endif -%}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+
+            {%- if paginate.next -%}
+              <li>
+                <a href="{{ paginate.next.url }}" class="pagination__item pagination__item--next" aria-label="Next page">
+                  &gt;
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </nav>
+      </div>
+    {%- endif -%}
+    
+  {%- endpaginate -%}
+</section>
+
+{% schema %}
+{
+  "name": "Collection Grid",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Grid"
+    }
+  ]
+}
+{% endschema %}

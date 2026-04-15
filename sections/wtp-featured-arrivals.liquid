@@ -38,99 +38,7 @@
     gap: 3rem 2.5rem;
   }
 
-  /* ── Card ── */
-  .fa-card {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    color: inherit;
-    gap: 0;
-  }
 
-  .fa-card:hover .fa-img-inner img {
-    transform: scale(1.06);
-  }
-
-  /* Image Wrapper */
-  .fa-img-wrap {
-    width: 100%;
-    aspect-ratio: 3/4;
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
-    margin-bottom: 1.75rem;
-    background: rgba(0,0,0,0.05);
-  }
-
-  .fa-img-inner {
-    width: 100%;
-    height: 100%;
-  }
-
-  .fa-img-inner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transform: scale(1);
-    transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
-    will-change: transform;
-  }
-
-  .fa-img-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .fa-img-placeholder svg {
-    width: 60px;
-    height: 60px;
-    opacity: 0.2;
-  }
-
-  /* Card Text */
-  .fa-card-text {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 0 0.25rem;
-  }
-
-  .fa-card-vendor {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: {{ section.settings.accent_color }};
-    margin: 0;
-  }
-
-  .fa-card-title {
-    font-family: var(--font-heading-family);
-    font-size: clamp(1.4rem, 2vw, 1.75rem);
-    font-weight: 600;
-    line-height: 1.15;
-    color: {{ section.settings.text_color }};
-    margin: 0;
-  }
-
-  .fa-card-price {
-    font-size: 1rem;
-    font-weight: 500;
-    color: {{ section.settings.text_color }};
-    opacity: 0.75;
-    margin: 0.25rem 0 0;
-  }
-
-  /* Compare at price */
-  .fa-card-price s {
-    opacity: 0.5;
-    margin-left: 0.5rem;
-    font-size: 0.9rem;
-  }
 
   /* ── Responsive ── */
   @media screen and (max-width: 900px) {
@@ -150,8 +58,8 @@
     }
 
     .fa-grid {
-      grid-template-columns: 1fr;
-      gap: 3rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
     }
   }
 {%- endstyle -%}
@@ -173,56 +81,17 @@
         {%- assign product = all_products[block.settings.product] -%}
 
         {%- if product != blank -%}
-          <a href="{{ product.url }}" class="fa-card" role="listitem" aria-label="{{ product.title | escape }}" {{ block.shopify_attributes }}>
-
-            <div class="fa-img-wrap">
-              <div class="fa-img-inner">
-                {%- if product.featured_image != blank -%}
-                  {{
-                    product.featured_image
-                    | image_url: width: 800
-                    | image_tag:
-                      loading: 'lazy',
-                      widths: '400, 600, 800',
-                      sizes: '(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw',
-                      alt: product.featured_image.alt | default: product.title
-                  }}
-                {%- else -%}
-                  <div class="fa-img-placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>
-                {%- endif -%}
-              </div>
-            </div>
-
-            <div class="fa-card-text">
-              {%- if product.vendor != blank -%}
-                <p class="fa-card-vendor">{{ product.vendor | escape }}</p>
-              {%- endif -%}
-
-              <h3 class="fa-card-title">{{ product.title | escape }}</h3>
-
-              <p class="fa-card-price">
-                {%- if product.compare_at_price > product.price -%}
-                  {{ product.price | money }}
-                  <s>{{ product.compare_at_price | money }}</s>
-                {%- else -%}
-                  {{ product.price | money }}
-                {%- endif -%}
-              </p>
-            </div>
-
-          </a>
+          <div class="fa-card-wrapper" role="listitem" {{ block.shopify_attributes }}>
+            {% render 'product-card', product: product %}
+          </div>
 
         {%- else -%}
           {%- comment -%} Placeholder if no product selected yet {%- endcomment -%}
-          <div class="fa-card" role="listitem" {{ block.shopify_attributes }}>
-            <div class="fa-img-wrap">
-              <div class="fa-img-placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>
+          <div class="fa-card-wrapper" role="listitem" {{ block.shopify_attributes }} style="opacity: 0.6; text-align: center;">
+            <div style="background:#EAE7E0; aspect-ratio:4/5; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+              {{ 'product-1' | placeholder_svg_tag: 'width:60px; height:60px; opacity:0.2;' }}
             </div>
-            <div class="fa-card-text">
-              <p class="fa-card-vendor">WTP Coffee</p>
-              <h3 class="fa-card-title">Select a product in the editor</h3>
-              <p class="fa-card-price">—</p>
-            </div>
+            <p style="margin-top:1rem; font-weight:700;">Select a product</p>
           </div>
         {%- endif -%}
 

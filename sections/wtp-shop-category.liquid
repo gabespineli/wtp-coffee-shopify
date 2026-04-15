@@ -106,7 +106,7 @@
     transition: gap 0.25s ease;
   }
 
-  .sc-card-link:hover {
+  .sc-card:hover .sc-card-link {
     gap: 0.65rem;
   }
 
@@ -116,7 +116,7 @@
     transition: transform 0.25s ease;
   }
 
-  .sc-card-link:hover svg {
+  .sc-card:hover .sc-card-link svg {
     transform: translateX(3px);
   }
 
@@ -209,18 +209,18 @@
         {%- assign card_url = collection.url | default: "#" -%}
         {%- assign card_image = block.settings.image | default: collection.featured_image -%}
 
-        <div class="sc-card" {{ block.shopify_attributes }}>
+        <a href="{{ card_url }}" class="sc-card" {{ block.shopify_attributes }}>
 
           <div class="sc-card-content">
             <h3 class="sc-card-title">{{ card_title | escape }}</h3>
             {%- if collection != blank or card_url != "#" -%}
-              <a href="{{ card_url }}" class="sc-card-link" tabindex="0" aria-label="View {{ card_title | escape }} collection">
+              <div class="sc-card-link" aria-hidden="true">
                 View Collection
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <line x1="5" y1="12" x2="19" y2="12"/>
                   <polyline points="12 5 19 12 12 19"/>
                 </svg>
-              </a>
+              </div>
             {%- endif -%}
           </div>
 
@@ -241,7 +241,7 @@
             {%- endif -%}
           </div>
 
-        </div>
+        </a>
       {%- endfor -%}
     </div>
   {%- endif -%}
