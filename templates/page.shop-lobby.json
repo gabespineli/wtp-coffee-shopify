@@ -1,0 +1,135 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "community_hero_hNMpgx": {
+      "type": "community-hero",
+      "name": "Community Hero",
+      "settings": {
+        "bg_color": "#F5F0E8",
+        "text_color": "#1B3A2D",
+        "accent_color": "#C8A96E",
+        "eyebrow": "WTP for Everyone",
+        "headline": "Where Coffee Creates Community",
+        "body": "A space dedicated to the curious, the enthusiasts, and the connoisseurs. Join our journey from bean to cup through immersive tastings, classes, and social events.",
+        "cta_primary_label": "Explore Events",
+        "cta_primary_url": "",
+        "featured_image": "shopify://shop_images/product-drink-1.jpg",
+        "card_title": "Upcoming",
+        "card_location": "WTP Studio, Makati",
+        "card_cta_label": "View Details",
+        "card_cta_url": ""
+      }
+    },
+    "community_calendar_GwEMbj": {
+      "type": "community-calendar",
+      "name": "Community Calendar",
+      "settings": {
+        "bg_color": "#1b3a2d",
+        "text_color": "#fcfaed",
+        "accent_color": "#C8A96E",
+        "card_bg_color": "#FFFFFF",
+        "headline": "Community Calendar",
+        "description": "Open events for the WTP community. We keep it personal. Every stage offers curated tastings and brews for all.",
+        "klaviyo_list_id": "",
+        "optin_label": "Automated Reminders",
+        "optin_desc": "Never miss an event. We'll send you calendar updates for every stage.",
+        "optin_placeholder": "Enter your email",
+        "optin_btn_label": "Keep Me Notified",
+        "events_collection": "events"
+      }
+    },
+    "community_events_gallery_UEFVKi": {
+      "type": "community-events-gallery",
+      "blocks": {
+        "event_card_nx3zxd": {
+          "type": "event_card",
+          "settings": {
+            "image": "shopify://shop_images/about-drink-0.jpg",
+            "badge_label": "Signature Series",
+            "title": "The Chemistry of Filtration",
+            "date": "Nov 2024",
+            "archival_note": "Archival Records Available",
+            "doc_link_label": "See the Story",
+            "doc_link_url": ""
+          }
+        },
+        "event_card_TkHtFd": {
+          "type": "event_card",
+          "settings": {
+            "image": "shopify://shop_images/about-roastery-1.jpg",
+            "badge_label": "Signature Series",
+            "title": "The Chemistry of Filtration",
+            "date": "Nov 2024",
+            "archival_note": "Archival Records Available",
+            "doc_link_label": "See the Story",
+            "doc_link_url": ""
+          }
+        },
+        "event_card_hz4VAp": {
+          "type": "event_card",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_3_Lifestyle.jpg",
+            "badge_label": "Signature Series",
+            "title": "The Chemistry of Filtration",
+            "date": "Nov 2024",
+            "archival_note": "Archival Records Available",
+            "doc_link_label": "See the Story",
+            "doc_link_url": ""
+          }
+        },
+        "event_card_Te9HpY": {
+          "type": "event_card",
+          "settings": {
+            "image": "shopify://shop_images/about-drink-3.jpg",
+            "badge_label": "Signature Series",
+            "title": "The Chemistry of Filtration",
+            "date": "Nov 2024",
+            "archival_note": "Archival Records Available",
+            "doc_link_label": "See the Story",
+            "doc_link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "event_card_nx3zxd",
+        "event_card_TkHtFd",
+        "event_card_hz4VAp",
+        "event_card_Te9HpY"
+      ],
+      "name": "Community Stories",
+      "settings": {
+        "bg_color": "#F5F0E8",
+        "header_text_color": "#1B3A2D",
+        "card_text_color": "#1B3A2D",
+        "accent_color": "#C8A96E",
+        "card_bg_color": "#FFFFFF",
+        "headline": "Community Stories",
+        "subheadline": "A collection of cuppings, creative moments, and partner features.",
+        "view_all_label": "View Full Archive",
+        "view_all_url": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "community_hero_hNMpgx",
+    "community_calendar_GwEMbj",
+    "community_events_gallery_UEFVKi"
+  ]
+}
