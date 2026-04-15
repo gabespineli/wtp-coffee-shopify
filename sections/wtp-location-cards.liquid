@@ -1,232 +1,236 @@
+{%- style -%}
   #wtp-locations-{{ section.id }} {
-    background: {{ section.settings.bg_color }};
-    padding: 0 5% 6rem;
-  }
+      background: {{ section.settings.bg_color }};
+      padding: 0 5% 6rem;
+    }
 
-  .loc-grid {
-    max-width: 1380px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3rem;
-  }
-
-  .loc-card {
-    background: #FFFFFF;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(0,0,0,0.04);
-  }
-
-  /* 1. Edge-to-edge image */
-  .loc-img-wrap {
-    width: 100%;
-    height: 280px;
-    position: relative;
-    background: #E8E4DC;
-  }
-
-  .loc-img-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .loc-img-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .loc-img-placeholder svg {
-    width: 60px;
-    height: 60px;
-    opacity: 0.2;
-  }
-
-  /* 2. Content Area */
-  .loc-content {
-    padding: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-
-  .loc-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .loc-title {
-    font-family: var(--font-heading-family);
-    font-size: clamp(1.8rem, 3vw, 2.2rem);
-    font-weight: 700;
-    line-height: 1.1;
-    color: #1B3A2D;
-    margin: 0;
-  }
-
-  /* Status Pill */
-  .loc-status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 0.8rem;
-    border-radius: 50px;
-    background: #F0F0F0;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #7A7A7A;
-    white-space: nowrap;
-    transition: all 0.3s ease;
-  }
-
-  .loc-status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #A0A0A0;
-    transition: background 0.3s ease;
-  }
-
-  /* Status Pill: Open State */
-  .loc-status-pill.is-open {
-    background: #EAF4EE;
-    color: #1D8A4E;
-  }
-
-  .loc-status-pill.is-open .loc-status-dot {
-    background: #20A05D;
-  }
-
-  .loc-status-text-open { display: none; }
-  .loc-status-text-closed { display: inline; }
-
-  .loc-status-pill.is-open .loc-status-text-open { display: inline; }
-  .loc-status-pill.is-open .loc-status-text-closed { display: none; }
-
-  /* 3. Detail Rows */
-  .loc-detail {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    color: #4A4A4A;
-    font-size: 1.05rem;
-    line-height: 1.6;
-  }
-
-  .loc-detail svg {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    margin-top: 0.2rem;
-    color: #C8A96E;
-  }
-
-  .loc-detail p {
-    margin: 0;
-  }
-
-  /* 4. Amenities Row */
-  .loc-amenities {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-top: 1rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(0,0,0,0.08);
-  }
-
-  .loc-amenity {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #7A7A7A;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .loc-amenity svg {
-    width: 16px;
-    height: 16px;
-    color: #1B3A2D;
-  }
-
-  /* 5. Footer / Button */
-  .loc-footer {
-    margin-top: auto;
-    padding-top: 2.5rem;
-  }
-
-  .loc-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    width: 100%;
-    padding: 1.2rem;
-    background: #1B3A2D;
-    color: #FFFFFF;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.25s ease;
-  }
-
-  .loc-btn:hover {
-    background: #132A20;
-  }
-
-  .loc-btn svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  /* ── Mobile ── */
-  @media screen and (max-width: 900px) {
     .loc-grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-  }
-
-  @media screen and (max-width: 600px) {
-    #wtp-locations-{{ section.id }} {
-      padding: 4rem 5%;
+      max-width: 1380px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem;
     }
 
+    .loc-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+
+    /* 1. Edge-to-edge image */
     .loc-img-wrap {
-      height: 220px;
+      width: 100%;
+      height: 280px;
+      position: relative;
+      background: #E8E4DC;
     }
 
-    .loc-content {
-      padding: 1.5rem;
+    .loc-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
-  }
+
+    .loc-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loc-img-placeholder svg {
+      width: 60px;
+      height: 60px;
+      opacity: 0.2;
+    }
+
+    /* 2. Content Area */
+    .loc-content {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .loc-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .loc-title {
+      font-family: var(--font-heading-family);
+      font-size: clamp(1.8rem, 3vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: #1B3A2D;
+      margin: 0;
+    }
+
+    /* Status Pill */
+    .loc-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+      background: #F0F0F0;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #7A7A7A;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .loc-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #A0A0A0;
+      transition: background 0.3s ease;
+    }
+
+    /* Status Pill: Open State */
+    .loc-status-pill.is-open {
+      background: #EAF4EE;
+      color: #1D8A4E;
+    }
+
+    .loc-status-pill.is-open .loc-status-dot {
+      background: #20A05D;
+    }
+
+    .loc-status-text-open { display: none; }
+    .loc-status-text-closed { display: inline; }
+
+    .loc-status-pill.is-open .loc-status-text-open { display: inline; }
+    .loc-status-pill.is-open .loc-status-text-closed { display: none; }
+
+    /* 3. Detail Rows */
+    .loc-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      color: #4A4A4A;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .loc-detail svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+      color: #C8A96E;
+    }
+
+    .loc-detail p {
+      margin: 0;
+    }
+
+    /* 4. Amenities Row */
+    .loc-amenities {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .loc-amenity {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #7A7A7A;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .loc-amenity svg {
+      width: 16px;
+      height: 16px;
+      color: #1B3A2D;
+    }
+
+    /* 5. Footer / Button */
+    .loc-footer {
+      margin-top: auto;
+      padding-top: 2.5rem;
+    }
+
+    .loc-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding: 1.2rem;
+      background: #1B3A2D;
+      color: #FFFFFF;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.25s ease;
+    }
+
+    .loc-btn:hover {
+      background: #132A20;
+    }
+
+    .loc-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* ── Mobile ── */
+    @media screen and (max-width: 900px) {
+      .loc-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      #wtp-locations-{{ section.id }} {
+        padding: 4rem 5%;
+      }
+
+      .loc-img-wrap {
+        height: 220px;
+      }
+
+      .loc-content {
+        padding: 1.5rem;
+      }
+    }
 {%- endstyle -%}
 
 <section id="wtp-locations-{{ section.id }}" aria-label="Locations">
   <div class="loc-grid">
     {%- for block in section.blocks -%}
-      <div class="loc-card js-loc-card" data-hours="{{ block.settings.hours_json | escape }}" {{ block.shopify_attributes }}>
-        
+      <div
+        class="loc-card js-loc-card"
+        data-hours="{{ block.settings.hours_json | escape }}"
+        {{ block.shopify_attributes }}
+      >
         <div class="loc-img-wrap">
           {%- if block.settings.image != blank -%}
             {{ block.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy' }}
@@ -249,7 +253,16 @@
 
           {%- if block.settings.address != blank -%}
             <div class="loc-detail">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
                 <circle cx="12" cy="9" r="2.5"/>
               </svg>
@@ -259,7 +272,16 @@
 
           {%- if block.settings.display_hours != blank -%}
             <div class="loc-detail">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
                 <circle cx="12" cy="12" r="10"/>
                 <polyline points="12 6 12 12 16 14"/>
               </svg>
@@ -272,7 +294,16 @@
               {%- assign am_arr = block.settings.amenities | split: ',' -%}
               {%- for am in am_arr -%}
                 <span class="loc-amenity">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                   {{ am | strip | escape }}
@@ -285,7 +316,16 @@
             {%- if block.settings.map_url != blank -%}
               <a href="{{ block.settings.map_url }}" target="_blank" rel="noopener" class="loc-btn">
                 Get Directions
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
                   <line x1="5" y1="12" x2="19" y2="12"/>
                   <polyline points="12 5 19 12 12 19"/>
                 </svg>
@@ -293,63 +333,62 @@
             {%- endif -%}
           </div>
         </div>
-
       </div>
     {%- endfor -%}
   </div>
 </section>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const cards = document.querySelectorAll('#wtp-locations-{{ section.id }} .js-loc-card');
-  if (!cards.length) return;
+  document.addEventListener('DOMContentLoaded', function () {
+    const cards = document.querySelectorAll('#wtp-locations-{{ section.id }} .js-loc-card');
+    if (!cards.length) return;
 
-  // Manila Time (PHT) logic
-  const now = new Date();
-  // Get time string in Manila, then parse it back to a date object to extract local values
-  const manilaDateString = now.toLocaleString("en-US", { timeZone: "Asia/Manila" });
-  const manilaNow = new Date(manilaDateString);
-  
-  const daysMap = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-  const currentDay = daysMap[manilaNow.getDay()];
-  const currentTotalMins = (manilaNow.getHours() * 60) + manilaNow.getMinutes();
+    // Manila Time (PHT) logic
+    const now = new Date();
+    // Get time string in Manila, then parse it back to a date object to extract local values
+    const manilaDateString = now.toLocaleString('en-US', { timeZone: 'Asia/Manila' });
+    const manilaNow = new Date(manilaDateString);
 
-  cards.forEach(card => {
-    const rawHoursJSON = card.getAttribute('data-hours');
-    const pill = card.querySelector('.js-status-pill');
-    
-    if (!pill || !rawHoursJSON) return;
+    const daysMap = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    const currentDay = daysMap[manilaNow.getDay()];
+    const currentTotalMins = manilaNow.getHours() * 60 + manilaNow.getMinutes();
 
-    // Default to closed visually (unprocessed HTML state). 
-    // Now we compute if it should be toggled open.
-    try {
-      // Decode HTML entities if any, and parse real JSON
-      const parser = new DOMParser();
-      const unescapedJSON = parser.parseFromString(rawHoursJSON, 'text/html').documentElement.textContent;
-      const hoursData = JSON.parse(unescapedJSON);
-      
-      const todaysHours = hoursData[currentDay];
-      
-      if (todaysHours && Array.isArray(todaysHours) && todaysHours.length === 2) {
-        const [openStr, closeStr] = todaysHours; // e.g. "08:00", "18:00"
-        
-        const openParts = openStr.split(':');
-        const closeParts = closeStr.split(':');
-        
-        if (openParts.length === 2 && closeParts.length === 2) {
-          const openMins = (parseInt(openParts[0], 10) * 60) + parseInt(openParts[1], 10);
-          const closeMins = (parseInt(closeParts[0], 10) * 60) + parseInt(closeParts[1], 10);
-          
-          if (currentTotalMins >= openMins && currentTotalMins < closeMins) {
-            pill.classList.add('is-open');
+    cards.forEach((card) => {
+      const rawHoursJSON = card.getAttribute('data-hours');
+      const pill = card.querySelector('.js-status-pill');
+
+      if (!pill || !rawHoursJSON) return;
+
+      // Default to closed visually (unprocessed HTML state).
+      // Now we compute if it should be toggled open.
+      try {
+        // Decode HTML entities if any, and parse real JSON
+        const parser = new DOMParser();
+        const unescapedJSON = parser.parseFromString(rawHoursJSON, 'text/html').documentElement.textContent;
+        const hoursData = JSON.parse(unescapedJSON);
+
+        const todaysHours = hoursData[currentDay];
+
+        if (todaysHours && Array.isArray(todaysHours) && todaysHours.length === 2) {
+          const [openStr, closeStr] = todaysHours; // e.g. "08:00", "18:00"
+
+          const openParts = openStr.split(':');
+          const closeParts = closeStr.split(':');
+
+          if (openParts.length === 2 && closeParts.length === 2) {
+            const openMins = parseInt(openParts[0], 10) * 60 + parseInt(openParts[1], 10);
+            const closeMins = parseInt(closeParts[0], 10) * 60 + parseInt(closeParts[1], 10);
+
+            if (currentTotalMins >= openMins && currentTotalMins < closeMins) {
+              pill.classList.add('is-open');
+            }
           }
         }
+      } catch (e) {
+        console.warn('WTP Location Cards: Invalid JSON config for hours format in section.', e);
       }
-    } catch (e) {
-      console.warn("WTP Location Cards: Invalid JSON config for hours format in section.", e);
-    }
+    });
   });
-});
 </script>
 
 {% schema %}
