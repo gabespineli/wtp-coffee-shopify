@@ -94,7 +94,7 @@
       ],
       "name": "Featured Arrivals",
       "settings": {
-        "bg_color": "#ffffff",
+        "bg_color": "#fcfaed",
         "text_color": "#1b3a2d",
         "accent_color": "#c8a96e",
         "eyebrow": "NEW IN STORE",
@@ -154,7 +154,7 @@
       ],
       "name": "Shop by Category",
       "settings": {
-        "bg_color": "#f5f0e8",
+        "bg_color": "#ffffff",
         "card_bg_color": "#eae7e0",
         "text_color": "#1b3a2d",
         "accent_color": "#c8a96e",
