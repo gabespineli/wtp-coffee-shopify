@@ -203,7 +203,7 @@
         "settings": {
           "background": "#5c6e4c",
           "background_gradient": "",
-          "text": "#fcfaed",
+          "text": "#121212",
           "button": "#fcfaed",
           "button_label": "#5c6e4c",
           "secondary_button_label": "#fcfaed",
