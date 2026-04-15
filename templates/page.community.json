@@ -21,9 +21,9 @@
       "type": "community-hero",
       "name": "Community Hero",
       "settings": {
-        "bg_color": "#F5F0E8",
-        "text_color": "#1B3A2D",
-        "accent_color": "#C8A96E",
+        "bg_color": "#ffffff",
+        "text_color": "#1b3a2d",
+        "accent_color": "#c8a96e",
         "eyebrow": "WTP for Everyone",
         "headline": "Where Coffee Creates Community",
         "body": "A space dedicated to the curious, the enthusiasts, and the connoisseurs. Join our journey from bean to cup through immersive tastings, classes, and social events.",
@@ -42,8 +42,8 @@
       "settings": {
         "bg_color": "#1b3a2d",
         "text_color": "#fcfaed",
-        "accent_color": "#C8A96E",
-        "card_bg_color": "#FFFFFF",
+        "accent_color": "#c8a96e",
+        "card_bg_color": "#ffffff",
         "headline": "Community Calendar",
         "description": "Open events for the WTP community. We keep it personal. Every stage offers curated tastings and brews for all.",
         "klaviyo_list_id": "",
@@ -51,6 +51,7 @@
         "optin_desc": "Never miss an event. We'll send you calendar updates for every stage.",
         "optin_placeholder": "Enter your email",
         "optin_btn_label": "Keep Me Notified",
+        "events_limit": 3,
         "events_collection": "events"
       }
     },
@@ -114,11 +115,11 @@
       ],
       "name": "Community Stories",
       "settings": {
-        "bg_color": "#F5F0E8",
-        "header_text_color": "#1B3A2D",
-        "card_text_color": "#1B3A2D",
-        "accent_color": "#C8A96E",
-        "card_bg_color": "#FFFFFF",
+        "bg_color": "#f5f0e8",
+        "header_text_color": "#1b3a2d",
+        "card_text_color": "#1b3a2d",
+        "accent_color": "#c8a96e",
+        "card_bg_color": "#ffffff",
         "headline": "Community Stories",
         "subheadline": "A collection of cuppings, creative moments, and partner features.",
         "view_all_label": "View Full Archive",
