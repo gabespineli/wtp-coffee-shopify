@@ -39,22 +39,20 @@
   }
 
   /* ── Card ── */
+  .fa-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    gap: 0;
+  }
+
   .fa-card:hover .fa-img-inner img {
     transform: scale(1.06);
   }
 
-  .fa-card-title-link {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .fa-card-title-link:hover .fa-card-title {
-    text-decoration: underline;
-  }
-
   /* Image Wrapper */
   .fa-img-wrap {
-    display: block;
     width: 100%;
     aspect-ratio: 3/4;
     border-radius: 12px;
@@ -134,47 +132,6 @@
     font-size: 0.9rem;
   }
 
-  /* ── Buttons ── */
-  .fa-form-wrap {
-    margin-top: 1.5rem;
-  }
-
-  .fa-btn-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .fa-btn-cart {
-    width: 100%;
-    padding: 0.85rem;
-    border-radius: 50px;
-    border: 1px solid {{ section.settings.text_color }};
-    background: transparent;
-    color: {{ section.settings.text_color }};
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.25s ease, color 0.25s ease;
-  }
-
-  .fa-btn-cart:hover {
-    background: {{ section.settings.text_color }};
-    color: {{ section.settings.bg_color }};
-  }
-
-  .fa-btn-cart:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  /* Target dynamic checkout button internally generated container styling */
-  .shopify-payment-button__button {
-    border-radius: 50px !important;
-  }
-
   /* ── Responsive ── */
   @media screen and (max-width: 900px) {
     .fa-grid {
@@ -216,9 +173,9 @@
         {%- assign product = all_products[block.settings.product] -%}
 
         {%- if product != blank -%}
-          <div class="fa-card" role="listitem" {{ block.shopify_attributes }}>
+          <a href="{{ product.url }}" class="fa-card" role="listitem" aria-label="{{ product.title | escape }}" {{ block.shopify_attributes }}>
 
-            <a href="{{ product.url }}" class="fa-img-wrap" tabindex="-1" aria-hidden="true">
+            <div class="fa-img-wrap">
               <div class="fa-img-inner">
                 {%- if product.featured_image != blank -%}
                   {{
@@ -234,16 +191,14 @@
                   <div class="fa-img-placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>
                 {%- endif -%}
               </div>
-            </a>
+            </div>
 
             <div class="fa-card-text">
               {%- if product.vendor != blank -%}
                 <p class="fa-card-vendor">{{ product.vendor | escape }}</p>
               {%- endif -%}
 
-              <a href="{{ product.url }}" class="fa-card-title-link">
-                <h3 class="fa-card-title">{{ product.title | escape }}</h3>
-              </a>
+              <h3 class="fa-card-title">{{ product.title | escape }}</h3>
 
               <p class="fa-card-price">
                 {%- if product.compare_at_price > product.price -%}
@@ -255,24 +210,7 @@
               </p>
             </div>
 
-            <div class="fa-form-wrap">
-              {%- assign product_form_id = 'quick-add-' | append: section.id | append: '-' | append: product.id -%}
-              {% form 'product', product, id: product_form_id, class: 'fa-product-form' %}
-                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                <div class="fa-btn-group">
-                  <button type="submit" name="add" class="fa-btn-cart" {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
-                    {%- if product.selected_or_first_available_variant.available -%}
-                      Add to Cart
-                    {%- else -%}
-                      Sold Out
-                    {%- endif -%}
-                  </button>
-                  {{ form | payment_button }}
-                </div>
-              {% endform %}
-            </div>
-
-          </div>
+          </a>
 
         {%- else -%}
           {%- comment -%} Placeholder if no product selected yet {%- endcomment -%}
