@@ -101,10 +101,41 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "main_product_event_krJH3E": {
+      "type": "main-product-event",
+      "blocks": {
+        "feature_ceQezK": {
+          "type": "feature",
+          "settings": {
+            "icon": "check_mark",
+            "title": "Curriculum Item",
+            "description": "Learn the theory behind the extraction."
+          }
+        },
+        "feature_gcLT8i": {
+          "type": "feature",
+          "settings": {
+            "icon": "check_mark",
+            "title": "Curriculum Item",
+            "description": "Learn the theory behind the extraction."
+          }
+        }
+      },
+      "block_order": [
+        "feature_ceQezK",
+        "feature_gcLT8i"
+      ],
+      "name": "Event Product",
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
     "main",
-    "related-products"
+    "related-products",
+    "main_product_event_krJH3E"
   ]
 }
