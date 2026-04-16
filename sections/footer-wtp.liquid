@@ -181,26 +181,31 @@
   }
 
   .wtp-footer__brand-signoff-logo img {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     object-fit: contain;
     display: block;
-    filter: brightness(0) invert(1);
-    opacity: 0.8;
+    opacity: 0.85;
   }
 
   .wtp-footer__brand-signoff-text {
     font-family: var(--footer-body-font);
-    font-size: 0.95rem;
+    font-size: 1rem;
+    line-height: 1.4;
     color: var(--footer-text-muted);
-    white-space: nowrap;
   }
 
   .wtp-footer__brand-signoff-text strong {
     font-family: var(--footer-heading-font);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    font-style: italic;
     color: var(--footer-text);
-    letter-spacing: 0.05em;
+  }
+
+  .wtp-footer__brand-signoff-text sup {
+    font-size: 0.6em;
+    vertical-align: super;
+    line-height: 0;
   }
 
   /* ════════════════════════════════════════
@@ -454,7 +459,10 @@
             {{ section.settings.logo | image_url: width: 80 | image_tag: alt: 'WTP Coffee Logo' }}
           </div>
         {%- endif -%}
-        <p class="wtp-footer__brand-signoff-text">A Product by <strong>WTP®</strong></p>
+        <p class="wtp-footer__brand-signoff-text">
+            Where Coffee Creates Community,<br>
+            by <strong>WTP Coffee<sup>&reg;</sup></strong>
+          </p>
       </div>
 
     </div>
