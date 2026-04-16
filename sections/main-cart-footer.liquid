@@ -4,6 +4,232 @@
 {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
+  /* ════════════════════════════════════════
+     WTP Cart Footer — Design System
+  ════════════════════════════════════════ */
+  #main-cart-footer.wtp-cart-footer {
+    --cart-bg:      #F5F0E8;
+    --cart-green:   #1B3A2D;
+    --cart-gold:    #C8A96E;
+    --cart-muted:   rgba(27, 58, 45, 0.5);
+    --cart-border:  rgba(27, 58, 45, 0.1);
+    --cart-box-bg:  rgba(27, 58, 45, 0.05);
+    background: var(--cart-bg) !important;
+    color: var(--cart-green) !important;
+  }
+
+  #main-cart-footer.wtp-cart-footer .page-width {
+    max-width: 1200px;
+    padding: 0 5%;
+  }
+
+  #main-cart-footer.wtp-cart-footer .cart__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── Hide empty-state gracefully ── */
+  #main-cart-footer.wtp-cart-footer.is-empty {
+    display: none;
+  }
+
+  /* ════════════════════════════════════════
+     ORDER NOTE — Accordion Style
+  ════════════════════════════════════════ */
+  .wtp-cart-note {
+    border-top: 1px solid var(--cart-border);
+    margin-bottom: 0;
+  }
+
+  .wtp-cart-note__toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 0;
+    font-family: var(--font-body-family);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--cart-green);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    gap: 1rem;
+  }
+
+  .wtp-cart-note__icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--cart-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--cart-muted);
+    line-height: 1;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .wtp-cart-note__toggle[aria-expanded="true"] .wtp-cart-note__icon {
+    transform: rotate(45deg);
+    background: rgba(27, 58, 45, 0.12);
+  }
+
+  .wtp-cart-note__body {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0;
+  }
+
+  .wtp-cart-note__body.is-open {
+    max-height: 200px;
+    padding-bottom: 1.25rem;
+  }
+
+  .wtp-cart-note__textarea {
+    width: 100%;
+    min-height: 100px;
+    background: transparent;
+    border: 1.5px solid var(--cart-border);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    font-family: var(--font-body-family);
+    font-size: 0.95rem;
+    color: var(--cart-green);
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+  }
+
+  .wtp-cart-note__textarea:focus {
+    border-color: rgba(27, 58, 45, 0.5);
+  }
+
+  .wtp-cart-note__textarea::placeholder {
+    color: rgba(27, 58, 45, 0.3);
+  }
+
+  /* ════════════════════════════════════════
+     SUMMARY BOX
+  ════════════════════════════════════════ */
+  .wtp-cart-summary {
+    background: var(--cart-box-bg);
+    border-radius: 16px;
+    padding: 1.75rem 2rem 2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Discount tags */
+  .wtp-cart-summary .discounts {
+    margin-bottom: 1rem;
+  }
+
+  .wtp-cart-summary .discounts__discount {
+    font-size: 0.82rem;
+    color: var(--cart-green);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0;
+  }
+
+  /* Subtotal Row */
+  .wtp-cart-summary__totals {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .wtp-cart-summary__label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--cart-muted);
+    margin: 0;
+  }
+
+  .wtp-cart-summary__value {
+    font-family: var(--font-heading-family);
+    font-size: 1.6rem;
+    font-style: italic;
+    font-weight: 700;
+    color: var(--cart-green);
+    margin: 0;
+    line-height: 1;
+  }
+
+  /* Tax / Shipping note */
+  .wtp-cart-summary .tax-note {
+    font-size: 0.78rem;
+    color: var(--cart-muted);
+    display: block;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .wtp-cart-summary .tax-note a {
+    color: var(--cart-muted);
+    text-decoration: underline;
+  }
+
+  /* ── Checkout Button ── */
+  .wtp-cart-summary .cart__checkout-button {
+    width: 100%;
+    display: block;
+    background: var(--cart-green) !important;
+    color: #F5F0E8 !important;
+    border: none !important;
+    border-radius: 50px !important;
+    padding: 1.1rem 2rem !important;
+    font-family: var(--font-body-family) !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.18em !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    transition: opacity 0.2s ease, transform 0.15s ease !important;
+    box-shadow: 0 4px 20px rgba(27, 58, 45, 0.2) !important;
+  }
+
+  .wtp-cart-summary .cart__checkout-button:hover:not([disabled]) {
+    opacity: 0.88 !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .wtp-cart-summary .cart__checkout-button[disabled] {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+  }
+
+  /* ── Additional Checkout Buttons (PayPal, etc.) ── */
+  .wtp-cart-summary .cart__dynamic-checkout-buttons {
+    margin-top: 0.85rem;
+  }
+
+  .wtp-cart-summary .cart__dynamic-checkout-buttons .shopify-payment-button__button {
+    border-radius: 50px !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* ── Cart Errors ── */
+  #cart-errors {
+    font-size: 0.85rem;
+    color: #a03030;
+    padding: 0.5rem 0;
+  }
+
+  /* ── Section padding ── */
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -15,52 +241,73 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  @media screen and (max-width: 768px) {
+    .wtp-cart-summary {
+      padding: 1.25rem 1.25rem 1.5rem;
+    }
+  }
 {%- endstyle -%}
 
 <div
-  class="gradient color-{{ section.settings.color_scheme }}{% if cart == empty %} is-empty{% endif %}"
+  class="wtp-cart-footer gradient color-{{ section.settings.color_scheme }}{% if cart == empty %} is-empty{% endif %}"
   id="main-cart-footer"
   data-id="{{ section.id }}"
 >
   <div class="page-width">
     <div class="cart__footer isolate section-{{ section.id }}-padding">
+
+      {%- comment -%} ── ORDER NOTE — Accordion ── {%- endcomment -%}
       {%- if settings.show_cart_note -%}
-        <cart-note class="cart__note field">
-          <label for="Cart-note">{{ 'sections.cart.note' | t }}</label>
-          <textarea
-            class="text-area field__input"
-            name="note"
-            form="cart"
-            id="Cart-note"
-            placeholder="{{ 'sections.cart.note' | t }}"
-          >{{ cart.note }}</textarea>
-        </cart-note>
+        <div class="wtp-cart-note">
+          <button
+            type="button"
+            class="wtp-cart-note__toggle"
+            aria-expanded="false"
+            aria-controls="wtp-cart-note-body"
+            id="wtp-cart-note-btn"
+          >
+            <span>{{ 'sections.cart.note' | t }}</span>
+            <span class="wtp-cart-note__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="wtp-cart-note__body" id="wtp-cart-note-body" aria-labelledby="wtp-cart-note-btn" role="region">
+            <cart-note>
+              <textarea
+                class="wtp-cart-note__textarea"
+                name="note"
+                form="cart"
+                id="Cart-note"
+                placeholder="{{ 'sections.cart.note' | t }}"
+              >{{ cart.note }}</textarea>
+            </cart-note>
+          </div>
+        </div>
       {%- endif -%}
 
+      {%- comment -%} ── SUMMARY BOX ── {%- endcomment -%}
       <div class="cart__blocks">
         {% for block in section.blocks %}
           {%- case block.type -%}
             {%- when '@app' -%}
               {% render block %}
-            {%- when 'subtotal' -%}
-              <div class="js-contents" {{ block.shopify_attributes }}>
-                <div>
-                  {%- if cart.cart_level_discount_applications.size > 0 -%}
-                    <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
-                      {%- for discount in cart.cart_level_discount_applications -%}
-                        <li class="discounts__discount discounts__discount--position">
-                          {{- 'icon-discount.svg' | inline_asset_content -}}
-                          {{ discount.title | escape }}
-                          (-{{ discount.total_allocated_amount | money }})
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                  {%- endif -%}
-                </div>
 
-                <div class="totals">
-                  <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-                  <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+            {%- when 'subtotal' -%}
+              <div class="js-contents wtp-cart-summary" {{ block.shopify_attributes }}>
+                {%- if cart.cart_level_discount_applications.size > 0 -%}
+                  <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+                    {%- for discount in cart.cart_level_discount_applications -%}
+                      <li class="discounts__discount discounts__discount--position">
+                        {{- 'icon-discount.svg' | inline_asset_content -}}
+                        {{ discount.title | escape }}
+                        (-{{ discount.total_allocated_amount | money }})
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+
+                <div class="wtp-cart-summary__totals">
+                  <h2 class="wtp-cart-summary__label">{{ 'sections.cart.estimated_total' | t }}</h2>
+                  <p class="wtp-cart-summary__value">{{ cart.total_price | money_with_currency }}</p>
                 </div>
 
                 <small class="tax-note caption-large rte">
@@ -68,70 +315,77 @@
                     {%- if shop.shipping_policy.body == blank -%}
                       {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_without_policy' | t }}
                     {%- else -%}
-                      {{
-                        'sections.cart.duties_and_taxes_included_shipping_at_checkout_with_policy_html'
-                        | t: link: shop.shipping_policy.url
-                      }}
+                      {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
                     {%- endif -%}
                   {%- elsif cart.duties_included == false and cart.taxes_included -%}
                     {%- if shop.shipping_policy.body == blank -%}
                       {{ 'sections.cart.taxes_included_shipping_at_checkout_without_policy' | t }}
                     {%- else -%}
-                      {{
-                        'sections.cart.taxes_included_shipping_at_checkout_with_policy_html'
-                        | t: link: shop.shipping_policy.url
-                      }}
+                      {{ 'sections.cart.taxes_included_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
                     {%- endif -%}
                   {%- elsif cart.duties_included and cart.taxes_included == false -%}
                     {%- if shop.shipping_policy.body == blank -%}
                       {{ 'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
                     {%- else -%}
-                      {{
-                        'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html'
-                        | t: link: shop.shipping_policy.url
-                      }}
+                      {{ 'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
                     {%- endif -%}
                   {%- elsif cart.duties_included == false and cart.taxes_included == false -%}
                     {%- if shop.shipping_policy.body == blank -%}
                       {{ 'sections.cart.taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
                     {%- else -%}
-                      {{
-                        'sections.cart.taxes_at_checkout_shipping_at_checkout_with_policy_html'
-                        | t: link: shop.shipping_policy.url
-                      }}
+                      {{ 'sections.cart.taxes_at_checkout_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
                     {%- endif -%}
                   {%- endif -%}
                 </small>
               </div>
-            {%- else -%}
-              <div class="cart__ctas" {{ block.shopify_attributes }}>
-                <button
-                  type="submit"
-                  id="checkout"
-                  class="cart__checkout-button button"
-                  name="checkout"
-                  {% if cart == empty %}
-                    disabled
-                  {% endif %}
-                  form="cart"
-                >
-                  {{ 'sections.cart.checkout' | t }}
-                </button>
-              </div>
 
-              {%- if additional_checkout_buttons -%}
-                <div class="cart__dynamic-checkout-buttons additional-checkout-buttons">
-                  {{ content_for_additional_checkout_buttons }}
+            {%- else -%}
+              <div class="wtp-cart-summary">
+                <div class="cart__ctas" {{ block.shopify_attributes }}>
+                  <button
+                    type="submit"
+                    id="checkout"
+                    class="cart__checkout-button button"
+                    name="checkout"
+                    {% if cart == empty %}disabled{% endif %}
+                    form="cart"
+                  >
+                    {{ 'sections.cart.checkout' | t }}
+                  </button>
                 </div>
-              {%- endif -%}
+
+                {%- if additional_checkout_buttons -%}
+                  <div class="cart__dynamic-checkout-buttons additional-checkout-buttons">
+                    {{ content_for_additional_checkout_buttons }}
+                  </div>
+                {%- endif -%}
+              </div>
           {%- endcase -%}
         {% endfor %}
 
         <div id="cart-errors"></div>
       </div>
+
     </div>
   </div>
 </div>
+
+<script>
+  (function () {
+    var btn = document.getElementById('wtp-cart-note-btn');
+    if (!btn) return;
+    var body = document.getElementById('wtp-cart-note-body');
+    btn.addEventListener('click', function () {
+      var isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !isExpanded);
+      if (isExpanded) {
+        body.classList.remove('is-open');
+      } else {
+        body.classList.add('is-open');
+      }
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -147,7 +401,7 @@
     {
       "type": "header",
       "content": "t:sections.all.padding.section_padding_heading"
-    },    
+    },
     {
       "type": "range",
       "id": "padding_top",
