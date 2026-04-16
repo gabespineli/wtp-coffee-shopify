@@ -13,6 +13,26 @@
   "sections": {
     "footer_wtp_LzXWiW": {
       "type": "footer-wtp",
+      "blocks": {
+        "nav_column_n4L3df": {
+          "type": "nav_column",
+          "settings": {
+            "heading": "Discover",
+            "menu": "footer"
+          }
+        },
+        "nav_column_Wi8WnP": {
+          "type": "nav_column",
+          "settings": {
+            "heading": "Products",
+            "menu": "collections-navigation"
+          }
+        }
+      },
+      "block_order": [
+        "nav_column_n4L3df",
+        "nav_column_Wi8WnP"
+      ],
       "name": "WTP Footer",
       "settings": {
         "bg_color": "#5c6e4c",
@@ -20,7 +40,7 @@
         "newsletter_headline": "Let's stay in the loop—we'll keep you updated on any new drops.",
         "newsletter_placeholder": "Enter your email",
         "instagram_url": "https://www.instagram.com/wtpcoffee/",
-        "facebook_url": "",
+        "facebook_url": "https://www.facebook.com/wtpcoffee",
         "copyright_brand": "WTP Coffee",
         "copyright_year": "2026",
         "policy_menu": "",
