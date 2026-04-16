@@ -302,49 +302,42 @@
     </div>
   {%- endif -%}
 
-  {%- if section.blocks.size > 0 -%}
+  {%- if section.settings.selected_blog != blank and section.settings.selected_blog.articles_count > 0 -%}
     <div class="cg-grid">
-      {%- for block in section.blocks -%}
-        <article class="cg-card" {{ block.shopify_attributes }}>
+      {%- for article in section.settings.selected_blog.articles limit: section.settings.post_limit -%}
+        <article class="cg-card">
 
           <div class="cg-card__img-wrap">
-            {%- if block.settings.image != blank -%}
-              {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: block.settings.image.alt }}
+            {%- if article.image != blank -%}
+              {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: article.title }}
             {%- else -%}
               <div class="cg-card__img-placeholder">
                 {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
               </div>
             {%- endif -%}
 
-            {%- if block.settings.badge_label != blank -%}
-              <span class="cg-badge">{{ block.settings.badge_label | escape }}</span>
+            {%- assign first_tag = article.tags | first -%}
+            {%- if first_tag != blank -%}
+              <span class="cg-badge">{{ first_tag | escape }}</span>
             {%- endif -%}
 
             <div class="cg-card__overlay-meta">
-              {%- if block.settings.title != blank -%}
-                <h3 class="cg-card__overlay-title">{{ block.settings.title | escape }}</h3>
-              {%- endif -%}
-              {%- if block.settings.date != blank -%}
-                <p class="cg-card__overlay-date">
-                  {{- block.settings.date | escape -}}
-                </p>
-              {%- endif -%}
+              <h3 class="cg-card__overlay-title">{{ article.title | escape }}</h3>
+              <p class="cg-card__overlay-date">
+                {{- article.published_at | time_tag: format: 'date' -}}
+              </p>
             </div>
           </div>
 
           <div class="cg-card__body">
-            {%- if block.settings.archival_note != blank -%}
-              <p class="cg-card__note">
-                {{ block.settings.archival_note | escape }}
-              </p>
-            {%- endif -%}
+            <p class="cg-card__note">
+              {{ article.excerpt_or_content | strip_html | truncatewords: 10 }}
+            </p>
 
-            {%- if block.settings.doc_link_label != blank -%}
-              <a href="{{ block.settings.doc_link_url | default: '#' }}" class="cg-card__doc-link">
-                {{ block.settings.doc_link_label | escape }}
-                <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-              </a>
-            {%- endif -%}
+            <a href="{{ article.url }}" class="cg-card__doc-link">
+              See the Story
+              <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            </a>
           </div>
 
         </article>
@@ -418,108 +411,25 @@
       "type": "url",
       "id": "view_all_url",
       "label": "View All URL"
-    }
-  ],
-  "blocks": [
+    },
     {
-      "type": "event_card",
-      "name": "Event Card",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Event Image"
-        },
-        {
-          "type": "text",
-          "id": "badge_label",
-          "label": "Badge Label",
-          "info": "e.g. Advanced Series, Free Event, Guest Artist",
-          "default": "Signature Series"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Event Title",
-          "default": "The Chemistry of Filtration"
-        },
-        {
-          "type": "text",
-          "id": "date",
-          "label": "Date",
-          "default": "Nov 2024"
-        },
-        {
-          "type": "text",
-          "id": "archival_note",
-          "label": "Archival Note",
-          "default": "Archival Records Available",
-          "info": "e.g. Completed Nov 2024 • Archival Records Available"
-        },
-        {
-          "type": "text",
-          "id": "doc_link_label",
-          "label": "Doc Link Label",
-          "default": "See the Story"
-        },
-        {
-          "type": "url",
-          "id": "doc_link_url",
-          "label": "Doc Link URL"
-        }
-      ]
+      "type": "blog",
+      "id": "selected_blog",
+      "label": "Select Blog"
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "min": 2,
+      "max": 8,
+      "step": 2,
+      "default": 2,
+      "label": "Number of posts to show"
     }
   ],
   "presets": [
     {
-      "name": "Community Stories",
-      "blocks": [
-        { 
-          "type": "event_card",
-          "settings": {
-            "badge_label": "Cupping Series",
-            "title": "We Cup For The People - A look into our Community Cupping",
-            "archival_note": "A look into our monthly cupping zines.",
-            "doc_link_label": "Read the Zine"
-          }
-        },
-        { 
-          "type": "event_card",
-          "settings": {
-            "badge_label": "WTP Spaces",
-            "title": "We The People as Your Creative Space",
-            "archival_note": "Archival records of the different events held at We The People.",
-            "doc_link_label": "View Archive"
-          }
-        },
-        { 
-          "type": "event_card",
-          "settings": {
-            "badge_label": "Roots",
-            "title": "Rooted in Community. Served with Soul.",
-            "archival_note": "Our partner farms feature (Featuring Kalsada Coffee).",
-            "doc_link_label": "Meet the Producers"
-          }
-        },
-        { 
-          "type": "event_card",
-          "settings": {
-            "badge_label": "Partners",
-            "title": "Collaboration with different brands",
-            "archival_note": "Archiving our creative cross-over projects.",
-            "doc_link_label": "See Collaborations"
-          }
-        },
-        { 
-          "type": "event_card",
-          "settings": {
-            "badge_label": "Single Origin",
-            "title": "Know Your Cup - Single Origin Series",
-            "archival_note": "Videos of our SO features, brew recommendations, and House Blend features.",
-            "doc_link_label": "Watch Series"
-          }
-        }
-      ]
+      "name": "Community Stories"
     }
   ]
 }

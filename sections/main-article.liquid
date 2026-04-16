@@ -1,6 +1,282 @@
 {{ 'section-blog-post.css' | asset_url | stylesheet_tag }}
 
-<article class="article-template">
+{%- style -%}
+  /* ════════════════════════════════════════════════
+     WTP Coffee — Editorial Article Override
+     Layered on top of section-blog-post.css
+  ════════════════════════════════════════════════ */
+
+  /* ── Section Background + Gap Fix ── */
+  #shopify-section-{{ section.id }} {
+    background-color: #F5F0E8 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  #MainContent {
+    padding-top: 0 !important;
+  }
+
+  .article-template {
+    background-color: #F5F0E8;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Pull the .section class padding down to zero so the Shopify
+     section wrapper doesn't add a white gap above the article */
+  .section.section:has(.article-template) {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* ── Back Link ── */
+  .article-template__link.animate-arrow {
+    display: none; /* Hide default Dawn link styling if still present */
+  }
+
+  /* ── Bottom CTA ── */
+  .article-footer-cta {
+    display: inline-block;
+    border: 1px solid #1B3A2D;
+    padding: 12px 32px;
+    border-radius: 50px;
+    font-family: var(--font-body-family);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #1B3A2D;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+  }
+
+  .article-footer-cta:hover {
+    background-color: #1B3A2D;
+    color: #F5F0E8 !important;
+  }
+
+  .article-template__back {
+    margin-top: 4rem !important;
+    text-align: center;
+    border: none !important;
+  }
+
+  /* ── Title ── */
+  .article-template__title {
+    font-family: var(--font-heading-family) !important;
+    font-size: clamp(2.8rem, 6vw, 5.5rem) !important;
+    font-style: italic !important;
+    line-height: 1.08 !important;
+    color: #1B3A2D !important;
+    letter-spacing: -0.01em !important;
+    text-align: center;
+    margin-bottom: 1.0rem !important;
+  }
+
+  /* ── Meta (Date / Author) ── */
+  .article-template__title ~ .circle-divider,
+  .article-template__title ~ .caption-with-letter-spacing,
+  header.page-width--narrow .circle-divider,
+  header.page-width--narrow .caption-with-letter-spacing {
+    font-family: var(--font-body-family);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(27, 58, 45, 0.5);
+    display: inline-block;
+  }
+
+  header.page-width--narrow {
+    text-align: center;
+    padding-top: 3rem;
+    padding-bottom: 2.5rem;
+  }
+
+  /* ── Hero Image ── */
+  .article-template__hero-container {
+    max-width: 1100px;
+    margin: 0 auto 2rem;
+    padding: 0 1.5rem;
+  }
+
+  .article-template__hero-adapt,
+  .article-template__hero-small,
+  .article-template__hero-medium,
+  .article-template__hero-large {
+    border-radius: 12px !important;
+    overflow: hidden;
+  }
+
+  .article-template__hero-container img {
+    border-radius: 12px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── Reading Column ── */
+  .article-template__content.page-width--narrow {
+    max-width: 700px !important;
+    font-family: var(--font-body-family);
+    font-size: 1.1rem;
+    line-height: 1.85;
+    color: rgba(27, 58, 45, 0.88);
+  }
+
+  /* ── Drop Cap ── */
+  .article-template__content p:first-of-type::first-letter {
+    font-family: var(--font-heading-family);
+    font-size: 4.4em;
+    font-style: italic;
+    line-height: 0.75;
+    float: left;
+    margin-right: 0.08em;
+    margin-top: -0.1em;
+    color: #1B3A2D;
+  }
+
+  /* ── Blockquotes ── */
+  .article-template__content blockquote {
+    margin: 2.5rem 0;
+    padding: 1.75rem 2rem;
+    background: #EDE8DC;
+    border-left: 4px solid #1B3A2D;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+  }
+
+  .article-template__content blockquote p {
+    font-family: var(--font-heading-family);
+    font-style: italic;
+    font-size: 1.3rem;
+    line-height: 1.55;
+    color: #1B3A2D;
+    margin: 0;
+  }
+
+  /* Disable drop cap inside blockquotes */
+  .article-template__content blockquote p::first-letter {
+    font-size: inherit;
+    line-height: inherit;
+    float: none;
+    margin: 0;
+  }
+
+  /* ── Subheadings ── */
+  .article-template__content h2,
+  .article-template__content h3 {
+    font-family: var(--font-heading-family);
+    font-style: italic;
+    color: #1B3A2D;
+    margin-top: 3.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.15;
+  }
+
+  .article-template__content h2 {
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+  }
+
+  .article-template__content h3 {
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  }
+
+  /* ── Inline Images ── */
+  .article-template__content img {
+    border-radius: 8px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 2.5rem 0;
+  }
+
+  /* ── Paragraphs ── */
+  .article-template__content p {
+    margin: 0 0 1.5rem;
+  }
+
+  /* ── Links ── */
+  .article-template__content a {
+    color: #1B3A2D;
+    text-decoration: underline;
+    text-decoration-color: #C8A96E;
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.2s ease;
+  }
+
+  .article-template__content a:hover {
+    text-decoration-color: #1B3A2D;
+  }
+
+  /* ── First Tag Pill ── */
+  .article-tag-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #C8A96E;
+    color: #F5F0E8;
+    border-radius: 50px;
+    font-family: var(--font-body-family);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    vertical-align: middle;
+    margin-left: 0.6rem;
+  }
+
+  /* ── Back Link (top) ── */
+  .article-back-link-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-body-family);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(27, 58, 45, 0.55);
+    text-decoration: none;
+    padding: 3rem 0 0 1.5rem;
+    margin-bottom: 2.5rem;
+    transition: color 0.2s ease;
+    display: block;
+  }
+
+  .article-back-link-top:hover {
+    color: #1B3A2D;
+  }
+
+  /* ── Meta Row ── */
+  .article-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .article-meta-text {
+    font-family: var(--font-body-family);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(27, 58, 45, 0.5);
+    margin: 0;
+  }
+{%- endstyle -%}
+
+<article class="article-template" itemscope itemtype="http://schema.org/BlogPosting">
+  {%- comment -%} TOP: Back Link injected before all blocks {%- endcomment -%}
+  <a href="{{ blog.url }}" class="article-back-link-top page-width" aria-label="Back to {{ blog.title | escape }}">
+    &larr; All Stories
+  </a>
+
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when '@app' -%}
@@ -46,21 +322,32 @@
           class="page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
           {{ block.shopify_attributes }}
         >
-          <h1
-            class="article-template__title"
-          >
+          <h1 class="article-template__title">
             {{ article.title | escape }}
           </h1>
-          {%- if block.settings.blog_show_date -%}
-            <span class="circle-divider caption-with-letter-spacing">
-              {{- article.published_at | time_tag: format: 'date' -}}
-            </span>
-          {%- endif -%}
-          {%- if block.settings.blog_show_author -%}
-            <span class="caption-with-letter-spacing">
-              <span>{{ article.author }}</span>
-            </span>
-          {%- endif -%}
+
+          {%- comment -%} Combined meta row: date — BY author + tag pill {%- endcomment -%}
+          <div class="article-meta-row">
+            {%- if block.settings.blog_show_date or block.settings.blog_show_author -%}
+              <p class="article-meta-text">
+                {%- if block.settings.blog_show_date -%}
+                  <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                    {{- article.published_at | time_tag: format: 'date' -}}
+                  </time>
+                {%- endif -%}
+                {%- if block.settings.blog_show_date and block.settings.blog_show_author -%}
+                  &nbsp;&mdash;&nbsp;BY&nbsp;
+                {%- endif -%}
+                {%- if block.settings.blog_show_author -%}
+                  {{ article.author | upcase | escape }}
+                {%- endif -%}
+              </p>
+            {%- endif -%}
+            {%- assign first_tag = article.tags | first -%}
+            {%- if first_tag != blank -%}
+              <span class="article-tag-pill">{{ first_tag | escape }}</span>
+            {%- endif -%}
+          </div>
         </header>
 
       {%- when 'content' -%}
@@ -76,21 +363,14 @@
           class="article-template__social-sharing page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {{ block.shopify_attributes }}
         >
-          {% assign share_url = request.origin | append: article.url %}
+          {%- assign share_url = request.origin | append: article.url -%}
           {% render 'share-button', block: block, share_link: share_url %}
         </div>
     {%- endcase -%}
   {%- endfor -%}
 
   <div class="article-template__back element-margin-top center{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-    <a href="{{ blog.url }}" class="article-template__link link animate-arrow">
-      <span class="icon-wrap">
-        <span class="svg-wrapper">
-          {{- 'icon-arrow.svg' | inline_asset_content -}}
-        </span>
-      </span>
-      {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
-    </a>
+    <a href="{{ blog.url }}" class="article-footer-cta"> Explore More Stories </a>
   </div>
   {%- if blog.comments_enabled? -%}
     <div class="article-template__comment-wrapper background-secondary">
@@ -99,7 +379,7 @@
         class="page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
       >
         {%- if article.comments_count > 0 -%}
-          {%- assign anchorId = '#Comments-' | append: article.id -%}
+          {%- assign anchor_id = '#Comments-' | append: article.id -%}
 
           <h2 id="Comments-{{ article.id }}" tabindex="-1">
             {{ 'blogs.article.comments' | t: count: article.comments_count }}
@@ -126,7 +406,7 @@
                   </footer>
                 </article>
               {%- endfor -%}
-              {% render 'pagination', paginate: paginate, anchor: anchorId %}
+              {% render 'pagination', paginate: paginate, anchor: anchor_id %}
             </div>
           {% endpaginate %}
         {%- endif -%}
