@@ -342,6 +342,7 @@
     </div>
 
     {%- form 'contact' -%}
+      <input type="hidden" name="contact[Lead Source]" value="High-Ticket Event Booking">
 
       {%- comment -%} Success Message {%- endcomment -%}
       {%- if form.posted_successfully? -%}
@@ -427,6 +428,8 @@
             id="BookingServiceType"
             name="contact[Service Type]"
             class="bk-form__select"
+            required
+            aria-required="true"
           >
             <option value="" disabled selected>Select a service…</option>
             <option value="Coffee Cart Catering" {% if form['Service Type'] == 'Coffee Cart Catering' %}selected{% endif %}>Coffee Cart Catering</option>

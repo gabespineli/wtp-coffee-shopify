@@ -126,19 +126,16 @@
   }
 
   .wn-success {
-    display: none;
     color: #1B3A2D;
     font-size: 1.1rem;
     margin-top: 0.5rem;
     font-weight: 600;
   }
 
-  .wn-inner.is-success .wn-form {
-    display: none;
-  }
-
-  .wn-inner.is-success .wn-success {
-    display: block;
+  .wn-error {
+    color: #8b1a1a;
+    font-size: 1rem;
+    margin-top: 0.5rem;
   }
 
   @media (max-width: 600px) {
@@ -164,65 +161,39 @@
         <p class="wn-desc">{{ section.settings.description | escape }}</p>
       {%- endif -%}
 
-      <form class="wn-form" id="wtp-nl-form-{{ section.id }}">
-        <input type="hidden" name="g" value="{{ section.settings.klaviyo_list_id | escape }}">
-        <div class="wn-form-pill">
-          <span class="wn-form-pill__icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="4" width="20" height="16" rx="2"/>
-              <path d="M2 7l10 7 10-7"/>
-            </svg>
-          </span>
-          <input 
-            type="email" 
-            name="email" 
-            class="wn-input" 
-            placeholder="{{ section.settings.placeholder | escape }}" 
-            required
-            aria-label="Email Address"
-          >
-          <button type="submit" class="wn-btn">{{ section.settings.btn_label | escape }}</button>
-        </div>
-      </form>
-      
-      <p class="wn-success" id="wtp-nl-success-{{ section.id }}">You're in. Welcome to the community.</p>
+      {%- form 'customer', class: 'wn-form', id: 'wtp-nl-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        
+        {%- if form.posted_successfully? -%}
+          <p class="wn-success">Thanks for subscribing!</p>
+        {%- else -%}
+          <div class="wn-form-pill">
+            <span class="wn-form-pill__icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="M2 7l10 7 10-7"/>
+              </svg>
+            </span>
+            <input 
+              type="email" 
+              name="contact[email]" 
+              class="wn-input" 
+              placeholder="{{ section.settings.placeholder | escape }}" 
+              required
+              aria-label="Email Address"
+            >
+            <button type="submit" class="wn-btn">{{ section.settings.btn_label | escape }}</button>
+          </div>
+          {%- if form.errors -%}
+            <p class="wn-error">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</p>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
     </div>
   </div>
 </section>
 
-<script>
-  (function() {
-    var container = document.getElementById('wn-inner-{{ section.id }}');
-    var form = document.getElementById('wtp-nl-form-{{ section.id }}');
-    if (!form || !container) return;
 
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var emailInput = form.querySelector('input[name="email"]');
-      var listIdInput = form.querySelector('input[name="g"]');
-      var email = emailInput ? emailInput.value : '';
-      var listId = listIdInput ? listIdInput.value : '';
-
-      if (!email || !listId) {
-        if (!listId) console.warn('WTP Newsletter: Missing Klaviyo List ID');
-        return;
-      }
-
-      fetch('https://manage.kmail-lists.com/subscriptions/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'g=' + encodeURIComponent(listId) + '&email=' + encodeURIComponent(email) + '&$fields=$email',
-      })
-      .then(function() {
-        container.classList.add('is-success');
-      })
-      .catch(function() {
-        /* Fallback: show success even if fetch fails due to CORS, as Klaviyo often still processes it */
-        container.classList.add('is-success');
-      });
-    });
-  })();
-</script>
 
 {% schema %}
 {
@@ -238,13 +209,13 @@
       "type": "text",
       "id": "headline",
       "label": "Headline",
-      "default": "Never Miss a Pour"
+      "default": "Join the WTP Community"
     },
     {
       "type": "textarea",
       "id": "description",
       "label": "Description",
-      "default": "Seasonal releases, community events, and brewing notes — delivered straight to your inbox."
+      "default": "Subscribe for updates and releases — delivered straight to your inbox."
     },
     {
       "type": "text",
@@ -257,12 +228,6 @@
       "id": "btn_label",
       "label": "Button Label",
       "default": "Subscribe"
-    },
-    {
-      "type": "text",
-      "id": "klaviyo_list_id",
-      "label": "Klaviyo List ID",
-      "info": "Found in your Klaviyo dashboard under Lists & Segments."
     }
   ],
   "presets": [

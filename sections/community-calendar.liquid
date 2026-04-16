@@ -154,19 +154,18 @@
   }
 
   .cc-optin__success {
-    display: none;
     font-size: 1.2rem;
     color: var(--cc-accent);
     text-align: center;
     padding: 0.5rem 0;
+    font-weight: 700;
   }
 
-  .cc-optin.is-success .cc-optin__form-body {
-    display: none;
-  }
-
-  .cc-optin.is-success .cc-optin__success {
-    display: block;
+  .cc-optin__error {
+    color: #8b1a1a;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    text-align: center;
   }
 
   /* ── RIGHT PANEL — event rows ── */
@@ -443,49 +442,42 @@
         <p class="cc-description">{{ section.settings.description | escape }}</p>
       {%- endif -%}
 
-      {%- comment -%} Klaviyo opt-in {%- endcomment -%}
+      {%- comment -%} Shopify Form opt-in {%- endcomment -%}
       <div class="cc-optin" id="wtp-cc-optin-{{ section.id }}">
-        <p class="cc-optin__label">{{ section.settings.optin_label | default: 'Automated Reminders' | escape }}</p>
+        <p class="cc-optin__label">{{ section.settings.optin_label | escape }}</p>
         <p class="cc-optin__desc">
-          {{
-            section.settings.optin_desc
-            | default: "Never miss an event. We'll send you calendar updates for every stage."
-            | escape
-          }}
+          {{ section.settings.optin_desc | escape }}
         </p>
 
-        <form
-          class="cc-optin__form-body"
-          action="https://manage.kmail-lists.com/subscriptions/subscribe"
-          data-ajax-submit="/remote/core/subscriptions/ajax_subscribe"
-          method="POST"
-          target="_blank"
-          novalidate
-          id="wtp-cc-optin-form-{{ section.id }}"
-        >
-          <input type="hidden" name="g" value="{{ section.settings.klaviyo_list_id | escape }}">
-          <input type="hidden" name="$fields" value="$email">
-          <div class="pill-form">
-            <span class="pill-form__icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                <path d="M2 7l10 7 10-7"/>
-              </svg>
-            </span>
-            <input
-              type="email"
-              name="email"
-              class="cc-optin__input"
-              placeholder="{{ section.settings.optin_placeholder | default: 'Enter your email' | escape }}"
-              required
-            >
-            <button type="submit" class="cc-optin__btn">
-              {{ section.settings.optin_btn_label | default: 'Keep Me Notified' | escape }}
-            </button>
-          </div>
-        </form>
-
-        <p class="cc-optin__success">You're in! 🎉 We'll keep you updated.</p>
+        {%- form 'customer', class: 'cc-optin__form-body event-newsletter-form', id: 'wtp-cc-optin-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter, community-events">
+          
+          {%- if form.posted_successfully? -%}
+            <p class="cc-optin__success">You're in! 🎉 We'll keep you updated.</p>
+          {%- else -%}
+            <div class="pill-form">
+              <span class="pill-form__icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2"/>
+                  <path d="M2 7l10 7 10-7"/>
+                </svg>
+              </span>
+              <input
+                type="email"
+                name="contact[email]"
+                class="cc-optin__input"
+                placeholder="{{ section.settings.optin_placeholder | escape }}"
+                required
+              >
+              <button type="submit" class="cc-optin__btn">
+                {{ section.settings.optin_btn_label | escape }}
+              </button>
+            </div>
+            {%- if form.errors -%}
+              <p class="cc-optin__error">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
       </div>
     </div>
 
@@ -584,34 +576,7 @@
   </div>
 </section>
 
-<script>
-  (function () {
-    var optin = document.getElementById('wtp-cc-optin-{{ section.id }}');
-    var form = document.getElementById('wtp-cc-optin-form-{{ section.id }}');
-    if (!form || !optin) return;
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var email = form.querySelector('input[type="email"]').value;
-      var listId = form.querySelector('input[name="g"]').value;
-
-      if (!email || !listId) return;
-
-      fetch('https://manage.kmail-lists.com/subscriptions/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'g=' + encodeURIComponent(listId) + '&email=' + encodeURIComponent(email) + '&$fields=$email',
-      })
-        .then(function () {
-          optin.classList.add('is-success');
-        })
-        .catch(function () {
-          /* Still show success to avoid UX friction on CORS pre-flight */
-          optin.classList.add('is-success');
-        });
-    });
-  })();
-</script>
 
 {% schema %}
 {
@@ -667,21 +632,15 @@
     },
     {
       "type": "text",
-      "id": "klaviyo_list_id",
-      "label": "Klaviyo List ID",
-      "info": "Found in your Klaviyo dashboard under Lists & Segments."
-    },
-    {
-      "type": "text",
       "id": "optin_label",
       "label": "Form Label",
-      "default": "Automated Reminders"
+      "default": "Never Miss a Pour."
     },
     {
       "type": "textarea",
       "id": "optin_desc",
       "label": "Form Description",
-      "default": "Never miss an event. We'll send you calendar updates for every stage."
+      "default": "Get notified about upcoming cuppings, masterclasses, and community events."
     },
     {
       "type": "text",
