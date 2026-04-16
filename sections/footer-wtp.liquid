@@ -226,7 +226,7 @@
 
   .wtp-footer__heading {
     font-family: var(--footer-body-font);
-    font-size: 0.78rem;
+    font-size: 1.2rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.14em;
@@ -244,7 +244,7 @@
   }
 
   .wtp-footer__link {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     line-height: 1.5;
     color: var(--footer-text-muted);
     text-decoration: none;
@@ -268,7 +268,7 @@
   }
 
   .wtp-footer__contact-label {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
@@ -400,13 +400,10 @@
 </style>
 
 <footer class="wtp-footer">
-
   {%- comment -%} ── MAIN ── {%- endcomment -%}
   <div class="wtp-footer__main">
-
     {%- comment -%} LEFT COLUMN {%- endcomment -%}
     <div class="wtp-footer__left">
-
       {%- comment -%} Social icons — circular buttons {%- endcomment -%}
       <div class="wtp-footer__socials">
         {%- if section.settings.instagram_url != blank -%}
@@ -467,7 +464,10 @@
               </button>
             </div>
             {%- if form.errors -%}
-              <p class="wtp-footer__newsletter-error">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</p>
+              <p class="wtp-footer__newsletter-error">
+                {{ form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email }}
+              </p>
             {%- endif -%}
           {%- endif -%}
         {%- endform -%}
@@ -481,11 +481,10 @@
           </div>
         {%- endif -%}
         <p class="wtp-footer__brand-signoff-text">
-            Where Coffee Creates Community,<br>
-            by <strong>WTP Coffee<sup>&reg;</sup></strong>
-          </p>
+          Where Coffee Creates Community,<br>
+          by <strong>WTP Coffee<sup>&reg;</sup></strong>
+        </p>
       </div>
-
     </div>
 
     {%- comment -%} RIGHT — Nav Columns {%- endcomment -%}
@@ -515,10 +514,14 @@
                   <div class="wtp-footer__contact-group">
                     <span class="wtp-footer__contact-label">Sales & Roastery</span>
                     {%- if block.settings.email_1 != blank -%}
-                      <a href="mailto:{{ block.settings.email_1 }}" class="wtp-footer__link">{{ block.settings.email_1 }}</a>
+                      <a href="mailto:{{ block.settings.email_1 }}" class="wtp-footer__link">
+                        {{- block.settings.email_1 -}}
+                      </a>
                     {%- endif -%}
                     {%- if block.settings.phone_1 != blank -%}
-                      <a href="tel:{{ block.settings.phone_1 | replace: ' ', '' }}" class="wtp-footer__link">{{ block.settings.phone_1 }}</a>
+                      <a href="tel:{{ block.settings.phone_1 | replace: ' ', '' }}" class="wtp-footer__link">
+                        {{- block.settings.phone_1 -}}
+                      </a>
                     {%- endif -%}
                   </div>
 
@@ -526,10 +529,14 @@
                   <div class="wtp-footer__contact-group">
                     <span class="wtp-footer__contact-label">Events</span>
                     {%- if block.settings.email_2 != blank -%}
-                      <a href="mailto:{{ block.settings.email_2 }}" class="wtp-footer__link">{{ block.settings.email_2 }}</a>
+                      <a href="mailto:{{ block.settings.email_2 }}" class="wtp-footer__link">
+                        {{- block.settings.email_2 -}}
+                      </a>
                     {%- endif -%}
                     {%- if block.settings.phone_2 != blank -%}
-                      <a href="tel:{{ block.settings.phone_2 | replace: ' ', '' }}" class="wtp-footer__link">{{ block.settings.phone_2 }}</a>
+                      <a href="tel:{{ block.settings.phone_2 | replace: ' ', '' }}" class="wtp-footer__link">
+                        {{- block.settings.phone_2 -}}
+                      </a>
                     {%- endif -%}
                   </div>
                 </div>
@@ -538,12 +545,10 @@
         {%- endfor -%}
       </nav>
     {%- endif -%}
-
   </div>
 
   {%- comment -%} ── BOTTOM BAR ── {%- endcomment -%}
   <div class="wtp-footer__bottom">
-
     {%- comment -%} Copyright — Left {%- endcomment -%}
     <p class="wtp-footer__copyright">
       &copy; {{ section.settings.copyright_year }}
@@ -577,9 +582,7 @@
         </ul>
       </div>
     {%- endif -%}
-
   </div>
-
 </footer>
 
 {% schema %}
