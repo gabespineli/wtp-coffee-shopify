@@ -1,0 +1,518 @@
+{%- style -%}
+  /* ════════════════════════════════════════════════
+     WTP Coffee — Bookings Page
+  ════════════════════════════════════════════════ */
+
+  /* ── Gap Fix: flush against header ── */
+  #shopify-section-{{ section.id }} {
+    background-color: #F5F0E8 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* ── Box Model ── */
+  .bk-hero *,
+  .bk-form-section * {
+    box-sizing: border-box;
+  }
+
+  /* ════════════════════
+     HERO
+  ════════════════════ */
+  .bk-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 560px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .bk-hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+  }
+
+  /* ── Left Panel ── */
+  .bk-hero__copy {
+    background-color: #1B3A2D;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 4rem 5rem 5%;
+  }
+
+  @media screen and (max-width: 749px) {
+    .bk-hero__copy {
+      padding: 4rem 1.5rem;
+    }
+  }
+
+  .bk-hero__eyebrow {
+    font-family: var(--font-body-family);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #C8A96E;
+    margin: 0 0 1.25rem;
+  }
+
+  .bk-hero__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-style: italic;
+    line-height: 1.08;
+    color: #F5F0E8;
+    margin: 0 0 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .bk-hero__subtitle {
+    font-family: var(--font-body-family);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(245, 240, 232, 0.7);
+    margin: 0;
+    max-width: 42ch;
+  }
+
+  .bk-hero__divider {
+    width: 48px;
+    height: 2px;
+    background: #C8A96E;
+    margin: 1.75rem 0;
+    border: none;
+  }
+
+  /* ── Right Panel ── */
+  .bk-hero__media {
+    position: relative;
+    overflow: hidden;
+    min-height: 420px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .bk-hero__media {
+      min-height: 280px;
+    }
+  }
+
+  .bk-hero__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .bk-hero__media-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #D4C9B5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ════════════════════
+     FORM SECTION
+  ════════════════════ */
+  .bk-form-section {
+    background-color: #F5F0E8;
+    padding: 0 1.5rem 8rem;
+  }
+
+  .bk-form-inner {
+    max-width: 800px;
+    margin: 5rem auto;
+  }
+
+  /* ── Section Heading ── */
+  .bk-form-heading {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .bk-form-heading__label {
+    font-family: var(--font-body-family);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #C8A96E;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .bk-form-heading__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-style: italic;
+    line-height: 1.1;
+    color: #1B3A2D;
+    margin: 0;
+  }
+
+  /* ── Form Messages ── */
+  .bk-form__message {
+    margin-bottom: 2rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    font-family: var(--font-body-family);
+    font-size: 0.95rem;
+  }
+
+  .bk-form__message--success {
+    background: rgba(27, 58, 45, 0.08);
+    border-left: 4px solid #1B3A2D;
+    color: #1B3A2D;
+  }
+
+  .bk-form__message--error {
+    background: rgba(200, 60, 60, 0.07);
+    border-left: 4px solid #c83c3c;
+    color: #8b1a1a;
+  }
+
+  /* ── Grid Layout ── */
+  .bk-form__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem 2.5rem;
+  }
+
+  @media screen and (max-width: 600px) {
+    .bk-form__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .bk-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .bk-form__field--full {
+    grid-column: 1 / -1;
+  }
+
+  /* ── Labels ── */
+  .bk-form__label {
+    font-family: var(--font-body-family);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(27, 58, 45, 0.7);
+  }
+
+  .bk-form__label--required::after {
+    content: ' *';
+    color: #C8A96E;
+  }
+
+  /* ── Inputs, Select, Textarea ── */
+  .bk-form__input,
+  .bk-form__select,
+  .bk-form__textarea {
+    font-family: var(--font-body-family);
+    font-size: 1.15rem;
+    color: #1B3A2D;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(27, 58, 45, 0.35);
+    border-radius: 0;
+    padding: 0.85rem 0;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .bk-form__input:focus,
+  .bk-form__select:focus,
+  .bk-form__textarea:focus {
+    border-bottom-color: #1B3A2D;
+  }
+
+  .bk-form__input::placeholder,
+  .bk-form__textarea::placeholder {
+    color: rgba(27, 58, 45, 0.3);
+  }
+
+  /* Select arrow */
+  .bk-form__select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231B3A2D' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.25rem center;
+    padding-right: 1.5rem;
+  }
+
+  .bk-form__select option {
+    color: #1B3A2D;
+    background: #F5F0E8;
+  }
+
+  .bk-form__textarea {
+    resize: vertical;
+    min-height: 120px;
+    border: none;
+    border-bottom: 1.5px solid rgba(27, 58, 45, 0.35);
+    padding: 0.6rem 0;
+  }
+
+  /* ── Submit Button ── */
+  .bk-form__submit-wrap {
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+  }
+
+  .bk-form__submit {
+    width: 100%;
+    background: #1B3A2D;
+    color: #F5F0E8;
+    font-family: var(--font-body-family);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    border: none;
+    border-radius: 50px;
+    padding: 1.1rem 2rem;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.15s ease;
+  }
+
+  .bk-form__submit:hover {
+    background: #142e22;
+    transform: translateY(-1px);
+  }
+
+  .bk-form__submit:active {
+    transform: translateY(0);
+  }
+{%- endstyle -%}
+
+{%- comment -%} ── HERO ── {%- endcomment -%}
+<div class="bk-hero">
+
+  {%- comment -%} Left: Copy {%- endcomment -%}
+  <div class="bk-hero__copy">
+    <p class="bk-hero__eyebrow">WTP Coffee</p>
+    <h1 class="bk-hero__title">{{ page.title | escape }}</h1>
+    <hr class="bk-hero__divider" aria-hidden="true">
+    {%- if section.settings.hero_subtitle != blank -%}
+      <p class="bk-hero__subtitle">{{ section.settings.hero_subtitle | escape }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Right: Image {%- endcomment -%}
+  <div class="bk-hero__media">
+    {%- if section.settings.hero_image != blank -%}
+      {{
+        section.settings.hero_image
+        | image_url: width: 1200
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          widths: '600, 900, 1200',
+          sizes: '(min-width: 750px) 50vw, 100vw',
+          alt: section.settings.hero_image.alt | default: page.title
+      }}
+    {%- else -%}
+      <div class="bk-hero__media-placeholder">
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {%- endif -%}
+  </div>
+
+</div>
+
+{%- comment -%} ── LEAD CAPTURE FORM ── {%- endcomment -%}
+<div class="bk-form-section">
+  <div class="bk-form-inner">
+
+    <div class="bk-form-heading">
+      <span class="bk-form-heading__label">Get in Touch</span>
+      <h2 class="bk-form-heading__title">Submit Your Inquiry</h2>
+    </div>
+
+    {%- form 'contact' -%}
+
+      {%- comment -%} Success Message {%- endcomment -%}
+      {%- if form.posted_successfully? -%}
+        <div class="bk-form__message bk-form__message--success" role="status">
+          <strong>Your inquiry has been received.</strong> Our team will be in touch within 2–3 business days.
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Error Message {%- endcomment -%}
+      {%- if form.errors -%}
+        <div class="bk-form__message bk-form__message--error" role="alert">
+          <strong>Please review the following:</strong>
+          <ul style="margin: 0.5rem 0 0; padding-left: 1.25rem;">
+            {%- for field in form.errors -%}
+              <li>{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div class="bk-form__grid">
+
+        {%- comment -%} First Name {%- endcomment -%}
+        <div class="bk-form__field">
+          <label class="bk-form__label" for="BookingFirstName">First Name</label>
+          <input
+            id="BookingFirstName"
+            type="text"
+            name="contact[First Name]"
+            class="bk-form__input"
+            autocomplete="given-name"
+            value="{{ form['First Name'] }}"
+          >
+        </div>
+
+        {%- comment -%} Last Name {%- endcomment -%}
+        <div class="bk-form__field">
+          <label class="bk-form__label" for="BookingLastName">Last Name</label>
+          <input
+            id="BookingLastName"
+            type="text"
+            name="contact[Last Name]"
+            class="bk-form__input"
+            autocomplete="family-name"
+            value="{{ form['Last Name'] }}"
+          >
+        </div>
+
+        {%- comment -%} Email {%- endcomment -%}
+        <div class="bk-form__field">
+          <label class="bk-form__label bk-form__label--required" for="BookingEmail">Email</label>
+          <input
+            id="BookingEmail"
+            type="email"
+            name="contact[email]"
+            class="bk-form__input"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+            aria-required="true"
+            value="{{ form.email }}"
+          >
+        </div>
+
+        {%- comment -%} Phone {%- endcomment -%}
+        <div class="bk-form__field">
+          <label class="bk-form__label" for="BookingPhone">Phone</label>
+          <input
+            id="BookingPhone"
+            type="tel"
+            name="contact[Phone]"
+            class="bk-form__input"
+            autocomplete="tel"
+            value="{{ form['Phone'] }}"
+          >
+        </div>
+
+        {%- comment -%} Service Type {%- endcomment -%}
+        <div class="bk-form__field bk-form__field--full">
+          <label class="bk-form__label" for="BookingServiceType">Service Type</label>
+          <select
+            id="BookingServiceType"
+            name="contact[Service Type]"
+            class="bk-form__select"
+          >
+            <option value="" disabled selected>Select a service…</option>
+            <option value="Coffee Cart Catering" {% if form['Service Type'] == 'Coffee Cart Catering' %}selected{% endif %}>Coffee Cart Catering</option>
+            <option value="Wholesale Program" {% if form['Service Type'] == 'Wholesale Program' %}selected{% endif %}>Wholesale Program</option>
+            <option value="Corporate Gifting" {% if form['Service Type'] == 'Corporate Gifting' %}selected{% endif %}>Corporate Gifting</option>
+            <option value="General Inquiry" {% if form['Service Type'] == 'General Inquiry' %}selected{% endif %}>General Inquiry</option>
+          </select>
+        </div>
+
+        {%- comment -%} Event Date {%- endcomment -%}
+        <div class="bk-form__field">
+          <label class="bk-form__label" for="BookingEventDate">Event Date</label>
+          <input
+            id="BookingEventDate"
+            type="date"
+            name="contact[Event Date]"
+            class="bk-form__input"
+            value="{{ form['Event Date'] }}"
+          >
+        </div>
+
+        {%- comment -%} Estimated Guests {%- endcomment -%}
+        <div class="bk-form__field">
+          <label class="bk-form__label" for="BookingGuestCount">Estimated Guests</label>
+          <input
+            id="BookingGuestCount"
+            type="number"
+            name="contact[Guest Count]"
+            class="bk-form__input"
+            min="1"
+            placeholder="e.g. 100"
+            value="{{ form['Guest Count'] }}"
+          >
+        </div>
+
+        {%- comment -%} Event Details {%- endcomment -%}
+        <div class="bk-form__field bk-form__field--full">
+          <label class="bk-form__label bk-form__label--required" for="BookingDetails">Event Details</label>
+          <textarea
+            id="BookingDetails"
+            name="contact[body]"
+            class="bk-form__textarea"
+            rows="5"
+            required
+            aria-required="true"
+            placeholder="Tell us about your event, venue, and any special requests…"
+          >{{ form.body }}</textarea>
+        </div>
+
+        {%- comment -%} Submit {%- endcomment -%}
+        <div class="bk-form__submit-wrap">
+          <button type="submit" class="bk-form__submit">Submit Inquiry</button>
+        </div>
+
+      </div>
+    {%- endform -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bookings Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subtitle",
+      "label": "Hero Subtitle",
+      "default": "We bring the craft of specialty coffee directly to your event. Tell us about your vision and we'll create something memorable together."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bookings Page"
+    }
+  ]
+}
+{% endschema %}

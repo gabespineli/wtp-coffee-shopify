@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "page_bookings": {
+      "type": "page-bookings",
+      "settings": {
+        "hero_subtitle": "We bring the craft of specialty coffee directly to your event. Tell us about your vision and we'll create something memorable together."
+      }
+    }
+  },
+  "order": [
+    "page_bookings"
+  ]
+}
