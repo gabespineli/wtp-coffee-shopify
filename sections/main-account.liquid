@@ -1,152 +1,466 @@
 {{ 'customer.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  /* ════════════════════════════════════════
+     WTP Account Dashboard — Shared Layout
+  ════════════════════════════════════════ */
+  .wtp-dash {
+    --dash-bg:       #F5F0E8;
+    --dash-green:    #1B3A2D;
+    --dash-gold:     #C8A96E;
+    --dash-muted:    rgba(27, 58, 45, 0.55);
+    --dash-border:   rgba(27, 58, 45, 0.12);
+    --dash-hover-bg: rgba(27, 58, 45, 0.07);
+    background: var(--dash-bg);
+    font-family: var(--font-body-family);
+    color: var(--dash-green);
+    min-height: 70vh;
+    padding: 4rem 5%;
   }
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
+  .wtp-dash__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 4rem;
+  }
+
+  /* ════════════════════════════════════════
+     SIDEBAR
+  ════════════════════════════════════════ */
+  .wtp-dash__sidebar {
+    flex: 0 0 220px;
+    position: sticky;
+    top: 7rem;
+  }
+
+  .wtp-dash__sidebar-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dash-muted);
+    display: block;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--dash-border);
+  }
+
+  .wtp-dash__nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .wtp-dash__nav-link {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--dash-muted);
+    text-decoration: none;
+    padding: 0.65rem 0.9rem;
+    border-radius: 8px;
+    transition: background 0.15s ease, color 0.15s ease, font-weight 0.1s ease;
+  }
+
+  .wtp-dash__nav-link:hover,
+  .wtp-dash__nav-link--active {
+    background: var(--dash-hover-bg);
+    color: var(--dash-green);
+    font-weight: 700;
+  }
+
+  .wtp-dash__nav-link--logout {
+    margin-top: 1.5rem;
+    color: rgba(27, 58, 45, 0.4);
+    font-size: 0.85rem;
+  }
+
+  .wtp-dash__nav-link--logout:hover {
+    background: rgba(200, 60, 60, 0.06);
+    color: #a03030;
+    font-weight: 500;
+  }
+
+  /* ════════════════════════════════════════
+     MAIN CONTENT
+  ════════════════════════════════════════ */
+  .wtp-dash__content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .wtp-dash__page-title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-style: italic;
+    line-height: 1.1;
+    color: var(--dash-green);
+    margin: 0 0 0.4rem;
+  }
+
+  .wtp-dash__greeting {
+    font-size: 1rem;
+    color: var(--dash-muted);
+    margin: 0 0 2.5rem;
+  }
+
+  .wtp-dash__section-heading {
+    font-family: var(--font-body-family);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--dash-muted);
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--dash-border);
+  }
+
+  /* ── Order Table ── */
+  .wtp-dash__orders {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .wtp-dash__orders thead th {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--dash-muted);
+    padding: 0 1rem 0.9rem 0;
+    text-align: left;
+    border-bottom: 1px solid var(--dash-border);
+    white-space: nowrap;
+  }
+
+  .wtp-dash__orders tbody tr {
+    border-bottom: 1px solid var(--dash-border);
+    transition: background 0.15s ease;
+  }
+
+  .wtp-dash__orders tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .wtp-dash__orders tbody tr:hover {
+    background: var(--dash-hover-bg);
+  }
+
+  .wtp-dash__orders tbody td {
+    padding: 1rem 1rem 1rem 0;
+    color: var(--dash-green);
+    vertical-align: middle;
+  }
+
+  .wtp-dash__orders tbody td a {
+    color: var(--dash-green);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .wtp-dash__orders tbody td a:hover {
+    color: var(--dash-gold);
+  }
+
+  /* Status badge */
+  .wtp-dash__badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.7rem;
+    border-radius: 50px;
+    background: var(--dash-hover-bg);
+    color: var(--dash-green);
+  }
+
+  .wtp-dash__badge--paid {
+    background: rgba(27, 58, 45, 0.1);
+    color: var(--dash-green);
+  }
+
+  .wtp-dash__badge--fulfilled {
+    background: rgba(200, 169, 110, 0.15);
+    color: #8a6a2a;
+  }
+
+  .wtp-dash__badge--pending {
+    background: rgba(200, 60, 60, 0.08);
+    color: #8b2020;
+  }
+
+  /* No orders */
+  .wtp-dash__empty {
+    text-align: center;
+    padding: 4rem 0;
+    color: var(--dash-muted);
+  }
+
+  .wtp-dash__empty p {
+    font-size: 1rem;
+    margin: 0 0 1.5rem;
+  }
+
+  /* ── Default Address Card ── */
+  .wtp-dash__address-card {
+    background: #fff;
+    border: 1px solid var(--dash-border);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-top: 2.5rem;
+  }
+
+  .wtp-dash__address-card address {
+    font-style: normal;
+    color: var(--dash-green);
+    line-height: 1.8;
+    font-size: 0.95rem;
+  }
+
+  .wtp-dash__address-card a {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--dash-muted);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    transition: color 0.2s ease;
+  }
+
+  .wtp-dash__address-card a:hover {
+    color: var(--dash-green);
+  }
+
+  /* ── CTA Link Button ── */
+  .wtp-dash__cta {
+    display: inline-block;
+    background: var(--dash-green);
+    color: #F5F0E8;
+    border: none;
+    border-radius: 50px;
+    padding: 0.9rem 2rem;
+    font-family: var(--font-body-family);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+
+  .wtp-dash__cta:hover {
+    background: #142e22;
+    transform: translateY(-1px);
+  }
+
+  /* ════════════════════════════════════════
+     MOBILE ( ≤ 768px )
+  ════════════════════════════════════════ */
+  @media screen and (max-width: 768px) {
+    .wtp-dash {
+      padding: 2rem 1.25rem;
+    }
+
+    .wtp-dash__inner {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .wtp-dash__sidebar {
+      flex: 1 1 100%;
+      width: 100%;
+      position: static;
+      margin-bottom: 2rem;
+    }
+
+    .wtp-dash__nav {
+      flex-direction: row;
+      overflow-x: auto;
+      gap: 0.25rem;
+      padding-bottom: 0.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .wtp-dash__nav::-webkit-scrollbar { display: none; }
+
+    .wtp-dash__nav-link {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .wtp-dash__nav-link--logout {
+      margin-top: 0;
+    }
+
+    .wtp-dash__orders thead {
+      display: none;
+    }
+
+    .wtp-dash__orders tbody td {
+      display: block;
+      padding: 0.4rem 0;
+      border: none;
+    }
+
+    .wtp-dash__orders tbody td::before {
+      content: attr(data-label) ": ";
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--dash-muted);
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    .wtp-dash__orders tbody tr {
+      display: block;
+      padding: 1rem 0;
     }
   }
 {%- endstyle -%}
 
-<div class="customer account section-{{ section.id }}-padding">
-  <div>
-    <h1 class="customer__title">{{ 'customer.account.title' | t }}</h1>
-    <a href="{{ routes.account_logout_url }}">
-      <span class="svg-wrapper">
-        {{- 'icon-account.svg' | inline_asset_content -}}
-      </span>
-      {{ 'customer.log_out' | t }}
-    </a>
-  </div>
+<div class="wtp-dash">
+  <div class="wtp-dash__inner">
 
-  <div>
-    <div>
-      <h2>{{ 'customer.orders.title' | t }}</h2>
+    {%- comment -%} ── SIDEBAR ── {%- endcomment -%}
+    <aside class="wtp-dash__sidebar" aria-label="Account Navigation">
+      <span class="wtp-dash__sidebar-label">My Account</span>
+      <ul class="wtp-dash__nav">
+        <li>
+          <a href="{{ routes.account_url }}" class="wtp-dash__nav-link wtp-dash__nav-link--active">
+            Order History
+          </a>
+        </li>
+        <li>
+          <a href="#" class="wtp-dash__nav-link wtp-sub-link">
+            Subscriptions
+          </a>
+        </li>
+        <li>
+          <a href="{{ routes.account_addresses_url }}" class="wtp-dash__nav-link">
+            Addresses
+          </a>
+        </li>
+        <li>
+          <a href="{{ routes.account_logout_url }}" class="wtp-dash__nav-link wtp-dash__nav-link--logout">
+            Log Out
+          </a>
+        </li>
+      </ul>
+    </aside>
 
-      {% paginate customer.orders by 20 %}
+    {%- comment -%} ── CONTENT ── {%- endcomment -%}
+    <main class="wtp-dash__content">
+      <h1 class="wtp-dash__page-title">Your Orders</h1>
+      <p class="wtp-dash__greeting">Hello, {{ customer.first_name }}. Here's what you've been brewing with us.</p>
+
+      <h2 class="wtp-dash__section-heading">Order History</h2>
+
+      {%- paginate customer.orders by 20 -%}
         {%- if customer.orders.size > 0 -%}
-          <table role="table" class="order-history">
-            <caption class="visually-hidden">
-              {{ 'customer.orders.title' | t }}
-            </caption>
+          <table class="wtp-dash__orders" role="table">
+            <caption class="visually-hidden">{{ 'customer.orders.title' | t }}</caption>
             <thead role="rowgroup">
               <tr role="row">
-                <th id="ColumnOrder" scope="col" role="columnheader">{{ 'customer.orders.order_number' | t }}</th>
-                <th id="ColumnDate" scope="col" role="columnheader">{{ 'customer.orders.date' | t }}</th>
-                <th id="ColumnPayment" scope="col" role="columnheader">{{ 'customer.orders.payment_status' | t }}</th>
-                <th id="ColumnFulfillment" scope="col" role="columnheader">
-                  {{ 'customer.orders.fulfillment_status' | t }}
-                </th>
-                <th id="ColumnTotal" scope="col" role="columnheader">{{ 'customer.orders.total' | t }}</th>
+                <th scope="col" role="columnheader">{{ 'customer.orders.order_number' | t }}</th>
+                <th scope="col" role="columnheader">{{ 'customer.orders.date' | t }}</th>
+                <th scope="col" role="columnheader">{{ 'customer.orders.payment_status' | t }}</th>
+                <th scope="col" role="columnheader">{{ 'customer.orders.fulfillment_status' | t }}</th>
+                <th scope="col" role="columnheader">{{ 'customer.orders.total' | t }}</th>
               </tr>
             </thead>
             <tbody role="rowgroup">
               {%- for order in customer.orders -%}
                 <tr role="row">
-                  <td
-                    id="RowOrder"
-                    role="cell"
-                    headers="ColumnOrder"
-                    data-label="{{ 'customer.orders.order_number' | t }}"
-                  >
-                    <a
-                      href="{{ order.customer_url }}"
-                      aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}"
-                    >
+                  <td role="cell" data-label="{{ 'customer.orders.order_number' | t }}">
+                    <a href="{{ order.customer_url }}" aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">
                       {{ order.name }}
                     </a>
                   </td>
-                  <td headers="RowOrder ColumnDate" role="cell" data-label="{{ 'customer.orders.date' | t }}">
+                  <td role="cell" data-label="{{ 'customer.orders.date' | t }}">
                     {{ order.created_at | time_tag: format: 'date' }}
                   </td>
-                  <td
-                    headers="RowOrder ColumnPayment"
-                    role="cell"
-                    data-label="{{ 'customer.orders.payment_status' | t }}"
-                  >
-                    {{ order.financial_status_label }}
+                  <td role="cell" data-label="{{ 'customer.orders.payment_status' | t }}">
+                    <span class="wtp-dash__badge wtp-dash__badge--paid">{{ order.financial_status_label }}</span>
                   </td>
-                  <td
-                    headers="RowOrder ColumnFulfillment"
-                    role="cell"
-                    data-label="{{ 'customer.orders.fulfillment_status' | t }}"
-                  >
-                    {{ order.fulfillment_status_label }}
+                  <td role="cell" data-label="{{ 'customer.orders.fulfillment_status' | t }}">
+                    <span class="wtp-dash__badge wtp-dash__badge--fulfilled">{{ order.fulfillment_status_label }}</span>
                   </td>
-                  <td headers="RowOrder ColumnTotal" role="cell" data-label="{{ 'customer.orders.total' | t }}">
+                  <td role="cell" data-label="{{ 'customer.orders.total' | t }}">
                     {{ order.total_net_amount | money_with_currency }}
                   </td>
                 </tr>
               {%- endfor -%}
             </tbody>
           </table>
-        {%- else -%}
-          <p>{{ 'customer.orders.none' | t }}</p>
-        {%- endif -%}
 
-        {%- if paginate.pages > 1 -%}
-          {%- if paginate.parts.size > 0 -%}
-            <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+          {%- if paginate.pages > 1 and paginate.parts.size > 0 -%}
+            <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}" style="margin-top: 2rem;">
               <ul role="list">
                 {%- if paginate.previous -%}
                   <li>
                     <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
-                      <span class="svg-wrapper">
-                        {{- 'icon-caret.svg' | inline_asset_content -}}
-                      </span>
+                      <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
                     </a>
                   </li>
                 {%- endif -%}
-
                 {%- for part in paginate.parts -%}
                   <li>
                     {%- if part.is_link -%}
-                      <a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
-                        {{- part.title -}}
-                      </a>
+                      <a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{- part.title -}}</a>
                     {%- else -%}
                       {%- if part.title == paginate.current_page -%}
-                        <span aria-current="page" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
-                          {{- part.title -}}
-                        </span>
+                        <span aria-current="page" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{- part.title -}}</span>
                       {%- else -%}
                         <span>{{ part.title }}</span>
                       {%- endif -%}
                     {%- endif -%}
                   </li>
                 {%- endfor -%}
-
                 {%- if paginate.next -%}
                   <li>
                     <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
-                      <span class="svg-wrapper">
-                        {{- 'icon-caret.svg' | inline_asset_content -}}
-                      </span>
+                      <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
                     </a>
                   </li>
                 {%- endif -%}
               </ul>
             </nav>
           {%- endif -%}
+
+        {%- else -%}
+          <div class="wtp-dash__empty">
+            <p>{{ 'customer.orders.none' | t }}</p>
+            <a href="{{ routes.all_products_collection_url }}" class="wtp-dash__cta">Shop Now</a>
+          </div>
         {%- endif -%}
-      {% endpaginate %}
-    </div>
+      {%- endpaginate -%}
 
-    <div>
-      <h2>{{ 'customer.account.details' | t }}</h2>
+      {%- comment -%} ── Default Address Snapshot ── {%- endcomment -%}
+      {%- if customer.default_address -%}
+        <h2 class="wtp-dash__section-heading" style="margin-top: 3rem;">Default Address</h2>
+        <div class="wtp-dash__address-card">
+          {{ customer.default_address | format_address }}
+          <a href="{{ routes.account_addresses_url }}">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a>
+        </div>
+      {%- endif -%}
 
-      {{ customer.default_address | format_address }}
+    </main>
 
-      <a href="{{ routes.account_addresses_url }}">
-        {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
-      </a>
-    </div>
   </div>
 </div>
 

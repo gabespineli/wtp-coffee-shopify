@@ -1,385 +1,672 @@
 {{ 'customer.css' | asset_url | stylesheet_tag }}
-
 <script src="{{ 'customer.js' | asset_url }}" defer></script>
 
 {%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  /* ════════════════════════════════════════
+     WTP Addresses — Dashboard Design System
+  ════════════════════════════════════════ */
+  .wtp-dash {
+    --dash-bg:       #F5F0E8;
+    --dash-green:    #1B3A2D;
+    --dash-gold:     #C8A96E;
+    --dash-muted:    rgba(27, 58, 45, 0.55);
+    --dash-border:   rgba(27, 58, 45, 0.12);
+    --dash-hover-bg: rgba(27, 58, 45, 0.07);
+    background: var(--dash-bg);
+    font-family: var(--font-body-family);
+    color: var(--dash-green);
+    min-height: 70vh;
+    padding: 4rem 5%;
   }
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
+  .wtp-dash__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 4rem;
+  }
+
+  /* ════════════════════════════════════════
+     SIDEBAR
+  ════════════════════════════════════════ */
+  .wtp-dash__sidebar {
+    flex: 0 0 220px;
+    position: sticky;
+    top: 7rem;
+  }
+
+  .wtp-dash__sidebar-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dash-muted);
+    display: block;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--dash-border);
+  }
+
+  .wtp-dash__nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .wtp-dash__nav-link {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--dash-muted);
+    text-decoration: none;
+    padding: 0.65rem 0.9rem;
+    border-radius: 8px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .wtp-dash__nav-link:hover,
+  .wtp-dash__nav-link--active {
+    background: var(--dash-hover-bg);
+    color: var(--dash-green);
+    font-weight: 700;
+  }
+
+  .wtp-dash__nav-link--logout {
+    margin-top: 1.5rem;
+    color: rgba(27, 58, 45, 0.4);
+    font-size: 0.85rem;
+  }
+
+  .wtp-dash__nav-link--logout:hover {
+    background: rgba(200, 60, 60, 0.06);
+    color: #a03030;
+    font-weight: 500;
+  }
+
+  /* ════════════════════════════════════════
+     CONTENT — Addresses
+  ════════════════════════════════════════ */
+  .wtp-dash__content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .wtp-dash__page-title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-style: italic;
+    line-height: 1.1;
+    color: var(--dash-green);
+    margin: 0 0 2.5rem;
+  }
+
+  .wtp-dash__section-heading {
+    font-family: var(--font-body-family);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--dash-muted);
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--dash-border);
+  }
+
+  /* ── Add New Button ── */
+  .wtp-dash__add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--dash-green);
+    color: #F5F0E8;
+    border: none;
+    border-radius: 50px;
+    padding: 0.9rem 2rem;
+    font-family: var(--font-body-family);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    margin-bottom: 2.5rem;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+
+  .wtp-dash__add-btn:hover {
+    background: #142e22;
+    transform: translateY(-1px);
+  }
+
+  /* ── Address Form Panel ── */
+  .wtp-dash__addr-form-wrap {
+    background: #fff;
+    border: 1px solid var(--dash-border);
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 2.5rem;
+    display: none;
+  }
+
+  .wtp-dash__addr-form-wrap[aria-hidden="false"],
+  .wtp-dash__addr-form-wrap:not([aria-hidden]) {
+    display: block;
+  }
+
+  .wtp-dash__form-title {
+    font-family: var(--font-heading-family);
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--dash-green);
+    margin: 0 0 2rem;
+  }
+
+  /* ── Address Form Fields ── */
+  .wtp-dash__form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1.75rem;
+  }
+
+  .wtp-dash__field {
+    position: relative;
+    margin-bottom: 1.75rem;
+  }
+
+  .wtp-dash__field--full {
+    grid-column: 1 / -1;
+  }
+
+  .wtp-dash__field-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--dash-muted);
+    margin-bottom: 0.45rem;
+  }
+
+  .wtp-dash__field-input,
+  .wtp-dash__field-select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--dash-border);
+    border-radius: 0;
+    padding: 0.7rem 0;
+    font-family: var(--font-body-family);
+    font-size: 1rem;
+    color: var(--dash-green);
+    outline: none;
+    transition: border-color 0.2s ease;
+    -webkit-appearance: none;
+  }
+
+  .wtp-dash__field-input:focus,
+  .wtp-dash__field-select:focus {
+    border-bottom-color: var(--dash-green);
+  }
+
+  .wtp-dash__field-input::placeholder {
+    color: rgba(27, 58, 45, 0.3);
+  }
+
+  .wtp-dash__field-select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231B3A2D' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.25rem center;
+    padding-right: 1.5rem;
+  }
+
+  .wtp-dash__form-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 0.5rem;
+    grid-column: 1 / -1;
+  }
+
+  .wtp-dash__form-submit {
+    background: var(--dash-green);
+    color: #F5F0E8;
+    border: none;
+    border-radius: 50px;
+    padding: 0.9rem 2.2rem;
+    font-family: var(--font-body-family);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .wtp-dash__form-submit:hover {
+    background: #142e22;
+  }
+
+  .wtp-dash__form-cancel {
+    background: transparent;
+    border: 1.5px solid var(--dash-border);
+    border-radius: 50px;
+    padding: 0.85rem 2rem;
+    font-family: var(--font-body-family);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--dash-muted);
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .wtp-dash__form-cancel:hover {
+    border-color: var(--dash-green);
+    color: var(--dash-green);
+  }
+
+  .wtp-dash__default-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--dash-muted);
+    margin-bottom: 1.5rem;
+    grid-column: 1 / -1;
+  }
+
+  /* ── Address Cards List ── */
+  .wtp-dash__addr-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .wtp-dash__addr-card {
+    background: #fff;
+    border: 1px solid var(--dash-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .wtp-dash__addr-card--default {
+    border-color: var(--dash-green);
+  }
+
+  .wtp-dash__addr-default-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--dash-green);
+    background: rgba(27, 58, 45, 0.08);
+    padding: 0.2rem 0.6rem;
+    border-radius: 50px;
+    margin-bottom: 0.25rem;
+  }
+
+  .wtp-dash__addr-card address {
+    font-style: normal;
+    color: var(--dash-green);
+    line-height: 1.75;
+    font-size: 0.92rem;
+    flex: 1;
+  }
+
+  .wtp-dash__addr-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .wtp-dash__addr-btn {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.45rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    border: 1.5px solid var(--dash-border);
+    background: transparent;
+    color: var(--dash-muted);
+    transition: all 0.15s ease;
+    text-decoration: none;
+  }
+
+  .wtp-dash__addr-btn:hover {
+    border-color: var(--dash-green);
+    color: var(--dash-green);
+    background: var(--dash-hover-bg);
+  }
+
+  .wtp-dash__addr-btn--danger:hover {
+    border-color: #c83c3c;
+    color: #a03030;
+    background: rgba(200, 60, 60, 0.06);
+  }
+
+  /* ── Edit Form Panel (inside card) ── */
+  .wtp-dash__addr-edit-panel {
+    border-top: 1px solid var(--dash-border);
+    margin-top: 0.5rem;
+    padding-top: 1.5rem;
+  }
+
+  /* ════════════════════════════════════════
+     MOBILE
+  ════════════════════════════════════════ */
+  @media screen and (max-width: 768px) {
+    .wtp-dash {
+      padding: 2rem 1.25rem;
+    }
+
+    .wtp-dash__inner {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .wtp-dash__sidebar {
+      flex: 1 1 100%;
+      width: 100%;
+      position: static;
+      margin-bottom: 2rem;
+    }
+
+    .wtp-dash__nav {
+      flex-direction: row;
+      overflow-x: auto;
+      gap: 0.25rem;
+      padding-bottom: 0.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .wtp-dash__nav::-webkit-scrollbar { display: none; }
+
+    .wtp-dash__nav-link {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .wtp-dash__nav-link--logout {
+      margin-top: 0;
+    }
+
+    .wtp-dash__form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .wtp-dash__addr-list {
+      grid-template-columns: 1fr;
     }
   }
 {%- endstyle -%}
 
-{%- paginate customer.addresses by 5 -%}
-  <div class="customer addresses section-{{ section.id }}-padding" data-customer-addresses>
-    <h1>{{ 'customer.addresses.title' | t }}</h1>
-    <a href="{{ routes.account_url }}">
-      {{ 'customer.account.return' | t }}
-    </a>
+{%- paginate customer.addresses by 10 -%}
+<div class="wtp-dash">
+  <div class="wtp-dash__inner">
 
-    <div data-address>
-      <button
-        type="button"
-        aria-expanded="false"
-        aria-controls="AddAddress"
-      >
-        {{ 'customer.addresses.add_new' | t }}
-      </button>
-      <div id="AddAddress">
-        <h2 id="AddressNewHeading">{{ 'customer.addresses.add_new' | t }}</h2>
-        {%- form 'customer_address', customer.new_address, aria-labelledBy: 'AddressNewHeading' -%}
-          <div class="field">
-            <input
-              type="text"
-              id="AddressFirstNameNew"
-              name="address[first_name]"
-              value="{{ form.first_name }}"
-              autocomplete="given-name"
-              placeholder="{{ 'customer.addresses.first_name' | t }}"
-            >
-            <label for="AddressFirstNameNew">{{ 'customer.addresses.first_name' | t }}</label>
-          </div>
-          <div class="field">
-            <input
-              type="text"
-              id="AddressLastNameNew"
-              name="address[last_name]"
-              value="{{ form.last_name }}"
-              autocomplete="family-name"
-              placeholder="{{ 'customer.addresses.last_name' | t }}"
-            >
-            <label for="AddressLastNameNew">{{ 'customer.addresses.last_name' | t }}</label>
-          </div>
-          <div class="field">
-            <input
-              type="text"
-              id="AddressCompanyNew"
-              name="address[company]"
-              value="{{ form.company }}"
-              autocomplete="organization"
-              placeholder="{{ 'customer.addresses.company' | t }}"
-            >
-            <label for="AddressCompanyNew">{{ 'customer.addresses.company' | t }}</label>
-          </div>
-          <div class="field">
-            <input
-              type="text"
-              id="AddressAddress1New"
-              name="address[address1]"
-              value="{{ form.address1 }}"
-              autocomplete="address-line1"
-              placeholder="{{ 'customer.addresses.address1' | t }}"
-            >
-            <label for="AddressAddress1New">{{ 'customer.addresses.address1' | t }}</label>
-          </div>
-          <div class="field">
-            <input
-              type="text"
-              id="AddressAddress2New"
-              name="address[address2]"
-              value="{{ form.address2 }}"
-              autocomplete="address-line2"
-              placeholder="{{ 'customer.addresses.address2' | t }}"
-            >
-            <label for="AddressAddress2New">{{ 'customer.addresses.address2' | t }}</label>
-          </div>
-          <div class="field">
-            <input
-              type="text"
-              id="AddressCityNew"
-              name="address[city]"
-              value="{{ form.city }}"
-              autocomplete="address-level2"
-              placeholder="{{ 'customer.addresses.city' | t }}"
-            >
-            <label for="AddressCityNew">{{ 'customer.addresses.city' | t }}</label>
-          </div>
-          <div>
-            <label for="AddressCountryNew">{{ 'customer.addresses.country' | t }}</label>
-            <div class="select">
-              <select
-                id="AddressCountryNew"
-                name="address[country]"
-                data-default="{{ form.country }}"
-                autocomplete="country"
-              >
-                {{ all_country_option_tags }}
-              </select>
-              <span class="svg-wrapper">
-                {{- 'icon-caret.svg' | inline_asset_content -}}
-              </span>
-            </div>
-          </div>
-          <div id="AddressProvinceContainerNew" style="display: none">
-            <label for="AddressProvinceNew">{{ 'customer.addresses.province' | t }}</label>
-            <div class="select">
-              <select
-                id="AddressProvinceNew"
-                name="address[province]"
-                data-default="{{ form.province }}"
-                autocomplete="address-level1"
-              ></select>
-              <span class="svg-wrapper">
-                {{- 'icon-caret.svg' | inline_asset_content -}}
-              </span>
-            </div>
-          </div>
-          <div class="field">
-            <input
-              type="text"
-              id="AddressZipNew"
-              name="address[zip]"
-              value="{{ form.zip }}"
-              autocapitalize="characters"
-              autocomplete="postal-code"
-              placeholder="{{ 'customer.addresses.zip' | t }}"
-            >
-            <label for="AddressZipNew">{{ 'customer.addresses.zip' | t }}</label>
-          </div>
-          <div class="field">
-            <input
-              type="tel"
-              id="AddressPhoneNew"
-              name="address[phone]"
-              value="{{ form.phone }}"
-              autocomplete="tel"
-              placeholder="{{ 'customer.addresses.phone' | t }}"
-            >
-            <label for="AddressPhoneNew">{{ 'customer.addresses.phone' | t }}</label>
-          </div>
-          <div>
-            {{ form.set_as_default_checkbox }}
-            <label for="address_default_address_new">{{ 'customer.addresses.set_default' | t }}</label>
-          </div>
-          <div>
-            <button>{{ 'customer.addresses.add' | t }}</button>
-            <button type="reset">{{ 'customer.addresses.cancel' | t }}</button>
-          </div>
-        {%- endform -%}
-      </div>
-    </div>
-
-    <ul role="list">
-      {%- for address in customer.addresses -%}
-        <li data-address>
-          {%- if address == customer.default_address -%}
-            <h2>{{ 'customer.addresses.default' | t }}</h2>
-          {%- endif -%}
-          {{ address | format_address }}
-          <button
-            type="button"
-            id="EditFormButton_{{ address.id }}"
-            aria-label="{{ 'customer.addresses.edit_address' | t }} {{ forloop.index }}"
-            aria-controls="EditAddress_{{ address.id }}"
-            aria-expanded="false"
-            data-address-id="{{ address.id }}"
-          >
-            {{ 'customer.addresses.edit' | t }}
-          </button>
-          <button
-            type="button"
-            aria-label="{{ 'customer.addresses.delete' | t }} {{ forloop.index }}"
-            data-target="{{ address.url }}"
-            data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}"
-          >
-            {{ 'customer.addresses.delete' | t }}
-          </button>
-          <div id="EditAddress_{{ address.id }}">
-            <h2>{{ 'customer.addresses.edit_address' | t }}</h2>
-            {%- form 'customer_address', address -%}
-              <div class="field">
-                <input
-                  type="text"
-                  id="AddressFirstName_{{ form.id }}"
-                  name="address[first_name]"
-                  value="{{ form.first_name }}"
-                  autocomplete="given-name"
-                  placeholder="{{ 'customer.addresses.first_name' | t }}"
-                >
-                <label for="AddressFirstName_{{ form.id }}">{{ 'customer.addresses.first_name' | t }}</label>
-              </div>
-              <div class="field">
-                <input
-                  type="text"
-                  id="AddressLastName_{{ form.id }}"
-                  name="address[last_name]"
-                  value="{{ form.last_name }}"
-                  autocomplete="family-name"
-                  placeholder="{{ 'customer.addresses.last_name' | t }}"
-                >
-                <label for="AddressLastName_{{ form.id }}">{{ 'customer.addresses.last_name' | t }}</label>
-              </div>
-              <div class="field">
-                <input
-                  type="text"
-                  id="AddressCompany_{{ form.id }}"
-                  name="address[company]"
-                  value="{{ form.company }}"
-                  autocomplete="organization"
-                  placeholder="{{ 'customer.addresses.company' | t }}"
-                >
-                <label for="AddressCompany_{{ form.id }}">{{ 'customer.addresses.company' | t }}</label>
-              </div>
-              <div class="field">
-                <input
-                  type="text"
-                  id="AddressAddress1_{{ form.id }}"
-                  name="address[address1]"
-                  value="{{ form.address1 }}"
-                  autocomplete="address-line1"
-                  placeholder="{{ 'customer.addresses.address1' | t }}"
-                >
-                <label for="AddressAddress1_{{ form.id }}">{{ 'customer.addresses.address1' | t }}</label>
-              </div>
-              <div class="field">
-                <input
-                  type="text"
-                  id="AddressAddress2_{{ form.id }}"
-                  name="address[address2]"
-                  value="{{ form.address2 }}"
-                  autocomplete="address-line2"
-                  placeholder="{{ 'customer.addresses.address2' | t }}"
-                >
-                <label for="AddressAddress2_{{ form.id }}">{{ 'customer.addresses.address2' | t }}</label>
-              </div>
-              <div class="field">
-                <input
-                  type="text"
-                  id="AddressCity_{{ form.id }}"
-                  name="address[city]"
-                  value="{{ form.city }}"
-                  autocomplete="address-level2"
-                  placeholder="{{ 'customer.addresses.city' | t }}"
-                >
-                <label for="AddressCity_{{ form.id }}">{{ 'customer.addresses.city' | t }}</label>
-              </div>
-              <div>
-                <label for="AddressCountry_{{ form.id }}">
-                  {{ 'customer.addresses.country' | t }}
-                </label>
-                <div class="select">
-                  <select
-                    id="AddressCountry_{{ form.id }}"
-                    name="address[country]"
-                    data-address-country-select
-                    data-default="{{ form.country }}"
-                    data-form-id="{{ form.id }}"
-                    autocomplete="country"
-                  >
-                    {{ all_country_option_tags }}
-                  </select>
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
-                </div>
-              </div>
-              <div id="AddressProvinceContainer_{{ form.id }}" style="display:none;">
-                <label for="AddressProvince_{{ form.id }}">
-                  {{ 'customer.addresses.province' | t }}
-                </label>
-                <div class="select">
-                  <select
-                    id="AddressProvince_{{ form.id }}"
-                    name="address[province]"
-                    data-default="{{ form.province }}"
-                    autocomplete="address-level1"
-                  ></select>
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
-                </div>
-              </div>
-              <div class="field">
-                <input
-                  type="text"
-                  id="AddressZip_{{ form.id }}"
-                  name="address[zip]"
-                  value="{{ form.zip }}"
-                  autocapitalize="characters"
-                  autocomplete="postal-code"
-                  placeholder="{{ 'customer.addresses.zip' | t }}"
-                >
-                <label for="AddressZip_{{ form.id }}">{{ 'customer.addresses.zip' | t }}</label>
-              </div>
-              <div class="field">
-                <input
-                  type="tel"
-                  id="AddressPhone_{{ form.id }}"
-                  name="address[phone]"
-                  value="{{ form.phone }}"
-                  autocomplete="tel"
-                  placeholder="{{ 'customer.addresses.phone' | t }}"
-                >
-                <label for="AddressPhone_{{ form.id }}">{{ 'customer.addresses.phone' | t }}</label>
-              </div>
-              <div>
-                {{ form.set_as_default_checkbox }}
-                <label for="address_default_address_{{ form.id }}">
-                  {{ 'customer.addresses.set_default' | t }}
-                </label>
-              </div>
-              <div>
-                <button>{{ 'customer.addresses.update' | t }}</button>
-                <button type="reset">{{ 'customer.addresses.cancel' | t }}</button>
-              </div>
-            {%- endform -%}
-          </div>
+    {%- comment -%} ── SIDEBAR ── {%- endcomment -%}
+    <aside class="wtp-dash__sidebar" aria-label="Account Navigation">
+      <span class="wtp-dash__sidebar-label">My Account</span>
+      <ul class="wtp-dash__nav">
+        <li>
+          <a href="{{ routes.account_url }}" class="wtp-dash__nav-link">Order History</a>
         </li>
-      {%- endfor -%}
-    </ul>
+        <li>
+          <a href="#" class="wtp-dash__nav-link wtp-sub-link">Subscriptions</a>
+        </li>
+        <li>
+          <a href="{{ routes.account_addresses_url }}" class="wtp-dash__nav-link wtp-dash__nav-link--active">Addresses</a>
+        </li>
+        <li>
+          <a href="{{ routes.account_logout_url }}" class="wtp-dash__nav-link wtp-dash__nav-link--logout">Log Out</a>
+        </li>
+      </ul>
+    </aside>
 
-    {%- if paginate.pages > 1 -%}
-      {%- if paginate.parts.size > 0 -%}
-        <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+    {%- comment -%} ── CONTENT ── {%- endcomment -%}
+    <main class="wtp-dash__content" data-customer-addresses>
+
+      <h1 class="wtp-dash__page-title">{{ 'customer.addresses.title' | t }}</h1>
+
+      {%- comment -%} ── ADD NEW ADDRESS ── {%- endcomment -%}
+      <div data-address>
+        <button
+          type="button"
+          class="wtp-dash__add-btn"
+          aria-expanded="false"
+          aria-controls="AddAddress"
+        >
+          + {{ 'customer.addresses.add_new' | t }}
+        </button>
+
+        <div id="AddAddress" class="wtp-dash__addr-form-wrap">
+          <h2 class="wtp-dash__form-title" id="AddressNewHeading">{{ 'customer.addresses.add_new' | t }}</h2>
+          {%- form 'customer_address', customer.new_address, aria-labelledBy: 'AddressNewHeading' -%}
+            <div class="wtp-dash__form-grid">
+
+              <div class="wtp-dash__field">
+                <label class="wtp-dash__field-label" for="AddressFirstNameNew">{{ 'customer.addresses.first_name' | t }}</label>
+                <input type="text" id="AddressFirstNameNew" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.first_name' | t }}">
+              </div>
+
+              <div class="wtp-dash__field">
+                <label class="wtp-dash__field-label" for="AddressLastNameNew">{{ 'customer.addresses.last_name' | t }}</label>
+                <input type="text" id="AddressLastNameNew" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.last_name' | t }}">
+              </div>
+
+              <div class="wtp-dash__field wtp-dash__field--full">
+                <label class="wtp-dash__field-label" for="AddressCompanyNew">{{ 'customer.addresses.company' | t }}</label>
+                <input type="text" id="AddressCompanyNew" name="address[company]" value="{{ form.company }}" autocomplete="organization" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.company' | t }}">
+              </div>
+
+              <div class="wtp-dash__field wtp-dash__field--full">
+                <label class="wtp-dash__field-label" for="AddressAddress1New">{{ 'customer.addresses.address1' | t }}</label>
+                <input type="text" id="AddressAddress1New" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.address1' | t }}">
+              </div>
+
+              <div class="wtp-dash__field wtp-dash__field--full">
+                <label class="wtp-dash__field-label" for="AddressAddress2New">{{ 'customer.addresses.address2' | t }}</label>
+                <input type="text" id="AddressAddress2New" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.address2' | t }}">
+              </div>
+
+              <div class="wtp-dash__field">
+                <label class="wtp-dash__field-label" for="AddressCityNew">{{ 'customer.addresses.city' | t }}</label>
+                <input type="text" id="AddressCityNew" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.city' | t }}">
+              </div>
+
+              <div class="wtp-dash__field">
+                <label class="wtp-dash__field-label" for="AddressCountryNew">{{ 'customer.addresses.country' | t }}</label>
+                <select id="AddressCountryNew" name="address[country]" data-default="{{ form.country }}" autocomplete="country" class="wtp-dash__field-select">
+                  {{ all_country_option_tags }}
+                </select>
+              </div>
+
+              <div class="wtp-dash__field" id="AddressProvinceContainerNew" style="display: none">
+                <label class="wtp-dash__field-label" for="AddressProvinceNew">{{ 'customer.addresses.province' | t }}</label>
+                <select id="AddressProvinceNew" name="address[province]" data-default="{{ form.province }}" autocomplete="address-level1" class="wtp-dash__field-select"></select>
+              </div>
+
+              <div class="wtp-dash__field">
+                <label class="wtp-dash__field-label" for="AddressZipNew">{{ 'customer.addresses.zip' | t }}</label>
+                <input type="text" id="AddressZipNew" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" autocomplete="postal-code" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.zip' | t }}">
+              </div>
+
+              <div class="wtp-dash__field">
+                <label class="wtp-dash__field-label" for="AddressPhoneNew">{{ 'customer.addresses.phone' | t }}</label>
+                <input type="tel" id="AddressPhoneNew" name="address[phone]" value="{{ form.phone }}" autocomplete="tel" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.phone' | t }}">
+              </div>
+
+              <div class="wtp-dash__default-check">
+                {{ form.set_as_default_checkbox }}
+                <label for="address_default_address_new">{{ 'customer.addresses.set_default' | t }}</label>
+              </div>
+
+              <div class="wtp-dash__form-actions">
+                <button class="wtp-dash__form-submit">{{ 'customer.addresses.add' | t }}</button>
+                <button type="reset" class="wtp-dash__form-cancel">{{ 'customer.addresses.cancel' | t }}</button>
+              </div>
+
+            </div>
+          {%- endform -%}
+        </div>
+      </div>
+
+      {%- comment -%} ── EXISTING ADDRESSES ── {%- endcomment -%}
+      {%- if customer.addresses.size > 0 -%}
+        <h2 class="wtp-dash__section-heading">Saved Addresses</h2>
+        <ul class="wtp-dash__addr-list" role="list">
+          {%- for address in customer.addresses -%}
+            <li class="wtp-dash__addr-card {% if address == customer.default_address %}wtp-dash__addr-card--default{% endif %}" data-address>
+              {%- if address == customer.default_address -%}
+                <span class="wtp-dash__addr-default-tag">{{ 'customer.addresses.default' | t }}</span>
+              {%- endif -%}
+
+              {{ address | format_address }}
+
+              <div class="wtp-dash__addr-actions">
+                <button
+                  type="button"
+                  class="wtp-dash__addr-btn"
+                  id="EditFormButton_{{ address.id }}"
+                  aria-label="{{ 'customer.addresses.edit_address' | t }} {{ forloop.index }}"
+                  aria-controls="EditAddress_{{ address.id }}"
+                  aria-expanded="false"
+                  data-address-id="{{ address.id }}"
+                >
+                  {{ 'customer.addresses.edit' | t }}
+                </button>
+                <button
+                  type="button"
+                  class="wtp-dash__addr-btn wtp-dash__addr-btn--danger"
+                  aria-label="{{ 'customer.addresses.delete' | t }} {{ forloop.index }}"
+                  data-target="{{ address.url }}"
+                  data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}"
+                >
+                  {{ 'customer.addresses.delete' | t }}
+                </button>
+              </div>
+
+              {%- comment -%} Edit Form ── Inline Panel ── {%- endcomment -%}
+              <div id="EditAddress_{{ address.id }}" class="wtp-dash__addr-edit-panel">
+                <h2 class="wtp-dash__form-title" style="font-size: 1.2rem; margin-bottom: 1.5rem;">{{ 'customer.addresses.edit_address' | t }}</h2>
+                {%- form 'customer_address', address -%}
+                  <div class="wtp-dash__form-grid">
+
+                    <div class="wtp-dash__field">
+                      <label class="wtp-dash__field-label" for="AddressFirstName_{{ form.id }}">{{ 'customer.addresses.first_name' | t }}</label>
+                      <input type="text" id="AddressFirstName_{{ form.id }}" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.first_name' | t }}">
+                    </div>
+
+                    <div class="wtp-dash__field">
+                      <label class="wtp-dash__field-label" for="AddressLastName_{{ form.id }}">{{ 'customer.addresses.last_name' | t }}</label>
+                      <input type="text" id="AddressLastName_{{ form.id }}" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.last_name' | t }}">
+                    </div>
+
+                    <div class="wtp-dash__field wtp-dash__field--full">
+                      <label class="wtp-dash__field-label" for="AddressCompany_{{ form.id }}">{{ 'customer.addresses.company' | t }}</label>
+                      <input type="text" id="AddressCompany_{{ form.id }}" name="address[company]" value="{{ form.company }}" autocomplete="organization" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.company' | t }}">
+                    </div>
+
+                    <div class="wtp-dash__field wtp-dash__field--full">
+                      <label class="wtp-dash__field-label" for="AddressAddress1_{{ form.id }}">{{ 'customer.addresses.address1' | t }}</label>
+                      <input type="text" id="AddressAddress1_{{ form.id }}" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.address1' | t }}">
+                    </div>
+
+                    <div class="wtp-dash__field wtp-dash__field--full">
+                      <label class="wtp-dash__field-label" for="AddressAddress2_{{ form.id }}">{{ 'customer.addresses.address2' | t }}</label>
+                      <input type="text" id="AddressAddress2_{{ form.id }}" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.address2' | t }}">
+                    </div>
+
+                    <div class="wtp-dash__field">
+                      <label class="wtp-dash__field-label" for="AddressCity_{{ form.id }}">{{ 'customer.addresses.city' | t }}</label>
+                      <input type="text" id="AddressCity_{{ form.id }}" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.city' | t }}">
+                    </div>
+
+                    <div class="wtp-dash__field">
+                      <label class="wtp-dash__field-label" for="AddressCountry_{{ form.id }}">{{ 'customer.addresses.country' | t }}</label>
+                      <select id="AddressCountry_{{ form.id }}" name="address[country]" data-address-country-select data-default="{{ form.country }}" data-form-id="{{ form.id }}" autocomplete="country" class="wtp-dash__field-select">
+                        {{ all_country_option_tags }}
+                      </select>
+                    </div>
+
+                    <div class="wtp-dash__field" id="AddressProvinceContainer_{{ form.id }}" style="display: none;">
+                      <label class="wtp-dash__field-label" for="AddressProvince_{{ form.id }}">{{ 'customer.addresses.province' | t }}</label>
+                      <select id="AddressProvince_{{ form.id }}" name="address[province]" data-default="{{ form.province }}" autocomplete="address-level1" class="wtp-dash__field-select"></select>
+                    </div>
+
+                    <div class="wtp-dash__field">
+                      <label class="wtp-dash__field-label" for="AddressZip_{{ form.id }}">{{ 'customer.addresses.zip' | t }}</label>
+                      <input type="text" id="AddressZip_{{ form.id }}" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" autocomplete="postal-code" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.zip' | t }}">
+                    </div>
+
+                    <div class="wtp-dash__field">
+                      <label class="wtp-dash__field-label" for="AddressPhone_{{ form.id }}">{{ 'customer.addresses.phone' | t }}</label>
+                      <input type="tel" id="AddressPhone_{{ form.id }}" name="address[phone]" value="{{ form.phone }}" autocomplete="tel" class="wtp-dash__field-input" placeholder="{{ 'customer.addresses.phone' | t }}">
+                    </div>
+
+                    <div class="wtp-dash__default-check">
+                      {{ form.set_as_default_checkbox }}
+                      <label for="address_default_address_{{ form.id }}">{{ 'customer.addresses.set_default' | t }}</label>
+                    </div>
+
+                    <div class="wtp-dash__form-actions">
+                      <button class="wtp-dash__form-submit">{{ 'customer.addresses.update' | t }}</button>
+                      <button type="reset" class="wtp-dash__form-cancel">{{ 'customer.addresses.cancel' | t }}</button>
+                    </div>
+
+                  </div>
+                {%- endform -%}
+              </div>
+
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if paginate.pages > 1 and paginate.parts.size > 0 -%}
+        <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}" style="margin-top: 2rem;">
           <ul role="list">
             {%- if paginate.previous -%}
-              <li>
-                <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
-                </a>
-              </li>
+              <li><a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}"><span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span></a></li>
             {%- endif -%}
-
             {%- for part in paginate.parts -%}
               <li>
                 {%- if part.is_link -%}
-                  <a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
-                    {{- part.title -}}
-                  </a>
+                  <a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{- part.title -}}</a>
                 {%- else -%}
                   {%- if part.title == paginate.current_page -%}
-                    <span aria-current="page" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">
-                      {{- part.title -}}
-                    </span>
+                    <span aria-current="page">{{- part.title -}}</span>
                   {%- else -%}
                     <span>{{ part.title }}</span>
                   {%- endif -%}
                 {%- endif -%}
               </li>
             {%- endfor -%}
-
             {%- if paginate.next -%}
-              <li>
-                <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
-                </a>
-              </li>
+              <li><a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}"><span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span></a></li>
             {%- endif -%}
           </ul>
         </nav>
       {%- endif -%}
-    {%- endif -%}
+
+    </main>
   </div>
+</div>
 {%- endpaginate -%}
 
 <script>
