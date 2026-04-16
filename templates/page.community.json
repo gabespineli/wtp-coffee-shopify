@@ -57,62 +57,6 @@
     },
     "community_events_gallery_UEFVKi": {
       "type": "community-events-gallery",
-      "blocks": {
-        "event_card_nx3zxd": {
-          "type": "event_card",
-          "settings": {
-            "image": "shopify://shop_images/about-drink-0.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
-          }
-        },
-        "event_card_TkHtFd": {
-          "type": "event_card",
-          "settings": {
-            "image": "shopify://shop_images/about-roastery-1.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
-          }
-        },
-        "event_card_hz4VAp": {
-          "type": "event_card",
-          "settings": {
-            "image": "shopify://shop_images/Copy_of_3_Lifestyle.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
-          }
-        },
-        "event_card_Te9HpY": {
-          "type": "event_card",
-          "settings": {
-            "image": "shopify://shop_images/about-drink-3.jpg",
-            "badge_label": "Signature Series",
-            "title": "The Chemistry of Filtration",
-            "date": "Nov 2024",
-            "archival_note": "Archival Records Available",
-            "doc_link_label": "See the Story",
-            "doc_link_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "event_card_nx3zxd",
-        "event_card_TkHtFd",
-        "event_card_hz4VAp",
-        "event_card_Te9HpY"
-      ],
       "name": "Community Stories",
       "settings": {
         "bg_color": "#f5f0e8",
@@ -123,7 +67,9 @@
         "headline": "Community Stories",
         "subheadline": "A collection of cuppings, creative moments, and partner features.",
         "view_all_label": "View Full Archive",
-        "view_all_url": ""
+        "view_all_url": "shopify://blogs/community-stories",
+        "selected_blog": "community-stories",
+        "post_limit": 2
       }
     }
   },
