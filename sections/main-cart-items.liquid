@@ -35,9 +35,23 @@
   }
 
   /* ── Empty State ── */
-  .wtp-cart .cart__warnings {
-    padding: 4rem 0;
-    text-align: center;
+  .wtp-cart.is-empty .cart__warnings {
+    display: grid !important;
+    place-items: center !important;
+    text-align: center !important;
+    padding: 12rem 0;
+    min-height: 40vh;
+    width: 100% !important;
+    margin: 0 auto !important;
+    gap: 2rem;
+  }
+
+  /* Ensure the parent page-width is also centered */
+  .wtp-cart.is-empty .page-width {
+    display: grid !important;
+    place-items: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .wtp-cart .cart__empty-text {
@@ -52,59 +66,49 @@
     color: #F5F0E8;
     border-radius: 50px;
     border: none;
-    padding: 0.9rem 2.2rem;
-    font-size: 0.85rem;
+    padding: 1.2rem 0 !important;
+    width: 320px !important;
+    max-width: 90vw;
+    font-size: 0.95rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16rem;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block;
-    transition: background 0.2s ease;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+    transition: all 0.2s ease;
+    line-height: 1;
   }
 
   .wtp-cart .cart__warnings .button:hover {
     background: #142e22;
   }
 
-  /* ════════════════════════════════════════
-     FREE SHIPPING PROGRESS BAR
-  ════════════════════════════════════════ */
-  .wtp-shipping-bar {
-    padding: 1.25rem 0 0;
+  /* Kill Dawn's ghost box and any hidden icons on empty state button */
+  .wtp-cart .cart__warnings .button::after,
+  .wtp-cart .cart__warnings .button::before {
+    content: none !important;
+    display: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
   }
 
-  .wtp-shipping-bar__text {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--cart-muted);
-    text-align: center;
-    margin-bottom: 0.6rem;
-    letter-spacing: 0.04em;
-  }
 
-  .wtp-shipping-bar__text strong {
-    color: var(--cart-green);
-  }
-
-  .wtp-shipping-bar__track {
-    width: 100%;
-    height: 4px;
-    background: rgba(27, 58, 45, 0.12);
-    border-radius: 50px;
-    overflow: hidden;
-  }
-
-  .wtp-shipping-bar__fill {
-    height: 100%;
-    background: var(--cart-green);
-    border-radius: 50px;
-    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-  }
 
   /* ════════════════════════════════════════
      CART HEADER
   ════════════════════════════════════════ */
+
+  /* Hide header dynamically when cart becomes empty via AJAX (Dawn adds .is-empty to cart-items) */
+  .wtp-cart.is-empty .wtp-cart__header {
+    display: none !important;
+  }
+
   .wtp-cart__header {
     display: flex;
     align-items: baseline;
@@ -123,7 +127,7 @@
   }
 
   .wtp-cart__item-count {
-    font-size: 0.85rem;
+    font-size: 1.1rem;
     color: var(--cart-muted);
     font-weight: 500;
   }
@@ -138,15 +142,14 @@
   }
 
   .wtp-cart .cart-items thead th {
-    font-size: 0.7rem;
+    font-size: 1rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     color: var(--cart-muted);
-    padding: 1rem 0 0.75rem;
+    padding: 1.25rem 0 1rem;
     text-align: left;
     border: none;
-    border-bottom: 1px solid var(--cart-border);
   }
 
   .wtp-cart .cart-items thead th.right {
@@ -155,16 +158,11 @@
 
   .wtp-cart .cart-items tbody .cart-item {
     border: none;
-    border-bottom: 1px solid var(--cart-border);
-  }
-
-  .wtp-cart .cart-items tbody .cart-item:last-child {
-    border-bottom: none;
   }
 
   .wtp-cart .cart-items td {
     border: none;
-    padding: 1.25rem 0;
+    padding: 1.75rem 0;
     vertical-align: middle;
   }
 
@@ -173,34 +171,34 @@
     background: transparent !important;
     border-radius: 12px;
     overflow: hidden;
-    width: 90px;
-    height: 90px;
+    width: 120px;
+    height: 120px;
     flex-shrink: 0;
   }
 
   .wtp-cart .cart-item__image {
-    width: 90px;
-    height: 90px;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
     border-radius: 12px;
     display: block;
   }
 
   .wtp-cart .cart-item__media {
-    padding-right: 1.25rem;
-    width: 110px;
+    padding-right: 1.75rem;
+    width: 145px;
   }
 
   /* ── Product Details ── */
   .wtp-cart .cart-item__name {
     font-family: var(--font-body-family);
-    font-size: 1rem;
+    font-size: 1.4rem;
     font-weight: 600;
     color: var(--cart-green);
     text-decoration: none;
     display: block;
-    margin-bottom: 0.25rem;
-    line-height: 1.4;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
   }
 
   .wtp-cart .cart-item__name:hover {
@@ -208,52 +206,59 @@
   }
 
   .wtp-cart .cart-item__details .product-option {
-    font-size: 0.85rem;
+    font-size: 1.1rem;
     color: var(--cart-muted);
     margin: 0;
   }
 
-  /* ── Quantity Pill ── */
+  /* ── Quantity — Separate Dark Circles ── */
   .wtp-cart .cart-item__quantity {
     padding-left: 1rem;
   }
 
   .wtp-cart .quantity.cart-quantity {
-    background: var(--cart-pill-bg) !important;
-    border: none !important;
-    border-radius: 50px !important;
-    display: inline-flex;
-    align-items: center;
-    height: 38px;
-    padding: 0 0.25rem;
-    gap: 0;
-    overflow: hidden;
-  }
-
-  .wtp-cart .quantity__button {
     background: transparent !important;
     border: none !important;
-    color: var(--cart-green) !important;
-    width: 34px;
-    height: 34px;
+    border-radius: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Each +/- is its own dark green filled circle */
+  .wtp-cart .quantity__button {
+    background: var(--cart-green) !important;
+    border: none !important;
+    width: 38px;
+    height: 38px;
+    border-radius: 50% !important;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border-radius: 50px;
-    transition: background 0.15s ease;
     flex-shrink: 0;
     padding: 0;
+    transition: opacity 0.15s ease;
   }
 
   .wtp-cart .quantity__button:hover:not([disabled]) {
-    background: rgba(27, 58, 45, 0.12) !important;
+    opacity: 0.75 !important;
   }
 
+  .wtp-cart .quantity__button[disabled] {
+    opacity: 0.35 !important;
+    cursor: not-allowed;
+  }
+
+  /* Make the inner SVG icons white */
   .wtp-cart .quantity__button .svg-wrapper svg {
-    width: 14px;
-    height: 14px;
-    fill: var(--cart-green);
+    width: 13px;
+    height: 13px;
+    fill: #F5F0E8 !important;
+    stroke: #F5F0E8;
   }
 
   .wtp-cart .quantity__input {
@@ -261,10 +266,10 @@
     background: transparent !important;
     color: var(--cart-green) !important;
     font-family: var(--font-body-family) !important;
-    font-size: 0.95rem !important;
+    font-size: 1.25rem !important;
     font-weight: 700 !important;
     text-align: center !important;
-    width: 32px;
+    width: 36px;
     -moz-appearance: textfield;
     flex-shrink: 0;
     padding: 0 !important;
@@ -276,60 +281,68 @@
     margin: 0;
   }
 
-  /* ── Remove Button — Trash Icon ── */
+  /* ── Remove Button — Trash Icon, far-right aligned ── */
+  .wtp-cart .cart-item__totals.small-hide {
+    padding-left: 1.5rem;
+  }
+
+  /* Quantity wrapper: qty pill on left + trash on right */
+  .wtp-cart .cart-item__quantity-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  cart-remove-button {
+    display: flex;
+    align-items: center;
+  }
+
   cart-remove-button .button.button--tertiary {
     background: transparent !important;
     border: none !important;
-    color: rgba(27, 58, 45, 0.35) !important;
-    padding: 0.5rem !important;
+    padding: 0 !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color 0.2s ease;
     cursor: pointer;
-    border-radius: 50%;
-    width: 34px;
-    height: 34px;
-    margin-left: 0.5rem;
+    width: 28px;
+    height: 28px;
+    margin-left: 0;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: opacity 0.2s ease;
   }
 
   cart-remove-button .button.button--tertiary:hover {
-    color: #c83c3c !important;
-    background: rgba(200, 60, 60, 0.07) !important;
+    opacity: 0.55 !important;
+    background: transparent !important;
   }
 
-  /* Override the Dawn icon-remove SVG inside the cart remove button with our own trash icon */
   cart-remove-button .svg-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
+  /* Show the Dawn icon-remove SVG but tint it dark green/muted */
   cart-remove-button .svg-wrapper svg {
-    display: none; /* Hide the Dawn default icon */
-  }
-
-  cart-remove-button .button.button--tertiary::before {
-    content: '';
     display: block;
-    width: 16px;
-    height: 18px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='18' viewBox='0 0 16 18' fill='none'%3E%3Cpath d='M1 4h14M5 4V2h6v2M13 4l-1 12H4L3 4' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    filter: brightness(0) saturate(100%) invert(17%) sepia(20%) saturate(1000%) hue-rotate(100deg) brightness(90%) contrast(90%);
-    transition: filter 0.2s ease;
+    width: 20px;
+    height: 20px;
+    stroke: rgba(27, 58, 45, 0.38);
+    fill: none;
+    transition: stroke 0.2s ease;
   }
 
-  cart-remove-button .button.button--tertiary:hover::before {
-    filter: brightness(0) saturate(100%) invert(20%) sepia(80%) saturate(1500%) hue-rotate(330deg) brightness(90%) contrast(120%);
+  cart-remove-button .button.button--tertiary:hover .svg-wrapper svg {
+    stroke: #c83c3c;
   }
 
   /* ── Price / Total ── */
   .wtp-cart .price,
   .wtp-cart .cart-item__price-wrapper .price--end {
-    font-size: 1rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: var(--cart-green);
     text-align: right;
@@ -339,43 +352,14 @@
     text-align: right;
   }
 
-  /* ── Quantity Wrapper ── */
-  .wtp-cart .cart-item__quantity-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0;
-  }
-
   /* ── Continue Shopping Link ── */
   .wtp-cart .title-wrapper-with-link {
     display: none; /* Replaced by wtp-cart__header */
   }
 
   /* ══════════════════════════════════════
-     PRODUCT RECOMMENDATIONS
+     RECOMMENDATIONS — now in footer
   ══════════════════════════════════════ */
-  .wtp-cart-recs {
-    padding: 4rem 5%;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .wtp-cart-recs__heading {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--cart-muted);
-    margin: 0 0 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--cart-border);
-  }
-
-  .wtp-cart-recs__grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-  }
 
   .wtp-cart-recs__card {
     text-decoration: none;
@@ -457,7 +441,6 @@
 
 <cart-items class="wtp-cart gradient color-{{ section.settings.color_scheme }} isolate{% if cart == empty %} is-empty{% else %} section-{{ section.id }}-padding{% endif %}">
   <div class="page-width">
-
     {%- comment -%} ── EMPTY STATE ── {%- endcomment -%}
     <div class="cart__warnings">
       <h1 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h1>
@@ -472,38 +455,16 @@
       {%- endif -%}
     </div>
 
-    {%- comment -%} ── FREE SHIPPING PROGRESS BAR ── {%- endcomment -%}
     {%- if cart != empty -%}
-      {%- liquid
-        assign free_shipping_threshold = 3000
-        assign cart_total_cents = cart.total_price
-        assign remaining_cents = free_shipping_threshold | minus: cart_total_cents
-        assign progress_pct = cart_total_cents | times: 100 | divided_by: free_shipping_threshold
-        if progress_pct > 100
-          assign progress_pct = 100
-        endif
-      -%}
-      <div class="wtp-shipping-bar">
-        {%- if remaining_cents > 0 -%}
-          <p class="wtp-shipping-bar__text">
-            Only <strong>{{ remaining_cents | money }}</strong> away from free shipping!
-          </p>
-        {%- else -%}
-          <p class="wtp-shipping-bar__text"><strong>🎉 You've unlocked free shipping!</strong></p>
-        {%- endif -%}
-        <div class="wtp-shipping-bar__track">
-          <div class="wtp-shipping-bar__fill" style="width: {{ progress_pct }}%;"></div>
-        </div>
+      {%- comment -%} ── CART HEADER ── {%- endcomment -%}
+      <div class="wtp-cart__header">
+        <h1 class="wtp-cart__title">Cart</h1>
+        <span class="wtp-cart__item-count">
+          {{- cart.item_count }}
+          {{ cart.item_count | pluralize: 'item', 'items' }} in your cart</span
+        >
       </div>
     {%- endif -%}
-
-    {%- comment -%} ── CART HEADER ── {%- endcomment -%}
-    <div class="wtp-cart__header">
-      <h1 class="wtp-cart__title">Cart</h1>
-      {%- if cart != empty -%}
-        <span class="wtp-cart__item-count">{{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} in your cart</span>
-      {%- endif -%}
-    </div>
 
     {%- comment -%} ── Legacy Dawn title-wrapper (hidden, kept for JS compat) ── {%- endcomment -%}
     <div class="title-wrapper-with-link" aria-hidden="true">
@@ -518,7 +479,9 @@
         <div class="js-contents">
           {%- if cart != empty -%}
             <table class="cart-items">
-              <caption class="visually-hidden">{{ 'sections.cart.title' | t }}</caption>
+              <caption class="visually-hidden">
+                {{ 'sections.cart.title' | t }}
+              </caption>
               <thead>
                 <tr>
                   <th class="caption-with-letter-spacing" colspan="2" scope="col">
@@ -634,7 +597,11 @@
                         {%- if item.original_line_price != item.final_line_price -%}
                           <dl class="cart-item__discounted-prices">
                             <dt class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</dt>
-                            <dd><s class="cart-item__old-price price price--end">{{ item.original_line_price | money }}</s></dd>
+                            <dd>
+                              <s class="cart-item__old-price price price--end">
+                                {{- item.original_line_price | money -}}
+                              </s>
+                            </dd>
                             <dt class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</dt>
                             <dd class="price price--end">{{ item.final_line_price | money }}</dd>
                           </dl>
@@ -679,7 +646,9 @@
                                 class="quantity__button"
                                 name="minus"
                                 type="button"
-                                {% if can_update_quantity == false %}disabled{% endif %}
+                                {% if can_update_quantity == false %}
+                                  disabled
+                                {% endif %}
                               >
                                 <span class="visually-hidden">
                                   {{- 'products.product.quantity.decrease' | t: product: item.product.title | escape -}}
@@ -704,13 +673,17 @@
                                 aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
                                 id="Quantity-{{ item.index | plus: 1 }}"
                                 data-index="{{ item.index | plus: 1 }}"
-                                {% if can_update_quantity == false %}disabled{% endif %}
+                                {% if can_update_quantity == false %}
+                                  disabled
+                                {% endif %}
                               >
                               <button
                                 class="quantity__button"
                                 name="plus"
                                 type="button"
-                                {% if can_update_quantity == false %}disabled{% endif %}
+                                {% if can_update_quantity == false %}
+                                  disabled
+                                {% endif %}
                               >
                                 <span class="visually-hidden">
                                   {{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}
@@ -723,7 +696,9 @@
                             id="Remove-{{ item.index | plus: 1 }}"
                             data-index="{{ item.index | plus: 1 }}"
                             {% assign can_remove = item.instructions.can_remove | default: true %}
-                            {% if can_remove == false %}class="hidden"{% endif %}
+                            {% if can_remove == false %}
+                              class="hidden"
+                            {% endif %}
                           >
                             <a
                               href="{{ item.url_to_remove }}"
@@ -742,26 +717,49 @@
                           >
                             {{- 'icon-info.svg' | inline_asset_content -}}
                             <span>
-                              {%- if has_vol_pricing -%}{{ 'products.product.volume_pricing.note' | t }}
-                              {%- elsif has_qty_rules -%}{{ 'products.product.quantity.note' | t }}
+                              {%- if has_vol_pricing -%}
+                                {{ 'products.product.volume_pricing.note' | t }}
+                              {%- elsif has_qty_rules -%}
+                                {{ 'products.product.quantity.note' | t }}
                               {%- endif -%}
                             </span>
                           </button>
                         {%- endif -%}
                         {%- if has_vol_pricing or has_qty_rules -%}
-                          <div class="cart-items__info global-settings-popup quantity-popover__info" tabindex="-1" hidden>
+                          <div
+                            class="cart-items__info global-settings-popup quantity-popover__info"
+                            tabindex="-1"
+                            hidden
+                          >
                             {%- if has_qty_rules == false -%}
-                              <span class="volume-pricing-label caption">{{- 'products.product.volume_pricing.title' | t -}}</span>
+                              <span class="volume-pricing-label caption">
+                                {{- 'products.product.volume_pricing.title' | t -}}
+                              </span>
                             {%- endif -%}
                             <div class="quantity__rules caption">
                               {%- if item.variant.quantity_rule.increment > 1 -%}
-                                <span class="divider">{{- 'products.product.quantity.multiples_of' | t: quantity: item.variant.quantity_rule.increment -}}</span>
+                                <span class="divider">
+                                  {{-
+                                    'products.product.quantity.multiples_of'
+                                    | t: quantity: item.variant.quantity_rule.increment
+                                  -}}
+                                </span>
                               {%- endif -%}
                               {%- if item.variant.quantity_rule.min > 1 -%}
-                                <span class="divider">{{- 'products.product.quantity.min_of' | t: quantity: item.variant.quantity_rule.min -}}</span>
+                                <span class="divider">
+                                  {{-
+                                    'products.product.quantity.min_of'
+                                    | t: quantity: item.variant.quantity_rule.min
+                                  -}}
+                                </span>
                               {%- endif -%}
                               {%- if item.variant.quantity_rule.max != null -%}
-                                <span class="divider">{{- 'products.product.quantity.max_of' | t: quantity: item.variant.quantity_rule.max -}}</span>
+                                <span class="divider">
+                                  {{-
+                                    'products.product.quantity.max_of'
+                                    | t: quantity: item.variant.quantity_rule.max
+                                  -}}
+                                </span>
                               {%- endif -%}
                             </div>
                             <button
@@ -781,7 +779,10 @@
                                   </li>
                                   {%- for price_break in item.variant.quantity_price_breaks -%}
                                     <li>
-                                      <span>{{- price_break.minimum_quantity -}}<span aria-hidden="true">+</span></span>
+                                      <span>
+                                        {{- price_break.minimum_quantity -}}
+                                        <span aria-hidden="true">+</span></span
+                                      >
                                       {%- assign price = price_break.price | money_with_currency -%}
                                       <span> {{ 'sections.quick_order_list.each' | t: money: price }}</span>
                                     </li>
@@ -804,7 +805,11 @@
                         {%- if item.original_line_price != item.final_line_price -%}
                           <dl class="cart-item__discounted-prices">
                             <dt class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</dt>
-                            <dd><s class="cart-item__old-price price price--end">{{ item.original_line_price | money }}</s></dd>
+                            <dd>
+                              <s class="cart-item__old-price price price--end">
+                                {{- item.original_line_price | money -}}
+                              </s>
+                            </dd>
                             <dt class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</dt>
                             <dd class="price price--end">{{ item.final_line_price | money }}</dd>
                           </dl>
@@ -836,44 +841,6 @@
       </p>
     </form>
   </div>
-
-  {%- comment -%} ── PRODUCT RECOMMENDATIONS ── {%- endcomment -%}
-  {%- if cart != empty -%}
-    <div class="page-width">
-      <div class="wtp-cart-recs">
-        <h2 class="wtp-cart-recs__heading">You may also like</h2>
-        <div class="wtp-cart-recs__grid">
-          {%- assign rec_collection = collections['all'] -%}
-          {%- assign rec_limit = 4 -%}
-          {%- assign cart_product_ids = cart.items | map: 'product_id' -%}
-          {%- assign rec_shown = 0 -%}
-          {%- for product in rec_collection.products limit: 20 -%}
-            {%- unless cart_product_ids contains product.id -%}
-              {%- if rec_shown < rec_limit -%}
-                <a href="{{ product.url }}" class="wtp-cart-recs__card">
-                  <div class="wtp-cart-recs__img-wrap">
-                    {%- if product.featured_image -%}
-                      <img
-                        src="{{ product.featured_image | image_url: width: 400 }}"
-                        alt="{{ product.featured_image.alt | escape }}"
-                        loading="lazy"
-                        width="400"
-                        height="400"
-                      >
-                    {%- endif -%}
-                  </div>
-                  <p class="wtp-cart-recs__title">{{ product.title | escape }}</p>
-                  <p class="wtp-cart-recs__price">{{ product.price | money }}</p>
-                </a>
-                {%- assign rec_shown = rec_shown | plus: 1 -%}
-              {%- endif -%}
-            {%- endunless -%}
-          {%- endfor -%}
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
-
 </cart-items>
 
 {% schema %}

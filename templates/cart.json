@@ -40,10 +40,18 @@
         "subtotal",
         "buttons"
       ]
+    },
+    "cart-recommendations": {
+      "type": "main-cart-recommendations",
+      "settings": {
+        "heading": "You may also like",
+        "product_count": 4
+      }
     }
   },
   "order": [
     "cart-items",
-    "cart-footer"
+    "cart-footer",
+    "cart-recommendations"
   ]
 }

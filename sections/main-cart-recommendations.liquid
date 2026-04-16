@@ -1,0 +1,130 @@
+{% comment %}
+  WTP Coffee — Cart Recommendations
+  Renders a "You may also like" product grid below the cart footer.
+  Uses the same `product-card` snippet as wtp-featured-arrivals.liquid.
+  - Always pulls from collections['all'], filtering out items already in cart.
+  - Visible in the Theme Editor via request.design_mode even with an empty cart.
+  - Hidden on the live storefront when the cart is empty.
+{% endcomment %}
+
+{%- liquid
+  assign show_recs = false
+  if cart != empty
+    assign show_recs = true
+  endif
+  if request.design_mode
+    assign show_recs = true
+  endif
+-%}
+
+{%- if show_recs -%}
+
+{%- style -%}
+  /* ════════════════════════════════════════
+     WTP Cart Recommendations
+  ════════════════════════════════════════ */
+  .wtp-cart-recs-wrap {
+    background: #F5F0E8;
+    padding: 0 5% 6rem;
+  }
+
+  .wtp-cart-recs-inner {
+    max-width: 1380px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(27, 58, 45, 0.1);
+    padding-top: 3rem;
+  }
+
+  .wtp-cart-recs__heading {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: rgba(27, 58, 45, 0.5);
+    margin: 0 0 2.5rem;
+  }
+
+  .wtp-cart-recs__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem 2.5rem;
+  }
+
+  @media screen and (max-width: 900px) {
+    .wtp-cart-recs__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.5rem 2rem;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .wtp-cart-recs-wrap {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+      padding-bottom: 4rem;
+    }
+    .wtp-cart-recs__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+{%- endstyle -%}
+
+<div class="wtp-cart-recs-wrap">
+  <div class="wtp-cart-recs-inner">
+
+    <h2 class="wtp-cart-recs__heading">{{ section.settings.heading }}</h2>
+
+    <div class="wtp-cart-recs__grid" role="list">
+      {%- liquid
+        assign rec_collection = collections['all']
+        assign rec_limit = section.settings.product_count | default: 4
+        assign cart_product_ids = cart.items | map: 'product_id'
+        assign rec_shown = 0
+      -%}
+
+      {%- for product in rec_collection.products limit: 40 -%}
+        {%- unless cart_product_ids contains product.id -%}
+          {%- if rec_shown < rec_limit -%}
+            <div role="listitem">
+              {%- render 'product-card', product: product -%}
+            </div>
+            {%- assign rec_shown = rec_shown | plus: 1 -%}
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+
+    </div>
+
+  </div>
+</div>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Cart Recommendations",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "range",
+      "id": "product_count",
+      "label": "Number of Products",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart Recommendations"
+    }
+  ]
+}
+{% endschema %}
