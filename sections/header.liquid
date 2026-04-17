@@ -261,6 +261,40 @@
   main#MainContent {
     padding-top: calc(var(--header-height, 90px));
   }
+
+  /* ── MOBILE MENU OPEN: FLUSH STATE (Top of Page) ── */
+  .section-header.wtp-menu-open {
+    top: 0 !important;
+    --drawer-shadow-opacity: 0 !important;
+    --popup-shadow-opacity: 0 !important;
+    --inputs-shadow-opacity: 0 !important;
+    --buttons-shadow-opacity: 0 !important;
+  }
+
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .header {
+    background: rgb(var(--color-background)) !important;
+    border-radius: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-top: 1.25rem !important;
+    padding-bottom: 1.25rem !important;
+    box-shadow: none !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .header__menu-item,
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .header__menu-item span,
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .header__heading-link,
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .header__icon,
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .header__icon svg {
+    color: rgb(var(--color-foreground)) !important;
+  }
+
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .header__icon .svg-wrapper svg path {
+    fill: currentColor !important;
+  }
 </style>
 
 {%- style -%}
@@ -290,6 +324,13 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.20) !important;
   }
 
+  /* Remove shadow and borders from island header & wrapper when menu is open */
+  .section-header.wtp-menu-open .header-wrapper,
+  .section-header.wtp-scrolled.wtp-menu-open .header {
+    box-shadow: none !important;
+    border: none !important;
+  }
+
   /* Dynamic logo sizing */
   .section-header.wtp-scrolled .header__heading-logo {
     width: calc({{ settings.logo_width | default: 100 }}px * {{ section.settings.island_logo_scale | divided_by: 100.0 }}) !important;
@@ -307,6 +348,66 @@
 
   .section-header.wtp-scrolled .header__icon .svg-wrapper svg path {
     fill: currentColor;
+  }
+
+  /* ── MOBILE MENU OPEN: PILL STATE (Scrolled) ── */
+  /* Target the drawer itself to become a floating glass pill */
+  .section-header.wtp-scrolled.wtp-menu-open .menu-drawer {
+    height: auto !important;
+    max-height: calc(100vh - 120px) !important;
+    margin-top: 0.5rem;
+    border-radius: 28px !important;
+    background: rgba({{ section.settings.island_bg_color.red }}, {{ section.settings.island_bg_color.green }}, {{ section.settings.island_bg_color.blue }}, {{ section.settings.island_opacity | divided_by: 100.0 }}) !important;
+    backdrop-filter: blur({{ section.settings.island_blur }}px) saturate(200%);
+    -webkit-backdrop-filter: blur({{ section.settings.island_blur }}px) saturate(200%);
+    border: 1px solid rgba({{ section.settings.island_bg_color.red }}, {{ section.settings.island_bg_color.green }}, {{ section.settings.island_bg_color.blue }}, 0.35) !important;
+    box-shadow: none !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+
+  /* Force all text variants inside the floating drawer pill to match */
+  .section-header.wtp-scrolled.wtp-menu-open .menu-drawer,
+  .section-header.wtp-scrolled.wtp-menu-open .menu-drawer a,
+  .section-header.wtp-scrolled.wtp-menu-open .menu-drawer span,
+  .section-header.wtp-scrolled.wtp-menu-open .menu-drawer .header__menu-item,
+  .section-header.wtp-scrolled.wtp-menu-open .menu-drawer account-icon > .svg-wrapper,
+  .section-header.wtp-scrolled.wtp-menu-open .menu-drawer svg {
+    color: {{ section.settings.island_text_color }} !important;
+    fill: {{ section.settings.island_text_color }} !important;
+  }
+
+  .section-header.wtp-scrolled.wtp-menu-open .menu-drawer svg path {
+    fill: currentColor !important;
+  }
+
+  /* Hide Dawn's native semi-transparent overlay entirely */
+  menu-drawer > details > summary::before,
+  menu-drawer > details[open]:not(.menu-opening) > summary::before {
+    display: none !important;
+  }
+
+  /* ── PAGE CONTENT BLUR (workaround for backdrop-filter stacking context trap) ── */
+  /*
+   * backdrop-filter on the pill header creates a stacking context that traps
+   * any fixed overlay child. Instead, we blur the actual page content directly.
+   * The header itself is always on top and unaffected.
+   */
+  body.wtp-blur-content #MainContent,
+  body.wtp-blur-content .shopify-section:not(.section-header) {
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    transform: scale(1.03); /* prevent blurry edge shadows on viewport */
+    transition: filter 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+    user-select: none;
+    overflow-x: hidden;
+  }
+
+  /* Smooth transition back when menu closes */
+  #MainContent,
+  .shopify-section:not(.section-header) {
+    transition: filter 0.35s ease, transform 0.35s ease;
   }
 
   /* Dynamic hover pill */
@@ -695,6 +796,41 @@
         initHoverPill();
       }
     });
+    /* ─── 3. Mobile Menu Background Sync & Blur Overlay ──────────────────────── */
+    function initMobileMenuSync() {
+      var headerSection = document.querySelector('.section-header');
+      var headerInternal = document.querySelector('.header-wrapper');
+      var details = document.querySelector('header-drawer details');
+      var summary = document.querySelector('header-drawer summary');
+
+      if (!headerSection || !headerInternal || !details) return;
+
+      var baseSchemeMatches = headerInternal.className.match(/color-\S+/);
+      var baseScheme = baseSchemeMatches ? baseSchemeMatches[0] : '';
+      var menuScheme = 'color-{{ section.settings.menu_color_scheme }}';
+
+      var observer = new MutationObserver(function () {
+        if (details.hasAttribute('open')) {
+          if (baseScheme) headerInternal.classList.remove(baseScheme);
+          headerInternal.classList.add(menuScheme);
+          headerSection.classList.add('wtp-menu-open');
+          /* Blur the page content directly — bypasses all stacking context traps */
+          document.body.classList.add('wtp-blur-content');
+        } else {
+          headerInternal.classList.add(baseScheme);
+          headerInternal.classList.remove(menuScheme);
+          headerSection.classList.remove('wtp-menu-open');
+          document.body.classList.remove('wtp-blur-content');
+        }
+      });
+      observer.observe(details, { attributes: true, attributeFilter: ['open'] });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMobileMenuSync);
+    } else {
+      initMobileMenuSync();
+    }
   })();
 </script>
 
