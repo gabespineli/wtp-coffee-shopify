@@ -237,12 +237,11 @@
   }
 
   #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-left {
-    transform: translateX(calc(-100vw * var(--scroll-progress) * 1.5));
     margin-right: 0.25em;
   }
 
   #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-right {
-    transform: translateX(calc(100vw * var(--scroll-progress) * 1.5));
+    /* No transform needed as per user request to remove splitting effect */
   }
 </style>
 

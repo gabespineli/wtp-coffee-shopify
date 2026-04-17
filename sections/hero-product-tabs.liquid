@@ -227,7 +227,7 @@
   }
 
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab.is-active .wtp-ht__desc {
-    max-height: 200px;
+    max-height: 120px;
     margin-top: 0.75rem;
   }
 
@@ -502,9 +502,13 @@
     .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab.is-active .wtp-ht__desc {
       font-size: 0.85rem;
       line-height: 1.5;
-      max-height: 90px;
+      max-height: 70px;
       max-width: none;
       margin-top: 0.5rem;
+    }
+
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab-list {
+      min-height: 150px; /* Prevents the bottom card from jumping during transitions */
     }
 
     /* ── Mini product card: static flow, compact ── */
@@ -787,9 +791,14 @@
         /* Tabs */
         tabs.forEach(function (tab, i) {
           if (i === index) {
-            tab.classList.remove('is-active');
-            void tab.offsetWidth; /* force reflow to restart animation */
-            tab.classList.add('is-active');
+            // If it's already active (e.g., clicking the same tab), force reflow safely
+            if (tab.classList.contains('is-active')) {
+              tab.classList.remove('is-active');
+              void tab.offsetWidth;
+              tab.classList.add('is-active');
+            } else {
+              tab.classList.add('is-active');
+            }
           } else {
             tab.classList.remove('is-active');
           }
