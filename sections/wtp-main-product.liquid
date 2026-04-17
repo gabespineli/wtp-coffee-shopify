@@ -1,0 +1,837 @@
+{% comment %}
+  WTP Main Product — Custom Premium PDP
+  Replaces Dawn's main-product.liquid entirely.
+  2-col CSS grid (55/45). Right column is sticky. Vanilla-JS variant switching.
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign form_id = 'wtp-pdp-form-' | append: section.id
+-%}
+
+<style>
+  /* ── Global Tokens ── */
+  #wtp-pdp-{{ section.id }} {
+    --wtp-bg:      #F5F0E8;
+    --wtp-green:   #1B3A2D;
+    --wtp-gold:    #C8A96E;
+    --wtp-divider: rgba(27, 58, 45, 0.1);
+    --wtp-muted:   rgba(27, 58, 45, 0.55);
+  }
+
+  /* ── Section Shell ── */
+  #wtp-pdp-{{ section.id }} {
+    background: var(--wtp-bg);
+    padding: 3.5rem 1.5rem 7rem;
+  }
+
+  .wtp-pdp__container-{{ section.id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    gap: 4.5rem;
+    align-items: start;
+  }
+
+  /* ══════════════════════════════════════
+     MEDIA COLUMN (Left) — Thumbnail Gallery
+  ══════════════════════════════════════ */
+  .wtp-media-gallery {
+    display: grid;
+    gap: 1rem;
+  }
+
+  /* Main image: aspect ratio lives on the WRAPPER so the strip can measure it */
+  .wtp-main-image-wrapper {
+    aspect-ratio: 4 / 5;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(27, 58, 45, 0.03);
+    line-height: 0;
+  }
+
+  .wtp-main-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.25s ease;
+  }
+
+  /* Thumbnail strip — height capped to main image via JS syncThumbHeight() */
+  .wtp-thumbnails {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .wtp-thumbnails::-webkit-scrollbar {
+    display: none;
+  }
+
+  .wtp-thumbnails img {
+    width: 100%;
+    height: auto;           /* overrides the HTML height="200" attribute */
+    flex-shrink: 0;         /* prevent thumbnails from collapsing in flex column */
+    display: block;
+    border-radius: 8px;
+    cursor: pointer;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease, opacity 0.2s ease;
+    opacity: 0.6;
+  }
+
+  .wtp-thumbnails img:hover,
+  .wtp-thumbnails img.is-active {
+    border-color: var(--wtp-green);
+    opacity: 1;
+  }
+
+  /* Desktop: thumbnails LEFT (col 1), main image RIGHT (col 2) */
+  @media screen and (min-width: 769px) {
+    .wtp-media-gallery {
+      grid-template-columns: 80px 1fr;
+      grid-template-areas: "thumbs main";
+    }
+    .wtp-thumbnails      { grid-area: thumbs; }
+    .wtp-main-image-wrapper { grid-area: main; }
+  }
+
+  /* ══════════════════════════════════════
+     INFO COLUMN (Right — Sticky)
+  ══════════════════════════════════════ */
+  .wtp-pdp__info-{{ section.id }} {
+    position: sticky;
+    top: 2rem;
+  }
+
+  /* ── Vendor Eyebrow ── */
+  .wtp-pdp__vendor {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--wtp-gold);
+    margin: 0 0 0.75rem;
+  }
+
+  /* ── Product Title ── */
+  .wtp-pdp__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    color: var(--wtp-green);
+    line-height: 1.1;
+    margin: 0 0 1.25rem;
+  }
+
+  /* ── Price ── */
+  .wtp-pdp__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--wtp-divider);
+    margin-bottom: 1.75rem;
+  }
+
+  .wtp-pdp__price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--wtp-green);
+  }
+
+  .wtp-pdp__price-compare {
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--wtp-muted);
+    text-decoration: line-through;
+  }
+
+  .wtp-pdp__sale-badge {
+    display: inline-block;
+    background: var(--wtp-gold);
+    color: var(--wtp-green);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 50px;
+    line-height: 1.4;
+  }
+
+  /* ── Variant Options (Pills) ── */
+  .wtp-pdp__option {
+    margin-bottom: 1.5rem;
+  }
+
+  .wtp-pdp__option-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wtp-muted);
+    margin: 0 0 0.75rem;
+  }
+
+  .wtp-pdp__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  /* Visually hidden radio */
+  .wtp-pdp__pill-radio {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  .wtp-pdp__pill-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 1.4rem;
+    border-radius: 50px;
+    border: 1.5px solid var(--wtp-green);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--wtp-green);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+    user-select: none;
+  }
+
+  .wtp-pdp__pill-radio:checked + .wtp-pdp__pill-label {
+    background: var(--wtp-green);
+    color: var(--wtp-bg);
+  }
+
+  .wtp-pdp__pill-label:hover {
+    background: rgba(27, 58, 45, 0.07);
+  }
+
+  .wtp-pdp__pill-radio:checked + .wtp-pdp__pill-label:hover {
+    background: var(--wtp-green);
+    color: var(--wtp-bg);
+  }
+
+  /* Unavailable pill variant */
+  .wtp-pdp__pill-radio[data-available="false"] + .wtp-pdp__pill-label {
+    opacity: 0.38;
+    cursor: default;
+    text-decoration: line-through;
+  }
+
+  /* ── Quantity Selector ── */
+  .wtp-pdp__qty-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .wtp-pdp__qty-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wtp-muted);
+    white-space: nowrap;
+  }
+
+  .wtp-pdp__qty-ctrl {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid var(--wtp-divider);
+    border-radius: 50px;
+    overflow: hidden;
+  }
+
+  .wtp-pdp__qty-btn {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: var(--wtp-green);
+    font-size: 1.15rem;
+    font-weight: 300;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    line-height: 1;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  .wtp-pdp__qty-btn:hover {
+    background: rgba(27, 58, 45, 0.06);
+  }
+
+  .wtp-pdp__qty-input {
+    width: 44px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--wtp-green);
+    outline: none;
+    padding: 0;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .wtp-pdp__qty-input::-webkit-outer-spin-button,
+  .wtp-pdp__qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* ── CTA Buttons ── */
+  .wtp-pdp__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .wtp-pdp__atc {
+    width: 100%;
+    min-height: 55px;
+    padding: 1rem 2rem;
+    background: var(--wtp-green);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 50px;
+    font-family: var(--font-body-family);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .wtp-pdp__atc:hover:not(:disabled) {
+    opacity: 0.88;
+    transform: translateY(-1px);
+  }
+
+  .wtp-pdp__atc:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Shopify Pay / dynamic checkout — force pill shape */
+  .wtp-pdp__dynamic .shopify-payment-button {
+    width: 100%;
+  }
+
+  .wtp-pdp__dynamic .shopify-payment-button__button {
+    border-radius: 50px !important;
+    min-height: 52px !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .wtp-pdp__dynamic .shopify-payment-button__button--unbranded {
+    background-color: transparent !important;
+    color: var(--wtp-green) !important;
+    border: 1.5px solid var(--wtp-green) !important;
+    border-radius: 50px !important;
+  }
+
+  .wtp-pdp__dynamic .shopify-payment-button__button--unbranded:hover {
+    background-color: rgba(27, 58, 45, 0.06) !important;
+  }
+
+  /* ── Faint Divider ── */
+  .wtp-pdp__hr {
+    border: none;
+    border-top: 1px solid var(--wtp-divider);
+    margin: 2rem 0;
+  }
+
+  /* ── Product Description ── */
+  .wtp-pdp__desc {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(27, 58, 45, 0.8);
+  }
+
+  .wtp-pdp__desc p {
+    margin: 0 0 1em;
+  }
+
+  .wtp-pdp__desc p:last-child {
+    margin-bottom: 0;
+  }
+
+  .wtp-pdp__desc h1,
+  .wtp-pdp__desc h2,
+  .wtp-pdp__desc h3,
+  .wtp-pdp__desc h4 {
+    font-family: var(--font-heading-family);
+    color: var(--wtp-green);
+    margin: 1.5em 0 0.5em;
+    line-height: 1.15;
+  }
+
+  .wtp-pdp__desc ul,
+  .wtp-pdp__desc ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1em;
+  }
+
+  .wtp-pdp__desc a {
+    color: var(--wtp-gold);
+    text-decoration: underline;
+  }
+
+  /* ── Mobile ── */
+  @media screen and (max-width: 768px) {
+    #wtp-pdp-{{ section.id }} {
+      padding: 2rem 1rem 5rem;
+    }
+
+    .wtp-pdp__container-{{ section.id }} {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .wtp-pdp__info-{{ section.id }} {
+      position: static;
+    }
+
+    .wtp-pdp__title {
+      font-size: clamp(1.8rem, 7vw, 2.2rem);
+    }
+
+    /* Mobile: main image LEFT (col 1), thumbnails RIGHT (col 2) */
+    .wtp-media-gallery {
+      grid-template-columns: 1fr 60px;
+      grid-template-areas: "main thumbs";
+    }
+    .wtp-thumbnails      { grid-area: thumbs; }
+    .wtp-main-image-wrapper { grid-area: main; }
+  }
+</style>
+
+<section id="wtp-pdp-{{ section.id }}">
+  <div class="wtp-pdp__container-{{ section.id }}">
+    <!-- ══ LEFT: Media Gallery (Thumbnails + Main) ══ -->
+    <div class="wtp-pdp__media-{{ section.id }}">
+      {%- assign main_img = current_variant.featured_image | default: product.featured_image -%}
+      <div class="wtp-media-gallery">
+        <!-- Thumbnail Strip -->
+        <div class="wtp-thumbnails" id="wtp-thumbnails-{{ section.id }}">
+          {%- for media in product.media -%}
+            <img
+              src="{{ media.preview_image | image_url: width: 200 }}"
+              width="200"
+              height="200"
+              alt="{{ media.alt | default: product.title | escape }}"
+              data-image-src="{{ media.preview_image | image_url: width: 1000 }}"
+              loading="lazy"
+              {% if forloop.first %}
+                class="is-active"
+              {% endif %}
+            >
+          {%- endfor -%}
+        </div>
+
+        <!-- Main Image -->
+        <div class="wtp-main-image-wrapper">
+          {%- if main_img != blank -%}
+            <img
+              id="WTPMainImage-{{ section.id }}"
+              src="{{ main_img | image_url: width: 1000 }}"
+              srcset="
+                {{ main_img | image_url: width: 600 }} 600w,
+                {{ main_img | image_url: width: 800 }} 800w,
+                {{ main_img | image_url: width: 1000 }} 1000w
+              "
+              sizes="(max-width: 768px) calc(100vw - 80px), 50vw"
+              width="{{ main_img.width }}"
+              height="{{ main_img.height }}"
+              alt="{{ main_img.alt | default: product.title | escape }}"
+              loading="eager"
+            >
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag }}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ RIGHT: Info + Buy Box ══ -->
+    <div class="wtp-pdp__info-{{ section.id }}">
+      {%- if product.vendor != blank -%}
+        <p class="wtp-pdp__vendor">{{ product.vendor | escape }}</p>
+      {%- endif -%}
+
+      <h1 class="wtp-pdp__title">{{ product.title | escape }}</h1>
+
+      <!-- Price -->
+      <div class="wtp-pdp__price-row">
+        <span class="wtp-pdp__price" id="wtp-price-{{ section.id }}">
+          {{- current_variant.price | money -}}
+        </span>
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          <span class="wtp-pdp__price-compare" id="wtp-compare-{{ section.id }}">
+            {{- current_variant.compare_at_price | money -}}
+          </span>
+          <span class="wtp-pdp__sale-badge">Sale</span>
+        {%- else -%}
+          <span class="wtp-pdp__price-compare" id="wtp-compare-{{ section.id }}" style="display:none;"></span>
+        {%- endif -%}
+      </div>
+
+      <!-- Product Form -->
+      {%- form 'product', product, id: form_id, class: 'wtp-pdp__form', novalidate: 'novalidate' -%}
+        <!-- Hidden variant ID — kept in sync by JS -->
+        <input
+          type="hidden"
+          name="id"
+          id="wtp-variant-id-{{ section.id }}"
+          value="{{ current_variant.id }}"
+        >
+
+        <!-- Variant Option Pills -->
+        {%- unless product.has_only_default_variant -%}
+          {%- for option in product.options_with_values -%}
+            <div class="wtp-pdp__option">
+              <p class="wtp-pdp__option-label">{{ option.name | escape }}</p>
+              <div class="wtp-pdp__pills" data-option-index="{{ forloop.index0 }}">
+                {%- for value in option.values -%}
+                  {%- assign opt_key = 'option' | append: forloop.parentloop.index -%}
+                  {%- assign var_for_val = product.variants | where: opt_key, value | first -%}
+                  {%- assign var_img_url = '' -%}
+                  {%- if var_for_val.featured_image -%}
+                    {%- assign var_img_url = var_for_val.featured_image | image_url: width: 1000 -%}
+                  {%- endif -%}
+                  <input
+                    class="wtp-pdp__pill-radio"
+                    type="radio"
+                    name="option-{{ forloop.parentloop.index0 }}"
+                    id="wtp-pill-{{ section.id }}-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}"
+                    value="{{ value | escape }}"
+                    data-option-index="{{ forloop.parentloop.index0 }}"
+                    data-variant-image="{{ var_img_url }}"
+                    {% if option.selected_value == value %}
+                      checked
+                    {% endif %}
+                  >
+                  <label
+                    class="wtp-pdp__pill-label"
+                    for="wtp-pill-{{ section.id }}-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}"
+                  >
+                    {{- value | escape -}}
+                  </label>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <!-- Quantity -->
+        <div class="wtp-pdp__qty-row">
+          <label class="wtp-pdp__qty-label" for="wtp-qty-{{ section.id }}">Quantity</label>
+          <div class="wtp-pdp__qty-ctrl">
+            <button
+              type="button"
+              class="wtp-pdp__qty-btn"
+              id="wtp-qty-minus-{{ section.id }}"
+              aria-label="Decrease quantity"
+            >
+              −
+            </button>
+            <input
+              type="number"
+              name="quantity"
+              id="wtp-qty-{{ section.id }}"
+              class="wtp-pdp__qty-input"
+              value="1"
+              min="1"
+              aria-label="Quantity"
+            >
+            <button
+              type="button"
+              class="wtp-pdp__qty-btn"
+              id="wtp-qty-plus-{{ section.id }}"
+              aria-label="Increase quantity"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <!-- Add to Cart + Dynamic Checkout -->
+        <div class="wtp-pdp__actions">
+          <button
+            type="submit"
+            name="add"
+            id="wtp-atc-{{ section.id }}"
+            class="wtp-pdp__atc"
+            {% unless current_variant.available %}
+              disabled
+            {% endunless %}
+          >
+            {%- if current_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
+          </button>
+
+          {%- if section.settings.show_dynamic_checkout -%}
+            <div class="wtp-pdp__dynamic">
+              {{ form | payment_button }}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endform -%}
+
+      <!-- Description -->
+      {%- if product.description != blank -%}
+        <hr class="wtp-pdp__hr">
+        <div class="wtp-pdp__desc">
+          {{ product.description }}
+        </div>
+      {%- endif -%}
+    </div>
+    <!-- /.wtp-pdp__info -->
+  </div>
+  <!-- /.container -->
+</section>
+
+<!-- Variant data JSON bridge (Liquid → JS) -->
+<script type="application/json" id="wtp-variants-{{ section.id }}">
+  [
+    {%- for variant in product.variants -%}
+      {
+        "id": {{ variant.id | json }},
+        "title": {{ variant.title | json }},
+        "available": {{ variant.available | json }},
+        "price": {{ variant.price | json }},
+        "compare_at_price": {{ variant.compare_at_price | json }},
+        "option1": {{ variant.option1 | json }},
+        "option2": {{ variant.option2 | json }},
+        "option3": {{ variant.option3 | json }},
+        "featured_image_url": {% if variant.featured_image %}"{{ variant.featured_image | image_url: width: 1000 }}"{% else %}null{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+</script>
+
+<script>
+  (function () {
+    var SECTION_ID    = {{ section.id | json }};
+    var MONEY_FORMAT  = {{ shop.money_format | json }};
+
+    /* ── Format money — placeholder strings split to avoid Liquid parser collision ── */
+    var OPEN = '{' + '{', CLOSE = '}' + '}';
+    function formatMoney(cents) {
+      var amount = (cents / 100).toFixed(2);
+      return MONEY_FORMAT
+        .replace(OPEN + 'amount' + CLOSE, amount)
+        .replace(OPEN + 'amount_no_decimals' + CLOSE, String(Math.round(cents / 100)))
+        .replace(OPEN + 'amount_with_comma_separator' + CLOSE, amount.replace('.', ','))
+        .replace(OPEN + 'amount_no_decimals_with_comma_separator' + CLOSE, String(Math.round(cents / 100)));
+    }
+
+    function init() {
+      var dataEl = document.getElementById('wtp-variants-' + SECTION_ID);
+      if (!dataEl) return;
+
+      var variants;
+      try { variants = JSON.parse(dataEl.textContent); } catch (e) { return; }
+
+      /* ── DOM refs ── */
+      var idInput     = document.getElementById('wtp-variant-id-' + SECTION_ID);
+      var priceEl     = document.getElementById('wtp-price-' + SECTION_ID);
+      var compareEl   = document.getElementById('wtp-compare-' + SECTION_ID);
+      var atcBtn      = document.getElementById('wtp-atc-' + SECTION_ID);
+      var qtyInput    = document.getElementById('wtp-qty-' + SECTION_ID);
+      var qtyMinus    = document.getElementById('wtp-qty-minus-' + SECTION_ID);
+      var qtyPlus     = document.getElementById('wtp-qty-plus-' + SECTION_ID);
+      var section     = document.getElementById('wtp-pdp-' + SECTION_ID);
+      var radios      = section ? section.querySelectorAll('.wtp-pdp__pill-radio') : [];
+      var mainImg     = document.getElementById('WTPMainImage-' + SECTION_ID);
+      var thumbWrap   = document.getElementById('wtp-thumbnails-' + SECTION_ID);
+      var thumbImgs   = thumbWrap ? thumbWrap.querySelectorAll('img') : [];
+
+      /* ── Update main image ── */
+      function setMainImage(src) {
+        if (!mainImg || !src) return;
+        mainImg.src    = src;
+        mainImg.srcset = src;
+      }
+
+      /* ── Mark active thumbnail ── */
+      function setActiveThumb(activeEl) {
+        thumbImgs.forEach(function (t) { t.classList.remove('is-active'); });
+        if (activeEl) activeEl.classList.add('is-active');
+      }
+
+      /* ── Read current selected option values ── */
+      function getSelectedOptions() {
+        var opts = [null, null, null];
+        radios.forEach(function (r) {
+          if (r.checked) {
+            var idx = parseInt(r.getAttribute('data-option-index'), 10);
+            if (idx >= 0 && idx < 3) opts[idx] = r.value;
+          }
+        });
+        return opts;
+      }
+
+      /* ── Find matching variant ── */
+      function findVariant(opts) {
+        return variants.find(function (v) {
+          return (opts[0] === null || v.option1 === opts[0])
+              && (opts[1] === null || v.option2 === opts[1])
+              && (opts[2] === null || v.option3 === opts[2]);
+        });
+      }
+
+      /* ── Apply variant state to the DOM ── */
+      function applyVariant(variant) {
+        if (!variant) return;
+
+        /* Hidden form field */
+        if (idInput) idInput.value = variant.id;
+
+        /* Price */
+        if (priceEl) priceEl.textContent = formatMoney(variant.price);
+
+        /* Compare-at price */
+        if (compareEl) {
+          if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+            compareEl.textContent = formatMoney(variant.compare_at_price);
+            compareEl.style.display = '';
+          } else {
+            compareEl.textContent = '';
+            compareEl.style.display = 'none';
+          }
+        }
+
+        /* ATC button availability */
+        if (atcBtn) {
+          atcBtn.disabled       = !variant.available;
+          atcBtn.textContent    = variant.available ? 'Add to Cart' : 'Sold Out';
+        }
+
+        /* URL — update ?variant= without navigation */
+        var url = new URL(window.location.href);
+        url.searchParams.set('variant', variant.id);
+        window.history.replaceState({}, '', url.toString());
+
+        /* Main image — swap if variant has a dedicated featured image */
+        if (variant.featured_image_url) {
+          setMainImage(variant.featured_image_url);
+
+          /* Mark matching thumbnail as active */
+          for (var i = 0; i < thumbImgs.length; i++) {
+            if (thumbImgs[i].getAttribute('data-image-src') === variant.featured_image_url) {
+              setActiveThumb(thumbImgs[i]);
+              break;
+            }
+          }
+        }
+      }
+
+      /* ── Listen for pill changes ── */
+      radios.forEach(function (radio) {
+        radio.addEventListener('change', function () {
+          var variant = findVariant(getSelectedOptions());
+          applyVariant(variant);
+        });
+      });
+
+      /* ── Thumbnail click listeners ── */
+      thumbImgs.forEach(function (thumb) {
+        thumb.addEventListener('click', function () {
+          setMainImage(this.getAttribute('data-image-src'));
+          setActiveThumb(this);
+        });
+      });
+
+      /* ── Sync thumbnail strip height to main image wrapper ── */
+      var mainWrapper = section ? section.querySelector('.wtp-main-image-wrapper') : null;
+      function syncThumbHeight() {
+        if (mainWrapper && thumbWrap) {
+          thumbWrap.style.maxHeight = mainWrapper.offsetHeight + 'px';
+        }
+      }
+      requestAnimationFrame(syncThumbHeight);
+      window.addEventListener('resize', syncThumbHeight);
+
+      /* ── Quantity stepper ── */
+      if (qtyMinus && qtyPlus && qtyInput) {
+        qtyMinus.addEventListener('click', function () {
+          var v = parseInt(qtyInput.value, 10) || 1;
+          if (v > 1) qtyInput.value = v - 1;
+        });
+        qtyPlus.addEventListener('click', function () {
+          var v = parseInt(qtyInput.value, 10) || 1;
+          qtyInput.value = v + 1;
+        });
+        /* Prevent manual entry below 1 */
+        qtyInput.addEventListener('change', function () {
+          var v = parseInt(this.value, 10);
+          if (isNaN(v) || v < 1) this.value = 1;
+        });
+      }
+    }
+
+    /* Run after DOM is available */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+    /* Theme Editor section reload */
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.detail && String(e.detail.sectionId) === String(SECTION_ID)) init();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "WTP Product Page",
+  "tag": "div",
+  "class": "wtp-product-template",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Show Dynamic Checkout Button (Buy it Now)",
+      "info": "Renders Shop Pay, PayPal, and other express checkout options.",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "WTP Product Page"
+    }
+  ]
+}
+{% endschema %}

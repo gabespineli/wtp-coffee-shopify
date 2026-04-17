@@ -12,6 +12,10 @@
   /* ════════════════════════════════════════
      WTP Footer — Variables & Shell
   ════════════════════════════════════════ */
+  #shopify-section-{{ section.id }} {
+    background-color: transparent !important;
+  }
+
   .wtp-footer {
     --footer-bg:      rgba({{ footer_bg.red }}, {{ footer_bg.green }}, {{ footer_bg.blue }}, 1);
     --footer-text:    #FFFFFF;
@@ -28,6 +32,8 @@
     overflow: hidden;
     position: relative;
     box-sizing: border-box;
+    margin-top: -24px;
+    z-index: 10;
   }
 
   .wtp-footer *,
@@ -376,9 +382,9 @@
     }
 
     .wtp-footer__nav-groups {
-      flex-wrap: wrap;
+      flex-direction: column;
       justify-content: flex-start;
-      gap: 2rem 3rem;
+      gap: 3rem;
       width: 100%;
     }
 
