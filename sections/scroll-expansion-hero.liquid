@@ -26,7 +26,12 @@
           </div>
           {{
             section.settings.foreground_video
-            | video_tag: class: 'scroll-expansion-hero__media scroll-expansion-hero__media--video', autoplay: true, loop: true, muted: true, controls: false
+            | video_tag:
+              class: 'scroll-expansion-hero__media scroll-expansion-hero__media--video',
+              autoplay: true,
+              loop: true,
+              muted: true,
+              controls: false
           }}
         </div>
       {%- elsif section.settings.foreground_image != blank -%}
@@ -73,7 +78,7 @@
 <style>
   #ScrollExpansionHero-{{ section.id }} {
     --scroll-progress: 0;
-    height: 300vh;
+    height: 150vh;
     position: relative;
     width: 100%;
     display: block;
@@ -249,7 +254,7 @@
       if (!foreground || !video) return;
 
       function onReady() {
-        setTimeout(function() {
+        setTimeout(function () {
           foreground.classList.add('is-loaded');
         }, 500);
         video.removeEventListener('canplaythrough', onReady);
