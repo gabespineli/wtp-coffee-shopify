@@ -382,9 +382,13 @@
   }
 
   /* Hide Dawn's native semi-transparent overlay entirely */
+  header-drawer > details > summary::before,
+  header-drawer > details[open] > summary::before,
   menu-drawer > details > summary::before,
-  menu-drawer > details[open]:not(.menu-opening) > summary::before {
+  menu-drawer > details[open] > summary::before {
     display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
   }
 
   /* ── PAGE CONTENT BLUR (workaround for backdrop-filter stacking context trap) ── */
