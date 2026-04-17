@@ -27,11 +27,22 @@
             "heading": "Products",
             "menu": "collections-navigation"
           }
+        },
+        "contact_column_CQmATU": {
+          "type": "contact_column",
+          "settings": {
+            "heading": "Contact Us",
+            "email_1": "sales@wtpcoffee.com",
+            "phone_1": "(+63)976 362 5973",
+            "email_2": "kirsten@wtpcoffee.com",
+            "phone_2": "(+63)962 336 0361"
+          }
         }
       },
       "block_order": [
         "nav_column_n4L3df",
-        "nav_column_Wi8WnP"
+        "nav_column_Wi8WnP",
+        "contact_column_CQmATU"
       ],
       "name": "WTP Footer",
       "settings": {
