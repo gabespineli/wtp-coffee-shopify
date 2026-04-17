@@ -18,87 +18,185 @@
 -%}
 
 {%- if show_recs -%}
-
-{%- style -%}
-  /* ════════════════════════════════════════
+  {%- style -%}
+    /* ════════════════════════════════════════
      WTP Cart Recommendations
   ════════════════════════════════════════ */
-  .wtp-cart-recs-wrap {
-    background: #F5F0E8;
-    padding: 0 5% 6rem;
-  }
-
-  .wtp-cart-recs-inner {
-    max-width: 1380px;
-    margin: 0 auto;
-    border-top: 1px solid rgba(27, 58, 45, 0.1);
-    padding-top: 3rem;
-  }
-
-  .wtp-cart-recs__heading {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.22em;
-    color: rgba(27, 58, 45, 0.5);
-    margin: 0 0 2.5rem;
-  }
-
-  .wtp-cart-recs__grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 3rem 2.5rem;
-  }
-
-  @media screen and (max-width: 900px) {
-    .wtp-cart-recs__grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2.5rem 2rem;
-    }
-  }
-
-  @media screen and (max-width: 600px) {
     .wtp-cart-recs-wrap {
-      padding-left: 1.25rem;
-      padding-right: 1.25rem;
-      padding-bottom: 4rem;
+      background: #f5f0e8;
+      padding: 0 5% 6rem;
     }
+
+    .wtp-cart-recs-inner {
+      max-width: 950px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(27, 58, 45, 0.1);
+      padding-top: 3rem;
+    }
+
+    .wtp-cart-recs__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .wtp-cart-recs__heading {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: rgba(27, 58, 45, 0.5);
+      margin: 0;
+    }
+
+    .wtp-cart-recs__arrows {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .wtp-cart-arrow {
+      background: transparent;
+      border: 1px solid rgba(27, 58, 45, 0.2);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: rgba(27, 58, 45, 0.5);
+      transition: all 0.2s ease;
+      padding: 0;
+    }
+    .wtp-cart-arrow:hover {
+      border-color: rgba(27, 58, 45, 1);
+      color: rgba(27, 58, 45, 1);
+    }
+    .wtp-cart-arrow svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+    .wtp-cart-arrow[disabled] {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
     .wtp-cart-recs__grid {
-      grid-template-columns: repeat(2, 1fr);
+      display: flex;
       gap: 1.5rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-behavior: smooth;
     }
-  }
-{%- endstyle -%}
+    .wtp-cart-recs__grid::-webkit-scrollbar {
+      display: none;
+    }
 
-<div class="wtp-cart-recs-wrap">
-  <div class="wtp-cart-recs-inner">
+    .wtp-cart-recs__item {
+      scroll-snap-align: start;
+      flex: 0 0 calc(25% - 1.125rem); /* 4 items layout, 3 gaps of 1.5rem / 4 = 1.125rem */
+    }
 
-    <h2 class="wtp-cart-recs__heading">{{ section.settings.heading }}</h2>
+    @media screen and (max-width: 900px) {
+      .wtp-cart-recs__item {
+        flex: 0 0 calc(33.333% - 1rem); /* 3 items layout */
+      }
+    }
 
-    <div class="wtp-cart-recs__grid" role="list">
-      {%- liquid
-        assign rec_collection = collections['all']
-        assign rec_limit = section.settings.product_count | default: 4
-        assign cart_product_ids = cart.items | map: 'product_id'
-        assign rec_shown = 0
-      -%}
+    @media screen and (max-width: 600px) {
+      .wtp-cart-recs-wrap {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        padding-bottom: 4rem;
+      }
+      .wtp-cart-recs__grid {
+        margin: 0 -1.25rem;
+        padding: 0 1.25rem;
+      }
+      .wtp-cart-recs__item {
+         flex: 0 0 calc(50% - 0.75rem); /* 2 items layout */
+      }
+      .wtp-cart-recs__header {
+        margin-bottom: 1.5rem;
+      }
+      .wtp-cart-recs__arrows {
+        display: none;
+      }
+    }
+  {%- endstyle -%}
 
-      {%- for product in rec_collection.products limit: 40 -%}
-        {%- unless cart_product_ids contains product.id -%}
-          {%- if rec_shown < rec_limit -%}
-            <div role="listitem">
-              {%- render 'product-card', product: product -%}
-            </div>
-            {%- assign rec_shown = rec_shown | plus: 1 -%}
-          {%- endif -%}
-        {%- endunless -%}
-      {%- endfor -%}
+  <div class="wtp-cart-recs-wrap">
+    <div class="wtp-cart-recs-inner">
+      <div class="wtp-cart-recs__header">
+        <h2 class="wtp-cart-recs__heading">{{ section.settings.heading }}</h2>
+        <div class="wtp-cart-recs__arrows">
+          <button class="wtp-cart-arrow wtp-cart-arrow--prev" id="RecsPrev-{{ section.id }}" aria-label="Previous">
+            <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="wtp-cart-arrow wtp-cart-arrow--next" id="RecsNext-{{ section.id }}" aria-label="Next">
+            <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 11l4-4-4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
 
+      <div class="wtp-cart-recs__grid" id="RecsGrid-{{ section.id }}" role="list">
+        {%- liquid
+          assign rec_collection = collections.all
+          assign rec_limit = section.settings.product_count | default: 8
+          assign cart_product_ids = cart.items | map: 'product_id'
+          assign rec_shown = 0
+        -%}
+
+        {%- for product in rec_collection.products limit: 40 -%}
+          {%- unless cart_product_ids contains product.id -%}
+            {%- if rec_shown < rec_limit -%}
+              <div class="wtp-cart-recs__item" role="listitem">
+                {%- render 'product-card', product: product -%}
+              </div>
+              {%- assign rec_shown = rec_shown | plus: 1 -%}
+            {%- endif -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
     </div>
-
   </div>
-</div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('RecsGrid-{{ section.id }}');
+      const prevBtn = document.getElementById('RecsPrev-{{ section.id }}');
+      const nextBtn = document.getElementById('RecsNext-{{ section.id }}');
+
+      if (!grid || !prevBtn || !nextBtn) return;
+
+      const updateButtons = () => {
+        prevBtn.disabled = grid.scrollLeft <= 0;
+        nextBtn.disabled = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 1;
+      };
+
+      grid.addEventListener('scroll', updateButtons, { passive: true });
+      window.addEventListener('resize', updateButtons);
+      
+      // Initialize
+      setTimeout(updateButtons, 100);
+
+      prevBtn.addEventListener('click', () => {
+        const itemWidth = grid.querySelector('.wtp-cart-recs__item').offsetWidth;
+        const gap = parseInt(window.getComputedStyle(grid).gap) || 0;
+        grid.scrollBy({ left: -(itemWidth + gap), behavior: 'smooth' });
+      });
+
+      nextBtn.addEventListener('click', () => {
+        const itemWidth = grid.querySelector('.wtp-cart-recs__item').offsetWidth;
+        const gap = parseInt(window.getComputedStyle(grid).gap) || 0;
+        grid.scrollBy({ left: itemWidth + gap, behavior: 'smooth' });
+      });
+    });
+  </script>
 {%- endif -%}
 
 {% schema %}
@@ -117,8 +215,7 @@
       "label": "Number of Products",
       "min": 2,
       "max": 8,
-      "step": 1,
-      "default": 4
+      "default": 8
     }
   ],
   "presets": [
