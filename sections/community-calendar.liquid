@@ -510,25 +510,31 @@
       {%- assign today = 'now' | date: '%s' | plus: 0 -%}
       {%- assign raw_events = blogs[section.settings.events_blog].articles -%}
 
-      {%- comment -%} Capture dates using .value for the timestamp sort {%- endcomment -%}
+      {%- comment -%}
+        Build a sortable string. Always append a comma so entries are reliably
+        delimited even when some articles are skipped (no event_date).
+        After split we filter out blank entries produced by double/trailing commas.
+      {%- endcomment -%}
       {%- capture events_with_dates -%}
-  {%- for a in raw_events -%}
-    {%- if a.metafields.custom.event_date != blank -%}
-      {{ a.metafields.custom.event_date.value | date: '%s' }}|{{ a.handle }}{% unless forloop.last %},{% endunless %}
-    {%- endif -%}
-  {%- endfor -%}
-{%- endcapture -%}
+        {%- for a in raw_events -%}
+          {%- assign a_date = a.metafields.custom.event_date.value -%}
+          {%- if a_date != blank -%}
+            {{ a_date | date: '%s' }}|{{ a.handle }},
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
 
       {%- assign sorted_event_strings = events_with_dates | split: ',' | sort -%}
       {%- assign events_shown = 0 -%}
 
       {%- for event_string in sorted_event_strings -%}
-        {%- if events_shown >= section.settings.events_limit -%}
-          {%- break -%}
-        {%- endif -%}
+        {%- assign event_string_trimmed = event_string | strip -%}
+        {%- if event_string_trimmed == blank -%}{%- continue -%}{%- endif -%}
+        {%- if events_shown >= section.settings.events_limit -%}{%- break -%}{%- endif -%}
 
-        {%- assign handle = event_string | split: '|' | last -%}
+        {%- assign handle = event_string_trimmed | split: '|' | last | strip -%}
 
+        {%- assign article = nil -%}
         {%- for a in raw_events -%}
           {%- if a.handle == handle -%}
             {%- assign article = a -%}
@@ -536,7 +542,8 @@
           {%- endif -%}
         {%- endfor -%}
 
-        {%- comment -%} Apply .value here as well to compare against 'today' {%- endcomment -%}
+        {%- if article == nil -%}{%- continue -%}{%- endif -%}
+
         {%- assign event_date_raw = article.metafields.custom.event_date.value -%}
         {%- assign event_date = event_date_raw | date: '%s' | plus: 0 -%}
 
@@ -544,9 +551,10 @@
           {%- assign events_shown = events_shown | plus: 1 -%}
           {%- assign raw_tag = article.tags.first -%}
           {%- assign rsvp_url = article.metafields.custom.event_rsvp_url -%}
+          {%- assign event_location = article.metafields.custom.event_location -%}
 
           <div class="cc-event">
-            {%- comment -%} Date {%- endcomment -%}
+            {%- comment -%} Date block {%- endcomment -%}
             <div class="cc-event__date">
               {%- if event_date_raw != blank -%}
                 <span class="cc-event__day">{{ event_date_raw | date: '%-d' }}</span>
@@ -555,19 +563,18 @@
               {%- endif -%}
             </div>
 
-            {%- comment -%} Middle {%- endcomment -%}
+            {%- comment -%} Middle: title, location, time, excerpt {%- endcomment -%}
             <div class="cc-event__mid">
               <div class="cc-event__title-row">
                 <h3 class="cc-event__title">{{ article.title | escape }}</h3>
               </div>
 
-              {%- assign event_location = article.metafields.custom.event_location -%}
               {%- if event_location != blank -%}
-                <p class="cc-event__meta">Location: {{ event_location | escape }}</p>
+                <p class="cc-event__meta">{{ event_location | escape }}</p>
               {%- endif -%}
 
               {%- if event_date_raw != blank -%}
-                <p class="cc-event__meta">Time: {{ event_date_raw | date: '%-I:%M %p' }}</p>
+                <p class="cc-event__meta">{{ event_date_raw | date: '%-I:%M %p' }}</p>
               {%- endif -%}
 
               {%- if article.content != blank -%}
@@ -575,8 +582,8 @@
               {%- endif -%}
             </div>
 
-            {%- comment -%} Right: tag + Actions {%- endcomment -%}
-            <div class="cc-event__right" style="align-items: flex-end;">
+            {%- comment -%} Right: tag pill + CTA buttons {%- endcomment -%}
+            <div class="cc-event__right">
               <div class="cc-event__tag-row">
                 {%- if raw_tag != blank -%}
                   <span class="cc-event__tag">{{ raw_tag | escape }}</span>
@@ -597,6 +604,10 @@
           </div>
         {%- endif -%}
       {%- endfor -%}
+
+      {%- if events_shown == 0 -%}
+        <p style="color: var(--cc-muted); font-size: 1.1rem; padding: 3rem 0;">No upcoming events. Check back soon.</p>
+      {%- endif -%}
     </div>
   </div>
 </section>
