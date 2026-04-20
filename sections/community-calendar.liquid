@@ -539,7 +539,7 @@
         {%- if event_date >= today -%}
           {%- assign events_shown = events_shown | plus: 1 -%}
           {%- liquid
-            assign raw_tag = article.metafields.custom.event_tag
+            assign raw_tag = article.tags.first
           -%}
           <div class="cc-event">
             {%- comment -%} Date {%- endcomment -%}

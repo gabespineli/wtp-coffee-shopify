@@ -298,7 +298,7 @@
       
       <div class="tuition-card">
         {%- liquid
-          assign event_tag = article.metafields.custom.event_tag
+          assign event_tag = article.tags.first
           assign event_date_raw = article.metafields.custom.event_date
           assign event_location = article.metafields.custom.event_location
           if event_tag != blank
