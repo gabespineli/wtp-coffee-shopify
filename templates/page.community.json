@@ -46,13 +46,12 @@
         "card_bg_color": "#ffffff",
         "headline": "Community Calendar",
         "description": "Open events for the WTP community. We keep it personal. Every stage offers curated tastings and brews for all.",
-        "klaviyo_list_id": "",
         "optin_label": "Automated Reminders",
         "optin_desc": "Never miss an event. We'll send you calendar updates for every stage.",
         "optin_placeholder": "Enter your email",
         "optin_btn_label": "Keep Me Notified",
         "events_limit": 3,
-        "events_collection": "events"
+        "events_blog": "events"
       }
     },
     "community_events_gallery_UEFVKi": {
