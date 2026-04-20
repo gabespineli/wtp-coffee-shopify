@@ -50,26 +50,54 @@
 
   @media screen and (max-width: 600px) {
     #wtp-featured-arrivals-{{ section.id }} {
-      padding: 4rem 1.25rem;
+      padding: 4rem 0 4rem 0;
+      overflow: hidden;
     }
 
     .fa-header {
       margin-bottom: 2.5rem;
+      padding: 0 1.25rem;
     }
 
     .fa-heading {
       font-size: clamp(2rem, 8vw, 2.8rem);
     }
 
+    /* Convert grid to horizontal scroll track */
     .fa-grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+      display: flex;
+      flex-direction: row;
+      gap: 1.25rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 0.5rem 1.25rem 2rem;
+      grid-template-columns: unset;
+      cursor: grab;
     }
 
+    .fa-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .fa-grid:active {
+      cursor: grabbing;
+    }
+
+    /* Each card snaps into view */
+    .fa-card-wrapper {
+      flex: 0 0 72vw;
+      max-width: 280px;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    /* Card image tall and rounded */
     #wtp-featured-arrivals-{{ section.id }} .card__media,
     #wtp-featured-arrivals-{{ section.id }} .card-wrapper .media {
-      aspect-ratio: 4 / 3;
-      border-radius: 12px;
+      aspect-ratio: 3 / 4;
+      border-radius: 16px;
       overflow: hidden;
     }
 
@@ -78,7 +106,34 @@
     }
 
     #wtp-featured-arrivals-{{ section.id }} .card__heading {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
+    }
+  }
+
+  .fa-carousel-dots {
+    display: none;
+  }
+
+  @media screen and (max-width: 600px) {
+    .fa-carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding: 0 1.25rem;
+    }
+
+    .fa-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(27, 58, 45, 0.2);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .fa-dot--active {
+      background: #1B3A2D;
+      transform: scale(1.35);
     }
   }
 {%- endstyle -%}
@@ -116,9 +171,43 @@
 
       {%- endfor -%}
     </div>
+
+    <div class="fa-carousel-dots" id="fa-dots-{{ section.id }}">
+      {%- for block in section.blocks -%}
+        <span class="fa-dot{% if forloop.first %} fa-dot--active{% endif %}"></span>
+      {%- endfor -%}
+    </div>
   {%- endif -%}
 
 </section>
+
+<script>
+  (function () {
+    if (window.innerWidth > 600) return;
+
+    var grid = document.querySelector(
+      '#wtp-featured-arrivals-{{ section.id }} .fa-grid'
+    );
+    var dots = document.querySelectorAll(
+      '#fa-dots-{{ section.id }} .fa-dot'
+    );
+
+    if (!grid || !dots.length) return;
+
+    grid.addEventListener('scroll', function () {
+      var cardWidth = grid.querySelector('.fa-card-wrapper')
+        ? grid.querySelector('.fa-card-wrapper').offsetWidth + 20
+        : grid.scrollWidth / dots.length;
+
+      var index = Math.round(grid.scrollLeft / cardWidth);
+      index = Math.max(0, Math.min(index, dots.length - 1));
+
+      dots.forEach(function (dot, i) {
+        dot.classList.toggle('fa-dot--active', i === index);
+      });
+    }, { passive: true });
+  })();
+</script>
 
 {% schema %}
 {
