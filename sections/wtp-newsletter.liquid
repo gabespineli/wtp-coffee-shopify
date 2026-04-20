@@ -6,10 +6,20 @@
 <style>
   #wtp-newsletter-{{ section.id }} {
     background: var(--color-background, #F5F0E8);
-    padding: 3rem 5%;
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    padding-left: 5%;
+    padding-right: 5%;
     text-align: center;
     color: #1B3A2D;
     font-family: var(--font-body-family);
+  }
+
+  @media screen and (min-width: 750px) {
+    #wtp-newsletter-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
   }
 
   #wtp-newsletter-{{ section.id }} *,
@@ -228,6 +238,30 @@
       "id": "btn_label",
       "label": "Button Label",
       "default": "Subscribe"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 80
     }
   ],
   "presets": [
