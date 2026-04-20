@@ -403,10 +403,19 @@
 
     .cc-event__right {
       grid-column: 1 / -1;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 0.75rem;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .cc-event__tag-row {
+      justify-content: flex-start;
+      margin-bottom: 0;
+    }
+
+    .cc-event__right-bottom {
+      width: 100%;
     }
 
     .cc-event__day {
