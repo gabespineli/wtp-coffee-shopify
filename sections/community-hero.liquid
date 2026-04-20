@@ -197,11 +197,30 @@
     transform: translateZ(20px);
   }
 
+  .ch-event-card__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin: 0 0 1.25rem;
+  }
+
   .ch-event-card__location {
-    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9rem;
     color: rgba(0,0,0,0.5);
-    margin: 0 0 1rem 0;
+    margin: 0;
     transform: translateZ(10px);
+  }
+
+  .ch-event-card__location svg {
+    flex-shrink: 0;
+    width: 13px;
+    height: 13px;
+    stroke: #C8A96E;
+    fill: none;
+    stroke-width: 2;
   }
 
   .ch-event-card__cta {
@@ -309,10 +328,50 @@
       </div>
     </div>
 
-    {%- comment -%} RIGHT {%- endcomment -%}
+    {%- comment -%} RIGHT — dynamic next event {%- endcomment -%}
     <div class="ch-right">
+      {%- comment -%}
+        Find the nearest upcoming event from the configured blog.
+        Uses the same proven sort approach as community-calendar:
+        build a timestamp|handle string, sort, then resolve back to the article.
+      {%- endcomment -%}
+      {%- assign today = 'now' | date: '%s' | plus: 0 -%}
+      {%- assign ch_articles = blogs[section.settings.events_blog].articles -%}
+      {%- assign next_event = nil -%}
+
+      {%- if ch_articles.size > 0 -%}
+        {%- capture ch_dates -%}
+          {%- for a in ch_articles -%}
+            {%- assign a_date = a.metafields.custom.event_date.value -%}
+            {%- if a_date != blank -%}
+              {{ a_date | date: '%s' }}|{{ a.handle }},
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- assign ch_sorted = ch_dates | split: ',' | sort -%}
+
+        {%- for entry in ch_sorted -%}
+          {%- assign entry_trimmed = entry | strip -%}
+          {%- if entry_trimmed == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign ch_handle = entry_trimmed | split: '|' | last | strip -%}
+          {%- assign ch_ts = entry_trimmed | split: '|' | first | strip | plus: 0 -%}
+          {%- if ch_ts >= today -%}
+            {%- for a in ch_articles -%}
+              {%- if a.handle == ch_handle -%}
+                {%- assign next_event = a -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- comment -%} Resolve image — article first, then static schema fallback {%- endcomment -%}
       <div class="ch-right__media">
-        {%- if section.settings.featured_image != blank -%}
+        {%- if next_event != nil and next_event.image != blank -%}
+          {{ next_event.image | image_url: width: 1200 | image_tag: loading: 'eager', alt: next_event.title }}
+        {%- elsif section.settings.featured_image != blank -%}
           {{
             section.settings.featured_image
             | image_url: width: 1200
@@ -325,7 +384,46 @@
         {%- endif -%}
       </div>
 
-      {%- if section.settings.card_title != blank or section.settings.card_location != blank -%}
+      {%- comment -%} Floating event card — dynamic if event found {%- endcomment -%}
+      {%- if next_event != nil -%}
+        {%- assign ne_date = next_event.metafields.custom.event_date.value -%}
+        {%- assign ne_location = next_event.metafields.custom.event_location -%}
+        {%- assign ne_rsvp = next_event.metafields.custom.event_rsvp_url -%}
+        {%- if ne_rsvp != blank -%}
+          {%- assign ne_cta_url = ne_rsvp -%}
+        {%- else -%}
+          {%- assign ne_cta_url = next_event.url -%}
+        {%- endif -%}
+
+        <div class="ch-event-card">
+          <p class="ch-event-card__label">Next Up</p>
+          <h3 class="ch-event-card__title">{{ next_event.title | escape }}</h3>
+
+          {%- if ne_date != blank or ne_location != blank -%}
+            <div class="ch-event-card__meta">
+              {%- if ne_date != blank -%}
+                <p class="ch-event-card__location">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                  {{ ne_date | date: '%B %-d, %Y' }} &middot; {{ ne_date | date: '%-I:%M %p' }}
+                </p>
+              {%- endif -%}
+              {%- if ne_location != blank -%}
+                <p class="ch-event-card__location">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.686-6-10a6 6 0 1 1 12 0c0 4.314-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>
+                  {{ ne_location | escape }}
+                </p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          <a href="{{ ne_cta_url }}" class="ch-event-card__cta"
+             {% if ne_rsvp != blank %}target="_blank" rel="noopener noreferrer"{% endif %}>
+            Secure Your Spot
+          </a>
+        </div>
+
+      {%- elsif section.settings.card_title != blank or section.settings.card_location != blank -%}
+        {%- comment -%} Static fallback card from schema settings {%- endcomment -%}
         <div class="ch-event-card">
           <p class="ch-event-card__label">Upcoming</p>
           {%- if section.settings.card_title != blank -%}
@@ -408,16 +506,27 @@
     },
     {
       "type": "header",
-      "content": "Featured Image"
+      "content": "Events Source"
+    },
+    {
+      "type": "blog",
+      "id": "events_blog",
+      "label": "Events Blog",
+      "info": "The closest upcoming event from this blog will be shown automatically."
+    },
+    {
+      "type": "header",
+      "content": "Fallback Image"
     },
     {
       "type": "image_picker",
       "id": "featured_image",
-      "label": "Featured Image"
+      "label": "Fallback Image",
+      "info": "Shown when no upcoming event has a cover image."
     },
     {
       "type": "header",
-      "content": "Floating Event Card"
+      "content": "Fallback Event Card"
     },
     {
       "type": "text",
