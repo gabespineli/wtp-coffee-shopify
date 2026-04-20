@@ -508,24 +508,27 @@
     {%- comment -%} RIGHT — upcoming events {%- endcomment -%}
     <div class="cc-right">
       {%- assign today = 'now' | date: '%s' | plus: 0 -%}
-
-      {%- comment -%} Robust Sort by Metafield: Earliest First {%- endcomment -%}
       {%- assign raw_events = blogs[section.settings.events_blog].articles -%}
-      {%- capture events_with_dates -%}
-        {%- for a in raw_events -%}
-          {%- if a.metafields.custom.event_date != blank -%}
-            {{ a.metafields.custom.event_date | date: '%s' }}|{{ a.handle }}{% unless forloop.last %},{% endunless %}
-          {%- endif -%}
-        {%- endfor -%}
-      {%- endcapture -%}
-      {%- assign sorted_event_strings = events_with_dates | split: ',' | sort -%}
 
+      {%- comment -%} Capture dates using .value for the timestamp sort {%- endcomment -%}
+      {%- capture events_with_dates -%}
+  {%- for a in raw_events -%}
+    {%- if a.metafields.custom.event_date != blank -%}
+      {{ a.metafields.custom.event_date.value | date: '%s' }}|{{ a.handle }}{% unless forloop.last %},{% endunless %}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+      {%- assign sorted_event_strings = events_with_dates | split: ',' | sort -%}
       {%- assign events_shown = 0 -%}
+
       {%- for event_string in sorted_event_strings -%}
         {%- if events_shown >= section.settings.events_limit -%}
           {%- break -%}
         {%- endif -%}
+
         {%- assign handle = event_string | split: '|' | last -%}
+
         {%- for a in raw_events -%}
           {%- if a.handle == handle -%}
             {%- assign article = a -%}
@@ -533,14 +536,15 @@
           {%- endif -%}
         {%- endfor -%}
 
-        {%- assign event_date_raw = article.metafields.custom.event_date -%}
+        {%- comment -%} Apply .value here as well to compare against 'today' {%- endcomment -%}
+        {%- assign event_date_raw = article.metafields.custom.event_date.value -%}
         {%- assign event_date = event_date_raw | date: '%s' | plus: 0 -%}
 
         {%- if event_date >= today -%}
           {%- assign events_shown = events_shown | plus: 1 -%}
-          {%- liquid
-            assign raw_tag = article.tags.first
-          -%}
+          {%- assign raw_tag = article.tags.first -%}
+          {%- assign rsvp_url = article.metafields.custom.event_rsvp_url -%}
+
           <div class="cc-event">
             {%- comment -%} Date {%- endcomment -%}
             <div class="cc-event__date">
@@ -560,11 +564,14 @@
               {%- assign event_location = article.metafields.custom.event_location -%}
               {%- if event_location != blank -%}
                 <p class="cc-event__meta">Location: {{ event_location | escape }}</p>
+              {%- endif -%}
+
+              {%- if event_date_raw != blank -%}
                 <p class="cc-event__meta">Time: {{ event_date_raw | date: '%-I:%M %p' }}</p>
               {%- endif -%}
 
               {%- if article.content != blank -%}
-                <p class="cc-event__desc">{{ article.content | strip_html | truncatewords: 60 }}</p>
+                <p class="cc-event__desc">{{ article.content | strip_html | truncatewords: 30 }}</p>
               {%- endif -%}
             </div>
 
@@ -577,7 +584,6 @@
               </div>
 
               <div class="cc-event__right-bottom">
-                {%- assign rsvp_url = article.metafields.custom.event_rsvp_url -%}
                 {%- if rsvp_url != blank -%}
                   <a href="{{ rsvp_url }}" target="_blank" rel="noopener noreferrer" class="cc-event__register">
                     Register Now
