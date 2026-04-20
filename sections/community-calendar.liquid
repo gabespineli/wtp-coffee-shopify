@@ -579,7 +579,7 @@
 
         {%- assign handle = event_string_trimmed | split: '|' | last | strip -%}
 
-        {%- assign article = nil -%}
+        {%- assign article = null -%}
         {%- for a in raw_events -%}
           {%- if a.handle == handle -%}
             {%- assign article = a -%}
@@ -587,7 +587,7 @@
           {%- endif -%}
         {%- endfor -%}
 
-        {%- if article == nil -%}{%- continue -%}{%- endif -%}
+        {%- if article == null -%}{%- continue -%}{%- endif -%}
 
         {%- assign event_date_raw = article.metafields.custom.event_date.value -%}
         {%- assign event_date = event_date_raw | date: '%s' | plus: 0 -%}
@@ -626,10 +626,6 @@
 
               {%- if event_date_raw != blank -%}
                 <p class="cc-event__meta">{{ event_date_raw | date: '%-I:%M %p' }}</p>
-              {%- endif -%}
-
-              {%- if article.content != blank -%}
-                <p class="cc-event__desc">{{ article.content | strip_html | truncatewords: 30 }}</p>
               {%- endif -%}
             </div>
 
