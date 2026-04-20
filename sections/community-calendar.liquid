@@ -425,6 +425,31 @@
     .cc-event__day {
       font-size: 1.5rem;
     }
+
+    #wtp-comm-cal-{{ section.id }} .pill-form {
+      flex-direction: column;
+      background: transparent;
+      padding: 0;
+      gap: 1rem;
+      border-radius: 0;
+    }
+
+    #wtp-comm-cal-{{ section.id }} .cc-optin__input {
+      background: #fff;
+      border-radius: 50px;
+      padding: 1rem 1.5rem;
+      flex: none;
+      width: 100%;
+    }
+
+    #wtp-comm-cal-{{ section.id }} .pill-form__icon {
+      display: none;
+    }
+
+    .cc-optin__btn {
+      width: 100%;
+      padding: 1.1rem;
+    }
   }
 </style>
 
@@ -451,13 +476,22 @@
 
         {%- form 'customer', class: 'cc-optin__form-body event-newsletter-form', id: 'wtp-cc-optin-form' -%}
           <input type="hidden" name="contact[tags]" value="newsletter, community-events">
-          
+
           {%- if form.posted_successfully? -%}
             <p class="cc-optin__success">You're in! 🎉 We'll keep you updated.</p>
           {%- else -%}
             <div class="pill-form">
               <span class="pill-form__icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <rect x="2" y="4" width="20" height="16" rx="2"/>
                   <path d="M2 7l10 7 10-7"/>
                 </svg>
@@ -474,7 +508,10 @@
               </button>
             </div>
             {%- if form.errors -%}
-              <p class="cc-optin__error">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</p>
+              <p class="cc-optin__error">
+                {{ form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email }}
+              </p>
             {%- endif -%}
           {%- endif -%}
         {%- endform -%}
@@ -562,7 +599,9 @@
                   <span class="cc-event__price">{{ product.price | money }}</span>
                 {%- endif -%}
                 {%- if product.variants.first.inventory_quantity > 0 -%}
-                  <a href="{{ routes.cart_url }}/{{ product.variants.first.id }}:1?checkout" class="cc-event__register">Register Now</a>
+                  <a href="{{ routes.cart_url }}/{{ product.variants.first.id }}:1?checkout" class="cc-event__register"
+                    >Register Now</a
+                  >
                 {%- else -%}
                   <span class="cc-event__register is-sold-out">FULLY BOOKED</span>
                 {%- endif -%}
@@ -575,8 +614,6 @@
     </div>
   </div>
 </section>
-
-
 
 {% schema %}
 {

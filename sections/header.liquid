@@ -289,10 +289,23 @@
   .section-header.wtp-menu-open:not(.wtp-scrolled) .header__heading-link,
   .section-header.wtp-menu-open:not(.wtp-scrolled) .header__icon,
   .section-header.wtp-menu-open:not(.wtp-scrolled) .header__icon svg {
-    color: rgb(var(--color-foreground)) !important;
+    color: #ffffff !important;
   }
 
-  .section-header.wtp-menu-open:not(.wtp-scrolled) .header__icon .svg-wrapper svg path {
+  /* Force white text/icons inside the menu drawer in flush state */
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .menu-drawer,
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .menu-drawer a,
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .menu-drawer span,
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .menu-drawer .header__menu-item,
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .menu-drawer account-icon > .svg-wrapper,
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .menu-drawer svg,
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .menu-drawer .localization-selector {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+  }
+
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .header__icon .svg-wrapper svg path,
+  .section-header.wtp-menu-open:not(.wtp-scrolled) .menu-drawer svg path {
     fill: currentColor !important;
   }
 </style>
@@ -440,6 +453,8 @@
   .section-header:has(details-modal details[open]) .header__inline-menu,
   .section-header:has(details-modal details[open]) header-drawer,
   .section-header:has(details-modal details[open]) .header__heading,
+  .section-header:has(details-modal details[open]) .header__heading-link,
+  .section-header:has(details-modal details[open]) .header__heading-logo-wrapper,
   .section-header:has(details-modal details[open]) .header__icon--account,
   .section-header:has(details-modal details[open]) .header__icon--cart,
   .section-header:has(details-modal details[open]) .localization-form,
@@ -447,6 +462,18 @@
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
+  }
+
+  @media screen and (max-width: 989px) {
+    .section-header .search-modal .search__button {
+      display: none !important;
+    }
+    
+    /* Ensure heading is hidden on mobile when search is open regardless of :has support */
+    .section-header:has(details-modal details[open]) .header__heading,
+    .section-header:has(details-modal details[open]) .header__heading-link {
+      display: none !important;
+    }
   }
 
   /* ── Ghost box fix: strip native field pseudo-elements & focus rings ── */
