@@ -314,22 +314,9 @@
     width: 220px;
   }
 
-  .cc-event__price {
-    font-family: var(--font-body-family);
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--cc-accent);
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    text-align: right;
-    margin-bottom: 0.25rem;
-    display: block;
-  }
 
-  .cc-event__spots--sold {
-    color: #d73cbe;
-    font-weight: 700;
-  }
+
+
 
   .cc-event__tag-row {
     display: flex;
@@ -523,11 +510,11 @@
       {%- assign today = 'now' | date: '%s' | plus: 0 -%}
 
       {%- comment -%} Robust Sort by Metafield: Earliest First {%- endcomment -%}
-      {%- assign raw_events = collections[section.settings.events_collection].products -%}
+      {%- assign raw_events = blogs[section.settings.events_blog].articles -%}
       {%- capture events_with_dates -%}
-        {%- for p in raw_events -%}
-          {%- if p.metafields.custom.event_date != blank -%}
-            {{ p.metafields.custom.event_date | date: '%Y%m%d' }}|{{ p.handle }}{% unless forloop.last %},{% endunless %}
+        {%- for a in raw_events -%}
+          {%- if a.metafields.custom.event_date != blank -%}
+            {{ a.metafields.custom.event_date | date: '%s' }}|{{ a.handle }}{% unless forloop.last %},{% endunless %}
           {%- endif -%}
         {%- endfor -%}
       {%- endcapture -%}
@@ -539,20 +526,20 @@
           {%- break -%}
         {%- endif -%}
         {%- assign handle = event_string | split: '|' | last -%}
-        {%- for p in raw_events -%}
-          {%- if p.handle == handle -%}
-            {%- assign product = p -%}
+        {%- for a in raw_events -%}
+          {%- if a.handle == handle -%}
+            {%- assign article = a -%}
             {%- break -%}
           {%- endif -%}
         {%- endfor -%}
 
-        {%- assign event_date_raw = product.metafields.custom.event_date -%}
+        {%- assign event_date_raw = article.metafields.custom.event_date -%}
         {%- assign event_date = event_date_raw | date: '%s' | plus: 0 -%}
 
         {%- if event_date >= today -%}
           {%- assign events_shown = events_shown | plus: 1 -%}
           {%- liquid
-            assign raw_tag = product.metafields.custom.event_tag
+            assign raw_tag = article.metafields.custom.event_tag
           -%}
           <div class="cc-event">
             {%- comment -%} Date {%- endcomment -%}
@@ -567,45 +554,38 @@
             {%- comment -%} Middle {%- endcomment -%}
             <div class="cc-event__mid">
               <div class="cc-event__title-row">
-                <h3 class="cc-event__title">{{ product.title | escape }}</h3>
+                <h3 class="cc-event__title">{{ article.title | escape }}</h3>
               </div>
 
-              {%- assign event_location = product.metafields.custom.event_location -%}
+              {%- assign event_location = article.metafields.custom.event_location -%}
               {%- if event_location != blank -%}
                 <p class="cc-event__meta">Location: {{ event_location | escape }}</p>
+                <p class="cc-event__meta">Time: {{ event_date_raw | date: '%-I:%M %p' }}</p>
               {%- endif -%}
 
-              {%- if product.description != blank -%}
-                <p class="cc-event__desc">{{ product.description | strip_html | truncatewords: 60 }}</p>
+              {%- if article.content != blank -%}
+                <p class="cc-event__desc">{{ article.content | strip_html | truncatewords: 60 }}</p>
               {%- endif -%}
             </div>
 
             {%- comment -%} Right: tag + Actions {%- endcomment -%}
             <div class="cc-event__right" style="align-items: flex-end;">
               <div class="cc-event__tag-row">
-                {%- if product.variants.first.inventory_quantity > 0 -%}
-                  {%- comment -%} Inventory left {%- endcomment -%}
-                {%- else -%}
-                  <span class="cc-event__spots cc-event__spots--sold">SOLD OUT</span>
-                {%- endif -%}
-
                 {%- if raw_tag != blank -%}
                   <span class="cc-event__tag">{{ raw_tag | escape }}</span>
                 {%- endif -%}
               </div>
 
               <div class="cc-event__right-bottom">
-                {%- if product.price > 0 -%}
-                  <span class="cc-event__price">{{ product.price | money }}</span>
-                {%- endif -%}
-                {%- if product.variants.first.inventory_quantity > 0 -%}
-                  <a href="{{ routes.cart_url }}/{{ product.variants.first.id }}:1?checkout" class="cc-event__register"
-                    >Register Now</a
-                  >
+                {%- assign rsvp_url = article.metafields.custom.event_rsvp_url -%}
+                {%- if rsvp_url != blank -%}
+                  <a href="{{ rsvp_url }}" target="_blank" rel="noopener noreferrer" class="cc-event__register">
+                    Register Now
+                  </a>
                 {%- else -%}
-                  <span class="cc-event__register is-sold-out">FULLY BOOKED</span>
+                  <span class="cc-event__register is-sold-out">Coming Soon</span>
                 {%- endif -%}
-                <a href="{{ product.url }}" class="cc-event__viewdetails">View Details</a>
+                <a href="{{ article.url }}" class="cc-event__viewdetails">View Details</a>
               </div>
             </div>
           </div>
@@ -701,9 +681,9 @@
       "default": 3
     },
     {
-      "type": "collection",
-      "id": "events_collection",
-      "label": "Events Collection"
+      "type": "blog",
+      "id": "events_blog",
+      "label": "Events Blog"
     }
   ],
   "presets": [

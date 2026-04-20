@@ -1,6 +1,4 @@
-{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
+
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -198,58 +196,7 @@
     flex-shrink: 0;
   }
 
-  /* ── Registration Fields (Line Item Properties) ── */
-  .event-reg-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(27, 58, 45, 0.08);
-  }
 
-  .event-reg-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .event-reg-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #1B3A2D;
-  }
-
-  .event-reg-input,
-  .event-reg-select {
-    width: 100%;
-    padding: 0.9rem 1.2rem;
-    border: 1px solid rgba(27, 58, 45, 0.2);
-    border-radius: 8px;
-    background: #FFFFFF;
-    font-family: var(--font-body-family);
-    font-size: 1rem;
-    color: #1B3A2D;
-    outline: none;
-    transition: border-color 0.2s ease;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-
-  .event-reg-input:focus,
-  .event-reg-select:focus {
-    border-color: #1B3A2D;
-  }
-
-  .event-reg-select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231B3A2D' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1.2rem center;
-    padding-right: 3rem;
-    cursor: pointer;
-  }
 
   /* ── Strict Testimonial Render ── */
   .event-testimonial {
@@ -297,16 +244,16 @@
     
     <!-- LEFT COLUMN -->
     <div class="event-story">
-      {%- if product.featured_image != blank -%}
+      {%- if article.image != blank -%}
       <div class="event-story-bannerimg">
-        {{ product.featured_image | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(min-width: 900px) 60vw, 100vw' }}
+        {{ article.image | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(min-width: 900px) 60vw, 100vw' }}
       </div>
       {%- endif -%}
 
-      <h1 class="event-large-title">{{ product.title | escape }}</h1>
+      <h1 class="event-large-title">{{ article.title | escape }}</h1>
       
       <div class="event-description rte">
-        {{ product.description }}
+        {{ article.content }}
       </div>
 
       <!-- Image Card Grid from schema blocks -->
@@ -351,30 +298,23 @@
       
       <div class="tuition-card">
         {%- liquid
-          assign event_tag = product.metafields.custom.event_tag
-          assign event_date_raw = product.metafields.custom.event_date
-          assign event_location = product.metafields.custom.event_location
+          assign event_tag = article.metafields.custom.event_tag
+          assign event_date_raw = article.metafields.custom.event_date
+          assign event_location = article.metafields.custom.event_location
           if event_tag != blank
             assign tuition_eyebrow = event_tag
           else
-            assign tuition_eyebrow = 'Tuition'
+            assign tuition_eyebrow = 'Event'
           endif
         -%}
         <p class="tuition-header">{{ tuition_eyebrow | escape | upcase }}</p>
-        <p class="tuition-price" id="price-{{ section.id }}">
-          {%- if product.price == 0 -%}
-            FREE
-          {%- else -%}
-            {{ product.price | money }}
-          {%- endif -%}
-        </p>
 
         {%- if event_date_raw != blank or event_location != blank -%}
           <div class="event-meta-block">
             {%- if event_date_raw != blank -%}
               <p class="event-meta-item">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-                {{ event_date_raw | date: '%B %-d, %Y' }}
+                {{ event_date_raw | date: '%B %-d, %Y at %-I:%M %p' }}
               </p>
             {%- endif -%}
             {%- if event_location != blank -%}
@@ -386,137 +326,17 @@
           </div>
         {%- endif -%}
 
-        <!-- Product Form: Raw HTML form bypasses all Dawn AJAX interception -->
-        <div class="product-form-wrapper">
-
-          {%- unless product.has_only_default_variant -%}
-            {%- comment -%}
-              Variant selector — rendered outside the form so the JS can update
-              the hidden #id input when the selection changes.
-            {%- endcomment -%}
-            <div class="event-variant-picker">
-              {%- for option in product.options_with_values -%}
-                <fieldset class="js product-form__input product-form__input--pill">
-                  <legend class="form__label">{{ option.name }}</legend>
-                  {%- for value in option.values -%}
-                    {%- assign variant_label_id = 'event-opt-' | append: section.id | append: '-' | append: forloop.index -%}
-                    <input
-                      type="radio"
-                      id="{{ variant_label_id }}"
-                      name="{{ option.name }}"
-                      value="{{ value | escape }}"
-                      class="event-variant-radio"
-                      {% if option.selected_value == value %}checked{% endif %}
-                    >
-                    <label for="{{ variant_label_id }}">{{ value | escape }}</label>
-                  {%- endfor -%}
-                </fieldset>
-              {%- endfor -%}
-            </div>
-          {%- endunless -%}
-
-          <form
-            id="event-form-{{ section.id }}"
-            action="{{ routes.cart_add_url }}"
-            method="POST"
-            novalidate
-          >
-            {%- comment -%} Variant ID — JS updates this when radio selection changes {%- endcomment -%}
-            <input type="hidden" name="id" id="event-variant-id-{{ section.id }}" value="{{ product.selected_or_first_available_variant.id }}">
-            {%- comment -%} Quantity is always 1 for event tickets {%- endcomment -%}
-            <input type="hidden" name="quantity" value="1">
-            {%- comment -%} return_to bypasses the cart page and goes straight to checkout {%- endcomment -%}
-            <input type="hidden" name="return_to" value="/checkout">
-
-            <!-- Registration Fields (Line Item Properties) -->
-            <div class="event-reg-fields">
-              <div class="event-reg-field">
-                <label class="event-reg-label" for="attendee-name-{{ section.id }}">Attendee Full Name <span aria-hidden="true">*</span></label>
-                <input
-                  type="text"
-                  id="attendee-name-{{ section.id }}"
-                  name="properties[Attendee Name]"
-                  class="event-reg-input"
-                  placeholder="e.g. Maria Santos"
-                  required
-                  autocomplete="name"
-                >
-              </div>
-              {%- if section.settings.show_experience_level -%}
-                <div class="event-reg-field">
-                  <label class="event-reg-label" for="experience-level-{{ section.id }}">Experience Level</label>
-                  <select
-                    id="experience-level-{{ section.id }}"
-                    name="properties[Experience Level]"
-                    class="event-reg-select"
-                  >
-                    <option value="Home Enthusiast">Home Enthusiast</option>
-                    <option value="Working Barista">Working Barista</option>
-                    <option value="Roaster / Professional">Roaster / Professional</option>
-                  </select>
-                </div>
-              {%- endif -%}
-            </div>
-
-            <div class="product-form__buttons">
-              <button
-                type="submit"
-                class="product-form__submit"
-                {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
-              >
-                {%- if product.selected_or_first_available_variant.available -%}
-                  SECURE YOUR SPOT
-                {%- else -%}
-                  SOLD OUT
-                {%- endif -%}
-              </button>
-            </div>
-          </form>
-
-          {%- comment -%}
-            Sync variant radio buttons → hidden #id input so the correct variant
-            is always submitted when the user picks a date/time option.
-          {%- endcomment -%}
-          <script>
-            (function () {
-              var formEl = document.getElementById('event-form-{{ section.id }}');
-              var idInput = document.getElementById('event-variant-id-{{ section.id }}');
-              var radios = document.querySelectorAll('.event-variant-radio');
-              var variants = {{ product.variants | json }};
-
-              function updateVariant() {
-                // Build a map of currently-selected option values
-                var selected = {};
-                radios.forEach(function (r) {
-                  if (r.checked) selected[r.name] = r.value;
-                });
-
-                // Find the matching variant
-                var match = variants.find(function (v) {
-                  return v.options.every(function (opt, i) {
-                    return selected[{{ product.options | json }}[i]] === opt;
-                  });
-                });
-
-                if (match) {
-                  idInput.value = match.id;
-                  var btn = formEl.querySelector('button[type="submit"]');
-                  if (match.available) {
-                    btn.disabled = false;
-                    btn.textContent = 'SECURE YOUR SPOT';
-                  } else {
-                    btn.disabled = true;
-                    btn.textContent = 'SOLD OUT';
-                  }
-                }
-              }
-
-              radios.forEach(function (r) {
-                r.addEventListener('change', updateVariant);
-              });
-            })();
-          </script>
-
+        {%- assign rsvp_url = article.metafields.custom.event_rsvp_url -%}
+        <div style="margin-top: 2rem;">
+          {%- if rsvp_url != blank -%}
+            <a href="{{ rsvp_url }}" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%; text-align: center; padding: 1.25rem; background: var(--ch-accent, #C8A96E); color: #fff; text-decoration: none; font-weight: 700; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.1em;">
+              Secure Your Spot
+            </a>
+          {%- else -%}
+            <span style="display: block; width: 100%; text-align: center; padding: 1.25rem; background: #e0e0e0; color: #7a7a7a; font-weight: 700; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.1em;">
+              Registration Coming Soon
+            </span>
+          {%- endif -%}
         </div>
       </div>
 
@@ -542,21 +362,14 @@
   </div>
 </div>
 
-<script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
 
 {% schema %}
 {
-  "name": "Event Product",
+  "name": "Event Article",
   "tag": "section",
   "class": "section",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_experience_level",
-      "label": "Show Experience Level Dropdown",
-      "default": false
-    },
     {
       "type": "range",
       "id": "padding_top",
@@ -627,7 +440,7 @@
   ],
   "presets": [
     {
-      "name": "Event Product",
+      "name": "Event Article",
       "blocks": [
         { "type": "image_card" },
         { "type": "image_card" }
