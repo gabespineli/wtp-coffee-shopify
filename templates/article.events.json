@@ -42,10 +42,20 @@
         "share",
         "content"
       ],
+      "disabled": true,
       "settings": {}
+    },
+    "main_product_event_PmMxUC": {
+      "type": "main-product-event",
+      "name": "Event Article",
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "main_product_event_PmMxUC"
   ]
 }
