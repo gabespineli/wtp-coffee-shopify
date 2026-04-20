@@ -297,6 +297,10 @@
     white-space: nowrap;
   }
 
+  .cc-tag--mobile {
+    display: none;
+  }
+
 
   .cc-event__spots {
     font-family: var(--font-body-family);
@@ -409,17 +413,45 @@
       margin-top: 1.5rem;
     }
 
+    .cc-tag--mobile {
+      display: inline-block;
+      margin-bottom: 0.75rem;
+    }
+
+    .cc-tag--desktop {
+      display: none;
+    }
+
     .cc-event__tag-row {
       justify-content: flex-start;
       margin-bottom: 0;
     }
 
-    .cc-event__right-bottom {
-      width: 100%;
+    .cc-event__date {
+      width: 60px;
+      padding-top: 0;
     }
 
     .cc-event__day {
-      font-size: 1.5rem;
+      font-size: 2.8rem;
+      display: block;
+      text-align: center;
+      width: 100%;
+    }
+
+    .cc-event__month {
+      font-size: 0.95rem;
+      display: block;
+      text-align: center;
+      width: 100%;
+      margin-top: -0.2rem;
+    }
+
+    .cc-event__year {
+      font-size: 0.8rem;
+      display: block;
+      text-align: center;
+      width: 100%;
     }
 
     #wtp-comm-cal-{{ section.id }} .pill-form {
@@ -574,6 +606,12 @@
 
             {%- comment -%} Middle: title, location, time, excerpt {%- endcomment -%}
             <div class="cc-event__mid">
+              {%- if raw_tag != blank -%}
+                <div class="cc-tag--mobile">
+                  <span class="cc-event__tag">{{ raw_tag | escape }}</span>
+                </div>
+              {%- endif -%}
+
               <div class="cc-event__title-row">
                 <h3 class="cc-event__title">{{ article.title | escape }}</h3>
               </div>
@@ -593,7 +631,7 @@
 
             {%- comment -%} Right: tag pill + CTA buttons {%- endcomment -%}
             <div class="cc-event__right">
-              <div class="cc-event__tag-row">
+              <div class="cc-event__tag-row cc-tag--desktop">
                 {%- if raw_tag != blank -%}
                   <span class="cc-event__tag">{{ raw_tag | escape }}</span>
                 {%- endif -%}
