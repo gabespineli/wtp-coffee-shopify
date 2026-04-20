@@ -414,6 +414,194 @@
     transition: filter 0.35s ease, transform 0.35s ease;
   }
 
+  /* ── SEARCH MODAL STYLING (Glassmorphic Alignment) ── */
+  .section-header .search-modal,
+  .section-header .search-modal__content,
+  .section-header details[open] > .search-modal,
+  .section-header details[open] > .search-modal .search-modal__content {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Kill search modal's native dark background overlay pseudo-elements */
+  .section-header .search-modal .modal-overlay,
+  .section-header .search-modal .modal-overlay::after,
+  .section-header .search-modal .modal-overlay::before,
+  .section-header details[open] .search-modal .modal-overlay,
+  .section-header details[open] .search-modal .modal-overlay::after,
+  .section-header details[open] .search-modal .modal-overlay::before {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+
+  /* Clean search state: hide navigation and icons when search is active */
+  .section-header:has(details-modal details[open]) .header__inline-menu,
+  .section-header:has(details-modal details[open]) header-drawer,
+  .section-header:has(details-modal details[open]) .header__heading,
+  .section-header:has(details-modal details[open]) .header__icon--account,
+  .section-header:has(details-modal details[open]) .header__icon--cart,
+  .section-header:has(details-modal details[open]) .localization-form,
+  .section-header details-modal details[open] > summary {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  /* ── Ghost box fix: strip native field pseudo-elements & focus rings ── */
+  .section-header .search-modal .field::before,
+  .section-header .search-modal .field::after {
+    display: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .section-header .search-modal .search__input:focus,
+  .section-header .search-modal .field__input:focus,
+  .section-header .search-modal .search__input:focus-visible,
+  .section-header .search-modal .field__input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ── 1. SEARCH INPUT & MODAL (Scrolled Pill State) ── */
+  .section-header.wtp-scrolled .search-modal .search__input,
+  .section-header.wtp-scrolled details[open] .search-modal .search__input,
+  .section-header.wtp-scrolled details[open] .search-modal .field__input {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50px !important;
+    color: {{ section.settings.island_text_color }} !important;
+    box-shadow: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  .section-header.wtp-scrolled .search-modal .search__input::placeholder,
+  .section-header.wtp-scrolled details[open] .search-modal .search__input::placeholder,
+  .section-header.wtp-scrolled .search-modal .field__label,
+  .section-header.wtp-scrolled details[open] .search-modal .field__label {
+    color: rgba({{ section.settings.island_text_color.red }}, {{ section.settings.island_text_color.green }}, {{ section.settings.island_text_color.blue }}, 0.7) !important;
+  }
+
+  .section-header.wtp-scrolled .search-modal .search__button,
+  .section-header.wtp-scrolled .search-modal .search__button svg,
+  .section-header.wtp-scrolled .search-modal .reset__button,
+  .section-header.wtp-scrolled .search-modal .reset__button svg,
+  .section-header.wtp-scrolled .search-modal .modal__close-button,
+  .section-header.wtp-scrolled .search-modal .modal__close-button svg {
+    color: {{ section.settings.island_text_color }} !important;
+  }
+
+  /* ── 2. PREDICTIVE SEARCH (Scrolled Pill State) ── */
+  .section-header.wtp-scrolled .predictive-search {
+    background: rgba({{ section.settings.island_bg_color.red }}, {{ section.settings.island_bg_color.green }}, {{ section.settings.island_bg_color.blue }}, 0.85) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+    margin-top: 1rem !important;
+  }
+
+  .section-header.wtp-scrolled .predictive-search .predictive-search__heading,
+  .section-header.wtp-scrolled .predictive-search .predictive-search__item-heading,
+  .section-header.wtp-scrolled .predictive-search .predictive-search__item-vendor,
+  .section-header.wtp-scrolled .predictive-search .predictive-search__item .price,
+  .section-header.wtp-scrolled .predictive-search .predictive-search__item-query-result *:not(mark),
+  .section-header.wtp-scrolled .predictive-search .predictive-search__item--term {
+    color: {{ section.settings.island_text_color }} !important;
+  }
+
+  .section-header.wtp-scrolled .predictive-search .predictive-search__item-query-result mark {
+    color: rgba({{ section.settings.island_text_color.red }}, {{ section.settings.island_text_color.green }}, {{ section.settings.island_text_color.blue }}, 0.75) !important;
+    background: transparent !important;
+  }
+
+  .section-header.wtp-scrolled .predictive-search .predictive-search__list-item:hover > *,
+  .section-header.wtp-scrolled .predictive-search .predictive-search__item:hover,
+  .section-header.wtp-scrolled .predictive-search .predictive-search__list-item[aria-selected="true"] > *,
+  .section-header.wtp-scrolled .predictive-search .predictive-search__item[aria-selected="true"] {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .section-header.wtp-scrolled .predictive-search__results-groups-wrapper,
+  .section-header.wtp-scrolled .predictive-search__heading {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .section-header.wtp-scrolled .predictive-search .spinner {
+    color: {{ section.settings.island_text_color }} !important;
+  }
+
+  /* ── 3. SEARCH INPUT & MODAL (Flush State) ── */
+  .section-header:not(.wtp-scrolled) .search-modal .search__input,
+  .section-header:not(.wtp-scrolled) details[open] .search-modal .search__input,
+  .section-header:not(.wtp-scrolled) details[open] .search-modal .field__input {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 50px !important;
+    color: rgb(var(--color-foreground)) !important;
+    box-shadow: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  .section-header:not(.wtp-scrolled) .search-modal .search__input::placeholder,
+  .section-header:not(.wtp-scrolled) details[open] .search-modal .search__input::placeholder,
+  .section-header:not(.wtp-scrolled) .search-modal .field__label,
+  .section-header:not(.wtp-scrolled) details[open] .search-modal .field__label {
+    color: rgba(var(--color-foreground), 0.7) !important;
+  }
+
+  .section-header:not(.wtp-scrolled) .search-modal .search__button,
+  .section-header:not(.wtp-scrolled) .search-modal .search__button svg,
+  .section-header:not(.wtp-scrolled) .search-modal .reset__button,
+  .section-header:not(.wtp-scrolled) .search-modal .reset__button svg,
+  .section-header:not(.wtp-scrolled) .search-modal .modal__close-button,
+  .section-header:not(.wtp-scrolled) .search-modal .modal__close-button svg {
+    color: rgb(var(--color-foreground)) !important;
+  }
+
+  /* ── 4. PREDICTIVE SEARCH (Flush State) ── */
+  .section-header:not(.wtp-scrolled) .predictive-search {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    margin-top: 1rem !important;
+  }
+
+  .section-header:not(.wtp-scrolled) .predictive-search .predictive-search__heading,
+  .section-header:not(.wtp-scrolled) .predictive-search .predictive-search__item-heading,
+  .section-header:not(.wtp-scrolled) .predictive-search .predictive-search__item-vendor,
+  .section-header:not(.wtp-scrolled) .predictive-search .predictive-search__item .price,
+  .section-header:not(.wtp-scrolled) .predictive-search .predictive-search__item-query-result *:not(mark),
+  .section-header:not(.wtp-scrolled) .predictive-search .predictive-search__item--term {
+    color: rgb(var(--color-foreground)) !important;
+  }
+
+  .section-header:not(.wtp-scrolled) .predictive-search .predictive-search__item-query-result mark {
+    color: rgba(var(--color-foreground), 0.75) !important;
+    background: transparent !important;
+  }
+
+  .section-header:not(.wtp-scrolled) .predictive-search .predictive-search__list-item:hover > *,
+  .section-header:not(.wtp-scrolled) .predictive-search .predictive-search__item:hover,
+  .section-header:not(.wtp-scrolled) .predictive-search .predictive-search__list-item[aria-selected="true"] > *,
+  .section-header:not(.wtp-scrolled) .predictive-search .predictive-search__item[aria-selected="true"] {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .section-header:not(.wtp-scrolled) .predictive-search__results-groups-wrapper,
+  .section-header:not(.wtp-scrolled) .predictive-search__heading {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .section-header:not(.wtp-scrolled) .predictive-search .spinner {
+    color: rgb(var(--color-foreground)) !important;
+  }
+
   /* Dynamic hover pill */
   .wtp-hover-pill {
     background: rgba({{ section.settings.hover_pill_color.red }}, {{ section.settings.hover_pill_color.green }}, {{ section.settings.hover_pill_color.blue }}, {{ section.settings.hover_pill_opacity | divided_by: 100.0 }});
