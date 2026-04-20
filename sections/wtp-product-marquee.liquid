@@ -258,6 +258,23 @@
   </div>
 </section>
 
+<style>
+  /* ── Marquee auto-scroll animation ── */
+  @keyframes pm-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .pm-track {
+    animation: pm-scroll {{ section.settings.speed | default: 30 }}s linear infinite;
+    will-change: transform;
+  }
+
+  .pm-track.is-paused {
+    animation-play-state: paused;
+  }
+</style>
+
 <script>
   (function () {
     function initMarquee(sectionId) {
@@ -267,33 +284,23 @@
       if (!wrapper || !track) return;
 
       /* ── State ── */
-      var isDragging   = false;
-      var isHovering   = false;
-      var startX       = 0;
-      var scrollStart  = 0;
-      var dragDistance = 0;
-      var raf          = null;
-      var AUTO_SPEED   = {{ section.settings.speed | default: 0.3 | json }}; /* px per frame */
+      var isDragging    = false;
+      var startX        = 0;
+      var currentOffset = 0;  /* accumulated drag px */
+      var dragDistance  = 0;
+      var lastX         = 0;
 
-      /* ── Infinite loop helper ── */
-      function clampScroll() {
-        var halfWidth = track.scrollWidth / 2;
-        if (wrapper.scrollLeft >= halfWidth) {
-          wrapper.scrollLeft -= halfWidth;
-        } else if (wrapper.scrollLeft < 0) {
-          wrapper.scrollLeft += halfWidth;
+      /* ── Pause animation on hover so user can inspect freely ── */
+      wrapper.addEventListener('mouseenter', function () {
+        track.classList.add('is-paused');
+      });
+      wrapper.addEventListener('mouseleave', function () {
+        if (!isDragging) {
+          track.classList.remove('is-paused');
         }
-      }
-
-      /* ── Auto-scroll loop ── */
-      function tick() {
-        if (!isDragging && !isHovering) {
-          wrapper.scrollLeft += AUTO_SPEED;
-          clampScroll();
-        }
-        raf = requestAnimationFrame(tick);
-      }
-      raf = requestAnimationFrame(tick);
+        isDragging = false;
+        wrapper.classList.remove('is-dragging');
+      });
 
       /* ── Hide drag hint after first interaction ── */
       function hideHint() {
@@ -301,36 +308,34 @@
       }
 
       /* ── Mouse drag ── */
-      wrapper.addEventListener('mouseenter', function () { isHovering = true; });
-      wrapper.addEventListener('mouseleave', function () {
-        isHovering = false;
-        isDragging = false;
-        wrapper.classList.remove('is-dragging');
-      });
-
       wrapper.addEventListener('mousedown', function (e) {
         isDragging   = true;
-        startX       = e.pageX - wrapper.getBoundingClientRect().left;
-        scrollStart  = wrapper.scrollLeft;
+        startX       = e.clientX;
+        lastX        = e.clientX;
         dragDistance = 0;
         wrapper.classList.add('is-dragging');
+        track.classList.add('is-paused');
         hideHint();
         e.preventDefault();
       });
 
       window.addEventListener('mousemove', function (e) {
         if (!isDragging) return;
-        var x    = e.pageX - wrapper.getBoundingClientRect().left;
-        var walk = x - startX;
-        dragDistance += Math.abs(e.movementX || 0);
-        wrapper.scrollLeft = scrollStart - walk;
-        clampScroll();
+        var delta = e.clientX - lastX;
+        lastX = e.clientX;
+        dragDistance += Math.abs(delta);
+        currentOffset -= delta;
+        track.style.transform = 'translateX(' + (-currentOffset) + 'px)';
       });
 
       window.addEventListener('mouseup', function () {
         if (!isDragging) return;
         isDragging = false;
         wrapper.classList.remove('is-dragging');
+        /* Snap back to CSS animation — reset inline transform so animation takes over */
+        track.style.transform = '';
+        currentOffset = 0;
+        track.classList.remove('is-paused');
       });
 
       /* Block link-click navigation if the pointer actually dragged */
@@ -343,27 +348,32 @@
       }, true);
 
       /* ── Touch drag ── */
-      var touchStartX     = 0;
-      var touchScrollStart = 0;
+      var touchStartX = 0;
+      var touchLastX  = 0;
 
       wrapper.addEventListener('touchstart', function (e) {
-        isDragging       = true;
-        touchStartX      = e.touches[0].pageX;
-        touchScrollStart = wrapper.scrollLeft;
-        dragDistance     = 0;
+        isDragging   = true;
+        touchStartX  = e.touches[0].clientX;
+        touchLastX   = e.touches[0].clientX;
+        dragDistance = 0;
+        track.classList.add('is-paused');
         hideHint();
       }, { passive: true });
 
       wrapper.addEventListener('touchmove', function (e) {
         if (!isDragging) return;
-        var walk = touchStartX - e.touches[0].pageX;
-        dragDistance += Math.abs(walk);
-        wrapper.scrollLeft = touchScrollStart + walk;
-        clampScroll();
+        var delta = touchLastX - e.touches[0].clientX;
+        touchLastX = e.touches[0].clientX;
+        dragDistance += Math.abs(delta);
+        currentOffset += delta;
+        track.style.transform = 'translateX(' + (-currentOffset) + 'px)';
       }, { passive: true });
 
       wrapper.addEventListener('touchend', function () {
         isDragging = false;
+        track.style.transform = '';
+        currentOffset = 0;
+        track.classList.remove('is-paused');
       }, { passive: true });
     }
 
@@ -427,11 +437,12 @@
       "type": "range",
       "id": "speed",
       "label": "Auto-scroll Speed",
-      "min": 0,
-      "max": 2,
-      "step": 0.1,
-      "default": 0.3,
-      "unit": "px"
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "unit": "s",
+      "info": "Duration in seconds for one full loop. Lower = faster."
     }
   ],
   "presets": [

@@ -61,16 +61,36 @@
   }
 
   .bs-cta {
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #1B3A2D;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    margin-top: 0.5rem;
-    display: inline-block;
-    padding-bottom: 2px;
+    color: #F5F0E8;
+    background: #1B3A2D;
+    text-decoration: none;
+    border-radius: 50px;
+    padding: 1.1rem 2.4rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .bs-cta:hover {
+    background: #1B3A2D;
+    opacity: 0.92;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(27, 58, 45, 0.2);
+    color: #F5F0E8;
+  }
+
+  .bs-cta svg {
+    transition: transform 0.3s ease;
+  }
+
+  .bs-cta:hover svg {
+    transform: translateX(4px);
   }
 
   /* ── RIGHT ── */
@@ -183,7 +203,13 @@
       {%- endif -%}
 
       {%- if section.settings.cta_label != blank -%}
-        <a href="#" class="bs-cta">{{ section.settings.cta_label | escape }}</a>
+        <a href="{{ section.settings.cta_url | default: '#' }}" class="bs-cta">
+          {{ section.settings.cta_label | escape }}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       {%- endif -%}
     </div>
 
