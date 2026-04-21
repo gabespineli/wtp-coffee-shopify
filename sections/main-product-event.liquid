@@ -35,12 +35,27 @@
     min-width: 0;
   }
 
+  .event-magazine-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  @media screen and (min-width: 900px) {
+    .event-magazine-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1.4fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
   .event-story-bannerimg {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 4 / 5;
     border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 3rem;
   }
   
   .event-story-bannerimg img {
@@ -48,6 +63,7 @@
     height: 100%;
     display: block;
     object-fit: cover;
+    object-position: top;
   }
 
   .event-large-title {
@@ -64,8 +80,6 @@
     font-size: 1.15rem;
     line-height: 1.8;
     color: #1B3A2D;
-    margin-bottom: 4rem;
-    max-width: 800px;
   }
 
   /* ── Image Card Grid (2x2) ── */
@@ -266,9 +280,8 @@
     }
 
     .event-description { 
-      order: 4; 
       margin-bottom: 2rem; 
-      text-align: center;
+      text-align: left;
       font-size: 1.1rem;
     }
 
@@ -287,14 +300,16 @@
     
     <!-- LEFT COLUMN -->
     <div class="event-story">
-      {%- if article.image != blank -%}
-      <div class="event-story-bannerimg">
-        {{ article.image | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(min-width: 900px) 60vw, 100vw' }}
-      </div>
-      {%- endif -%}
+      <div class="event-magazine-layout">
+        {%- if article.image != blank -%}
+          <div class="event-story-bannerimg">
+            {{ article.image | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(min-width: 900px) 40vw, 100vw' }}
+          </div>
+        {%- endif -%}
 
-      <div class="event-description rte">
-        {{ article.content }}
+        <div class="event-description rte">
+          {{ article.content }}
+        </div>
       </div>
 
       <!-- Image Card Grid from schema blocks -->
