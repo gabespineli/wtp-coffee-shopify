@@ -380,5 +380,104 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+    {%- comment -%} WTP Global Scroll to Top {%- endcomment -%}
+    <button id="wtp-scroll-top" aria-label="Scroll to top">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 15l-6-6-6 6"/>
+      </svg>
+    </button>
+
+    <style>
+      #wtp-scroll-top {
+        position: fixed;
+        bottom: 2.5rem;
+        right: 2.5rem;
+        width: 50px;
+        height: 50px;
+        background-color: #1B3A2D;
+        color: #F5F0E8;
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+        z-index: 999;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      #wtp-scroll-top svg {
+        width: 24px;
+        height: 24px;
+        transition: transform 0.2s ease;
+      }
+
+      #wtp-scroll-top:hover {
+        background-color: #C8A96E;
+      }
+
+      #wtp-scroll-top:hover svg {
+        transform: translateY(-2px);
+      }
+
+      #wtp-scroll-top.is-visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 768px) {
+        #wtp-scroll-top {
+          bottom: 1.5rem;
+          right: 1.5rem;
+          width: 45px;
+          height: 45px;
+        }
+        
+        #wtp-scroll-top svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    </style>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const scrollBtn = document.getElementById('wtp-scroll-top');
+        if (!scrollBtn) return;
+
+        // Throttle function to optimize scroll event listening
+        let isScrolling = false;
+        
+        const checkScroll = () => {
+          // 50vh threshold
+          const threshold = window.innerHeight * 0.5;
+          if (window.scrollY > threshold) {
+            scrollBtn.classList.add('is-visible');
+          } else {
+            scrollBtn.classList.remove('is-visible');
+          }
+          isScrolling = false;
+        };
+
+        window.addEventListener('scroll', () => {
+          if (!isScrolling) {
+            window.requestAnimationFrame(checkScroll);
+            isScrolling = true;
+          }
+        }, { passive: true });
+
+        scrollBtn.addEventListener('click', () => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      });
+    </script>
   </body>
 </html>
