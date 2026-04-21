@@ -23,37 +23,17 @@
   @media screen and (min-width: 900px) {
     .event-layout-wrapper {
       display: grid;
-      grid-template-columns: 1.4fr 1fr;
+      grid-template-columns: 0.4fr 0.61fr;
+      gap: 5rem;
       align-items: start;
     }
   }
 
   /* ── Left Column: Storytelling ── */
-  .event-story {
-    width: 100%;
-    /* Critical: prevents grid blowout so inner event-image-grid can form columns */
-    min-width: 0;
-  }
-
-  .event-magazine-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin-bottom: 4rem;
-  }
-
-  @media screen and (min-width: 900px) {
-    .event-magazine-layout {
-      display: grid;
-      grid-template-columns: 1.1fr 1.4fr;
-      gap: 4rem;
-      align-items: start;
-    }
-  }
-
   .event-story-bannerimg {
     width: 100%;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 9 / 16;
+    max-height: 85vh;
     border-radius: 12px;
     overflow: hidden;
   }
@@ -68,7 +48,7 @@
 
   .event-large-title {
     font-family: var(--font-heading-family);
-    font-size: clamp(2.2rem, 4vw, 2.8rem);
+    font-size: clamp(2.2rem, 4.5vw, 3.2rem);
     font-weight: 700;
     line-height: 1.1;
     color: #1B3A2D;
@@ -280,17 +260,18 @@
     }
 
     .event-description { 
-      margin-bottom: 2rem; 
+      order: 3;
+      margin: 3rem 0 2rem; 
       text-align: left;
       font-size: 1.1rem;
     }
 
     .event-image-grid { 
-      order: 5; 
+      order: 4; 
     }
 
     .event-testimonial { 
-      order: 6; 
+      order: 5; 
     }
   }
 {%- endstyle -%}
@@ -298,53 +279,11 @@
 <div class="page-width section-{{ section.id }}-padding">
   <div class="event-layout-wrapper">
     
-    <!-- LEFT COLUMN -->
+    <!-- LEFT COLUMN: Primary Visual -->
     <div class="event-story">
-      <div class="event-magazine-layout">
-        {%- if article.image != blank -%}
-          <div class="event-story-bannerimg">
-            {{ article.image | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(min-width: 900px) 40vw, 100vw' }}
-          </div>
-        {%- endif -%}
-
-        <div class="event-description rte">
-          {{ article.content }}
-        </div>
-      </div>
-
-      <!-- Image Card Grid from schema blocks -->
-      {%- assign image_card_blocks = section.blocks | where: 'type', 'image_card' -%}
-      {%- if image_card_blocks.size > 0 -%}
-        <div class="event-image-grid">
-          {%- for block in image_card_blocks -%}
-            {%- case block.type -%}
-              {%- when 'image_card' -%}
-                <div class="event-image-card" {{ block.shopify_attributes }}>
-                  {%- if block.settings.image != blank -%}
-                    {{
-                      block.settings.image
-                      | image_url: width: 600
-                      | image_tag:
-                        class: 'event-image-card__img',
-                        loading: 'lazy',
-                        widths: '300, 450, 600',
-                        sizes: '(min-width: 750px) 30vw, 90vw',
-                        alt: block.settings.title | default: product.title
-                    }}
-                  {%- endif -%}
-                  {%- if block.settings.title != blank or block.settings.description != blank -%}
-                    <div class="event-image-card__text">
-                      {%- if block.settings.title != blank -%}
-                        <h4 class="event-image-card__title">{{ block.settings.title | escape }}</h4>
-                      {%- endif -%}
-                      {%- if block.settings.description != blank -%}
-                        <p class="event-image-card__desc">{{ block.settings.description | escape }}</p>
-                      {%- endif -%}
-                    </div>
-                  {%- endif -%}
-                </div>
-            {%- endcase -%}
-          {%- endfor -%}
+      {%- if article.image != blank -%}
+        <div class="event-story-bannerimg">
+          {{ article.image | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(min-width: 900px) 40vw, 100vw' }}
         </div>
       {%- endif -%}
     </div>
@@ -396,6 +335,46 @@
           {%- endif -%}
         </div>
       </div>
+
+      <div class="event-description rte">
+        {{ article.content }}
+      </div>
+
+      <!-- Image Card Grid from schema blocks -->
+      {%- assign image_card_blocks = section.blocks | where: 'type', 'image_card' -%}
+      {%- if image_card_blocks.size > 0 -%}
+        <div class="event-image-grid">
+          {%- for block in image_card_blocks -%}
+            {%- case block.type -%}
+              {%- when 'image_card' -%}
+                <div class="event-image-card" {{ block.shopify_attributes }}>
+                  {%- if block.settings.image != blank -%}
+                    {{
+                      block.settings.image
+                      | image_url: width: 600
+                      | image_tag:
+                        class: 'event-image-card__img',
+                        loading: 'lazy',
+                        widths: '300, 450, 600',
+                        sizes: '(min-width: 750px) 30vw, 90vw',
+                        alt: block.settings.title | default: product.title
+                    }}
+                  {%- endif -%}
+                  {%- if block.settings.title != blank or block.settings.description != blank -%}
+                    <div class="event-image-card__text">
+                      {%- if block.settings.title != blank -%}
+                        <h4 class="event-image-card__title">{{ block.settings.title | escape }}</h4>
+                      {%- endif -%}
+                      {%- if block.settings.description != blank -%}
+                        <p class="event-image-card__desc">{{ block.settings.description | escape }}</p>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
 
       <!-- Testimonial Block (STRICT CONDITIONAL RENDER) -->
       {%- assign testimonial_block = section.blocks | where: 'type', 'testimonial' | first -%}
