@@ -211,8 +211,8 @@
       "settings": {
         "heading": "Documenting the Day",
         "subheading": "A visual chronicle of the craft, the community, and the cup.",
-        "journal_label": "View our journal",
-        "journal_url": "shopify://blogs/community-stories",
+        "journal_label": "View more",
+        "journal_url": "https://www.instagram.com/wtpcoffee/reels/",
         "bg_color": "#f5f0e8",
         "text_color": "#1b3a2d",
         "accent_color": "#c8a96e"
