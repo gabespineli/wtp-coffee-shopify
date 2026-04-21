@@ -479,5 +479,41 @@
         });
       });
     </script>
+
+    {%- comment -%} WTP Global Reveal Animation {%- endcomment -%}
+    <script>
+      (function() {
+        document.addEventListener('DOMContentLoaded', function() {
+          const sections = Array.from(document.querySelectorAll('.shopify-section'));
+          if (sections.length === 0) return;
+
+          const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          }, {
+            rootMargin: '0px 0px -100px 0px',
+            threshold: 0.05
+          });
+
+          sections.forEach((section, index) => {
+            // Exclude header/footer groups and specifically opted-out sections
+            if (section.closest('.header-group') || section.closest('.footer-group') || section.hasAttribute('data-no-reveal')) return;
+
+            section.classList.add('wtp-reveal');
+
+            // Instantly reveal the first section (Hero) to avoid blank load states
+            if (index === 0) {
+              section.classList.add('is-visible');
+            } else {
+              revealObserver.observe(section);
+            }
+          });
+        });
+      })();
+    </script>
   </body>
 </html>

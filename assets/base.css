@@ -3595,3 +3595,25 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+/* ════════════════════════════════════════
+   WTP GLOBAL REVEAL ANIMATION
+   ════════════════════════════════════════ */
+.wtp-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
+              transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: opacity, transform;
+}
+
+.wtp-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger Helpers */
+.wtp-stagger-1 { transition-delay: 0.1s; }
+.wtp-stagger-2 { transition-delay: 0.2s; }
+.wtp-stagger-3 { transition-delay: 0.3s; }
+.wtp-stagger-4 { transition-delay: 0.4s; }
