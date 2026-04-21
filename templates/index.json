@@ -65,7 +65,7 @@
             "product": "community-blend",
             "variant_title": "200g",
             "tab_name": "Community",
-            "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "descriptor": "Designed to cut through milk while standing strong on its own, the Community blend is the reliable backbone of our cafes.",
             "card_subtitle": "Whole Bean · 200g",
             "bg_image": "shopify://shop_images/COMMUNITY.png",
             "bg_position_x": 50,
@@ -82,7 +82,7 @@
             "product": "cosmopolitan-blend",
             "variant_title": "200g",
             "tab_name": "Cosmopolitan",
-            "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "descriptor": "The Cosmopolitan blend leans into the natural sweetness and vibrant acidity of its components, bringing forward nostalgic, fruit-forward notes of arnibal and sampaloc balanced by warm cinnamon.",
             "card_subtitle": "Whole Bean · 200g",
             "bg_image": "shopify://shop_images/COSMOPOLITAN_2e79e6f7-cd5b-4a9b-a1b5-878c509713ad.png",
             "bg_position_x": 50,
@@ -130,7 +130,8 @@
         "headline": "Crafted for the Ritual",
         "description": "Every piece designed to elevate your daily pour. Ceramics and saucers made for the community.",
         "cta_label": "View More",
-        "cta_url": "shopify://collections/ceramic-mugs"
+        "cta_url": "shopify://collections/ceramic-mugs",
+        "speed": 30
       }
     },
     "wtp_collab_banner_eLzHUq": {
@@ -154,7 +155,8 @@
         "description": "Seasonal releases, community events, and brewing notes — delivered straight to your inbox.",
         "placeholder": "Your email address",
         "btn_label": "Subscribe",
-        "klaviyo_list_id": ""
+        "padding_top": 80,
+        "padding_bottom": 80
       }
     }
   },
