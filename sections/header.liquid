@@ -633,6 +633,26 @@
   .wtp-hover-pill {
     background: rgba({{ section.settings.hover_pill_color.red }}, {{ section.settings.hover_pill_color.green }}, {{ section.settings.hover_pill_color.blue }}, {{ section.settings.hover_pill_opacity | divided_by: 100.0 }});
   }
+
+  /* ── CART BUBBLE POP ANIMATION ── */
+  @keyframes cart-pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.25); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .cart-count-bubble.is-popping {
+    animation: cart-pop 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  .cart-count-bubble {
+    background-color: #1B3A2D !important;
+    color: #F5F0E8 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
 {%- endstyle -%}
 
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
@@ -1049,6 +1069,29 @@
       document.addEventListener('DOMContentLoaded', initMobileMenuSync);
     } else {
       initMobileMenuSync();
+    }
+
+    /* ─── 4. Dynamic Cart Bubble Update & Animation ──────────────────────── */
+    function initCartAnimation() {
+      const cartBubble = document.getElementById('cart-icon-bubble');
+      if (!cartBubble) return;
+
+      const observer = new MutationObserver(function() {
+        const bubble = cartBubble.querySelector('.cart-count-bubble');
+        if (bubble) {
+          bubble.classList.remove('is-popping');
+          void bubble.offsetWidth; // Force reflow
+          bubble.classList.add('is-popping');
+        }
+      });
+
+      observer.observe(cartBubble, { childList: true, subtree: true });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCartAnimation);
+    } else {
+      initCartAnimation();
     }
   })();
 </script>
