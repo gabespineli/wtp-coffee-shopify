@@ -680,7 +680,189 @@
             {{ 'products.product.view_full_details' | t }}
             {{- 'icon-arrow.svg' | inline_asset_content -}}
           </a>
+
+          {%- comment -%} ── WTP Flavor & Roast Profile Block ── {%- endcomment -%}
+          {%- assign roast_level   = product.metafields.custom.roast_level -%}
+          {%- assign roast_body    = product.metafields.custom.roast_body -%}
+          {%- assign roast_acidity = product.metafields.custom.roast_acidity -%}
+          {%- assign tasting_notes = product.metafields.custom.tasting_notes -%}
+          {%- assign flavor_profile = product.metafields.custom.flavor_profile -%}
+
+          {%- if roast_level != blank -%}
+            <style>
+              .product-roast-profile {
+                border-top: 1px solid rgba(27, 58, 45, 0.15);
+                margin-top: 2.5rem;
+                padding-top: 2rem;
+              }
+
+              .prp__inner {
+                display: flex;
+                align-items: flex-start;
+                gap: 2rem;
+              }
+
+              .prp__scales {
+                flex: 1 1 auto;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+              }
+
+              .prp__header {
+                font-family: var(--font-body-family);
+                font-size: 0.95rem;
+                color: rgba(27, 58, 45, 0.6);
+                margin: 0 0 1.25rem;
+                font-style: italic;
+                letter-spacing: 0.03em;
+              }
+
+              .prp__scale-row {
+                display: flex;
+                align-items: center;
+                gap: 0.9rem;
+              }
+
+              .prp__label {
+                font-family: var(--font-body-family);
+                font-size: 0.7rem;
+                font-weight: 800;
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+                color: #1B3A2D;
+                min-width: 90px;
+                flex-shrink: 0;
+              }
+
+              .prp__dots {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+              }
+
+              .profile-dot {
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                border: 1.5px solid #1B3A2D;
+                background: transparent;
+                flex-shrink: 0;
+                transition: background 0.15s ease;
+              }
+
+              .profile-dot.is-filled {
+                background: #1B3A2D;
+              }
+
+              .prp__tasting {
+                margin-top: 1.75rem;
+                border-top: 1px solid rgba(27, 58, 45, 0.1);
+                padding-top: 1.25rem;
+              }
+
+              .prp__tasting-lead {
+                font-family: var(--font-body-family);
+                font-size: 1rem;
+                font-style: italic;
+                color: rgba(27, 58, 45, 0.6);
+                margin: 0 0 0.35rem;
+              }
+
+              .prp__tasting-notes {
+                font-family: var(--font-body-family);
+                font-size: 1.15rem;
+                font-weight: 700;
+                color: #1B3A2D;
+                line-height: 1.6;
+                margin: 0;
+              }
+
+              /* Illustration placeholder */
+              .prp__illustration {
+                flex-shrink: 0;
+                width: 90px;
+                min-height: 120px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 12px;
+                background: rgba(27, 58, 45, 0.04);
+                border: 1px dashed rgba(27, 58, 45, 0.15);
+                color: rgba(27, 58, 45, 0.25);
+                font-size: 0.7rem;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                text-align: center;
+                padding: 0.5rem;
+              }
+
+              @media (max-width: 768px) {
+                .prp__illustration {
+                  display: none;
+                }
+
+                .profile-dot {
+                  width: 10px;
+                  height: 10px;
+                }
+
+                .prp__dots {
+                  gap: 3px;
+                }
+
+                .prp__label {
+                  min-width: 80px;
+                  font-size: 0.65rem;
+                }
+              }
+            </style>
+
+            <div class="product-roast-profile">
+              {%- if flavor_profile != blank -%}
+                <p class="prp__header">{{ flavor_profile | escape }}</p>
+              {%- endif -%}
+
+              <div class="prp__inner">
+                <div class="prp__scales">
+                  {%- assign scale_labels = 'Roast Level,Body,Acidity' | split: ',' -%}
+                  {%- assign scale_values = roast_level | append: ',' | append: roast_body | append: ',' | append: roast_acidity | split: ',' -%}
+
+                  {%- for label in scale_labels -%}
+                    {%- assign dot_val = scale_values[forloop.index0] | plus: 0 -%}
+                    <div class="prp__scale-row">
+                      <span class="prp__label">{{ label }}</span>
+                      <div class="prp__dots" aria-label="{{ label }}: {{ dot_val }} out of 8">
+                        {%- for i in (1..8) -%}
+                          {%- if i <= dot_val -%}
+                            <span class="profile-dot is-filled"></span>
+                          {%- else -%}
+                            <span class="profile-dot"></span>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  {%- endfor -%}
+
+                  {%- if tasting_notes != blank -%}
+                    <div class="prp__tasting">
+                      <p class="prp__tasting-lead">We're tasting notes of</p>
+                      <p class="prp__tasting-notes">{{ tasting_notes | escape }}</p>
+                    </div>
+                  {%- endif -%}
+                </div>
+
+                {%- comment -%} Illustration placeholder — swap this div for an img or inline SVG later {%- endcomment -%}
+                <div class="prp__illustration" aria-hidden="true">
+                  <span>Art<br>Here</span>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+
         </section>
+
       </div>
     </div>
 
