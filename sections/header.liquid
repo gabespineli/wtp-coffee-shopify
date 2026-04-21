@@ -646,12 +646,22 @@
   }
 
   .cart-count-bubble {
-    background-color: #1B3A2D !important;
-    color: #F5F0E8 !important;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
+  }
+
+  /* Flush state: Dark Green background, Light Cream text */
+  .section-header:not(.wtp-scrolled) .cart-count-bubble {
+    background-color: #1B3A2D !important;
+    color: #F5F0E8 !important;
+  }
+
+  /* Pill state: Light Cream background, Dark Green text */
+  .section-header.wtp-scrolled .cart-count-bubble {
+    background-color: #F5F0E8 !important;
+    color: #1B3A2D !important;
   }
 {%- endstyle -%}
 
