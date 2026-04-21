@@ -407,6 +407,117 @@
     text-decoration: underline;
   }
 
+  /* ══════════════════════════════════════
+     ROAST PROFILE BLOCK
+  ══════════════════════════════════════ */
+  .product-roast-profile {
+    border-top: 1px solid rgba(27, 58, 45, 0.12);
+    padding-top: 1.75rem;
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .profile-layout {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .profile-scales {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .profile-subtitle {
+    font-family: var(--font-body-family);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wtp-gold);
+    margin: 0 0 1.25rem;
+  }
+
+  /* Scale rows */
+  .profile-scale-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .profile-scale-label {
+    font-family: var(--font-body-family);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wtp-muted);
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+
+  .profile-dots {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .profile-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid #1B3A2D;
+    background: transparent;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .profile-dot.is-filled {
+    background: #1B3A2D;
+  }
+
+  /* Tasting notes */
+  .profile-tasting {
+    margin-top: 1.25rem;
+  }
+
+  .profile-tasting__intro {
+    font-family: var(--font-body-family);
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--wtp-muted);
+    margin: 0 0 0.35rem;
+  }
+
+  .profile-tasting__notes {
+    font-family: var(--font-body-family);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--wtp-green);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* Illustration placeholder */
+  .profile-illus {
+    flex: 0 0 100px;
+    width: 100px;
+    height: 130px;
+    border-radius: 12px;
+    background: rgba(27, 58, 45, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed rgba(27, 58, 45, 0.18);
+    color: var(--wtp-muted);
+    font-size: 0.6rem;
+    text-align: center;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
   /* ── Mobile ── */
   @media screen and (max-width: 768px) {
     #wtp-pdp-{{ section.id }} {
@@ -433,6 +544,21 @@
     }
     .wtp-thumbnails      { grid-area: thumbs; }
     .wtp-main-image-wrapper { grid-area: main; }
+
+    /* Roast profile — hide illustration on mobile, shrink dots */
+    .profile-illus {
+      display: none;
+    }
+
+    .profile-dot {
+      width: 9px;
+      height: 9px;
+    }
+
+    .profile-scale-label {
+      min-width: 66px;
+      font-size: 0.62rem;
+    }
   }
 </style>
 
@@ -606,6 +732,67 @@
           {%- endif -%}
         </div>
       {%- endform -%}
+
+      {%- comment -%} ── Flavor & Roast Profile ── {%- endcomment -%}
+      {%- assign roast_level   = product.metafields.custom.roast_level   | plus: 0 -%}
+      {%- assign roast_body    = product.metafields.custom.roast_body    | plus: 0 -%}
+      {%- assign roast_acidity = product.metafields.custom.roast_acidity | plus: 0 -%}
+      {%- assign flavor_text   = product.metafields.custom.flavor_profile -%}
+      {%- assign tasting_notes = product.metafields.custom.tasting_notes -%}
+
+      {%- if product.metafields.custom.roast_level != blank -%}
+        <div class="product-roast-profile">
+          <div class="profile-layout">
+
+            <div class="profile-scales">
+              {%- if flavor_text != blank -%}
+                <p class="profile-subtitle">{{ flavor_text | escape }}</p>
+              {%- endif -%}
+
+              {%- comment -%} Roast Level {%- endcomment -%}
+              <div class="profile-scale-row">
+                <span class="profile-scale-label">Roast Level</span>
+                <div class="profile-dots" aria-label="Roast level: {{ roast_level }} of 8">
+                  {%- for i in (1..8) -%}
+                    <span class="profile-dot{% if i <= roast_level %} is-filled{% endif %}"></span>
+                  {%- endfor -%}
+                </div>
+              </div>
+
+              {%- comment -%} Body {%- endcomment -%}
+              <div class="profile-scale-row">
+                <span class="profile-scale-label">Body</span>
+                <div class="profile-dots" aria-label="Body: {{ roast_body }} of 8">
+                  {%- for i in (1..8) -%}
+                    <span class="profile-dot{% if i <= roast_body %} is-filled{% endif %}"></span>
+                  {%- endfor -%}
+                </div>
+              </div>
+
+              {%- comment -%} Acidity {%- endcomment -%}
+              <div class="profile-scale-row">
+                <span class="profile-scale-label">Acidity</span>
+                <div class="profile-dots" aria-label="Acidity: {{ roast_acidity }} of 8">
+                  {%- for i in (1..8) -%}
+                    <span class="profile-dot{% if i <= roast_acidity %} is-filled{% endif %}"></span>
+                  {%- endfor -%}
+                </div>
+              </div>
+
+              {%- if tasting_notes != blank -%}
+                <div class="profile-tasting">
+                  <p class="profile-tasting__intro">We're tasting notes of</p>
+                  <p class="profile-tasting__notes">{{ tasting_notes | escape }}</p>
+                </div>
+              {%- endif -%}
+            </div>{%- comment -%} /.profile-scales {%- endcomment -%}
+
+            {%- comment -%} Illustration placeholder — swap with <img> or inline SVG when ready {%- endcomment -%}
+            <div class="profile-illus" aria-hidden="true">Illustration</div>
+
+          </div>{%- comment -%} /.profile-layout {%- endcomment -%}
+        </div>{%- comment -%} /.product-roast-profile {%- endcomment -%}
+      {%- endif -%}
 
       <!-- Description -->
       {%- if product.description != blank -%}
