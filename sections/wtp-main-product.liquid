@@ -589,10 +589,6 @@
 
     <!-- ══ RIGHT: Info + Buy Box ══ -->
     <div class="wtp-pdp__info-{{ section.id }}">
-      {%- if product.vendor != blank -%}
-        <p class="wtp-pdp__vendor">{{ product.vendor | escape }}</p>
-      {%- endif -%}
-
       <h1 class="wtp-pdp__title">{{ product.title | escape }}</h1>
 
       <!-- Price -->
@@ -666,6 +662,13 @@
 
           </div>{%- comment -%} /.profile-layout {%- endcomment -%}
         </div>{%- comment -%} /.product-roast-profile {%- endcomment -%}
+      {%- endif -%}
+
+      <!-- Description -->
+      {%- if product.description != blank -%}
+        <div class="wtp-pdp__desc" style="margin-bottom: 2rem;">
+          {{ product.description }}
+        </div>
       {%- endif -%}
 
       <!-- Product Form -->
@@ -769,13 +772,6 @@
         </div>
       {%- endform -%}
 
-      <!-- Description -->
-      {%- if product.description != blank -%}
-        <hr class="wtp-pdp__hr">
-        <div class="wtp-pdp__desc">
-          {{ product.description }}
-        </div>
-      {%- endif -%}
     </div>
     <!-- /.wtp-pdp__info -->
   </div>
