@@ -100,11 +100,14 @@
     cursor: grabbing;
   }
 
-  /* Prevent text selection while dragging */
+  /* Prevent TEXT selection while dragging — but keep pointer events on children so click-threshold logic works */
+  .pm-track-wrapper.is-dragging {
+    user-select: none;
+    -webkit-user-select: none;
+  }
   .pm-track-wrapper.is-dragging * {
     user-select: none;
     -webkit-user-select: none;
-    pointer-events: none;
   }
 
   .pm-track {
@@ -151,10 +154,10 @@
     margin-top: 2rem;
     width: 100%;
     max-width: 400px;
-    height: 2px;
-    background: rgba(27, 58, 45, 0.1);
+    height: 3px;
+    background: rgba(27, 58, 45, 0.18);
     position: relative;
-    border-radius: 2px;
+    border-radius: 3px;
     overflow: hidden;
   }
 
@@ -165,7 +168,8 @@
     height: 100%;
     background: #C8A96E;
     width: 0%;
-    transition: width 0.1s linear;
+    border-radius: 3px;
+    transition: width 0.12s linear;
   }
 
   /* ── Mobile ── */
@@ -398,6 +402,10 @@
         wrapper.classList.remove('is-dragging');
         /* Resume loop from current moveX */
         mode = 'FORWARD';
+        /* Reset dragDistance AFTER a short delay so the click event
+           that fires on mouseup still sees the correct distance,
+           but the NEXT click starts fresh */
+        setTimeout(function() { dragDistance = 0; }, 50);
       }
 
       /* Mouse */
