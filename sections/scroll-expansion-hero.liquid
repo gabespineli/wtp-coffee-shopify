@@ -198,17 +198,13 @@
 
   /* Layer 3: Title */
   #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-container {
-    position: absolute;
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.15em;
+    gap: 0.05em;
     width: 100%;
     pointer-events: none;
     color: var(--title-color, #fff);
-    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    background: radial-gradient(circle, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 70%);
+    min-height: 100vh;
     white-space: nowrap;
   }
 
@@ -278,33 +274,45 @@
       if (sectionEl.dataset.scrollInit === 'true') return;
       sectionEl.dataset.scrollInit = 'true';
 
-      var ticking = false;
+      var targetProgress = 0;
+      var currentProgress = 0;
+      var ease = 0.075; // Smoothing factor
+      var animationId = null;
+
+      function lerp() {
+        var diff = targetProgress - currentProgress;
+        if (Math.abs(diff) < 0.0001) {
+          currentProgress = targetProgress;
+          sectionEl.style.setProperty('--scroll-progress', currentProgress.toFixed(4));
+          animationId = null;
+          return;
+        }
+
+        currentProgress += diff * ease;
+        sectionEl.style.setProperty('--scroll-progress', currentProgress.toFixed(4));
+        animationId = requestAnimationFrame(lerp);
+      }
 
       function updateProgress() {
         var rect = sectionEl.getBoundingClientRect();
         var wh = window.innerHeight;
 
-        /* Section is in the sticky zone: top is above viewport top, bottom still below viewport bottom */
         if (rect.top <= 0 && rect.bottom >= wh) {
-          var scrollable = rect.height - wh; /* 200vh of travel */
-          var progress = Math.abs(rect.top) / scrollable;
-          progress = Math.max(0, Math.min(1, progress));
-          sectionEl.style.setProperty('--scroll-progress', progress.toFixed(4));
+          var scrollable = rect.height - wh;
+          targetProgress = Math.max(0, Math.min(1, Math.abs(rect.top) / scrollable));
         } else if (rect.top > 0) {
-          sectionEl.style.setProperty('--scroll-progress', '0');
+          targetProgress = 0;
         } else {
-          sectionEl.style.setProperty('--scroll-progress', '1');
+          targetProgress = 1;
+        }
+
+        if (!animationId) {
+          animationId = requestAnimationFrame(lerp);
         }
       }
 
       function onScroll() {
-        if (!ticking) {
-          window.requestAnimationFrame(function () {
-            updateProgress();
-            ticking = false;
-          });
-          ticking = true;
-        }
+        updateProgress();
       }
 
       window.addEventListener('scroll', onScroll, { passive: true });
@@ -312,6 +320,9 @@
 
       /* Initial calc */
       updateProgress();
+      /* Force immediate snap on first load to prevent flash */
+      currentProgress = targetProgress;
+      sectionEl.style.setProperty('--scroll-progress', currentProgress.toFixed(4));
 
       /* Cinematic video loading state */
       initVideoLoader(sectionEl);
