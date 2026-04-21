@@ -17,6 +17,7 @@
     },
     "related-products": {
       "type": "related-products",
+      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "heading_size": "h2",
@@ -32,10 +33,19 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "main_cart_recommendations_eee4mj": {
+      "type": "main-cart-recommendations",
+      "name": "Cart Recommendations",
+      "settings": {
+        "heading": "You may also like",
+        "product_count": 8
+      }
     }
   },
   "order": [
     "main",
-    "related-products"
+    "related-products",
+    "main_cart_recommendations_eee4mj"
   ]
 }
