@@ -196,8 +196,13 @@
     pointer-events: none;
   }
 
-  /* Layer 3: Title */
   #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-container {
+    position: absolute;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 0.05em;
     width: 100%;
     pointer-events: none;
