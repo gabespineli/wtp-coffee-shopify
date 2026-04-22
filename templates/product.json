@@ -38,7 +38,9 @@
       "type": "main-cart-recommendations",
       "name": "Cart Recommendations",
       "settings": {
+        "recommendation_type": "product",
         "heading": "You may also like",
+        "collection": "",
         "product_count": 8
       }
     }
