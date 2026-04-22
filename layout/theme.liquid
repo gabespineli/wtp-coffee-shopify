@@ -308,6 +308,17 @@
   </head>
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
+    {%- comment -%} WTP Global Page Transition Loader {%- endcomment -%}
+    <div id="wtp-loader" class="wtp-loader">
+      <div class="wtp-loader__content">
+        <div class="wtp-loader__logo">Creating Your Community</div>
+        <div class="wtp-loader__dots">
+          <span class="wtp-loader__dot"></span>
+          <span class="wtp-loader__dot"></span>
+          <span class="wtp-loader__dot"></span>
+        </div>
+      </div>
+    </div>
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
@@ -383,7 +394,16 @@
     {%- endif -%}
     {%- comment -%} WTP Global Scroll to Top {%- endcomment -%}
     <button id="wtp-scroll-top" aria-label="Scroll to top">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <path d="M18 15l-6-6-6 6"/>
       </svg>
     </button>
@@ -395,8 +415,8 @@
         right: 2.5rem;
         width: 50px;
         height: 50px;
-        background-color: #1B3A2D;
-        color: #F5F0E8;
+        background-color: #1b3a2d;
+        color: #f5f0e8;
         border: none;
         border-radius: 50%;
         display: flex;
@@ -418,7 +438,7 @@
       }
 
       #wtp-scroll-top:hover {
-        background-color: #C8A96E;
+        background-color: #c8a96e;
       }
 
       #wtp-scroll-top:hover svg {
@@ -438,7 +458,7 @@
           width: 45px;
           height: 45px;
         }
-        
+
         #wtp-scroll-top svg {
           width: 20px;
           height: 20px;
@@ -447,13 +467,13 @@
     </style>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener('DOMContentLoaded', function () {
         const scrollBtn = document.getElementById('wtp-scroll-top');
         if (!scrollBtn) return;
 
         // Throttle function to optimize scroll event listening
         let isScrolling = false;
-        
+
         const checkScroll = () => {
           // 50vh threshold
           const threshold = window.innerHeight * 0.5;
@@ -465,17 +485,21 @@
           isScrolling = false;
         };
 
-        window.addEventListener('scroll', () => {
-          if (!isScrolling) {
-            window.requestAnimationFrame(checkScroll);
-            isScrolling = true;
-          }
-        }, { passive: true });
+        window.addEventListener(
+          'scroll',
+          () => {
+            if (!isScrolling) {
+              window.requestAnimationFrame(checkScroll);
+              isScrolling = true;
+            }
+          },
+          { passive: true }
+        );
 
         scrollBtn.addEventListener('click', () => {
           window.scrollTo({
             top: 0,
-            behavior: 'smooth'
+            behavior: 'smooth',
           });
         });
       });
@@ -483,26 +507,34 @@
 
     {%- comment -%} WTP Global Reveal Animation {%- endcomment -%}
     <script>
-      (function() {
-        document.addEventListener('DOMContentLoaded', function() {
+      (function () {
+        document.addEventListener('DOMContentLoaded', function () {
           const sections = Array.from(document.querySelectorAll('.shopify-section'));
           if (sections.length === 0) return;
 
-          const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                revealObserver.unobserve(entry.target);
-              }
-            });
-          }, {
-            rootMargin: '0px 0px -50px 0px',
-            threshold: 0.1
-          });
+          const revealObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  revealObserver.unobserve(entry.target);
+                }
+              });
+            },
+            {
+              rootMargin: '0px 0px -50px 0px',
+              threshold: 0.1,
+            }
+          );
 
           sections.forEach((section, index) => {
             // Exclude header/footer groups and specifically opted-out sections
-            if (section.closest('.header-group') || section.closest('.footer-group') || section.hasAttribute('data-no-reveal')) return;
+            if (
+              section.closest('.header-group') ||
+              section.closest('.footer-group') ||
+              section.hasAttribute('data-no-reveal')
+            )
+              return;
 
             section.classList.add('wtp-reveal');
 
@@ -513,6 +545,84 @@
               revealObserver.observe(section);
             }
           });
+        });
+      })();
+    </script>
+
+    {%- comment -%} WTP Global Page Transition Controller {%- endcomment -%}
+    <script>
+      (function () {
+        const loader = document.getElementById('wtp-loader');
+        if (!loader) return;
+
+        const hideLoader = () => {
+          loader.classList.add('is-hidden');
+          document.body.style.overflow = '';
+        };
+
+        const showLoader = () => {
+          loader.classList.remove('is-hidden');
+          document.body.style.overflow = 'hidden';
+        };
+
+        // Hide on initial load
+        if (document.readyState === 'complete') {
+          hideLoader();
+        } else {
+          window.addEventListener('load', hideLoader);
+        }
+
+        // Show on link click
+        document.addEventListener('click', (e) => {
+          const link = e.target.closest('a');
+          if (!link) return;
+
+          const href = link.getAttribute('href');
+          const target = link.getAttribute('target');
+
+          // Conditions to skip loader:
+          // 1. External links
+          // 2. Anchors on same page
+          // 3. Mailto/Tel/JS protocols
+          // 4. target="_blank"
+          // 5. design mode
+          if (
+            !href ||
+            href.startsWith('#') ||
+            href.startsWith('mailto:') ||
+            href.startsWith('tel:') ||
+            href.startsWith('javascript:') ||
+            target === '_blank' ||
+            Shopify.designMode
+          )
+            return;
+
+          // Skip if same URL (ignoring hash)
+          const currentUrl = new URL(window.location.href);
+          const targetUrl = new URL(href, window.location.origin);
+          if (
+            currentUrl.origin === targetUrl.origin &&
+            currentUrl.pathname === targetUrl.pathname &&
+            currentUrl.search === targetUrl.search
+          ) {
+            return;
+          }
+
+          showLoader();
+        });
+
+        // Handle Back/Forward Cache
+        window.addEventListener('pageshow', (event) => {
+          if (event.persisted) {
+            hideLoader();
+          }
+        });
+
+        // Optional: show on form submit (GET only for navigation)
+        document.addEventListener('submit', (e) => {
+          if (e.target.method === 'get') {
+            showLoader();
+          }
         });
       })();
     </script>
