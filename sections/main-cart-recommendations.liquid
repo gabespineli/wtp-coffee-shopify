@@ -29,8 +29,11 @@
     }
 
     /* Hide container initially if it's an AJAX section that might be empty */
-    .wtp-recs-wrap[data-ajax-recs="true"]:not(.is-loaded) {
+    .wtp-recs-wrap[data-ajax-recs="true"] {
        display: none;
+    }
+    .wtp-recs-wrap[data-ajax-recs="true"].is-loaded {
+       display: block;
     }
 
     .wtp-recs-inner {
@@ -137,47 +140,58 @@
   {%- endstyle -%}
 
   {%- capture recommendations_content -%}
-    <div class="wtp-recs-inner">
-      <div class="wtp-recs__header">
-        <h2 class="wtp-recs__heading">{{ section.settings.heading }}</h2>
-        <div class="wtp-recs__arrows">
-          <button class="wtp-arrow wtp-arrow--prev" id="RecsPrev-{{ section.id }}" aria-label="Previous">
-            <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button class="wtp-arrow wtp-arrow--next" id="RecsNext-{{ section.id }}" aria-label="Next">
-            <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 11l4-4-4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-      </div>
+    {%- liquid
+      assign has_products = false
+      if rec_type == 'product'
+        if recommendations.performed and recommendations.products_count > 0
+          assign has_products = true
+        endif
+      else
+        assign has_products = true
+      endif
+    -%}
 
-      <div class="wtp-recs__grid" id="RecsGrid-{{ section.id }}" role="list">
-        {%- if rec_type == 'product' -%}
-          {%- if recommendations.performed -%}
+    {%- if has_products -%}
+      <div class="wtp-recs-inner">
+        <div class="wtp-recs__header">
+          <h2 class="wtp-recs__heading">{{ section.settings.heading }}</h2>
+          <div class="wtp-recs__arrows">
+            <button class="wtp-arrow wtp-arrow--prev" id="RecsPrev-{{ section.id }}" aria-label="Previous">
+              <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="wtp-arrow wtp-arrow--next" id="RecsNext-{{ section.id }}" aria-label="Next">
+              <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 11l4-4-4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="wtp-recs__grid" id="RecsGrid-{{ section.id }}" role="list">
+          {%- if rec_type == 'product' -%}
             {%- for product in recommendations.products limit: limit -%}
               <div class="wtp-recs__item" role="listitem">
                 {%- render 'product-card', product: product -%}
               </div>
             {%- endfor -%}
+          {%- else -%}
+            {%- liquid
+              assign source_collection = section.settings.collection | default: collections.all
+              assign cart_product_ids = cart.items | map: 'product_id'
+              assign shown_count = 0
+            -%}
+            {%- for product in source_collection.products limit: 50 -%}
+              {%- unless cart_product_ids contains product.id -%}
+                {%- if shown_count < limit -%}
+                  <div class="wtp-recs__item" role="listitem">
+                    {%- render 'product-card', product: product -%}
+                  </div>
+                  {%- assign shown_count = shown_count | plus: 1 -%}
+                {%- endif -%}
+              {%- endunless -%}
+            {%- endfor -%}
           {%- endif -%}
-        {%- else -%}
-          {%- liquid
-            assign source_collection = section.settings.collection | default: collections.all
-            assign cart_product_ids = cart.items | map: 'product_id'
-            assign shown_count = 0
-          -%}
-          {%- for product in source_collection.products limit: 50 -%}
-            {%- unless cart_product_ids contains product.id -%}
-              {%- if shown_count < limit -%}
-                <div class="wtp-recs__item" role="listitem">
-                  {%- render 'product-card', product: product -%}
-                </div>
-                {%- assign shown_count = shown_count | plus: 1 -%}
-              {%- endif -%}
-            {%- endunless -%}
-          {%- endfor -%}
-        {%- endif -%}
+        </div>
       </div>
-    </div>
+    {%- endif -%}
   {%- endcapture -%}
 
   {%- if rec_type == 'product' -%}
@@ -229,7 +243,8 @@
         });
 
         // Mark as loaded for visibility
-        container.classList.add('is-loaded');
+        const wrap = container.querySelector('.wtp-recs-wrap') || container;
+        wrap.classList.add('is-loaded');
       };
 
       // Watch for AJAX injection or static load
