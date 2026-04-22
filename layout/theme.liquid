@@ -308,17 +308,19 @@
   </head>
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
-    {%- comment -%} WTP Global Page Transition Loader {%- endcomment -%}
-    <div id="wtp-loader" class="wtp-loader">
-      <div class="wtp-loader__content">
-        <div class="wtp-loader__logo">Creating Your Community</div>
-        <div class="wtp-loader__dots">
-          <span class="wtp-loader__dot"></span>
-          <span class="wtp-loader__dot"></span>
-          <span class="wtp-loader__dot"></span>
+    {%- if request.page_type != 'index' -%}
+      {%- comment -%} WTP Global Page Transition Loader {%- endcomment -%}
+      <div id="wtp-loader" class="wtp-loader">
+        <div class="wtp-loader__content">
+          <div class="wtp-loader__logo">Creating Your Community</div>
+          <div class="wtp-loader__dots">
+            <span class="wtp-loader__dot"></span>
+            <span class="wtp-loader__dot"></span>
+            <span class="wtp-loader__dot"></span>
+          </div>
         </div>
       </div>
-    </div>
+    {%- endif -%}
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
