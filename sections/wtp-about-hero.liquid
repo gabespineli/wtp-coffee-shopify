@@ -1,0 +1,241 @@
+{%- style -%}
+  #wtp-about-hero-{{ section.id }} {
+     position: relative;
+     padding: 12rem 5% 10rem;
+     background-color: {{ section.settings.bg_color }};
+     color: {{ section.settings.text_color }};
+     overflow: hidden;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     text-align: center;
+     min-height: 70vh;
+     justify-content: center;
+     isolation: isolate;
+   }
+
+   .about-hero__bg {
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     z-index: -1;
+     opacity: {{ section.settings.image_opacity | divided_by: 100.0 }};
+     pointer-events: none;
+     background-size: 400px;
+     background-repeat: repeat;
+     background-position: center;
+     {% if section.settings.image != blank %}
+       background-image: url('{{ section.settings.image | image_url: width: 1000 }}');
+     {% endif %}
+   }
+
+   .about-hero__content {
+     position: relative;
+     z-index: 2;
+     max-width: 1300px;
+     width: 100%;
+   }
+
+   .about-hero__eyebrow {
+     font-family: var(--font-heading-family);
+     font-size: clamp(1.2rem, 2vw, 1.5rem);
+     text-transform: uppercase;
+     letter-spacing: 0.3em;
+     color: {{ section.settings.accent_color }};
+     margin-bottom: 2rem;
+     display: block;
+     opacity: 0;
+     transform: translateY(20px);
+     animation: aboutHeroReveal 0.8s ease forwards;
+   }
+
+   .about-hero__title {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     grid-template-rows: auto auto;
+     gap: 0.5rem 1.5rem;
+     width: 100%;
+     max-width: 1440px;
+     margin: 0 auto;
+     text-transform: uppercase;
+     font-family: var(--font-heading-family);
+     font-size: clamp(3.5rem, 12vw, 10.5rem);
+     line-height: 0.85;
+     font-weight: 700;
+     letter-spacing: -0.04em;
+     opacity: 0;
+     transform: translateY(30px);
+     animation: aboutHeroReveal 0.8s ease 0.2s forwards;
+   }
+
+   .about-hero__word--we {
+     grid-column: 1;
+     text-align: right;
+     align-self: start;
+     color: {{ section.settings.text_color }} !important;
+   }
+
+   .about-hero__word--create {
+     grid-column: 2;
+     text-align: left;
+     align-self: start;
+   }
+
+   .about-hero__word--community {
+     grid-column: 1 / span 2;
+     text-align: center;
+     margin-top: 1rem;
+     color: {{ section.settings.text_color }} !important;
+   }
+
+   /* ── THE FONT SHIFTER ── */
+   .font-shifter {
+     display: inline-block;
+     color: {{ section.settings.accent_color }};
+     animation: fontShift 1s steps(4) infinite;
+     font-style: normal;
+   }
+
+   @keyframes fontShift {
+     0%   { font-family: var(--font-heading-family); font-weight: 900; font-style: normal; }
+     25%  { font-family: "Georgia", serif; font-weight: 400; font-style: italic; }
+     50%  { font-family: "Courier New", monospace; font-weight: 700; font-style: normal; }
+     75%  { font-family: "Brush Script MT", cursive, serif; font-weight: 400; font-style: normal; text-transform: lowercase; }
+     100% { font-family: var(--font-heading-family); font-weight: 900; font-style: normal; }
+   }
+
+   .about-hero__desc {
+     font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+     line-height: 1.6;
+     max-width: 700px;
+     margin: 5rem auto 0;
+     opacity: 0;
+     color: {{ section.settings.text_color }} !important;
+     transform: translateY(20px);
+     animation: aboutHeroReveal 0.8s ease 0.4s forwards;
+   }
+
+   @keyframes aboutHeroReveal {
+     to {
+       opacity: 1;
+       transform: translateY(0);
+     }
+   }
+
+   @media screen and (max-width: 749px) {
+     #wtp-about-hero-{{ section.id }} {
+       padding: 8rem 5% 6rem;
+       min-height: 50vh;
+     }
+     .about-hero__title {
+       grid-template-columns: 1fr;
+       grid-template-rows: auto auto auto;
+       gap: 1.5rem;
+       font-size: clamp(3rem, 15vw, 4.5rem);
+     }
+     .about-hero__word--we,
+     .about-hero__word--create,
+     .about-hero__word--community {
+       grid-column: 1;
+       text-align: center;
+       margin-top: 0;
+     }
+   }
+{%- endstyle -%}
+
+<section id="wtp-about-hero-{{ section.id }}" class="about-hero">
+  <div class="about-hero__bg"></div>
+  <div class="about-hero__content">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="about-hero__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+    {%- endif -%}
+
+    <h1 class="about-hero__title">
+      <span class="about-hero__word--we">{{ section.settings.title_before }}</span>
+      <span class="about-hero__word--create font-shifter">{{ section.settings.shifted_word }}</span>
+      <span class="about-hero__word--community">{{ section.settings.title_after }}</span>
+    </h1>
+
+    {%- if section.settings.description != blank -%}
+      <p class="about-hero__desc">{{ section.settings.description | escape }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Page Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "image_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Image Opacity",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Fallback Color",
+      "default": "#1B3A2D"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#F5F0E8"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color (Shifted Word)",
+      "default": "#C8A96E"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Established 2024"
+    },
+    {
+      "type": "text",
+      "id": "title_before",
+      "label": "Title (Before shifted word)",
+      "default": "We"
+    },
+    {
+      "type": "text",
+      "id": "shifted_word",
+      "label": "Shifted Word",
+      "default": "CREATE"
+    },
+    {
+      "type": "text",
+      "id": "title_after",
+      "label": "Title (After shifted word)",
+      "default": "COMMUNITY"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "WTP Coffee is more than a roastery. It is a laboratory where craftsmanship meets the human spirit."
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Page Hero"
+    }
+  ]
+}
+{% endschema %}
