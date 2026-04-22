@@ -20,7 +20,7 @@
 
   /* ── LEFT ── */
   .pm-left {
-    flex: 0 0 360px;
+    flex: 0 0 calc(45% - 2rem);
     display: flex;
     flex-direction: column;
     gap: 1.75rem;
@@ -29,7 +29,7 @@
   }
 
   .pm-eyebrow {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -39,7 +39,7 @@
 
   .pm-headline {
     font-family: var(--font-heading-family);
-    font-size: clamp(2.8rem, 5vw, 4rem);
+    font-size: clamp(3.2rem, 7vw, 5.5rem);
     font-weight: 700;
     font-style: italic;
     color: #1B3A2D;
@@ -48,7 +48,7 @@
   }
 
   .pm-description {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     line-height: 1.85;
     color: rgba(27,58,45,0.6);
     margin: 0;
@@ -74,7 +74,7 @@
 
   /* ── RIGHT: Draggable Marquee ── */
   .pm-right {
-    flex: 1 1 auto;
+    flex: 0 0 calc(55% - 2rem);
     overflow: hidden;
     /* Fade edges for a cinematic bleed */
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
@@ -82,7 +82,7 @@
   }
 
   .pm-track-wrapper {
-    overflow-x: scroll;
+    overflow: hidden;
     overflow-y: hidden;
     width: 100%;
     cursor: grab;
@@ -262,11 +262,15 @@
 <style>
   .pm-track {
     will-change: transform;
+    transition: none;
+  }
+
+  .pm-track-wrapper:not(.is-dragging) .pm-track {
     transition: transform 0.1s linear;
   }
 
-  .pm-track.is-rewinding {
-    transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+  .pm-track-wrapper .pm-track.is-rewinding {
+    transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1) !important;
   }
 </style>
 
@@ -281,27 +285,33 @@
       /* ── State ── */
       var isDragging   = false;
       var isPaused     = false;
-      var moveX        = 0;  /* target translateX */
+      var moveX        = 0;  /* current scroll position */
       var lastX        = 0;
       var dragDistance = 0;
       var maxTranslate = 0;
-      var direction    = 1;  /* 1 for forward, -1 for backward? no, we use state machine */
       var mode         = 'FORWARD'; /* FORWARD, PAUSE, REWIND */
       var pauseTimer   = null;
 
       function updateMaxTranslate() {
-        var wBox = wrapper.offsetWidth;
+        var wBox = wrapper.clientWidth;
         var tBox = track.scrollWidth;
         maxTranslate = Math.max(0, tBox - wBox);
+        /* Ensure moveX is still in bounds after resize */
+        if (moveX > maxTranslate) {
+          moveX = maxTranslate;
+          updateTransform();
+        }
       }
 
       function hideHint() {
         if (hint) hint.classList.add('is-hidden');
       }
 
+      function updateTransform() {
+        track.style.transform = 'translateX(' + (-moveX) + 'px)';
+      }
+
       /* ── Main Loop ── */
-      var speed = (100 / ({{ section.settings.speed | default: 30 }} || 30)); /* px per frame approx? no, let's use constant increment */
-      
       function loop() {
         if (isDragging || isPaused) {
           requestAnimationFrame(loop);
@@ -309,30 +319,35 @@
         }
 
         if (mode === 'FORWARD') {
-          track.classList.remove('is-rewinding');
-          moveX += 0.4; /* Leisurely cinematic crawl */
+          if (maxTranslate <= 0) {
+            requestAnimationFrame(loop);
+            return;
+          }
+
+          moveX += 0.4; /* Cinematic crawl */
           if (moveX >= maxTranslate) {
             moveX = maxTranslate;
             mode = 'PAUSE';
             pauseTimer = setTimeout(function() {
-              mode = 'REWIND';
-              track.classList.add('is-rewinding');
+              if (!isDragging) {
+                mode = 'REWIND';
+                track.classList.add('is-rewinding');
+                moveX = 0;
+                updateTransform();
+                
+                /* Wait for rewind transition before resuming */
+                setTimeout(function() {
+                  if (mode === 'REWIND') {
+                    mode = 'FORWARD';
+                    track.classList.remove('is-rewinding');
+                  }
+                }, 1500);
+              }
             }, 3000);
           }
+          updateTransform();
         } 
-        else if (mode === 'REWIND') {
-          moveX = 0; /* Cubic-bezier css handle the smoothing */
-          track.style.transform = 'translateX(0)';
-          
-          /* Wait for transition to finish before going forward again */
-          setTimeout(function() {
-            if (mode === 'REWIND') mode = 'FORWARD';
-          }, 1500); 
-        }
-
-        if (mode !== 'REWIND') {
-          track.style.transform = 'translateX(' + (-moveX) + 'px)';
-        }
+        /* REWIND and PAUSE don't need per-frame updates as they use CSS transitions or are static */
 
         requestAnimationFrame(loop);
       }
@@ -344,6 +359,10 @@
         dragDistance = 0;
         wrapper.classList.add('is-dragging');
         track.classList.remove('is-rewinding');
+        /* If we were in REWIND, snap to current and switch to FORWARD */
+        if (mode === 'REWIND') {
+          mode = 'FORWARD';
+        }
         if (pauseTimer) clearTimeout(pauseTimer);
         hideHint();
       }
@@ -355,36 +374,47 @@
         dragDistance += Math.abs(delta);
         moveX -= delta;
         
-        /* Clamp drag */
+        /* Strict Boundary Clamping */
         if (moveX < 0) moveX = 0;
         if (moveX > maxTranslate) moveX = maxTranslate;
 
-        track.style.transform = 'translateX(' + (-moveX) + 'px)';
+        updateTransform();
       }
 
       function endDrag() {
         if (!isDragging) return;
         isDragging = false;
         wrapper.classList.remove('is-dragging');
-        /* Resume loop from current moveX */
-        mode = 'FORWARD';
-        /* Reset dragDistance AFTER a short delay so the click event
-           that fires on mouseup still sees the correct distance,
-           but the NEXT click starts fresh */
+        /* Resume crawl from where we dropped it */
+        if (mode !== 'REWIND') mode = 'FORWARD';
+        
         setTimeout(function() { dragDistance = 0; }, 50);
       }
 
-      /* Mouse */
-      wrapper.addEventListener('mousedown', function(e) { startDrag(e.clientX); e.preventDefault(); });
+      /* Mouse Events */
+      wrapper.addEventListener('mousedown', function(e) { 
+        startDrag(e.clientX); 
+        e.preventDefault(); 
+      });
       window.addEventListener('mousemove', function(e) { moveDrag(e.clientX); });
       window.addEventListener('mouseup', function() { endDrag(); });
 
-      /* Touch */
-      wrapper.addEventListener('touchstart', function(e) { startDrag(e.touches[0].clientX); }, {passive:true});
-      wrapper.addEventListener('touchmove', function(e) { moveDrag(e.touches[0].clientX); }, {passive:true});
-      wrapper.addEventListener('touchend', function() { endDrag(); }, {passive:true});
+      /* Touch Events */
+      wrapper.addEventListener('touchstart', function(e) { 
+        startDrag(e.touches[0].clientX); 
+      }, {passive: false}); // Set to false so we can preventDefault if needed
+      
+      wrapper.addEventListener('touchmove', function(e) { 
+        if (isDragging) {
+          moveDrag(e.touches[0].clientX);
+          /* Only prevent default if we're actually dragging horizontally to allow vertical page scroll */
+          if (dragDistance > 5) e.preventDefault();
+        }
+      }, {passive: false});
+      
+      wrapper.addEventListener('touchend', function() { endDrag(); });
 
-      /* Click / Nav link bug fix */
+      /* Link / Click prevention during drag */
       wrapper.addEventListener('click', function(e) {
         if (dragDistance > 10) {
           e.preventDefault();
@@ -396,12 +426,15 @@
       wrapper.addEventListener('mouseenter', function() { isPaused = true; });
       wrapper.addEventListener('mouseleave', function() { isPaused = false; });
 
-      /* Init — defer maxTranslate calc by one frame to ensure layout is painted */
+      /* Initialize */
       requestAnimationFrame(function() {
         updateMaxTranslate();
         requestAnimationFrame(loop);
       });
+      
+      /* Re-calculate on resize and after full page load (images) */
       window.addEventListener('resize', updateMaxTranslate);
+      window.addEventListener('load', updateMaxTranslate);
     }
 
     /* Run after DOM is ready */
