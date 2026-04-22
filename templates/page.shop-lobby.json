@@ -17,16 +17,16 @@
         "padding_bottom": 28
       }
     },
-    "hero_product_tabs_YxERzn": {
+    "hero_product_tabs_jfgAKd": {
       "type": "hero-product-tabs",
       "blocks": {
-        "featured_product_9LfVkP": {
+        "featured_product_TGy6Dz": {
           "type": "featured_product",
           "settings": {
             "product": "community-blend",
             "variant_title": "200g",
             "tab_name": "Community",
-            "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "descriptor": "Designed to cut through milk while standing strong on its own, the Community blend is the reliable backbone of our cafes.",
             "card_subtitle": "Whole Bean · 200g",
             "bg_image": "shopify://shop_images/COMMUNITY.png",
             "bg_position_x": 50,
@@ -37,13 +37,13 @@
             "mobile_content_text": "#fcfaed"
           }
         },
-        "featured_product_iBiaW9": {
+        "featured_product_rMQVzq": {
           "type": "featured_product",
           "settings": {
             "product": "cosmopolitan-blend",
             "variant_title": "200g",
             "tab_name": "Cosmopolitan",
-            "descriptor": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "descriptor": "The Cosmopolitan blend leans into the natural sweetness and vibrant acidity of its components, bringing forward nostalgic, fruit-forward notes of arnibal and sampaloc balanced by warm cinnamon.",
             "card_subtitle": "Whole Bean · 200g",
             "bg_image": "shopify://shop_images/COSMOPOLITAN_2e79e6f7-cd5b-4a9b-a1b5-878c509713ad.png",
             "bg_position_x": 50,
@@ -56,8 +56,8 @@
         }
       },
       "block_order": [
-        "featured_product_9LfVkP",
-        "featured_product_iBiaW9"
+        "featured_product_TGy6Dz",
+        "featured_product_rMQVzq"
       ],
       "name": "Hero Product Tabs",
       "settings": {
@@ -166,7 +166,7 @@
   },
   "order": [
     "main",
-    "hero_product_tabs_YxERzn",
+    "hero_product_tabs_jfgAKd",
     "wtp_featured_arrivals_kjnNqL",
     "wtp_shop_category_CibFJi"
   ]
