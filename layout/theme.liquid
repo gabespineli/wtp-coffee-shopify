@@ -62,6 +62,7 @@
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_face: font_display: 'swap' }}
 
+      {% assign scheme_classes = '' %}
       {% for scheme in settings.color_schemes -%}
         {% assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id %}
         {% if forloop.index == 1 -%}
@@ -495,8 +496,8 @@
               }
             });
           }, {
-            rootMargin: '0px 0px -100px 0px',
-            threshold: 0.05
+            rootMargin: '0px 0px -50px 0px',
+            threshold: 0.1
           });
 
           sections.forEach((section, index) => {

@@ -43,20 +43,60 @@
   }
 
   /* Main image: aspect ratio lives on the WRAPPER so the strip can measure it */
+  /* Polaroid Effect */
   .wtp-main-image-wrapper {
-    aspect-ratio: 4 / 5;
-    border-radius: 16px;
+    background: #FFFFFF;
+    padding: 0.8rem 0.8rem 4rem 0.8rem;
+    box-shadow: 
+      0 4px 15px rgba(0,0,0,0.05),
+      0 20px 50px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    position: relative;
     overflow: hidden;
-    background: rgba(27, 58, 45, 0.03);
     line-height: 0;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(0,0,0,0.03);
   }
 
-  .wtp-main-image-wrapper img {
+  .wtp-main-image-wrapper:hover {
+    transform: translateY(-5px) rotate(0.5deg);
+  }
+
+  .wtp-main-viewport {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    position: relative;
+    background: #f0f0f0;
+    border-radius: 2px;
+  }
+
+  .wtp-main-viewport::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.03);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .wtp-main-track {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .wtp-main-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    position: relative;
+  }
+
+  .wtp-main-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: opacity 0.25s ease;
   }
 
   /* Thumbnail strip — height capped to main image via JS syncThumbHeight() */
@@ -101,6 +141,12 @@
     }
     .wtp-thumbnails      { grid-area: thumbs; }
     .wtp-main-image-wrapper { grid-area: main; }
+  }
+
+  @media screen and (max-width: 768px) {
+    .wtp-main-image-wrapper {
+      padding: 0.5rem 0.5rem 2.8rem 0.5rem;
+    }
   }
 
   /* ══════════════════════════════════════
@@ -554,33 +600,32 @@
               alt="{{ media.alt | default: product.title | escape }}"
               data-image-src="{{ media.preview_image | image_url: width: 1000 }}"
               loading="lazy"
-              {% if forloop.first %}
+              {% if media.preview_image.src == main_img.src %}
                 class="is-active"
               {% endif %}
             >
           {%- endfor -%}
         </div>
 
-        <!-- Main Image -->
+        <!-- Main Image: Polaroid Viewport -->
         <div class="wtp-main-image-wrapper">
-          {%- if main_img != blank -%}
-            <img
-              id="WTPMainImage-{{ section.id }}"
-              src="{{ main_img | image_url: width: 1000 }}"
-              srcset="
-                {{ main_img | image_url: width: 600 }} 600w,
-                {{ main_img | image_url: width: 800 }} 800w,
-                {{ main_img | image_url: width: 1000 }} 1000w
-              "
-              sizes="(max-width: 768px) calc(100vw - 80px), 50vw"
-              width="{{ main_img.width }}"
-              height="{{ main_img.height }}"
-              alt="{{ main_img.alt | default: product.title | escape }}"
-              loading="eager"
-            >
-          {%- else -%}
-            {{ 'product-1' | placeholder_svg_tag }}
-          {%- endif -%}
+          <div class="wtp-main-viewport">
+            <div class="wtp-main-track" id="WTPMainTrack-{{ section.id }}">
+              {%- for media in product.media -%}
+                <div class="wtp-main-slide {% if media.preview_image.src == main_img.src %}is-active{% endif %}" data-media-id="{{ media.id }}" data-image-src="{{ media.preview_image | image_url: width: 1000 }}">
+                  <img
+                    src="{{ media.preview_image | image_url: width: 1000 }}"
+                    srcset="{{ media.preview_image | image_url: width: 600 }} 600w, {{ media.preview_image | image_url: width: 800 }} 800w, {{ media.preview_image | image_url: width: 1000 }} 1000w"
+                    sizes="(max-width: 768px) calc(100vw - 80px), 50vw"
+                    width="{{ media.preview_image.width }}"
+                    height="{{ media.preview_image.height }}"
+                    alt="{{ media.alt | default: product.title | escape }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  >
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -828,15 +873,36 @@
       var qtyPlus     = document.getElementById('wtp-qty-plus-' + SECTION_ID);
       var section     = document.getElementById('wtp-pdp-' + SECTION_ID);
       var radios      = section ? section.querySelectorAll('.wtp-pdp__pill-radio') : [];
-      var mainImg     = document.getElementById('WTPMainImage-' + SECTION_ID);
+      var track       = document.getElementById('WTPMainTrack-' + SECTION_ID);
+      var slides      = track ? track.querySelectorAll('.wtp-main-slide') : [];
       var thumbWrap   = document.getElementById('wtp-thumbnails-' + SECTION_ID);
       var thumbImgs   = thumbWrap ? thumbWrap.querySelectorAll('img') : [];
 
-      /* ── Update main image ── */
+      /* ── Normalize URL for comparison ── */
+      function normalizeUrl(url) {
+        if (!url) return '';
+        return url.replace(/^https?:/, '').split('?')[0];
+      }
+
+      /* ── Update main image (Track Slide) ── */
       function setMainImage(src) {
-        if (!mainImg || !src) return;
-        mainImg.src    = src;
-        mainImg.srcset = src;
+        if (!track || !src || !slides.length) return;
+        
+        var targetIndex = -1;
+        var normalizedTarget = normalizeUrl(src);
+
+        for (var i = 0; i < slides.length; i++) {
+          if (normalizeUrl(slides[i].getAttribute('data-image-src')) === normalizedTarget) {
+            targetIndex = i;
+            break;
+          }
+        }
+
+        if (targetIndex !== -1) {
+          // Correct math: 100 / total_slides gives the percentage for 1 slide height relative to the whole track
+          var movePercentage = (targetIndex * 100) / slides.length;
+          track.style.transform = 'translateY(-' + movePercentage + '%)';
+        }
       }
 
       /* ── Mark active thumbnail ── */
@@ -903,8 +969,9 @@
           setMainImage(variant.featured_image_url);
 
           /* Mark matching thumbnail as active */
+          var normalizedFeatured = normalizeUrl(variant.featured_image_url);
           for (var i = 0; i < thumbImgs.length; i++) {
-            if (thumbImgs[i].getAttribute('data-image-src') === variant.featured_image_url) {
+            if (normalizeUrl(thumbImgs[i].getAttribute('data-image-src')) === normalizedFeatured) {
               setActiveThumb(thumbImgs[i]);
               break;
             }
@@ -953,6 +1020,11 @@
           var v = parseInt(this.value, 10);
           if (isNaN(v) || v < 1) this.value = 1;
         });
+      }
+
+      // Initial slide sync based on variant image
+      if (track) {
+        setMainImage("{{ main_img | image_url: width: 1000 }}");
       }
     }
 
