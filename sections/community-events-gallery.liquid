@@ -119,6 +119,8 @@
 
   /* ── Card image ── */
   .cg-card__img-wrap {
+    display: block;
+    text-decoration: none;
     position: relative;
     width: 100%;
     overflow: hidden;
@@ -307,7 +309,7 @@
       {%- for article in section.settings.selected_blog.articles limit: section.settings.post_limit -%}
         <article class="cg-card">
 
-          <div class="cg-card__img-wrap">
+          <a href="{{ article.url }}" class="cg-card__img-wrap">
             {%- if article.image != blank -%}
               {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: article.title }}
             {%- else -%}
@@ -327,7 +329,7 @@
                 {{- article.published_at | time_tag: format: 'date' -}}
               </p>
             </div>
-          </div>
+          </a>
 
           <div class="cg-card__body">
             <p class="cg-card__note">
