@@ -1,47 +1,53 @@
 {% comment %}
-  WTP Coffee — Cart Recommendations
-  Renders a "You may also like" product grid below the cart footer.
-  Uses the same `product-card` snippet as wtp-featured-arrivals.liquid.
-  - Always pulls from collections['all'], filtering out items already in cart.
-  - Visible in the Theme Editor via request.design_mode even with an empty cart.
-  - Hidden on the live storefront when the cart is empty.
+  WTP Coffee — Versatile Recommendations
+  Renders product suggestions based on either Cart contents or the current Product.
+  - Cart Mode: Suggests from a collection (default: all), filtering out items in cart.
+  - Product Mode: Uses Shopify Recommendations API (AJAX) to show similar items.
 {% endcomment %}
 
 {%- liquid
-  assign show_recs = false
-  if cart != empty
-    assign show_recs = true
+  assign rec_type = section.settings.recommendation_type
+  assign limit = section.settings.product_count
+  assign show_section = false
+
+  if rec_type == 'cart' and cart != empty
+    assign show_section = true
+  elsif rec_type == 'product' and product != empty
+    assign show_section = true
   endif
+
   if request.design_mode
-    assign show_recs = true
+    assign show_section = true
   endif
 -%}
 
-{%- if show_recs -%}
+{%- if show_section or recommendations.performed -%}
   {%- style -%}
-    /* ════════════════════════════════════════
-     WTP Cart Recommendations
-  ════════════════════════════════════════ */
-    .wtp-cart-recs-wrap {
+    .wtp-recs-wrap {
       background: #f5f0e8;
       padding: 0 5% 6rem;
     }
 
-    .wtp-cart-recs-inner {
+    /* Hide container initially if it's an AJAX section that might be empty */
+    .wtp-recs-wrap[data-ajax-recs="true"]:not(.is-loaded) {
+       display: none;
+    }
+
+    .wtp-recs-inner {
       max-width: 950px;
       margin: 0 auto;
       border-top: 1px solid rgba(27, 58, 45, 0.1);
       padding-top: 3rem;
     }
 
-    .wtp-cart-recs__header {
+    .wtp-recs__header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 2.5rem;
     }
 
-    .wtp-cart-recs__heading {
+    .wtp-recs__heading {
       font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -50,12 +56,12 @@
       margin: 0;
     }
 
-    .wtp-cart-recs__arrows {
+    .wtp-recs__arrows {
       display: flex;
       gap: 0.5rem;
     }
 
-    .wtp-cart-arrow {
+    .wtp-arrow {
       background: transparent;
       border: 1px solid rgba(27, 58, 45, 0.2);
       border-radius: 50%;
@@ -69,21 +75,21 @@
       transition: all 0.2s ease;
       padding: 0;
     }
-    .wtp-cart-arrow:hover {
+    .wtp-arrow:hover:not([disabled]) {
       border-color: rgba(27, 58, 45, 1);
       color: rgba(27, 58, 45, 1);
     }
-    .wtp-cart-arrow svg {
+    .wtp-arrow svg {
       width: 14px;
       height: 14px;
       fill: currentColor;
     }
-    .wtp-cart-arrow[disabled] {
-      opacity: 0.3;
+    .wtp-arrow[disabled] {
+      opacity: 0.2;
       cursor: not-allowed;
     }
 
-    .wtp-cart-recs__grid {
+    .wtp-recs__grid {
       display: flex;
       gap: 1.5rem;
       overflow-x: auto;
@@ -92,123 +98,190 @@
       -ms-overflow-style: none;
       scroll-behavior: smooth;
     }
-    .wtp-cart-recs__grid::-webkit-scrollbar {
+    .wtp-recs__grid::-webkit-scrollbar {
       display: none;
     }
 
-    .wtp-cart-recs__item {
+    .wtp-recs__item {
       scroll-snap-align: start;
-      flex: 0 0 calc(25% - 1.125rem); /* 4 items layout, 3 gaps of 1.5rem / 4 = 1.125rem */
+      flex: 0 0 calc(25% - 1.125rem);
     }
 
     @media screen and (max-width: 900px) {
-      .wtp-cart-recs__item {
-        flex: 0 0 calc(33.333% - 1rem); /* 3 items layout */
+      .wtp-recs__item {
+        flex: 0 0 calc(33.333% - 1rem);
       }
     }
 
     @media screen and (max-width: 600px) {
-      .wtp-cart-recs-wrap {
+      .wtp-recs-wrap {
         padding-left: 1.25rem;
         padding-right: 1.25rem;
         padding-bottom: 4rem;
       }
-      .wtp-cart-recs__grid {
+      .wtp-recs__grid {
         margin: 0 -1.25rem;
         padding: 0 1.25rem 0 2rem;
         scroll-padding-left: 2rem;
       }
-      .wtp-cart-recs__item {
-         flex: 0 0 calc(50% - 0.75rem); /* 2 items layout */
+      .wtp-recs__item {
+         flex: 0 0 calc(50% - 0.75rem);
       }
-      .wtp-cart-recs__header {
+      .wtp-recs__header {
         margin-bottom: 1.5rem;
       }
-      .wtp-cart-recs__arrows {
+      .wtp-recs__arrows {
         display: none;
       }
     }
   {%- endstyle -%}
 
-  <div class="wtp-cart-recs-wrap">
-    <div class="wtp-cart-recs-inner">
-      <div class="wtp-cart-recs__header">
-        <h2 class="wtp-cart-recs__heading">{{ section.settings.heading }}</h2>
-        <div class="wtp-cart-recs__arrows">
-          <button class="wtp-cart-arrow wtp-cart-arrow--prev" id="RecsPrev-{{ section.id }}" aria-label="Previous">
+  {%- capture recommendations_content -%}
+    <div class="wtp-recs-inner">
+      <div class="wtp-recs__header">
+        <h2 class="wtp-recs__heading">{{ section.settings.heading }}</h2>
+        <div class="wtp-recs__arrows">
+          <button class="wtp-arrow wtp-arrow--prev" id="RecsPrev-{{ section.id }}" aria-label="Previous">
             <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
-          <button class="wtp-cart-arrow wtp-cart-arrow--next" id="RecsNext-{{ section.id }}" aria-label="Next">
+          <button class="wtp-arrow wtp-arrow--next" id="RecsNext-{{ section.id }}" aria-label="Next">
             <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 11l4-4-4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
       </div>
 
-      <div class="wtp-cart-recs__grid" id="RecsGrid-{{ section.id }}" role="list">
-        {%- liquid
-          assign rec_collection = collections.all
-          assign rec_limit = section.settings.product_count | default: 8
-          assign cart_product_ids = cart.items | map: 'product_id'
-          assign rec_shown = 0
-        -%}
-
-        {%- for product in rec_collection.products limit: 40 -%}
-          {%- unless cart_product_ids contains product.id -%}
-            {%- if rec_shown < rec_limit -%}
-              <div class="wtp-cart-recs__item" role="listitem">
+      <div class="wtp-recs__grid" id="RecsGrid-{{ section.id }}" role="list">
+        {%- if rec_type == 'product' -%}
+          {%- if recommendations.performed -%}
+            {%- for product in recommendations.products limit: limit -%}
+              <div class="wtp-recs__item" role="listitem">
                 {%- render 'product-card', product: product -%}
               </div>
-              {%- assign rec_shown = rec_shown | plus: 1 -%}
-            {%- endif -%}
-          {%- endunless -%}
-        {%- endfor -%}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- else -%}
+          {%- liquid
+            assign source_collection = section.settings.collection | default: collections.all
+            assign cart_product_ids = cart.items | map: 'product_id'
+            assign shown_count = 0
+          -%}
+          {%- for product in source_collection.products limit: 50 -%}
+            {%- unless cart_product_ids contains product.id -%}
+              {%- if shown_count < limit -%}
+                <div class="wtp-recs__item" role="listitem">
+                  {%- render 'product-card', product: product -%}
+                </div>
+                {%- assign shown_count = shown_count | plus: 1 -%}
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
       </div>
     </div>
-  </div>
+  {%- endcapture -%}
+
+  {%- if rec_type == 'product' -%}
+    <product-recommendations 
+      class="wtp-recs-wrap" 
+      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ limit }}"
+      data-section-id="{{ section.id }}"
+      data-product-id="{{ product.id }}"
+      data-ajax-recs="true"
+    >
+      {{ recommendations_content }}
+    </product-recommendations>
+  {%- else -%}
+    <div class="wtp-recs-wrap">
+      {{ recommendations_content }}
+    </div>
+  {%- endif -%}
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const grid = document.getElementById('RecsGrid-{{ section.id }}');
-      const prevBtn = document.getElementById('RecsPrev-{{ section.id }}');
-      const nextBtn = document.getElementById('RecsNext-{{ section.id }}');
+    (function() {
+      const initRecs = (container) => {
+        const grid = container.querySelector('[id^="RecsGrid-"]');
+        const prevBtn = container.querySelector('.wtp-arrow--prev');
+        const nextBtn = container.querySelector('.wtp-arrow--next');
 
-      if (!grid || !prevBtn || !nextBtn) return;
+        if (!grid || !prevBtn || !nextBtn) return;
 
-      const updateButtons = () => {
-        prevBtn.disabled = grid.scrollLeft <= 0;
-        nextBtn.disabled = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 1;
+        const updateButtons = () => {
+          prevBtn.disabled = grid.scrollLeft <= 1;
+          nextBtn.disabled = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 1;
+        };
+
+        grid.addEventListener('scroll', updateButtons, { passive: true });
+        window.addEventListener('resize', updateButtons);
+        
+        // Initialize
+        updateButtons();
+
+        prevBtn.addEventListener('click', () => {
+          const itemWidth = grid.querySelector('.wtp-recs__item').offsetWidth;
+          const gap = parseInt(window.getComputedStyle(grid).gap) || 0;
+          grid.scrollBy({ left: -(itemWidth + gap), behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', () => {
+          const itemWidth = grid.querySelector('.wtp-recs__item').offsetWidth;
+          const gap = parseInt(window.getComputedStyle(grid).gap) || 0;
+          grid.scrollBy({ left: itemWidth + gap, behavior: 'smooth' });
+        });
+
+        // Mark as loaded for visibility
+        container.classList.add('is-loaded');
       };
 
-      grid.addEventListener('scroll', updateButtons, { passive: true });
-      window.addEventListener('resize', updateButtons);
-      
-      // Initialize
-      setTimeout(updateButtons, 100);
+      // Watch for AJAX injection or static load
+      const section = document.querySelector('[id^="shopify-section-{{ section.id }}"]');
+      if (section) {
+         // Standard load
+         initRecs(section);
 
-      prevBtn.addEventListener('click', () => {
-        const itemWidth = grid.querySelector('.wtp-cart-recs__item').offsetWidth;
-        const gap = parseInt(window.getComputedStyle(grid).gap) || 0;
-        grid.scrollBy({ left: -(itemWidth + gap), behavior: 'smooth' });
-      });
-
-      nextBtn.addEventListener('click', () => {
-        const itemWidth = grid.querySelector('.wtp-cart-recs__item').offsetWidth;
-        const gap = parseInt(window.getComputedStyle(grid).gap) || 0;
-        grid.scrollBy({ left: itemWidth + gap, behavior: 'smooth' });
-      });
-    });
+         // Observer for Product Recommendations AJAX update
+         const observer = new MutationObserver((mutations) => {
+           mutations.forEach((mutation) => {
+             if (mutation.type === 'childList') {
+               initRecs(section);
+             }
+           });
+         });
+         
+         const recsElement = section.querySelector('product-recommendations');
+         if (recsElement) {
+           observer.observe(recsElement, { childList: true });
+         }
+      }
+    })();
   </script>
 {%- endif -%}
 
 {% schema %}
 {
-  "name": "Cart Recommendations",
+  "name": "WTP Recommendations",
   "settings": [
+    {
+      "type": "select",
+      "id": "recommendation_type",
+      "label": "Recommendation Mode",
+      "options": [
+        { "value": "cart", "label": "Based on Cart" },
+        { "value": "product", "label": "Based on Product" }
+      ],
+      "default": "cart",
+      "info": "Choose 'Product' if adding this to the Product page."
+    },
     {
       "type": "text",
       "id": "heading",
       "label": "Section Heading",
       "default": "You may also like"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Fallback/Cart Collection",
+      "info": "Used for Cart mode or if Shopify recommendations are unavailable."
     },
     {
       "type": "range",
@@ -221,7 +294,7 @@
   ],
   "presets": [
     {
-      "name": "Cart Recommendations"
+      "name": "WTP Recommendations"
     }
   ]
 }
