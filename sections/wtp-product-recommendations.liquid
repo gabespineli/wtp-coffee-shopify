@@ -1,0 +1,259 @@
+{% comment %}
+  WTP Coffee — Dedicated Product Recommendations
+  Renders product suggestions specifically for the Product page.
+  - Primary: Uses Shopify Recommendations API (AJAX).
+  - Fallback: Pre-renders a fallback collection so the section NEVER appears empty.
+{% endcomment %}
+
+{%- liquid
+  assign limit = section.settings.product_count
+  assign fallback_collection = section.settings.fallback_collection | default: product.collections.first | default: collections.all
+-%}
+
+{%- style -%}
+  .wtp-recs-wrap {
+    background: #f5f0e8;
+    padding: 0 5% 6rem;
+    display: block; /* Always visible */
+  }
+
+  .wtp-recs-inner {
+    max-width: 950px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(27, 58, 45, 0.1);
+    padding-top: 3rem;
+  }
+
+  .wtp-recs__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .wtp-recs__heading {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: rgba(27, 58, 45, 0.5);
+    margin: 0;
+  }
+
+  .wtp-recs__arrows {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .wtp-arrow {
+    background: transparent;
+    border: 1px solid rgba(27, 58, 45, 0.2);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: rgba(27, 58, 45, 0.5);
+    transition: all 0.2s ease;
+    padding: 0;
+  }
+  .wtp-arrow:hover:not([disabled]) {
+    border-color: rgba(27, 58, 45, 1);
+    color: rgba(27, 58, 45, 1);
+  }
+  .wtp-arrow svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+  .wtp-arrow[disabled] {
+    opacity: 0.2;
+    cursor: not-allowed;
+  }
+
+  .wtp-recs__grid {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+  }
+  .wtp-recs__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .wtp-recs__item {
+    scroll-snap-align: start;
+    flex: 0 0 calc(25% - 1.125rem);
+  }
+
+  @media screen and (max-width: 900px) {
+    .wtp-recs__item {
+      flex: 0 0 calc(33.333% - 1rem);
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .wtp-recs-wrap {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+      padding-bottom: 4rem;
+    }
+    .wtp-recs__grid {
+      margin: 0 -1.25rem;
+      padding: 0 1.25rem 0 2rem;
+      scroll-padding-left: 2rem;
+    }
+    .wtp-recs__item {
+       flex: 0 0 calc(50% - 0.75rem);
+    }
+    .wtp-recs__header {
+      margin-bottom: 1.5rem;
+    }
+    .wtp-recs__arrows {
+      display: none;
+    }
+  }
+{%- endstyle -%}
+
+{%- capture recommendations_content -%}
+  <div class="wtp-recs-inner">
+    <div class="wtp-recs__header">
+      <h2 class="wtp-recs__heading">{{ section.settings.heading }}</h2>
+      <div class="wtp-recs__arrows">
+        <button class="wtp-arrow wtp-arrow--prev" id="RecsPrev-{{ section.id }}" aria-label="Previous">
+          <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="wtp-arrow wtp-arrow--next" id="RecsNext-{{ section.id }}" aria-label="Next">
+          <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 11l4-4-4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="wtp-recs__grid" id="RecsGrid-{{ section.id }}" role="list">
+      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+        {%- comment -%} AJAX Data Available {%- endcomment -%}
+        {%- for rec_product in recommendations.products limit: limit -%}
+          <div class="wtp-recs__item" role="listitem">
+            {%- render 'product-card', product: rec_product -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Liquid Fallback: Pre-rendered so it's never empty {%- endcomment -%}
+        {%- assign shown = 0 -%}
+        {%- for rec_product in fallback_collection.products limit: 20 -%}
+          {%- if rec_product.id != product.id -%}
+            {%- if shown < limit -%}
+              <div class="wtp-recs__item" role="listitem">
+                {%- render 'product-card', product: rec_product -%}
+              </div>
+              {%- assign shown = shown | plus: 1 -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+{%- endcapture -%}
+
+<product-recommendations 
+  class="wtp-recs-wrap" 
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ limit }}"
+  data-section-id="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+>
+  {{ recommendations_content }}
+</product-recommendations>
+
+<script>
+  (function() {
+    const initRecs = (container) => {
+      const grid = container.querySelector('[id^="RecsGrid-"]');
+      const prevBtn = container.querySelector('.wtp-arrow--prev');
+      const nextBtn = container.querySelector('.wtp-arrow--next');
+
+      if (!grid || !prevBtn || !nextBtn) return;
+
+      const updateButtons = () => {
+        prevBtn.disabled = grid.scrollLeft <= 1;
+        nextBtn.disabled = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 1;
+      };
+
+      grid.addEventListener('scroll', updateButtons, { passive: true });
+      window.addEventListener('resize', updateButtons);
+      
+      // Initialize
+      updateButtons();
+
+      prevBtn.addEventListener('click', () => {
+        const itemWidth = grid.querySelector('.wtp-recs__item').offsetWidth;
+        const gap = parseInt(window.getComputedStyle(grid).gap) || 0;
+        grid.scrollBy({ left: -(itemWidth + gap), behavior: 'smooth' });
+      });
+
+      nextBtn.addEventListener('click', () => {
+        const itemWidth = grid.querySelector('.wtp-recs__item').offsetWidth;
+        const gap = parseInt(window.getComputedStyle(grid).gap) || 0;
+        grid.scrollBy({ left: itemWidth + gap, behavior: 'smooth' });
+      });
+    };
+
+    // Watch for AJAX injection or static load
+    const section = document.querySelector('[id^="shopify-section-{{ section.id }}"]');
+    if (section) {
+       // Standard load
+       initRecs(section);
+
+       // Observer for Product Recommendations AJAX update
+       const observer = new MutationObserver((mutations) => {
+         mutations.forEach((mutation) => {
+           if (mutation.type === 'childList') {
+             initRecs(section);
+           }
+         });
+       });
+       
+       const recsElement = section.querySelector('product-recommendations');
+       if (recsElement) {
+         observer.observe(recsElement, { childList: true });
+       }
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "WTP Product Recs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "collection",
+      "id": "fallback_collection",
+      "label": "Fallback Collection",
+      "info": "Used immediately before personalized recommendations load, or as a backup if none are found. Defaults to the product's primary collection."
+    },
+    {
+      "type": "range",
+      "id": "product_count",
+      "label": "Number of Products",
+      "min": 2,
+      "max": 8,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "WTP Product Recs"
+    }
+  ]
+}
+{% endschema %}
