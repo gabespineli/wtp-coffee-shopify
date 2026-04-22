@@ -595,7 +595,12 @@
             href.startsWith('tel:') ||
             href.startsWith('javascript:') ||
             target === '_blank' ||
-            Shopify.designMode
+            Shopify.designMode ||
+            href.includes('/cart/change') ||
+            href.includes('quantity=0') ||
+            link.hasAttribute('data-no-transition') ||
+            link.closest('[data-no-transition]') ||
+            link.closest('cart-remove-button')
           )
             return;
 
