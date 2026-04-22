@@ -1,7 +1,7 @@
 {%- comment -%}
   Accepts:
   - product: {Object} Product Liquid object (required)
-  
+
   Usage:
   {% render 'product-card', product: product %}
 {%- endcomment -%}
@@ -19,7 +19,7 @@
   .pc-img-wrap {
     width: 100%;
     aspect-ratio: 4 / 5;
-    background-color: #EAE7E0;
+    background-color: #eae7e0;
     position: relative;
     overflow: hidden;
     margin-bottom: 1.5rem;
@@ -50,8 +50,8 @@
     position: absolute;
     top: 12px;
     left: 12px;
-    background-color: #C8A96E;
-    color: #1B3A2D;
+    background-color: #c8a96e;
+    color: #1b3a2d;
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -65,60 +65,99 @@
   /* ── Quick Add ── */
   .pc-quick-add-wrap {
     position: absolute;
-    bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 1.2rem;
+    left: 1.2rem;
+    right: 1.2rem;
     z-index: 3;
-    width: max-content;
     display: flex;
-    justify-content: center;
-  }
-
-  .pc-quick-add-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #FFFFFF;
-    color: #1B3A2D;
-    padding: 0.8rem 1.6rem;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: background-color 0.2s ease, transform 0.2s ease;
-  }
-
-  .pc-quick-add-btn:hover {
-    background-color: #F5F0E8;
-    transform: scale(1.02);
   }
 
   .pc-quick-add-form {
     margin: 0;
+    width: 100%;
+  }
+
+  .pc-quick-add-btn {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #1b3a2d;
+    padding: 1.4rem 2rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  }
+
+  .pc-quick-add-btn:hover {
+    background-color: #1b3a2d;
+    color: #f5f0e8;
+    transform: scale(1.015);
   }
 
   /* Responsive Hover Logic for Quick Add */
   @media (hover: hover) {
     .pc-quick-add-wrap {
       opacity: 0;
-      transform: translate(-50%, 10px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transform: translateY(15px);
+      transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .product-card:hover .pc-quick-add-wrap {
       opacity: 1;
-      transform: translate(-50%, 0);
+      transform: translateY(0);
     }
   }
 
-  @media (hover: none) {
+  /* ── Mobile Overrides ── */
+  @media screen and (max-width: 749px) {
     .pc-quick-add-wrap {
+      bottom: auto;
+      left: auto;
+      top: 12px;
+      right: 12px;
+      width: auto;
       opacity: 1;
-      transform: translate(-50%, 0);
+      transform: none;
+    }
+
+    .pc-quick-add-btn {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border-radius: 50%;
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .pc-quick-add-btn .pc-btn-text {
+      display: none;
+    }
+
+    .pc-quick-add-btn .pc-btn-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pc-quick-add-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .pc-quick-add-btn .pc-btn-icon {
+      display: none;
     }
   }
 
@@ -134,13 +173,14 @@
     pointer-events: none;
   }
 
-  .pc-swatch, .pc-swatch-plus {
+  .pc-swatch,
+  .pc-swatch-plus {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 1px solid rgba(0,0,0,0.1);
-    background-color: #F5F0E8;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #f5f0e8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
 
   .pc-swatch-plus {
@@ -149,7 +189,7 @@
     justify-content: center;
     font-size: 10px;
     font-weight: 700;
-    color: #1B3A2D;
+    color: #1b3a2d;
     line-height: 1;
   }
 
@@ -166,7 +206,7 @@
     font-weight: 700;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: #C8A96E;
+    color: #c8a96e;
     margin: 0 0 0.5rem;
   }
 
@@ -175,14 +215,14 @@
     font-size: clamp(1.2rem, 1.5vw, 1.4rem);
     font-weight: 700;
     line-height: 1.2;
-    color: #1B3A2D;
+    color: #1b3a2d;
     margin: 0 0 0.5rem;
   }
 
   .pc-price {
     font-size: 1.05rem;
     font-weight: 400;
-    color: #1B3A2D;
+    color: #1b3a2d;
     margin: 0;
   }
 
@@ -195,7 +235,6 @@
 
 <div class="product-card">
   <div class="pc-img-wrap">
-    
     <a href="{{ product.url }}" class="pc-main-link" aria-label="{{ product.title | escape }}">
       {%- if product.featured_image != blank -%}
         {{
@@ -205,7 +244,8 @@
             loading: 'lazy',
             widths: '400, 600, 800',
             sizes: '(max-width: 750px) 100vw, (max-width: 990px) 50vw, 33vw',
-            alt: product.featured_image.alt | default: product.title
+            alt: product.featured_image.alt
+          | default: product.title
         }}
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag }}
@@ -231,12 +271,40 @@
         {%- form 'product', product, id: product.id, class: 'pc-quick-add-form', novalidate: 'novalidate' -%}
           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
           <button type="submit" class="pc-quick-add-btn">
-            Quick Add +
+            <span class="pc-btn-text">Quick Add +</span>
+            <span class="pc-btn-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                <path d="M14.5 9v4m-2-2h4" stroke-width="2.5"></path>
+              </svg>
+            </span>
           </button>
         {%- endform -%}
       {%- else -%}
         <a href="{{ product.url }}" class="pc-quick-add-btn">
-          Select Options
+          <span class="pc-btn-text">View Details</span>
+          <span class="pc-btn-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </span>
         </a>
       {%- endif -%}
     </div>
@@ -255,27 +323,30 @@
       <div class="pc-swatches">
         {%- assign total_colors = color_option.values.size -%}
         {%- for color_val in color_option.values limit: 3 -%}
-          <div class="pc-swatch" style="background-color: {{ color_val | escape | handleize | default: '#cccccc' }};"></div>
+          <div
+            class="pc-swatch"
+            style="background-color: {{ color_val | escape | handleize | default: '#cccccc' }};"
+          ></div>
         {%- endfor -%}
-        
+
         {%- if total_colors > 3 -%}
           <div class="pc-swatch-plus">+{{ total_colors | minus: 3 }}</div>
         {%- endif -%}
       </div>
     {%- endif -%}
-
   </div>
 
   <a href="{{ product.url }}" class="pc-text-wrap" aria-label="{{ product.title | escape }}">
     {%- if product.vendor != blank -%}
       <p class="pc-vendor">{{ product.vendor | escape }}</p>
     {%- endif -%}
-    
+
     <h3 class="pc-title">{{ product.title | escape }}</h3>
-    
+
     <p class="pc-price">
       {%- if product.compare_at_price > product.price -%}
-        {{ product.price | money }} <s>{{ product.compare_at_price | money }}</s>
+        {{ product.price | money }}
+        <s>{{ product.compare_at_price | money }}</s>
       {%- else -%}
         {{ product.price | money }}
       {%- endif -%}
