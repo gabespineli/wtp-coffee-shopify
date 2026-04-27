@@ -341,14 +341,42 @@
   {%- comment -%} ── Event Cards Grid ── {%- endcomment -%}
   {%- assign events_shown = 0 -%}
   {%- assign has_events   = false -%}
+  {%- assign current_ts   = 'now' | date: '%s' | plus: 0 -%}
+
+  {%- assign render_handles = "" -%}
+
+  {%- comment -%} 1. Upcoming Events (Earliest first) {%- endcomment -%}
+  {%- for event_string in sorted_events -%}
+    {%- assign event_string_trimmed = event_string | strip -%}
+    {%- if event_string_trimmed != blank -%}
+      {%- assign event_timestamp = event_string_trimmed | split: '|' | first | plus: 0 -%}
+      {%- if event_timestamp >= current_ts -%}
+        {%- assign handle = event_string_trimmed | split: '|' | last | strip -%}
+        {%- assign render_handles = render_handles | append: handle | append: "," -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- comment -%} 2. Finished Events (Most recent first) {%- endcomment -%}
+  {%- assign sorted_events_desc = sorted_events | reverse -%}
+  {%- for event_string in sorted_events_desc -%}
+    {%- assign event_string_trimmed = event_string | strip -%}
+    {%- if event_string_trimmed != blank -%}
+      {%- assign event_timestamp = event_string_trimmed | split: '|' | first | plus: 0 -%}
+      {%- if event_timestamp < current_ts -%}
+        {%- assign handle = event_string_trimmed | split: '|' | last | strip -%}
+        {%- assign render_handles = render_handles | append: handle | append: "," -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- assign final_handles = render_handles | split: "," -%}
 
   <div class="lt-grid">
-    {%- for event_string in sorted_events -%}
-      {%- assign event_string_trimmed = event_string | strip -%}
-      {%- if event_string_trimmed == blank -%}{%- continue -%}{%- endif -%}
+    {%- for handle in final_handles -%}
+      {%- if handle == blank -%}{%- continue -%}{%- endif -%}
       {%- if events_shown >= limit -%}{%- break -%}{%- endif -%}
 
-      {%- assign handle = event_string_trimmed | split: '|' | last | strip -%}
       {%- assign article = null -%}
       {%- for a in raw_events -%}
         {%- if a.handle == handle -%}
@@ -364,7 +392,6 @@
       {%- assign event_location  = article.metafields.custom.event_location -%}
       {%- assign rsvp_url        = article.metafields.custom.event_rsvp_url -%}
       {%- assign event_tag       = article.tags.first -%}
-      {%- assign current_ts      = 'now' | date: '%s' | plus: 0 -%}
       {%- assign is_past         = false -%}
       {%- if event_timestamp < current_ts -%}{%- assign is_past = true -%}{%- endif -%}
 
