@@ -44,6 +44,7 @@
         "nav_column_Wi8WnP",
         "contact_column_CQmATU"
       ],
+      "disabled": true,
       "name": "WTP Footer",
       "settings": {
         "bg_color": "#5c6e4c",
@@ -54,7 +55,6 @@
         "facebook_url": "https://www.facebook.com/wtpcoffee",
         "copyright_brand": "WTP Coffee",
         "copyright_year": "2026",
-        "policy_menu": "",
         "show_payment_icons": true
       }
     },
