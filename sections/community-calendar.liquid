@@ -655,6 +655,12 @@
       {%- if events_shown == 0 -%}
         <p style="color: var(--cc-muted); font-size: 1.1rem; padding: 3rem 0;">No upcoming events. Check back soon.</p>
       {%- endif -%}
+
+      <div style="margin-top: 3rem; text-align: right; border-top: 1px solid var(--cc-divider); padding-top: 2rem;">
+        <a href="{{ blogs[section.settings.events_blog].url | default: '/blogs/events' }}#events" style="color: var(--cc-text); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: underline; text-decoration-color: var(--cc-accent); text-underline-offset: 4px; font-size: 0.9rem; transition: opacity 0.2s ease;">
+          See All Past Events &rarr;
+        </a>
+      </div>
     </div>
   </div>
 </section>

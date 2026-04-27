@@ -77,13 +77,19 @@
   }
 
   .wtp-blog__filter-btn:hover {
-    border-color: #1B3A2D;
-    color: #1B3A2D;
+    border-color: #C8A96E;
+    color: #C8A96E;
   }
 
   .wtp-blog__filter-btn--active {
     background: #1B3A2D;
     border-color: #1B3A2D;
+    color: #fff;
+  }
+
+  .wtp-blog__filter-btn--active:hover {
+    background: #C8A96E;
+    border-color: #C8A96E;
     color: #fff;
   }
 
@@ -302,17 +308,42 @@
     }
 
     .wtp-blog__grid {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem 1rem;
       padding: 0 1.25rem 5rem;
     }
 
     .wtp-article-card__img-wrap {
-      aspect-ratio: 16 / 10;
+      aspect-ratio: 4 / 5;
+      margin-bottom: 0.8rem;
     }
 
     .wtp-article-card__title {
-      font-size: 1.4rem;
+      font-size: 1.1rem;
+    }
+
+    .wtp-article-card__excerpt {
+      font-size: 0.9rem;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .wtp-article-card__tag {
+      font-size: 0.55rem;
+      padding: 0.25rem 0.6rem;
+      top: 0.6rem;
+      left: 0.6rem;
+    }
+
+    .wtp-article-card__meta {
+      font-size: 0.7rem;
+    }
+
+    .wtp-article-card__cta {
+      font-size: 0.75rem;
     }
   }
 
@@ -327,123 +358,152 @@
   }
 {%- endstyle -%}
 
-{%- paginate blog.articles by 9 -%}
-  <div class="wtp-blog-archive section-{{ section.id }}-padding">
-    {%- comment -%} Page Header {%- endcomment -%}
-    <header class="wtp-blog__header">
-      <span class="wtp-blog__eyebrow">Archive</span>
-      <h1 class="wtp-blog__title">{{ blog.title | escape }}</h1>
-      <p class="wtp-blog__subtitle">Stories, cuppings, and community moments from We The People.</p>
-    </header>
+{%- assign community_articles = blogs['community-stories'].articles -%}
+{%- assign event_articles = blogs['events'].articles -%}
+{%- assign combined_articles = community_articles | concat: event_articles | sort: 'published_at' | reverse -%}
 
-    <div class="wtp-blog__filters" id="wtp-blog-filters-{{ section.id }}">
-      <button class="wtp-blog__filter-btn wtp-blog__filter-btn--active" data-tag="all">All</button>
-      <button class="wtp-blog__filter-btn" data-tag="cupping">Cuppings</button>
-      <button class="wtp-blog__filter-btn" data-tag="events">Events</button>
-      <button class="wtp-blog__filter-btn" data-tag="farms">Farms</button>
-      <button class="wtp-blog__filter-btn" data-tag="collab">Collabs</button>
-      <button class="wtp-blog__filter-btn" data-tag="single-origin">Single Origin</button>
-      <button class="wtp-blog__filter-btn" data-tag="brew-guide">Brew Guides</button>
-    </div>
+<div class="wtp-blog-archive section-{{ section.id }}-padding">
+  {%- comment -%} Page Header {%- endcomment -%}
+  <header class="wtp-blog__header">
+    <span class="wtp-blog__eyebrow">Archive</span>
+    <h1 class="wtp-blog__title">Community & Events</h1>
+    <p class="wtp-blog__subtitle">Stories, cuppings, and community moments from We The People.</p>
+  </header>
 
-    {%- comment -%} Article Grid {%- endcomment -%}
-    <div class="wtp-blog__grid">
-      {%- for article in blog.articles -%}
-        <a href="{{ article.url }}" class="wtp-article-card" aria-label="{{ article.title | escape }}" data-tags="{{ article.tags | join: ',' | downcase }}">
-          {%- comment -%} Image {%- endcomment -%}
-          <div class="wtp-article-card__img-wrap">
-            {%- if article.image != blank -%}
-              {{
-                article.image
-                | image_url: width: 700
-                | image_tag:
-                  loading: 'lazy',
-                  widths: '350, 500, 700',
-                  sizes: '(min-width: 750px) 33vw, 95vw',
-                  alt: article.image.alt
-                | default: article.title
-              }}
-            {%- else -%}
-              <div class="wtp-article-card__placeholder">
-                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-              </div>
-            {%- endif -%}
+  <div class="wtp-blog__filters" id="wtp-blog-filters-{{ section.id }}">
+    <button class="wtp-blog__filter-btn wtp-blog__filter-btn--active" data-blog="all">All</button>
+    <button class="wtp-blog__filter-btn" data-blog="community-stories">Community Stories</button>
+    <button class="wtp-blog__filter-btn" data-blog="events">Events</button>
+  </div>
 
-            {%- assign first_tag = article.tags | first -%}
+  {%- comment -%} Article Grid {%- endcomment -%}
+  <div class="wtp-blog__grid">
+    {%- for article in combined_articles -%}
+      {%- assign parts = article.url | split: '/' -%}
+      {%- assign article_blog_handle = parts[2] -%}
+      
+      <a href="{{ article.url }}" class="wtp-article-card" aria-label="{{ article.title | escape }}" data-blog="{{ article_blog_handle }}">
+        {%- comment -%} Image {%- endcomment -%}
+        <div class="wtp-article-card__img-wrap">
+          {%- if article.image != blank -%}
+            {{
+              article.image
+              | image_url: width: 700
+              | image_tag:
+                loading: 'lazy',
+                widths: '350, 500, 700',
+                sizes: '(min-width: 750px) 33vw, 95vw',
+                alt: article.image.alt
+              | default: article.title
+            }}
+          {%- else -%}
+            <div class="wtp-article-card__placeholder">
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {%- endif -%}
+
+          {%- assign event_date_raw = article.metafields.custom.event_date -%}
+          {%- assign first_tag = article.tags | first -%}
+          {%- if article_blog_handle == 'events' -%}
             {%- if first_tag != blank -%}
-              <span class="wtp-article-card__tag">{{ first_tag | escape }}</span>
+              <span class="wtp-article-card__tag" style="background: #1B3A2D;">{{ first_tag | escape | upcase }}</span>
+            {%- else -%}
+              <span class="wtp-article-card__tag" style="background: #1B3A2D;">EVENT</span>
             {%- endif -%}
-          </div>
+          {%- else -%}
+            {%- if first_tag != blank -%}
+              <span class="wtp-article-card__tag">{{ first_tag | escape | upcase }}</span>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
 
-          {%- comment -%} Text Content {%- endcomment -%}
-          <div class="wtp-article-card__body">
-            <p class="wtp-article-card__meta">
+        {%- comment -%} Text Content {%- endcomment -%}
+        <div class="wtp-article-card__body">
+          <p class="wtp-article-card__meta">
+            {%- if article.metafields.custom.event_date != blank -%}
+              {{ article.metafields.custom.event_date | date: '%b %d, %Y' | upcase }}
+              {%- if article.metafields.custom.event_location != blank -%}
+                 | {{ article.metafields.custom.event_location | escape }}
+              {%- endif -%}
+            {%- else -%}
               <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
                 {{- article.published_at | time_tag: format: 'date' -}}
               </time>
-            </p>
-
-            <span class="wtp-article-card__title">{{ article.title | escape }}</span>
-
-            {%- if article.excerpt_or_content != blank -%}
-              <p class="wtp-article-card__excerpt">
-                {{ article.excerpt_or_content | strip_html | truncatewords: 15 }}
-              </p>
             {%- endif -%}
+          </p>
 
-            <span class="wtp-article-card__cta">
-              Read Story
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </span>
-          </div>
-        </a>
-      {%- endfor -%}
-    </div>
+          <span class="wtp-article-card__title">{{ article.title | escape }}</span>
 
-    {%- if paginate.pages > 1 -%}
-      {%- render 'pagination', paginate: paginate -%}
-    {%- endif -%}
+          {%- if article.excerpt_or_content != blank -%}
+            <p class="wtp-article-card__excerpt">
+              {{ article.excerpt_or_content | strip_html | truncatewords: 15 }}
+            </p>
+          {%- endif -%}
 
-    <script>
-    (function() {
-      var filterBtns = document.querySelectorAll('#wtp-blog-filters-{{ section.id }} .wtp-blog__filter-btn');
-      var cards = document.querySelectorAll('.wtp-article-card');
-
-      filterBtns.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          var tag = btn.getAttribute('data-tag');
-
-          filterBtns.forEach(function(b) {
-            b.classList.remove('wtp-blog__filter-btn--active');
-          });
-          btn.classList.add('wtp-blog__filter-btn--active');
-
-          cards.forEach(function(card) {
-            if (tag === 'all') {
-              card.style.display = '';
-            } else {
-              var cardTags = card.getAttribute('data-tags') || '';
-              card.style.display = cardTags.includes(tag) ? '' : 'none';
-            }
-          });
-        });
-      });
-    })();
-    </script>
+          <span class="wtp-article-card__cta">
+            Read Story
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </span>
+        </div>
+      </a>
+    {%- endfor -%}
   </div>
-{%- endpaginate -%}
+
+  <script>
+  (function() {
+    var filterBtns = document.querySelectorAll('#wtp-blog-filters-{{ section.id }} .wtp-blog__filter-btn');
+    var cards = document.querySelectorAll('.wtp-article-card');
+
+    filterBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var blogHandle = btn.getAttribute('data-blog');
+
+        filterBtns.forEach(function(b) {
+          b.classList.remove('wtp-blog__filter-btn--active');
+        });
+        btn.classList.add('wtp-blog__filter-btn--active');
+
+        cards.forEach(function(card) {
+          if (blogHandle === 'all') {
+            card.style.display = '';
+          } else {
+            var cardBlog = card.getAttribute('data-blog') || '';
+            card.style.display = (cardBlog === blogHandle) ? '' : 'none';
+          }
+        });
+        
+        // Update URL hash without jumping
+        if(history.pushState) {
+          history.pushState(null, null, '#' + blogHandle);
+        } else {
+          location.hash = '#' + blogHandle;
+        }
+      });
+    });
+
+    // Check hash on load
+    var currentHash = window.location.hash.substring(1);
+    if (currentHash) {
+      var targetBtn = document.querySelector('#wtp-blog-filters-{{ section.id }} .wtp-blog__filter-btn[data-blog="' + currentHash + '"]');
+      if (targetBtn) {
+        targetBtn.click();
+      }
+    }
+  })();
+  </script>
+</div>
 
 {% schema %}
 {

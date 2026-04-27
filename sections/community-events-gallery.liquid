@@ -297,7 +297,7 @@
         {%- endif -%}
       </div>
       {%- if section.settings.view_all_label != blank -%}
-        <a href="{{ section.settings.view_all_url | default: '#' }}" class="cg-view-all">
+        <a href="{{ section.settings.selected_blog.url | default: '/blogs/community-stories' }}#community-stories" class="cg-view-all">
           {{ section.settings.view_all_label | escape }}
         </a>
       {%- endif -%}

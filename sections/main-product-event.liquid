@@ -325,7 +325,20 @@
 
         {%- assign rsvp_url = article.metafields.custom.event_rsvp_url -%}
         <div style="margin-top: 2rem;">
-          {%- if rsvp_url != blank -%}
+          {%- assign event_is_past = false -%}
+          {%- if event_date_raw != blank -%}
+            {%- assign current_date = 'now' | date: '%s' | plus: 0 -%}
+            {%- assign event_timestamp = event_date_raw | date: '%s' | plus: 0 -%}
+            {%- if event_timestamp < current_date -%}
+              {%- assign event_is_past = true -%}
+            {%- endif -%}
+          {%- endif -%}
+
+          {%- if event_is_past -%}
+            <span style="display: block; width: 100%; text-align: center; padding: 1.25rem; background: #e0e0e0; color: #7a7a7a; font-weight: 700; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.1em; cursor: not-allowed;">
+              Event Finished
+            </span>
+          {%- elsif rsvp_url != blank -%}
             <a href="{{ rsvp_url }}" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%; text-align: center; padding: 1.25rem; background: var(--ch-accent, #C8A96E); color: #fff; text-decoration: none; font-weight: 700; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.1em;">
               Secure Your Spot
             </a>
