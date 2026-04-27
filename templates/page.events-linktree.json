@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "events-linktree": {
+      "type": "wtp-events-linktree",
+      "settings": {
+        "bg_color": "#F5F0E8",
+        "text_color": "#1B3A2D",
+        "accent_color": "#C8A96E",
+        "card_bg_color": "#FFFFFF",
+        "logo_bg_color": "#1B3A2D",
+        "handle_label": "@wtpcoffee",
+        "bio": "Specialty coffee crafted with intention. Alabang & Bridgetowne.",
+        "section_label": "Upcoming Events",
+        "events_limit": 6
+      }
+    }
+  },
+  "order": ["events-linktree"]
+}

@@ -137,10 +137,14 @@
     <div class="wtp-recs__grid" id="RecsGrid-{{ section.id }}" role="list">
       {%- if recommendations.performed and recommendations.products_count > 0 -%}
         {%- comment -%} AJAX Data Available {%- endcomment -%}
-        {%- for rec_product in recommendations.products limit: limit -%}
-          <div class="wtp-recs__item" role="listitem">
-            {%- render 'product-card', product: rec_product -%}
-          </div>
+        {%- assign shown = 0 -%}
+        {%- for rec_product in recommendations.products limit: 10 -%}
+          {%- if rec_product.id != product.id and shown < limit -%}
+            <div class="wtp-recs__item" role="listitem">
+              {%- render 'product-card', product: rec_product -%}
+            </div>
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endif -%}
         {%- endfor -%}
       {%- else -%}
         {%- comment -%} Liquid Fallback: Pre-rendered so it's never empty {%- endcomment -%}

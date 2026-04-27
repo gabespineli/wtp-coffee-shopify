@@ -259,14 +259,40 @@
     margin: 0.15rem 0 0;
   }
 
+  .cc-event__desc-container {
+    margin-top: 0.75rem;
+  }
   .cc-event__desc {
     font-family: var(--font-body-family);
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     color: var(--cc-muted);
-    line-height: 1.7;
-    margin: 0.75rem 0 0;
+    line-height: 1.6;
     max-width: 80ch;
+    margin: 0;
   }
+  .cc-event__desc-checkbox {
+    display: none !important;
+  }
+  .cc-event__desc-checkbox:checked ~ .cc-event__desc-truncated { display: none; }
+  .cc-event__desc-checkbox:not(:checked) ~ .cc-event__desc-full { display: none; }
+  
+  .cc-event__desc-label {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-family: var(--font-body-family);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--cc-accent);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s ease;
+  }
+  .cc-event__desc-label:hover { opacity: 0.7; }
+  .cc-event__desc-checkbox:checked ~ .cc-event__desc-label .cc-label-more { display: none; }
+  .cc-event__desc-checkbox:not(:checked) ~ .cc-event__desc-label .cc-label-less { display: none; }
 
   .cc-event__spots strong {
     color: var(--cc-text);
@@ -627,6 +653,25 @@
               {%- if event_date_raw != blank -%}
                 <p class="cc-event__meta">{{ event_date_raw | date: '%-I:%M %p' }}</p>
               {%- endif -%}
+
+              {%- assign excerpt_text = article.excerpt_or_content | strip_html | strip -%}
+              {%- if excerpt_text != blank -%}
+                <div class="cc-event__desc-container">
+                  <input type="checkbox" id="desc-toggle-{{ article.id }}" class="cc-event__desc-checkbox" hidden>
+                  <div class="cc-event__desc cc-event__desc-truncated">
+                    {{ excerpt_text | truncate: 45 }}
+                  </div>
+                  <div class="cc-event__desc cc-event__desc-full">
+                    {{ excerpt_text }}
+                  </div>
+                  {%- if excerpt_text.size > 45 -%}
+                    <label for="desc-toggle-{{ article.id }}" class="cc-event__desc-label">
+                      <span class="cc-label-more">View More</span>
+                      <span class="cc-label-less">View Less</span>
+                    </label>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
             </div>
 
             {%- comment -%} Right: tag pill + CTA buttons {%- endcomment -%}
@@ -656,7 +701,7 @@
         <p style="color: var(--cc-muted); font-size: 1.1rem; padding: 3rem 0;">No upcoming events. Check back soon.</p>
       {%- endif -%}
 
-      <div style="margin-top: 3rem; text-align: right; border-top: 1px solid var(--cc-divider); padding-top: 2rem;">
+      <div style="margin-top: 3rem; text-align: right; padding-top: 2rem;">
         <a href="{{ blogs[section.settings.events_blog].url | default: '/blogs/events' }}#events" style="color: var(--cc-text); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: underline; text-decoration-color: var(--cc-accent); text-underline-offset: 4px; font-size: 0.9rem; transition: opacity 0.2s ease;">
           See All Past Events &rarr;
         </a>
