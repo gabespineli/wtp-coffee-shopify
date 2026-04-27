@@ -24,9 +24,23 @@
         "events_limit": 12,
         "community_url": "shopify://pages/community"
       }
+    },
+    "wtp_newsletter_3Nrxpp": {
+      "type": "wtp-newsletter",
+      "name": "WTP Newsletter",
+      "settings": {
+        "eyebrow": "Stay in the Loop",
+        "headline": "Join the WTP Community",
+        "description": "Subscribe for updates and releases — delivered straight to your inbox.",
+        "placeholder": "Your email address",
+        "btn_label": "Subscribe",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
     }
   },
   "order": [
-    "events-linktree"
+    "events-linktree",
+    "wtp_newsletter_3Nrxpp"
   ]
 }
