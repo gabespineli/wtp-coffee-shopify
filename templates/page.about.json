@@ -17,16 +17,20 @@
         "padding_bottom": 28
       }
     },
-    "wtp_collab_banner_qhrXEe": {
-      "type": "wtp-collab-banner",
-      "name": "Collab Banner",
+    "wtp_about_hero_477EhB": {
+      "type": "wtp-about-hero",
+      "name": "About Page Hero",
       "settings": {
-        "image": "shopify://shop_images/beans_on_hand_4180007a-6847-4270-a5d7-4f853f59da4e.jpg",
-        "image_darkness": 50,
-        "eyebrow": "ABOUT US",
-        "headline": "We Create Coffee.",
-        "cta_label": "KNOW MORE",
-        "cta_url": ""
+        "image": "shopify://shop_images/coffee_beans_bg_sketch.png",
+        "image_opacity": 100,
+        "bg_color": "#1B3A2D",
+        "text_color": "#F5F0E8",
+        "accent_color": "#C8A96E",
+        "eyebrow": "Established 2024",
+        "title_before": "We THE",
+        "shifted_word": "PEOPLE",
+        "title_after": "COFFEE",
+        "description": "WTP Coffee is more than a roastery. It is a laboratory where craftsmanship meets the human spirit."
       }
     },
     "wtp_brand_story_8YmRyp": {
@@ -254,7 +258,7 @@
   },
   "order": [
     "main",
-    "wtp_collab_banner_qhrXEe",
+    "wtp_about_hero_477EhB",
     "wtp_brand_story_8YmRyp",
     "wtp_timeline_aRd9U7",
     "wtp_mission_vision_JP3MBa",
