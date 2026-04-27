@@ -23,9 +23,9 @@
       "settings": {
         "image": "shopify://shop_images/coffee_beans_bg_sketch.png",
         "image_opacity": 100,
-        "bg_color": "#1B3A2D",
-        "text_color": "#F5F0E8",
-        "accent_color": "#C8A96E",
+        "bg_color": "#1b3a2d",
+        "text_color": "#f5f0e8",
+        "accent_color": "#c8a96e",
         "eyebrow": "Established 2024",
         "title_before": "We THE",
         "shifted_word": "PEOPLE",
@@ -46,8 +46,8 @@
         "cta_label": "",
         "cta_url": "",
         "main_image": "shopify://shop_images/wtp-machine.png",
-        "stat_number": "15+",
-        "stat_label": "Local Producers Supported"
+        "stat_number": "2",
+        "stat_label": "Direct Farm Partnerships"
       }
     },
     "wtp_timeline_aRd9U7": {
