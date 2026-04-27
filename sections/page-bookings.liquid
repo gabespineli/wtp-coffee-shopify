@@ -298,6 +298,22 @@
   .bk-form__submit:active {
     transform: translateY(0);
   }
+
+  .bk-form__contact-note {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 0.9rem;
+    color: rgba(27, 58, 45, 0.55);
+    margin-top: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .bk-form__contact-note a {
+    color: #1B3A2D;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 {%- endstyle -%}
 
 {%- comment -%} ── HERO ── {%- endcomment -%}
@@ -347,7 +363,7 @@
     </div>
 
     {%- form 'contact' -%}
-      <input type="hidden" name="contact[Lead Source]" value="High-Ticket Event Booking">
+      <input type="hidden" name="contact[Lead Source]" value="WTP Coffee Event & Wholesale Inquiry">
 
       {%- comment -%} Success Message {%- endcomment -%}
       {%- if form.posted_successfully? -%}
@@ -437,10 +453,12 @@
             aria-required="true"
           >
             <option value="" disabled selected>Select a service…</option>
-            <option value="Coffee Cart Catering" {% if form['Service Type'] == 'Coffee Cart Catering' %}selected{% endif %}>Coffee Cart Catering</option>
-            <option value="Wholesale Program" {% if form['Service Type'] == 'Wholesale Program' %}selected{% endif %}>Wholesale Program</option>
-            <option value="Corporate Gifting" {% if form['Service Type'] == 'Corporate Gifting' %}selected{% endif %}>Corporate Gifting</option>
-            <option value="General Inquiry" {% if form['Service Type'] == 'General Inquiry' %}selected{% endif %}>General Inquiry</option>
+            <option value="Coffee Cart Catering">Coffee Cart — Event Service</option>
+            <option value="Third Space Venue">Third Space — Café as Venue</option>
+            <option value="Wholesale Program">Wholesale — Custom Blends & White Labelling</option>
+            <option value="Coffee Consultancy">Coffee Consultancy & Training</option>
+            <option value="Corporate Gifting">Corporate Gifting</option>
+            <option value="General Inquiry">General Inquiry</option>
           </select>
         </div>
 
@@ -489,6 +507,12 @@
           <button type="submit" class="bk-form__submit">Submit Inquiry</button>
         </div>
 
+        <p class="bk-form__contact-note">
+          For urgent inquiries, reach Kirsten directly at
+          <a href="mailto:kirsten@wtpcoffee.com">kirsten@wtpcoffee.com</a>
+          or <a href="tel:+639623360361">+63 962 336 0361</a>.
+        </p>
+
       </div>
     {%- endform -%}
 
@@ -514,7 +538,7 @@
       "type": "textarea",
       "id": "hero_subtitle",
       "label": "Hero Subtitle",
-      "default": "We bring the craft of specialty coffee directly to your event. Tell us about your vision and we'll create something memorable together."
+      "default": "We bring the craft of specialty coffee directly to your event or business. Tell us about your vision and our team will get back to you within 2–3 business days."
     }
   ],
   "presets": [

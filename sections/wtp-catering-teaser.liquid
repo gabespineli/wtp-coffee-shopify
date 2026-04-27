@@ -271,6 +271,18 @@
             {{ section.settings.bullet_2 | escape }}
           </div>
         {%- endif -%}
+
+        {%- if section.settings.bullet_3 != blank -%}
+          <div class="ct-bullet">
+            <span class="ct-bullet-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                <line x1="7" y1="7" x2="7.01" y2="7"/>
+              </svg>
+            </span>
+            {{ section.settings.bullet_3 | escape }}
+          </div>
+        {%- endif -%}
       </div>
 
       {%- if section.settings.button_label != blank -%}
@@ -346,31 +358,37 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "EXPERIENCE EXCELLENCE ANYWHERE"
+      "default": "Event Coffee Services"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Host an Event with WTP Coffee."
+      "default": "Bring WTP to Your Event."
     },
     {
       "type": "textarea",
       "id": "description",
       "label": "Description",
-      "default": "From intimate private gatherings to large-scale corporate functions, our catering and event service brings the complete WTP Coffee experience directly to you."
+      "default": "From intimate private gatherings to large-scale corporate functions, our coffee cart and third space services bring the full WTP experience to you. Every cup, crafted with intention."
     },
     {
       "type": "text",
       "id": "bullet_1",
       "label": "Bullet 1 Label",
-      "default": "Coffee Cart Service"
+      "default": "Coffee Cart — Mobile specialty bar for your event"
     },
     {
       "type": "text",
       "id": "bullet_2",
       "label": "Bullet 2 Label",
-      "default": "Wholesale Programs"
+      "default": "Third Space — Host at our café in Alabang or Bridgetowne"
+    },
+    {
+      "type": "text",
+      "id": "bullet_3",
+      "label": "Bullet 3 Label",
+      "default": "Wholesale & Custom Blends — For cafés and businesses"
     },
     {
       "type": "header",
@@ -400,13 +418,13 @@
       "type": "textarea",
       "id": "quote",
       "label": "Quote Text",
-      "default": "Their baristas transformed our wedding morning into something truly unforgettable."
+      "default": "Every cup we serve is an opportunity to create connection and care."
     },
     {
       "type": "text",
       "id": "quote_attr",
       "label": "Quote Attribution",
-      "default": "Angela R., Private Event Client"
+      "default": "WTP Coffee, Our Mission"
     }
   ],
   "presets": [
