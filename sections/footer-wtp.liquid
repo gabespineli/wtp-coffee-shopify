@@ -562,19 +562,23 @@
     </p>
 
     {%- comment -%} Policy Links — Center {%- endcomment -%}
-    {%- if section.settings.policy_menu != blank -%}
-      {%- assign policy_links = linklists[section.settings.policy_menu].links -%}
-      {%- if policy_links.size > 0 -%}
-        <nav class="wtp-footer__policy" aria-label="Policy Links">
-          {%- for link in policy_links -%}
-            <a href="{{ link.url }}" class="wtp-footer__policy-link">{{ link.title }}</a>
-            {%- unless forloop.last -%}
-              <span class="wtp-footer__policy-sep" aria-hidden="true">|</span>
-            {%- endunless -%}
-          {%- endfor -%}
-        </nav>
+    <nav class="wtp-footer__policy" aria-label="Policy Links">
+      {%- if shop.privacy_policy != blank -%}
+        <a href="{{ shop.privacy_policy.url }}" class="wtp-footer__policy-link">{{ shop.privacy_policy.title | upcase }}</a>
+        <span class="wtp-footer__policy-sep" aria-hidden="true">|</span>
       {%- endif -%}
-    {%- endif -%}
+      {%- if shop.refund_policy != blank -%}
+        <a href="{{ shop.refund_policy.url }}" class="wtp-footer__policy-link">{{ shop.refund_policy.title | upcase }}</a>
+        <span class="wtp-footer__policy-sep" aria-hidden="true">|</span>
+      {%- endif -%}
+      {%- if shop.terms_of_service != blank -%}
+        <a href="{{ shop.terms_of_service.url }}" class="wtp-footer__policy-link">{{ shop.terms_of_service.title | upcase }}</a>
+        <span class="wtp-footer__policy-sep" aria-hidden="true">|</span>
+      {%- endif -%}
+      {%- if shop.shipping_policy != blank -%}
+        <a href="{{ shop.shipping_policy.url }}" class="wtp-footer__policy-link">{{ shop.shipping_policy.title | upcase }}</a>
+      {%- endif -%}
+    </nav>
 
     {%- comment -%} Payment Icons — Right {%- endcomment -%}
     {%- if section.settings.show_payment_icons -%}
@@ -655,11 +659,6 @@
       "id": "copyright_year",
       "label": "Copyright Year",
       "default": "2026"
-    },
-    {
-      "type": "link_list",
-      "id": "policy_menu",
-      "label": "Policy Menu (e.g. Privacy, Terms of Service)"
     },
     {
       "type": "checkbox",
