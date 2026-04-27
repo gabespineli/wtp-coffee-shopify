@@ -9,6 +9,8 @@
   assign form_id = 'wtp-pdp-form-' | append: section.id
 -%}
 
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
 <style>
   /* ── Global Tokens ── */
   #wtp-pdp-{{ section.id }} {
@@ -386,6 +388,42 @@
     transform: none;
   }
 
+  /* ── Loading State ── */
+  .wtp-pdp__atc.loading {
+    background: var(--wtp-bg);
+    border: 1.5px solid rgba(27, 58, 45, 0.2);
+    cursor: wait;
+    pointer-events: none;
+    transform: none;
+    opacity: 1;
+  }
+
+  /* Hide the "Add to Cart" label while loading */
+  .wtp-pdp__atc.loading > span {
+    visibility: hidden;
+    width: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Show and tint the spinner dark green */
+  .wtp-pdp__atc .loading__spinner {
+    display: none;
+  }
+
+  .wtp-pdp__atc.loading .loading__spinner {
+    display: flex;
+    position: static;
+    width: 24px;
+    height: 24px;
+  }
+
+  .wtp-pdp__atc.loading .loading__spinner svg,
+  .wtp-pdp__atc.loading .loading__spinner .path {
+    stroke: var(--wtp-green) !important;
+  }
+
   /* Shopify Pay / dynamic checkout — force pill shape */
   .wtp-pdp__dynamic .shopify-payment-button {
     width: 100%;
@@ -715,105 +753,113 @@
       {%- endif -%}
 
       <!-- Product Form -->
-      {%- form 'product', product, id: form_id, class: 'wtp-pdp__form', novalidate: 'novalidate' -%}
-        <!-- Hidden variant ID — kept in sync by JS -->
-        <input
-          type="hidden"
-          name="id"
-          id="wtp-variant-id-{{ section.id }}"
-          value="{{ current_variant.id }}"
-        >
-
-        <!-- Variant Option Pills -->
-        {%- unless product.has_only_default_variant -%}
-          {%- for option in product.options_with_values -%}
-            <div class="wtp-pdp__option">
-              <p class="wtp-pdp__option-label">{{ option.name | escape }}</p>
-              <div class="wtp-pdp__pills" data-option-index="{{ forloop.index0 }}">
-                {%- for value in option.values -%}
-                  {%- assign opt_key = 'option' | append: forloop.parentloop.index -%}
-                  {%- assign var_for_val = product.variants | where: opt_key, value | first -%}
-                  {%- assign var_img_url = '' -%}
-                  {%- if var_for_val.featured_image -%}
-                    {%- assign var_img_url = var_for_val.featured_image | image_url: width: 1000 -%}
-                  {%- endif -%}
-                  <input
-                    class="wtp-pdp__pill-radio"
-                    type="radio"
-                    name="option-{{ forloop.parentloop.index0 }}"
-                    id="wtp-pill-{{ section.id }}-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}"
-                    value="{{ value | escape }}"
-                    data-option-index="{{ forloop.parentloop.index0 }}"
-                    data-variant-image="{{ var_img_url }}"
-                    {% if option.selected_value == value %}
-                      checked
-                    {% endif %}
-                  >
-                  <label
-                    class="wtp-pdp__pill-label"
-                    for="wtp-pill-{{ section.id }}-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}"
-                  >
-                    {{- value | escape -}}
-                  </label>
-                {%- endfor -%}
-              </div>
-            </div>
-          {%- endfor -%}
-        {%- endunless -%}
-
-        <!-- Quantity -->
-        <div class="wtp-pdp__qty-row">
-          <label class="wtp-pdp__qty-label" for="wtp-qty-{{ section.id }}">Quantity</label>
-          <div class="wtp-pdp__qty-ctrl">
-            <button
-              type="button"
-              class="wtp-pdp__qty-btn"
-              id="wtp-qty-minus-{{ section.id }}"
-              aria-label="Decrease quantity"
-            >
-              −
-            </button>
-            <input
-              type="number"
-              name="quantity"
-              id="wtp-qty-{{ section.id }}"
-              class="wtp-pdp__qty-input"
-              value="1"
-              min="1"
-              aria-label="Quantity"
-            >
-            <button
-              type="button"
-              class="wtp-pdp__qty-btn"
-              id="wtp-qty-plus-{{ section.id }}"
-              aria-label="Increase quantity"
-            >
-              +
-            </button>
-          </div>
+      <product-form class="wtp-pdp__product-form" data-section-id="{{ section.id }}" data-hide-errors="false">
+        <div class="wtp-pdp__form-errors" role="alert" hidden>
+          <span class="svg-wrapper">{{- 'icon-error.svg' | inline_asset_content -}}</span>
+          <span class="product-form__error-message"></span>
         </div>
-
-        <!-- Add to Cart + Dynamic Checkout -->
-        <div class="wtp-pdp__actions">
-          <button
-            type="submit"
-            name="add"
-            id="wtp-atc-{{ section.id }}"
-            class="wtp-pdp__atc"
-            {% unless current_variant.available %}
-              disabled
-            {% endunless %}
+        {%- form 'product', product, id: form_id, class: 'wtp-pdp__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+          <!-- Hidden variant ID — kept in sync by JS -->
+          <input
+            type="hidden"
+            name="id"
+            id="wtp-variant-id-{{ section.id }}"
+            value="{{ current_variant.id }}"
+            class="product-variant-id"
           >
-            {%- if current_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
-          </button>
 
-          {%- if section.settings.show_dynamic_checkout -%}
-            <div class="wtp-pdp__dynamic">
-              {{ form | payment_button }}
+          <!-- Variant Option Pills -->
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <div class="wtp-pdp__option">
+                <p class="wtp-pdp__option-label">{{ option.name | escape }}</p>
+                <div class="wtp-pdp__pills" data-option-index="{{ forloop.index0 }}">
+                  {%- for value in option.values -%}
+                    {%- assign opt_key = 'option' | append: forloop.parentloop.index -%}
+                    {%- assign var_for_val = product.variants | where: opt_key, value | first -%}
+                    {%- assign var_img_url = '' -%}
+                    {%- if var_for_val.featured_image -%}
+                      {%- assign var_img_url = var_for_val.featured_image | image_url: width: 1000 -%}
+                    {%- endif -%}
+                    <input
+                      class="wtp-pdp__pill-radio"
+                      type="radio"
+                      name="option-{{ forloop.parentloop.index0 }}"
+                      id="wtp-pill-{{ section.id }}-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}"
+                      value="{{ value | escape }}"
+                      data-option-index="{{ forloop.parentloop.index0 }}"
+                      data-variant-image="{{ var_img_url }}"
+                      {% if option.selected_value == value %}
+                        checked
+                      {% endif %}
+                    >
+                    <label
+                      class="wtp-pdp__pill-label"
+                      for="wtp-pill-{{ section.id }}-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}"
+                    >
+                      {{- value | escape -}}
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          <!-- Quantity -->
+          <div class="wtp-pdp__qty-row">
+            <label class="wtp-pdp__qty-label" for="wtp-qty-{{ section.id }}">Quantity</label>
+            <div class="wtp-pdp__qty-ctrl">
+              <button
+                type="button"
+                class="wtp-pdp__qty-btn"
+                id="wtp-qty-minus-{{ section.id }}"
+                aria-label="Decrease quantity"
+              >
+                −
+              </button>
+              <input
+                type="number"
+                name="quantity"
+                id="wtp-qty-{{ section.id }}"
+                class="wtp-pdp__qty-input"
+                value="1"
+                min="1"
+                aria-label="Quantity"
+              >
+              <button
+                type="button"
+                class="wtp-pdp__qty-btn"
+                id="wtp-qty-plus-{{ section.id }}"
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
             </div>
-          {%- endif -%}
-        </div>
-      {%- endform -%}
+          </div>
+
+          <!-- Add to Cart + Dynamic Checkout -->
+          <div class="wtp-pdp__actions">
+            <button
+              type="submit"
+              name="add"
+              id="wtp-atc-{{ section.id }}"
+              class="wtp-pdp__atc"
+              {% unless current_variant.available %}
+                disabled
+              {% endunless %}
+            >
+              <span>{%- if current_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}</span>
+              {%- render 'loading-spinner' -%}
+            </button>
+
+            {%- if section.settings.show_dynamic_checkout -%}
+              <div class="wtp-pdp__dynamic">
+                {{ form | payment_button }}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endform -%}
+      </product-form>
 
     </div>
     <!-- /.wtp-pdp__info -->
@@ -955,8 +1001,9 @@
 
         /* ATC button availability */
         if (atcBtn) {
-          atcBtn.disabled       = !variant.available;
-          atcBtn.textContent    = variant.available ? 'Add to Cart' : 'Sold Out';
+          atcBtn.disabled = !variant.available;
+          var atcSpan = atcBtn.querySelector('span');
+          if (atcSpan) atcSpan.textContent = variant.available ? 'Add to Cart' : 'Sold Out';
         }
 
         /* URL — update ?variant= without navigation */

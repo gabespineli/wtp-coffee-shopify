@@ -9,6 +9,8 @@
   assign pad = section.settings.section_padding | default: 80
 -%}
 
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
 <style>
   /* ── Palette ── */
   .wtp-hero-tabs-wrapper-{{ section.id }} {
@@ -371,11 +373,49 @@
     transform: scale(1.03);
   }
 
+  /* ── Per-tab product-form wrapper ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab-form {
+    display: contents; /* transparent in layout — button is the real child */
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tab-form.is-hidden {
+    display: none;
+  }
+
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-view:hover {
     background: rgba(245, 240, 232, 0.1);
     color: #fff;
     border-color: rgba(245, 240, 232, 0.6);
     transform: scale(1.03);
+  }
+
+  /* ── Loading State ── */
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc.loading {
+    background: #F5F0E8 !important;
+    border: 1.5px solid rgba(27, 58, 45, 0.2);
+    cursor: wait;
+    pointer-events: none;
+    transform: none;
+    opacity: 1;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc.loading > span {
+    display: none;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc .loading__spinner {
+    display: none;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc.loading .loading__spinner {
+    display: flex;
+    position: static;
+    width: 20px;
+    height: 20px;
+  }
+
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc.loading .loading__spinner .path {
+    stroke: var(--color-bg) !important;
   }
 
   /* ── Tablet (900px and below) — minor tweaks only ── */
@@ -645,7 +685,6 @@
           <div class="wtp-ht__card-thumb">
             <img
               id="wtp-card-img-{{ section.id }}"
-              src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
               alt=""
               width="64"
               height="64"
@@ -656,9 +695,42 @@
             <p class="wtp-ht__card-subtitle" id="wtp-card-sub-{{ section.id }}"></p>
             <p class="wtp-ht__card-price" id="wtp-card-price-{{ section.id }}"></p>
             <div class="wtp-ht__card-actions">
-              <button class="wtp-ht__card-atc" id="wtp-card-atc-{{ section.id }}" type="button" data-variant-id="">
-                Add to Cart
-              </button>
+              {%- for block in section.blocks -%}
+                {%- assign bprod = block.settings.product -%}
+                {%- if bprod != blank -%}
+                  {%- liquid
+                    assign bv = bprod.selected_or_first_available_variant
+                    if block.settings.variant_title != blank
+                      for bvar in bprod.variants
+                        assign bvar_title_down = bvar.title | downcase
+                        assign btarget_down = block.settings.variant_title | downcase
+                        if bvar_title_down == btarget_down
+                          assign bv = bvar
+                          break
+                        endif
+                      endfor
+                    endif
+                  -%}
+                  <product-form
+                    class="wtp-ht__tab-form{% unless forloop.first %} is-hidden{% endunless %}"
+                    data-tab-index="{{ forloop.index0 }}"
+                    data-section-id="{{ section.id }}"
+                  >
+                    {%- form 'product', bprod, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                      <input type="hidden" name="id" value="{{ bv.id }}">
+                      <button
+                        type="submit"
+                        name="add"
+                        class="wtp-ht__card-atc"
+                        {% unless bv.available %}disabled{% endunless %}
+                      >
+                        <span>{%- if bv.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}</span>
+                        {%- render 'loading-spinner' -%}
+                      </button>
+                    {%- endform -%}
+                  </product-form>
+                {%- endif -%}
+              {%- endfor -%}
               <a href="#" class="wtp-ht__card-view" id="wtp-card-view-{{ section.id }}">View More</a>
             </div>
           </div>
@@ -694,6 +766,7 @@
         "bgImageMobile": "{% if block.settings.bg_image_mobile %}{{ block.settings.bg_image_mobile | image_url: width: 1200 }}{% elsif block.settings.bg_image %}{{ block.settings.bg_image | image_url: width: 1200 }}{% endif %}",
         "price": {{ v.price | default: 0 | money | json }},
         "variantId": {{ v.id | default: 0 | json }},
+        "available": {{ v.available | json }},
         "productUrl": {{ v.url | default: prod.url | default: '#' | json }},
         "mobileContentBg": {{ block.settings.mobile_content_bg | default: '' | json }},
         "mobileContentText": {{ block.settings.mobile_content_text | default: '' | json }}
@@ -765,8 +838,14 @@
       var cardTitle = document.getElementById('wtp-card-title-' + SECTION_ID);
       var cardSub   = document.getElementById('wtp-card-sub-' + SECTION_ID);
       var cardPrice = document.getElementById('wtp-card-price-' + SECTION_ID);
-      var cardAtc   = document.getElementById('wtp-card-atc-' + SECTION_ID);
       var cardView  = document.getElementById('wtp-card-view-' + SECTION_ID);
+
+      /* Show the product-form for the active tab, hide all others */
+      function showTabForm(index) {
+        card.querySelectorAll('.wtp-ht__tab-form').forEach(function (form) {
+          form.classList.toggle('is-hidden', parseInt(form.getAttribute('data-tab-index'), 10) !== index);
+        });
+      }
 
       var activeIndex = 0;
 
@@ -824,10 +903,8 @@
           cardSub.textContent   = p.cardSubtitle || '';
           cardPrice.textContent = p.price || '';
 
-          /* Variant ID on the button & URL link */
-          cardAtc.setAttribute('data-variant-id', p.variantId || '');
-          cardAtc.textContent = 'Add to Cart';
-          cardAtc.disabled = false;
+          /* Show the form for this tab */
+          showTabForm(index);
 
           cardView.href = p.productUrl || '#';
 
@@ -855,37 +932,7 @@
       card.addEventListener('touchstart', function () { container.classList.add('is-paused'); }, {passive: true});
       card.addEventListener('touchend', function () { container.classList.remove('is-paused'); }, {passive: true});
 
-      /* ── Add to Cart ── */
-      cardAtc.addEventListener('click', function (e) {
-        e.preventDefault();
-        var vid = parseInt(this.getAttribute('data-variant-id'), 10);
-        if (!vid) return;
-
-        var btn = this;
-        btn.disabled = true;
-        btn.textContent = 'Adding…';
-
-        fetch('/cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: vid, quantity: 1 })
-        })
-        .then(function (res) {
-          if (!res.ok) throw new Error('Cart error');
-          btn.textContent = 'Added ✓';
-          setTimeout(function () {
-            btn.textContent = 'Add to Cart';
-            btn.disabled = false;
-          }, 1500);
-        })
-        .catch(function () {
-          btn.textContent = 'Error';
-          setTimeout(function () {
-            btn.textContent = 'Add to Cart';
-            btn.disabled = false;
-          }, 1500);
-        });
-      });
+      /* ── Add to Cart — Handled by <product-form> ── */
 
       /* ── Init — activate first tab immediately (no fade delay) ── */
       var p0 = products[0];
@@ -896,7 +943,7 @@
       cardTitle.textContent = p0.cardTitle || '';
       cardSub.textContent   = p0.cardSubtitle || '';
       cardPrice.textContent = p0.price || '';
-      cardAtc.setAttribute('data-variant-id', p0.variantId || '');
+      /* First form already visible (no is-hidden on forloop.first) */
       cardView.href = p0.productUrl || '#';
 
       bgs.forEach(function (bg) { bg.classList.toggle('is-active', parseInt(bg.getAttribute('data-tab-bg'), 10) === 0); });

@@ -77,6 +77,11 @@
     width: 100%;
   }
 
+  .pc-quick-add-wrap product-form {
+    display: block;
+    width: 100%;
+  }
+
   .pc-quick-add-btn {
     display: flex;
     width: 100%;
@@ -103,6 +108,43 @@
     background-color: #1b3a2d;
     color: #f5f0e8;
     transform: scale(1.015);
+  }
+
+  /* ── Loading State ── */
+  .pc-quick-add-btn.loading {
+    background-color: #F5F0E8;
+    border: 1.5px solid rgba(27, 58, 45, 0.2);
+    color: #1b3a2d;
+    cursor: wait;
+    pointer-events: none;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .pc-quick-add-btn .loading__spinner {
+    display: none;
+  }
+
+  .pc-quick-add-btn.loading .pc-btn-label {
+    display: none;
+  }
+
+  .pc-quick-add-btn.loading .loading__spinner {
+    display: flex;
+    position: static;
+    width: 20px;
+    height: 20px;
+  }
+
+  .pc-quick-add-btn.loading .loading__spinner .path {
+    stroke: #1b3a2d !important;
+  }
+
+  @media screen and (max-width: 749px) {
+    .pc-quick-add-btn.loading .loading__spinner {
+      width: 18px;
+      height: 18px;
+    }
   }
 
   /* Responsive Hover Logic for Quick Add */
@@ -267,28 +309,52 @@
 
     {%- comment -%} Quick Add Logic {%- endcomment -%}
     <div class="pc-quick-add-wrap">
-      {%- if product.has_only_default_variant -%}
-        {%- form 'product', product, id: product.id, class: 'pc-quick-add-form', novalidate: 'novalidate' -%}
-          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-          <button type="submit" class="pc-quick-add-btn">
-            <span class="pc-btn-text">Quick Add +</span>
-            <span class="pc-btn-icon">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                <path d="M14.5 9v4m-2-2h4" stroke-width="2.5"></path>
-              </svg>
-            </span>
-          </button>
-        {%- endform -%}
+      {%- if product.available == false -%}
+        <button class="pc-quick-add-btn" disabled style="opacity: 0.6; cursor: not-allowed; background-color: #f5f0e8; color: #1b3a2d;">
+          <span class="pc-btn-text">Sold Out</span>
+          <span class="pc-btn-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+          </span>
+        </button>
+      {%- elsif product.has_only_default_variant -%}
+        {%- assign pc_form_id = 'pc-form-' | append: product.selected_or_first_available_variant.id -%}
+        <product-form data-hide-errors="false">
+          {%- form 'product', product, id: pc_form_id, class: 'pc-quick-add-form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <button type="submit" name="add" class="pc-quick-add-btn" aria-haspopup="dialog">
+              <span class="pc-btn-label">
+                <span class="pc-btn-text">Quick Add +</span>
+                <span class="pc-btn-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    <path d="M14.5 9v4m-2-2h4" stroke-width="2.5"></path>
+                  </svg>
+                </span>
+              </span>
+              {%- render 'loading-spinner' -%}
+            </button>
+          {%- endform -%}
+        </product-form>
       {%- else -%}
         <a href="{{ product.url }}" class="pc-quick-add-btn">
           <span class="pc-btn-text">View Details</span>

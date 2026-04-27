@@ -10,6 +10,8 @@
   assign fallback_collection = section.settings.fallback_collection | default: product.collections.first | default: collections.all
 -%}
 
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
 {%- style -%}
   .wtp-recs-wrap {
     background: #f5f0e8;
