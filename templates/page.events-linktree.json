@@ -1,19 +1,32 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "events-linktree": {
       "type": "wtp-events-linktree",
       "settings": {
-        "bg_color": "#F5F0E8",
-        "text_color": "#1B3A2D",
-        "accent_color": "#C8A96E",
-        "card_bg_color": "#FFFFFF",
-        "logo_bg_color": "#1B3A2D",
+        "bg_color": "#f5f0e8",
+        "text_color": "#1b3a2d",
+        "accent_color": "#c8a96e",
+        "card_bg_color": "#ffffff",
+        "logo_bg_color": "#1b3a2d",
         "handle_label": "@wtpcoffee",
         "bio": "Specialty coffee crafted with intention. Alabang & Bridgetowne.",
         "section_label": "Upcoming Events",
-        "events_limit": 6
+        "events_blog": "events",
+        "events_limit": 12,
+        "community_url": "shopify://pages/community"
       }
     }
   },
-  "order": ["events-linktree"]
+  "order": [
+    "events-linktree"
+  ]
 }
