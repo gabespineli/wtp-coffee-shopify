@@ -600,7 +600,10 @@
             href.includes('quantity=0') ||
             link.hasAttribute('data-no-transition') ||
             link.closest('[data-no-transition]') ||
-            link.closest('cart-remove-button')
+            link.closest('cart-remove-button') ||
+            link.hasAttribute('data-ajax') ||
+            link.hasAttribute('data-lazy') ||
+            link.classList.contains('lazy-load')
           )
             return;
 
@@ -615,7 +618,11 @@
             return;
           }
 
-          showLoader();
+          // Use setTimeout to check if event was prevented by other scripts (AJAX/Lazy load)
+          setTimeout(() => {
+            if (e.defaultPrevented) return;
+            showLoader();
+          }, 0);
         });
 
         // Handle Back/Forward Cache

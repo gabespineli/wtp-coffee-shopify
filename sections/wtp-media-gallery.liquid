@@ -245,12 +245,13 @@
               {{
                 block.settings.video
                 | video_tag:
-                  class: 'mg-img',
-                  autoplay: true,
+                  class: 'mg-img lazy-video',
+                  autoplay: false,
                   loop: true,
                   muted: true,
                   controls: false,
                   playsinline: true,
+                  preload: 'metadata',
                   image_size: '800x'
               }}
             {%- elsif block.settings.image != blank -%}
@@ -278,12 +279,13 @@
               {{
                 block.settings.video
                 | video_tag:
-                  class: 'mg-img',
-                  autoplay: true,
+                  class: 'mg-img lazy-video',
+                  autoplay: false,
                   loop: true,
                   muted: true,
                   controls: false,
                   playsinline: true,
+                  preload: 'metadata',
                   image_size: '800x'
               }}
             {%- elsif block.settings.image != blank -%}
@@ -309,6 +311,43 @@
       {%- endfor -%}
     </div>
   {%- endif -%}
+
+  <script>
+    (function() {
+      const initLazyVideos = () => {
+        const observerOptions = {
+          root: null,
+          rootMargin: '100px',
+          threshold: 0.1
+        };
+
+        const videoObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+              video.play().catch(() => {
+                // Handle browsers that block autoplay
+              });
+            } else {
+              if (!video.paused) {
+                video.pause();
+              }
+            }
+          });
+        }, observerOptions);
+
+        document.querySelectorAll('#wtp-media-gallery-{{ section.id }} .lazy-video').forEach(video => {
+          videoObserver.observe(video);
+        });
+      };
+
+      // Run on load and after any section updates in editor
+      initLazyVideos();
+      if (Shopify.designMode) {
+        document.addEventListener('shopify:section:load', initLazyVideos);
+      }
+    })();
+  </script>
 
 </section>
 
