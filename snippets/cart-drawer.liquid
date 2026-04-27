@@ -10,6 +10,7 @@
 
 <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
 <style>
   .drawer {
@@ -20,6 +21,37 @@
 <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
   <div id="CartDrawer" class="cart-drawer">
     <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
+
+    {%- unless cart == empty -%}
+      {%- assign cds_collection = settings.cart_drawer_collection | default: collections.all -%}
+      {%- if cds_collection.products.size > 0 -%}
+        <div class="cds__sidebar">
+          <div class="cds__sidebar-inner">
+            <p class="cds__sidebar-eyebrow">Explore</p>
+            <h2 class="cds__sidebar-heading">You may<br>also like</h2>
+            <div class="cds__scroll-wrapper">
+              <button class="cds__scroll-btn cds__scroll-btn--up" aria-label="Scroll up">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+              </button>
+              <div class="cds__sidebar-products">
+                {%- for product in cds_collection.products limit: 5 -%}
+                  <div class="cds__sidebar-item">
+                    {%- render 'product-card', product: product -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+              <button class="cds__scroll-btn cds__scroll-btn--down" aria-label="Scroll down">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endunless -%}
     <div
       class="drawer__inner gradient color-{{ settings.cart_color_scheme }}"
       role="dialog"
@@ -495,6 +527,22 @@
           </details>
         {%- endif -%}
 
+        {%- unless cart == empty -%}
+          {%- assign cds_collection = settings.cart_drawer_collection | default: collections.all -%}
+          {%- if cds_collection.products.size > 0 -%}
+            <div class="cds__mobile-strip">
+              <p class="cds__mobile-strip-heading">You may also like</p>
+              <div class="cds__mobile-strip-scroll">
+                {%- for product in cds_collection.products limit: 6 -%}
+                  <div class="cds__mobile-strip-item">
+                    {%- render 'product-card', product: product -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endunless -%}
+
         <!-- Start blocks -->
         <!-- Subtotals -->
 
@@ -582,3 +630,30 @@
     </div>
   </div>
 </cart-drawer>
+
+<script>
+(function () {
+  function initCdsScroll() {
+    const list = document.querySelector('.cds__sidebar-products');
+    const btnUp = document.querySelector('.cds__scroll-btn--up');
+    const btnDown = document.querySelector('.cds__scroll-btn--down');
+    if (!list || !btnUp || !btnDown) return;
+
+    function update() {
+      btnUp.classList.toggle('is-visible', list.scrollTop > 4);
+      btnDown.classList.toggle('is-visible', list.scrollTop + list.clientHeight < list.scrollHeight - 4);
+    }
+
+    list.addEventListener('scroll', update, { passive: true });
+    btnUp.addEventListener('click', () => list.scrollBy({ top: -230, behavior: 'smooth' }));
+    btnDown.addEventListener('click', () => list.scrollBy({ top: 230, behavior: 'smooth' }));
+    setTimeout(update, 200);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCdsScroll);
+  } else {
+    initCdsScroll();
+  }
+})();
+</script>

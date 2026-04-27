@@ -695,3 +695,293 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
   font-family: var(--font-heading-family);
   font-weight: 700;
 }
+
+/* ════════════════════════════════════════
+   CDS — Cart Drawer Suggestions
+════════════════════════════════════════ */
+
+/* Desktop: make #CartDrawer a flex row so sidebar + cart panel sit side-by-side */
+@media screen and (min-width: 750px) {
+  #CartDrawer {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-end;
+    height: 100%;
+    position: relative;
+  }
+
+  /* Sidebar starts behind the cart panel, peeks out after delay */
+  .cds__sidebar {
+    width: 26rem;
+    flex-shrink: 0;
+    background: var(--cart-green, #1B3A2D);
+    color: #F5F0E8;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateX(100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+                opacity 0.6s ease,
+                visibility 0s linear;
+    border-radius: 40px 0 0 40px;
+    margin: 2rem 0 2rem 2rem;
+    z-index: 1;
+  }
+
+  .drawer.active .cds__sidebar {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0.6s;
+  }
+
+  /* Flatten the left edge of the cart panel when sidebar is present */
+  #CartDrawer:has(.cds__sidebar) .drawer__inner {
+    border-radius: 0 40px 40px 0;
+    margin-left: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cds__mobile-strip {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .cds__sidebar {
+    display: none !important;
+  }
+}
+
+/* ── Sidebar Inner ── */
+.cds__sidebar-inner {
+  padding: 2.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cds__sidebar-eyebrow {
+  color: #C8A96E;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem;
+  flex-shrink: 0;
+}
+
+.cds__sidebar-heading {
+  font-family: var(--font-heading-family);
+  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
+  font-style: italic;
+  color: #F5F0E8;
+  line-height: 1.1;
+  margin: 0 0 1.5rem;
+  flex-shrink: 0;
+}
+
+/* ── Scroll wrapper (fills remaining height) ── */
+.cds__scroll-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 0.4rem;
+}
+
+/* ── Scroll Arrow Buttons ── */
+.cds__scroll-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.6rem 0;
+  background: rgba(245, 240, 232, 0.1);
+  border: none;
+  color: #F5F0E8;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 50px;
+  transition: background 0.2s ease;
+}
+
+.cds__scroll-btn.is-visible {
+  display: flex;
+}
+
+.cds__scroll-btn:hover {
+  background: rgba(245, 240, 232, 0.2);
+}
+
+/* ── Product List (no scrollbar) ── */
+.cds__sidebar-products {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  scrollbar-width: none;
+}
+
+.cds__sidebar-products::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Product card overrides inside sidebar ── */
+.cds__sidebar .pc-img-wrap {
+  aspect-ratio: 1 / 1 !important;
+  margin-bottom: 0.6rem;
+}
+
+.cds__sidebar .pc-title {
+  color: #F5F0E8;
+  font-size: 0.95rem;
+}
+
+.cds__sidebar .pc-price {
+  color: #C8A96E;
+  font-size: 0.9rem;
+}
+
+.cds__sidebar .pc-vendor {
+  display: none !important;
+}
+
+.cds__sidebar .pc-text-wrap {
+  padding: 0;
+}
+
+/* Force always-visible icon buttons in sidebar */
+.cds__sidebar .pc-quick-add-wrap {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  z-index: 10 !important;
+}
+
+.cds__sidebar .pc-quick-add-btn {
+  width: 3.6rem !important;
+  height: 3.6rem !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  color: #1B3A2D !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+}
+
+.cds__sidebar .pc-btn-text {
+  display: none !important;
+}
+
+.cds__sidebar .pc-btn-icon {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.cds__sidebar .pc-btn-icon svg {
+  width: 1.8rem !important;
+  height: 1.8rem !important;
+}
+
+/* ── Mobile Strip ── */
+.cds__mobile-strip {
+  padding: 1.5rem 0 0.8rem;
+  border-top: 1px solid rgba(27, 58, 45, 0.1);
+}
+
+.cds__mobile-strip-heading {
+  font-family: var(--font-heading-family);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #1B3A2D;
+  margin: 0 0 1rem;
+}
+
+.cds__mobile-strip-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.6rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.cds__mobile-strip-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.cds__mobile-strip-item {
+  flex: 0 0 13rem;
+}
+
+.cds__mobile-strip .pc-img-wrap {
+  aspect-ratio: 1 / 1 !important;
+  margin-bottom: 0.6rem;
+}
+
+.cds__mobile-strip .pc-vendor {
+  display: none !important;
+}
+
+.cds__mobile-strip .pc-title {
+  font-size: 0.9rem;
+}
+
+.cds__mobile-strip .pc-price {
+  font-size: 0.85rem;
+}
+
+/* Force always-visible icon buttons in mobile strip */
+.cds__mobile-strip .pc-quick-add-wrap {
+  position: absolute !important;
+  top: 0.8rem !important;
+  right: 0.8rem !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  z-index: 10 !important;
+}
+
+.cds__mobile-strip .pc-quick-add-btn {
+  width: 3.2rem !important;
+  height: 3.2rem !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  color: #1B3A2D !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+}
+
+.cds__mobile-strip .pc-btn-text {
+  display: none !important;
+}
+
+.cds__mobile-strip .pc-btn-icon {
+  display: flex !important;
+}
+
+.cds__mobile-strip .pc-btn-icon svg {
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+}
