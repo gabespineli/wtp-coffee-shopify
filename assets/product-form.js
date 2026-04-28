@@ -84,6 +84,21 @@ if (!customElements.get('product-form')) {
                   setTimeout(() => {
                     CartPerformance.measure("add:paint-updated-sections", () => {
                       this.cart.renderContents(response);
+                      
+                      // Show Per-Item Success Overlay correctly on the added variant
+                      setTimeout(() => {
+                        const variantId = formData.get('id');
+                        const removeBtn = document.querySelector(`cart-remove-button [data-variant-id="${variantId}"]`);
+                        if (removeBtn) {
+                          const newItem = removeBtn.closest('.cart-item');
+                          if (newItem) {
+                            newItem.classList.add('is-new');
+                            setTimeout(() => {
+                              newItem.classList.remove('is-new');
+                            }, 1600);
+                          }
+                        }
+                      }, 50);
                     });
                   });
                 },
@@ -93,6 +108,21 @@ if (!customElements.get('product-form')) {
             } else {
               CartPerformance.measure("add:paint-updated-sections", () => {
                 this.cart.renderContents(response);
+                
+                // Show Per-Item Success Overlay correctly on the added variant
+                setTimeout(() => {
+                  const variantId = formData.get('id');
+                  const removeBtn = document.querySelector(`cart-remove-button [data-variant-id="${variantId}"]`);
+                  if (removeBtn) {
+                    const newItem = removeBtn.closest('.cart-item');
+                    if (newItem) {
+                      newItem.classList.add('is-new');
+                      setTimeout(() => {
+                        newItem.classList.remove('is-new');
+                      }, 1600);
+                    }
+                  }
+                }, 50); // Small delay to let the DOM settle
               });
             }
           })

@@ -28,10 +28,22 @@
         <div class="cds__sidebar">
           <div class="cds__sidebar-inner">
             <p class="cds__sidebar-eyebrow">Explore</p>
-            <h2 class="cds__sidebar-heading">You may<br>also like</h2>
+            <h2 class="cds__sidebar-heading">
+              You may<br>
+              also like
+            </h2>
             <div class="cds__scroll-wrapper">
               <button class="cds__scroll-btn cds__scroll-btn--up" aria-label="Scroll up">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <polyline points="18 15 12 9 6 15"></polyline>
                 </svg>
               </button>
@@ -52,7 +64,16 @@
                 {%- endfor -%}
               </div>
               <button class="cds__scroll-btn cds__scroll-btn--down" aria-label="Scroll down">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </button>
@@ -173,16 +194,25 @@
                           headers="CartDrawer-ColumnProductImage"
                         >
                           {% if item.image %}
-                            {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
-                            <a href="{{ item.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
-                            <img
-                              class="cart-item__image"
-                              src="{{ item.image | image_url: width: 300 }}"
-                              alt="{{ item.image.alt | escape }}"
-                              loading="lazy"
-                              width="150"
-                              height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}"
-                            >
+                            <div class="cart-item__media-wrapper">
+                              {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
+                              <a href="{{ item.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
+                              <img
+                                class="cart-item__image"
+                                src="{{ item.image | image_url: width: 300 }}"
+                                alt="{{ item.image.alt | escape }}"
+                                loading="lazy"
+                                width="150"
+                                height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}"
+                              >
+                              <div class="cds__item-success-overlay">
+                                <div class="cds__item-success-icon">
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                  </svg>
+                                </div>
+                              </div>
+                            </div>
                           {% endif %}
                         </td>
 
@@ -299,7 +329,10 @@
                             {%- endif -%}
 
                             {%- if item.variant.available and item.unit_price_measurement -%}
-                              {% render 'unit-price', price: item.unit_price, measurement: item.unit_price_measurement %}
+                              {% render 'unit-price',
+                                price: item.unit_price,
+                                measurement: item.unit_price_measurement
+                              %}
                             {%- endif -%}
                           </div>
                         </td>
@@ -584,7 +617,7 @@
             <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
           </div>
 
-          <small class="tax-note caption-large rte">
+          <small class="tax-note rte">
             {%- if cart.duties_included and cart.taxes_included -%}
               {%- if shop.shipping_policy.body == blank -%}
                 {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_without_policy' | t }}
@@ -650,28 +683,28 @@
 </cart-drawer>
 
 <script>
-(function () {
-  function initCdsScroll() {
-    const list = document.querySelector('.cds__sidebar-products');
-    const btnUp = document.querySelector('.cds__scroll-btn--up');
-    const btnDown = document.querySelector('.cds__scroll-btn--down');
-    if (!list || !btnUp || !btnDown) return;
+  (function () {
+    function initCdsScroll() {
+      const list = document.querySelector('.cds__sidebar-products');
+      const btnUp = document.querySelector('.cds__scroll-btn--up');
+      const btnDown = document.querySelector('.cds__scroll-btn--down');
+      if (!list || !btnUp || !btnDown) return;
 
-    function update() {
-      btnUp.classList.toggle('is-visible', list.scrollTop > 4);
-      btnDown.classList.toggle('is-visible', list.scrollTop + list.clientHeight < list.scrollHeight - 4);
+      function update() {
+        btnUp.classList.toggle('is-visible', list.scrollTop > 4);
+        btnDown.classList.toggle('is-visible', list.scrollTop + list.clientHeight < list.scrollHeight - 4);
+      }
+
+      list.addEventListener('scroll', update, { passive: true });
+      btnUp.addEventListener('click', () => list.scrollBy({ top: -230, behavior: 'smooth' }));
+      btnDown.addEventListener('click', () => list.scrollBy({ top: 230, behavior: 'smooth' }));
+      setTimeout(update, 200);
     }
 
-    list.addEventListener('scroll', update, { passive: true });
-    btnUp.addEventListener('click', () => list.scrollBy({ top: -230, behavior: 'smooth' }));
-    btnDown.addEventListener('click', () => list.scrollBy({ top: 230, behavior: 'smooth' }));
-    setTimeout(update, 200);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCdsScroll);
-  } else {
-    initCdsScroll();
-  }
-})();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCdsScroll);
+    } else {
+      initCdsScroll();
+    }
+  })();
 </script>
