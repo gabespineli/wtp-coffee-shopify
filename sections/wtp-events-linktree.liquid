@@ -105,6 +105,7 @@
 
   /* ── Event Card ── */
   .lt-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     background: {{ section.settings.card_bg_color }};
@@ -114,6 +115,12 @@
     color: inherit;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+
+  .lt-card__main-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
   }
 
   .lt-card:hover {
@@ -235,6 +242,8 @@
 
   /* ── RSVP pill ── */
   .lt-card__rsvp {
+    position: relative;
+    z-index: 2;
     display: inline-block;
     margin-top: 0.5rem;
     background: {{ section.settings.text_color }};
@@ -246,6 +255,7 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-align: center;
+    text-decoration: none;
     transition: opacity 0.2s ease;
   }
 
@@ -398,7 +408,9 @@
       {%- assign events_shown = events_shown | plus: 1 -%}
       {%- assign has_events   = true -%}
 
-      <a href="{{ article.url }}" class="lt-card" aria-label="{{ article.title | escape }}">
+      <div class="lt-card">
+        {%- comment -%} Main full-card link {%- endcomment -%}
+        <a href="{{ article.url }}" class="lt-card__main-link" aria-label="{{ article.title | escape }}"></a>
 
         <div class="lt-card__img-wrap">
           {%- if article.image != blank -%}
@@ -436,13 +448,13 @@
           {%- if is_past -%}
             <span class="lt-card__rsvp is-finished">Finished</span>
           {%- elsif rsvp_url != blank -%}
-            <span class="lt-card__rsvp">Register →</span>
+            <a href="{{ rsvp_url }}" target="_blank" rel="noopener noreferrer" class="lt-card__rsvp" aria-label="Register for {{ article.title | escape }}">Register →</a>
           {%- else -%}
             <span class="lt-card__rsvp is-finished">Coming Soon</span>
           {%- endif -%}
         </div>
 
-      </a>
+      </div>
     {%- endfor -%}
   </div>
 
