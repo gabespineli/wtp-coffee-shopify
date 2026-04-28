@@ -208,6 +208,101 @@
       }
     }
 
+    /* ── Footer Button Row ── */
+    .loc-footer__btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .loc-btn--primary {
+      background: #1B3A2D;
+      color: #fff;
+    }
+
+    .loc-btn--primary:hover {
+      background: #132A20;
+    }
+
+    .loc-btn--secondary {
+      background: transparent;
+      color: #1B3A2D;
+      border: 1.5px solid #1B3A2D;
+      cursor: pointer;
+      font-family: var(--font-body-family);
+    }
+
+    .loc-btn--secondary:hover {
+      background: rgba(27, 58, 45, 0.06);
+    }
+
+    /* ── Lightbox ── */
+    .loc-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .loc-lightbox[hidden] {
+      display: none;
+    }
+
+    .loc-lightbox__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      cursor: pointer;
+    }
+
+    .loc-lightbox__panel {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loc-lightbox__img {
+      width: 100%;
+      height: auto;
+      max-height: 90vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .loc-lightbox__close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      z-index: 2;
+      transition: background 0.2s ease;
+    }
+
+    .loc-lightbox__close:hover {
+      background: rgba(0, 0, 0, 0.75);
+    }
+
     @media screen and (max-width: 600px) {
       #wtp-locations-{{ section.id }} {
         padding: 4rem 5%;
@@ -219,6 +314,10 @@
 
       .loc-content {
         padding: 1.5rem;
+      }
+
+      .loc-lightbox__panel {
+        border-radius: 12px;
       }
     }
 {%- endstyle -%}
@@ -313,28 +412,49 @@
           {%- endif -%}
 
           <div class="loc-footer">
-            {%- if block.settings.map_url != blank -%}
-              <a href="{{ block.settings.map_url }}" target="_blank" rel="noopener" class="loc-btn">
-                Get Directions
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
+            <div class="loc-footer__btns">
+              {%- if block.settings.map_url != blank -%}
+                <a href="{{ block.settings.map_url }}" target="_blank" rel="noopener" class="loc-btn loc-btn--primary">
+                  Get Directions
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                  </svg>
+                </a>
+              {%- endif -%}
+
+              {%- if block.settings.menu_image != blank -%}
+                <button
+                  type="button"
+                  class="loc-btn loc-btn--secondary js-menu-trigger"
+                  data-menu-src="{{ block.settings.menu_image | image_url: width: 1600 }}"
+                  data-menu-alt="{{ block.settings.title | escape }} Menu"
+                  aria-label="View menu for {{ block.settings.title | escape }}"
                 >
-                  <line x1="5" y1="12" x2="19" y2="12"/>
-                  <polyline points="12 5 19 12 12 19"/>
-                </svg>
-              </a>
-            {%- endif -%}
+                  View Menu
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M1 6s1-2 5-2 6 2 6 2 1-2 5-2 5 2 5 2v14s-1-2-5-2-6 2-6 2-1-2-5-2-5 2-5 2V6z"/>
+                    <line x1="12" y1="6" x2="12" y2="20"/>
+                  </svg>
+                </button>
+              {%- endif -%}
+            </div>
           </div>
         </div>
       </div>
     {%- endfor -%}
+  </div>
+  <div class="loc-lightbox" id="wtp-menu-lightbox-{{ section.id }}" aria-modal="true" role="dialog" aria-label="Menu" hidden>
+    <div class="loc-lightbox__backdrop js-lightbox-close"></div>
+    <div class="loc-lightbox__panel">
+      <button type="button" class="loc-lightbox__close js-lightbox-close" aria-label="Close menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <img class="loc-lightbox__img" src="{{ 'square.svg' | asset_url }}" alt="" id="wtp-lightbox-img-{{ section.id }}" width="1600" height="1600" loading="lazy">
+    </div>
   </div>
 </section>
 
@@ -388,6 +508,39 @@
         console.warn('WTP Location Cards: Invalid JSON config for hours format in section.', e);
       }
     });
+
+    // ── Lightbox ──
+    const lightbox = document.getElementById('wtp-menu-lightbox-{{ section.id }}');
+    const lightboxImg = document.getElementById('wtp-lightbox-img-{{ section.id }}');
+    const triggers = document.querySelectorAll('#wtp-locations-{{ section.id }} .js-menu-trigger');
+    const closeEls = document.querySelectorAll('#wtp-menu-lightbox-{{ section.id }} .js-lightbox-close');
+
+    if (lightbox && lightboxImg) {
+      triggers.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          lightboxImg.src = btn.getAttribute('data-menu-src');
+          lightboxImg.alt = btn.getAttribute('data-menu-alt');
+          lightbox.removeAttribute('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      closeEls.forEach(function(el) {
+        el.addEventListener('click', function() {
+          lightbox.setAttribute('hidden', '');
+          lightboxImg.src = '';
+          document.body.style.overflow = '';
+        });
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !lightbox.hasAttribute('hidden')) {
+          lightbox.setAttribute('hidden', '');
+          lightboxImg.src = '';
+          document.body.style.overflow = '';
+        }
+      });
+    }
   });
 </script>
 
@@ -441,6 +594,12 @@
           "id": "map_url",
           "label": "Google Maps Link",
           "info": "URL for the bottom Get Directions button."
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_image",
+          "label": "Menu Image",
+          "info": "Upload the menu image for this branch. Appears in a lightbox when the View Menu button is tapped."
         },
         {
           "type": "textarea",
