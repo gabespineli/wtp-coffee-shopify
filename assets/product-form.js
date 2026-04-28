@@ -95,7 +95,7 @@ if (!customElements.get('product-form')) {
                             newItem.classList.add('is-new');
                             setTimeout(() => {
                               newItem.classList.remove('is-new');
-                            }, 1600);
+                            }, 3500);
                           }
                         }
                       }, 50);
@@ -119,7 +119,7 @@ if (!customElements.get('product-form')) {
                       newItem.classList.add('is-new');
                       setTimeout(() => {
                         newItem.classList.remove('is-new');
-                      }, 1600);
+                      }, 3500);
                     }
                   }
                 }, 50); // Small delay to let the DOM settle

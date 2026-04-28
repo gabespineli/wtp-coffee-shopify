@@ -560,6 +560,7 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -577,30 +578,33 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
 .cds__item-success-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(245, 240, 232, 0.9); /* Slightly transparent Cream */
+  background: #F5F0E8; /* Solid Classic Cream background to hide loading image */
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+  transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
 }
 
 .cart-item.is-new .cds__item-success-overlay {
   opacity: 1;
   visibility: visible;
-  animation: hideItemOverlay 1.5s ease forwards;
+  animation: hideItemOverlay 3s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
 @keyframes hideItemOverlay {
-  0%, 80% {
+  0%,
+  80% {
     opacity: 1;
     visibility: visible;
+    transform: scale(1);
   }
   100% {
     opacity: 0;
     visibility: hidden;
+    transform: scale(1.05);
   }
 }
 
@@ -649,7 +653,7 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
 cart-drawer-items,
 .drawer__footer {
   transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1),
-              opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .drawer.active .drawer__header {
@@ -831,8 +835,8 @@ cart-drawer-items,
     opacity: 0;
     visibility: hidden;
     transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1),
-                opacity 0.6s ease,
-                visibility 0s linear;
+      opacity 0.6s ease,
+      visibility 0s linear;
     border-radius: 40px 0 0 40px;
     margin: 2rem 0 2rem 2rem;
     z-index: 1;
@@ -988,7 +992,7 @@ cart-drawer-items,
   border-radius: 50% !important;
   background: #ffffff !important;
   color: #1B3A2D !important;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
 }
 
 .cds__sidebar .pc-btn-text {
@@ -1058,7 +1062,8 @@ cart-drawer-items,
 
 .cds__mobile-strip-scroll {
   display: flex;
-  gap: 0; /* Managed by padding/margin for separator lines */
+  gap: 0;
+  /* Managed by padding/margin for separator lines */
   overflow-x: auto;
   padding-bottom: 0.6rem;
   -webkit-overflow-scrolling: touch;
@@ -1070,7 +1075,8 @@ cart-drawer-items,
 }
 
 .cds__mobile-strip-item {
-  flex: 0 0 85%; /* Make it wide enough to show it's a list, but let the next one peek */
+  flex: 0 0 85%;
+  /* Make it wide enough to show it's a list, but let the next one peek */
   max-width: 320px;
   padding-right: 1.2rem;
   margin-right: 1.2rem;
@@ -1088,7 +1094,8 @@ cart-drawer-items,
   flex-direction: row !important;
   align-items: center;
   padding: 0 !important;
-  padding-left: 4.8rem !important; /* Space for absolute quick add button on the left */
+  padding-left: 4.8rem !important;
+  /* Space for absolute quick add button on the left */
   position: relative;
 }
 
@@ -1100,11 +1107,13 @@ cart-drawer-items,
   margin-bottom: 0 !important;
   margin-right: 1.2rem;
   border-radius: 12px;
-  overflow: visible !important; /* Prevent clipping the absolute button */
+  overflow: visible !important;
+  /* Prevent clipping the absolute button */
 }
 
 .cds__mobile-strip .pc-img-wrap img {
-  border-radius: 12px; /* Maintain rounded corners since overflow is visible */
+  border-radius: 12px;
+  /* Maintain rounded corners since overflow is visible */
 }
 
 .cds__mobile-strip .pc-vendor {
@@ -1128,7 +1137,8 @@ cart-drawer-items,
 .cds__mobile-strip .pc-quick-add-wrap {
   position: absolute !important;
   top: 50% !important;
-  left: -4.5rem !important; /* Pull it into the product-card padding area */
+  left: -4.5rem !important;
+  /* Pull it into the product-card padding area */
   right: auto !important;
   bottom: auto !important;
   width: auto !important;
@@ -1148,7 +1158,7 @@ cart-drawer-items,
   border-radius: 50% !important;
   background: #ffffff !important;
   color: #1B3A2D !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
   border: 1px solid rgba(27, 58, 45, 0.1) !important;
 }
 
