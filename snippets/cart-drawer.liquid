@@ -36,10 +36,19 @@
                 </svg>
               </button>
               <div class="cds__sidebar-products">
-                {%- for product in cds_collection.products limit: 5 -%}
-                  <div class="cds__sidebar-item">
-                    {%- render 'product-card', product: product -%}
-                  </div>
+                {%- assign cart_product_ids = cart.items | map: 'product_id' -%}
+                {%- assign shown_count_desktop = 0 -%}
+                {%- for product in cds_collection.products limit: 50 -%}
+                  {%- if product.available -%}
+                    {%- unless cart_product_ids contains product.id -%}
+                      {%- if shown_count_desktop < 5 -%}
+                        <div class="cds__sidebar-item">
+                          {%- render 'product-card', product: product -%}
+                        </div>
+                        {%- assign shown_count_desktop = shown_count_desktop | plus: 1 -%}
+                      {%- endif -%}
+                    {%- endunless -%}
+                  {%- endif -%}
                 {%- endfor -%}
               </div>
               <button class="cds__scroll-btn cds__scroll-btn--down" aria-label="Scroll down">
@@ -533,10 +542,19 @@
             <div class="cds__mobile-strip">
               <p class="cds__mobile-strip-heading">You may also like</p>
               <div class="cds__mobile-strip-scroll">
-                {%- for product in cds_collection.products limit: 6 -%}
-                  <div class="cds__mobile-strip-item">
-                    {%- render 'product-card', product: product -%}
-                  </div>
+                {%- assign cart_product_ids_mobile = cart.items | map: 'product_id' -%}
+                {%- assign shown_count_mobile = 0 -%}
+                {%- for product in cds_collection.products limit: 50 -%}
+                  {%- if product.available -%}
+                    {%- unless cart_product_ids_mobile contains product.id -%}
+                      {%- if shown_count_mobile < 6 -%}
+                        <div class="cds__mobile-strip-item">
+                          {%- render 'product-card', product: product -%}
+                        </div>
+                        {%- assign shown_count_mobile = shown_count_mobile | plus: 1 -%}
+                      {%- endif -%}
+                    {%- endunless -%}
+                  {%- endif -%}
                 {%- endfor -%}
               </div>
             </div>

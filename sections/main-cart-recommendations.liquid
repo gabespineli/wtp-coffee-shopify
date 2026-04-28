@@ -149,14 +149,16 @@
           assign shown_count = 0
         -%}
         {%- for product in source_collection.products limit: 50 -%}
-          {%- unless cart_product_ids contains product.id -%}
-            {%- if shown_count < limit -%}
-              <div class="wtp-cart-recs__item" role="listitem">
-                {%- render 'product-card', product: product -%}
-              </div>
-              {%- assign shown_count = shown_count | plus: 1 -%}
-            {%- endif -%}
-          {%- endunless -%}
+          {%- if product.available -%}
+            {%- unless cart_product_ids contains product.id -%}
+              {%- if shown_count < limit -%}
+                <div class="wtp-cart-recs__item" role="listitem">
+                  {%- render 'product-card', product: product -%}
+                </div>
+                {%- assign shown_count = shown_count | plus: 1 -%}
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endif -%}
         {%- endfor -%}
       </div>
     </div>

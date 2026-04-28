@@ -151,8 +151,8 @@
       {%- else -%}
         {%- comment -%} Liquid Fallback: Pre-rendered so it's never empty {%- endcomment -%}
         {%- assign shown = 0 -%}
-        {%- for rec_product in fallback_collection.products limit: 20 -%}
-          {%- if rec_product.id != product.id -%}
+        {%- for rec_product in fallback_collection.products limit: 50 -%}
+          {%- if rec_product.id != product.id and rec_product.available -%}
             {%- if shown < limit -%}
               <div class="wtp-recs__item" role="listitem">
                 {%- render 'product-card', product: rec_product -%}
