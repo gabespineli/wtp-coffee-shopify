@@ -42,6 +42,7 @@
             "display_hours": "Sun-Wed, 7 AM - 7 PM & Thurs-Sat, 7 AM - 9 PM",
             "amenities": "Free WiFi, Parking Available, Dine-in",
             "map_url": "https://maps.app.goo.gl/FuTHvNqSsSBECL8R8",
+            "menu_image": "shopify://shop_images/ALABANG_MENU.jpg",
             "hours_json": "{\n  \"sun\": [\"07:00\", \"19:00\"],\n  \"mon\": [\"07:00\", \"19:00\"],\n  \"tue\": [\"07:00\", \"19:00\"],\n  \"wed\": [\"07:00\", \"19:00\"],\n  \"thu\": [\"07:00\", \"21:00\"],\n  \"fri\": [\"07:00\", \"21:00\"],\n  \"sat\": [\"07:00\", \"21:00\"]\n}"
           }
         },
@@ -54,6 +55,7 @@
             "display_hours": "Mon-Fri, 11 AM - 10 PM & Thurs-Sat, 10 AM - 10 PM",
             "amenities": "Free WiFi, Dine-in",
             "map_url": "https://maps.app.goo.gl/Ufv1vS3H9tKPwEJQA",
+            "menu_image": "shopify://shop_images/OPUS_MENU.png",
             "hours_json": "{\n  \"mon\": [\"11:00\", \"22:00\"],\n  \"tue\": [\"11:00\", \"22:00\"],\n  \"wed\": [\"11:00\", \"22:00\"],\n  \"thu\": [\"10:00\", \"22:00\"],\n  \"fri\": [\"10:00\", \"22:00\"],\n  \"sat\": [\"10:00\", \"22:00\"]\n}"
           }
         }
@@ -79,6 +81,7 @@
         "description": "From intimate private gatherings to large-scale corporate functions, our catering and event service brings the complete WTP Coffee experience directly to you.",
         "bullet_1": "Coffee Cart Service",
         "bullet_2": "Wholesale Programs",
+        "bullet_3": "Wholesale & Custom Blends — For cafés and businesses",
         "button_label": "Inquire for Bookings",
         "button_url": "shopify://pages/bookings",
         "image": "shopify://shop_images/coffee_cart_b9f346c3-e6ec-48f7-b786-e72e18d5f461.jpg",
@@ -95,7 +98,8 @@
         "description": "Seasonal releases, community events, and brewing notes — delivered straight to your inbox.",
         "placeholder": "Your email address",
         "btn_label": "Subscribe",
-        "klaviyo_list_id": ""
+        "padding_top": 80,
+        "padding_bottom": 80
       }
     }
   },
