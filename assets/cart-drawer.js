@@ -5,6 +5,53 @@ class CartDrawer extends HTMLElement {
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
     this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
     this.setHeaderCartIconAccessibility();
+    this.initMobileScroll();
+  }
+
+  initMobileScroll() {
+    this.addEventListener('click', (event) => {
+      const leftArrow = event.target.closest('.cds__mobile-arrow--left');
+      const rightArrow = event.target.closest('.cds__mobile-arrow--right');
+      
+      if (!leftArrow && !rightArrow) return;
+      
+      const scrollContainer = this.querySelector('.cds__mobile-strip-scroll');
+      if (!scrollContainer) return;
+
+      const scrollAmount = 250; // pixels to scroll
+
+      if (leftArrow) {
+        scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      } else if (rightArrow) {
+        scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    });
+
+    // We use event capturing/delegation for the scroll event
+    this.addEventListener('scroll', (event) => {
+      if (event.target.classList && event.target.classList.contains('cds__mobile-strip-scroll')) {
+        this.updateMobileScrollArrows(event.target);
+      }
+    }, true);
+  }
+
+  updateMobileScrollArrows(scrollContainer) {
+    if (!scrollContainer) return;
+    const leftArrow = this.querySelector('.cds__mobile-arrow--left');
+    const rightArrow = this.querySelector('.cds__mobile-arrow--right');
+    if (!leftArrow || !rightArrow) return;
+
+    if (scrollContainer.scrollLeft <= 10) {
+      leftArrow.classList.add('is-disabled');
+    } else {
+      leftArrow.classList.remove('is-disabled');
+    }
+
+    if (scrollContainer.scrollLeft + scrollContainer.clientWidth >= scrollContainer.scrollWidth - 10) {
+      rightArrow.classList.add('is-disabled');
+    } else {
+      rightArrow.classList.remove('is-disabled');
+    }
   }
 
   setHeaderCartIconAccessibility() {
@@ -32,6 +79,8 @@ class CartDrawer extends HTMLElement {
     // here the animation doesn't seem to always get triggered. A timeout seem to help
     setTimeout(() => {
       this.classList.add('animate', 'active');
+      const scrollContainer = this.querySelector('.cds__mobile-strip-scroll');
+      if (scrollContainer) this.updateMobileScrollArrows(scrollContainer);
     });
 
     this.addEventListener(

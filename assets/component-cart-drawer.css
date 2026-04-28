@@ -1009,7 +1009,14 @@ cart-drawer-items,
 /* ── Mobile Strip ── */
 .cds__mobile-strip {
   padding: 1.5rem 0 0.8rem;
-  border-top: 1px solid rgba(27, 58, 45, 0.1);
+  /* Removed border-top to eliminate the duplicate line above suggestions */
+}
+
+.cds__mobile-strip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
 .cds__mobile-strip-heading {
@@ -1017,12 +1024,41 @@ cart-drawer-items,
   font-size: 1.2rem;
   font-style: italic;
   color: #1B3A2D;
-  margin: 0 0 1rem;
+  margin: 0;
+}
+
+.cds__mobile-arrows {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cds__mobile-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(27, 58, 45, 0.2);
+  background: transparent;
+  color: #1B3A2D;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.cds__mobile-arrow:hover {
+  background: rgba(27, 58, 45, 0.05);
+}
+
+.cds__mobile-arrow.is-disabled {
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .cds__mobile-strip-scroll {
   display: flex;
-  gap: 1rem;
+  gap: 0; /* Managed by padding/margin for separator lines */
   overflow-x: auto;
   padding-bottom: 0.6rem;
   -webkit-overflow-scrolling: touch;
@@ -1034,12 +1070,41 @@ cart-drawer-items,
 }
 
 .cds__mobile-strip-item {
-  flex: 0 0 13rem;
+  flex: 0 0 85%; /* Make it wide enough to show it's a list, but let the next one peek */
+  max-width: 320px;
+  padding-right: 1.2rem;
+  margin-right: 1.2rem;
+  border-right: 1px solid rgba(27, 58, 45, 0.1);
+}
+
+.cds__mobile-strip-item:last-child {
+  padding-right: 0;
+  margin-right: 0;
+  border-right: none;
+}
+
+/* Force product card into horizontal layout */
+.cds__mobile-strip .product-card {
+  flex-direction: row !important;
+  align-items: center;
+  padding: 0 !important;
+  padding-left: 4.8rem !important; /* Space for absolute quick add button on the left */
+  position: relative;
 }
 
 .cds__mobile-strip .pc-img-wrap {
   aspect-ratio: 1 / 1 !important;
-  margin-bottom: 0.6rem;
+  width: 70px !important;
+  height: 70px !important;
+  flex-shrink: 0;
+  margin-bottom: 0 !important;
+  margin-right: 1.2rem;
+  border-radius: 12px;
+  overflow: visible !important; /* Prevent clipping the absolute button */
+}
+
+.cds__mobile-strip .pc-img-wrap img {
+  border-radius: 12px; /* Maintain rounded corners since overflow is visible */
 }
 
 .cds__mobile-strip .pc-vendor {
@@ -1047,37 +1112,44 @@ cart-drawer-items,
 }
 
 .cds__mobile-strip .pc-title {
-  font-size: 0.9rem;
+  font-size: 1.15rem !important;
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+  color: var(--cart-green);
 }
 
 .cds__mobile-strip .pc-price {
-  font-size: 0.85rem;
+  font-size: 1.1rem !important;
+  color: var(--cart-green);
+  font-weight: 700;
 }
 
-/* Force always-visible icon buttons in mobile strip */
+/* Position icon explicitly to the left of the image wrapper */
 .cds__mobile-strip .pc-quick-add-wrap {
   position: absolute !important;
-  top: 0.8rem !important;
-  right: 0.8rem !important;
+  top: 50% !important;
+  left: -4.5rem !important; /* Pull it into the product-card padding area */
+  right: auto !important;
   bottom: auto !important;
-  left: auto !important;
   width: auto !important;
   opacity: 1 !important;
   visibility: visible !important;
-  transform: none !important;
+  transform: translateY(-50%) !important;
   z-index: 10 !important;
+  margin: 0 !important;
 }
 
 .cds__mobile-strip .pc-quick-add-btn {
-  width: 3.2rem !important;
-  height: 3.2rem !important;
+  width: 3.8rem !important;
+  height: 3.8rem !important;
   min-width: 0 !important;
   min-height: 0 !important;
   padding: 0 !important;
   border-radius: 50% !important;
   background: #ffffff !important;
   color: #1B3A2D !important;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+  border: 1px solid rgba(27, 58, 45, 0.1) !important;
 }
 
 .cds__mobile-strip .pc-btn-text {
@@ -1086,9 +1158,11 @@ cart-drawer-items,
 
 .cds__mobile-strip .pc-btn-icon {
   display: flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .cds__mobile-strip .pc-btn-icon svg {
-  width: 1.6rem !important;
-  height: 1.6rem !important;
+  width: 2rem !important;
+  height: 2rem !important;
 }

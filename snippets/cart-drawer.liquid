@@ -573,7 +573,17 @@
           {%- assign cds_collection = settings.cart_drawer_collection | default: collections.all -%}
           {%- if cds_collection.products.size > 0 -%}
             <div class="cds__mobile-strip">
-              <p class="cds__mobile-strip-heading">You may also like</p>
+              <div class="cds__mobile-strip-header">
+                <p class="cds__mobile-strip-heading">You may also like</p>
+                <div class="cds__mobile-arrows">
+                  <button class="cds__mobile-arrow cds__mobile-arrow--left" aria-label="Scroll left">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                  </button>
+                  <button class="cds__mobile-arrow cds__mobile-arrow--right" aria-label="Scroll right">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </button>
+                </div>
+              </div>
               <div class="cds__mobile-strip-scroll">
                 {%- assign cart_product_ids_mobile = cart.items | map: 'product_id' -%}
                 {%- assign shown_count_mobile = 0 -%}
