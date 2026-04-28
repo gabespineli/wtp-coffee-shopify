@@ -575,6 +575,14 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
   overflow: hidden;
 }
 
+/* Enforce fixed 4:5 ratio for all cart drawer item images */
+.cart-item__image {
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
 .cds__item-success-overlay {
   position: absolute;
   inset: 0;
