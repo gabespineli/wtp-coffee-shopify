@@ -117,10 +117,17 @@
     box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   }
 
-  .lt-card__main-link {
+  /* Stretched link makes the whole card clickable via the title */
+  .lt-card__title-link::after {
+    content: '';
     position: absolute;
     inset: 0;
     z-index: 1;
+  }
+
+  .lt-card__title-link {
+    text-decoration: none;
+    color: inherit;
   }
 
   .lt-card:hover {
@@ -409,9 +416,6 @@
       {%- assign has_events   = true -%}
 
       <div class="lt-card">
-        {%- comment -%} Main full-card link {%- endcomment -%}
-        <a href="{{ article.url }}" class="lt-card__main-link" aria-label="{{ article.title | escape }}"></a>
-
         <div class="lt-card__img-wrap">
           {%- if article.image != blank -%}
             {{ article.image | image_url: width: 500 | image_tag: loading: 'lazy', alt: article.title }}
@@ -436,7 +440,9 @@
             <p class="lt-card__tag">{{ event_tag | escape }}</p>
           {%- endif -%}
 
-          <h2 class="lt-card__title">{{ article.title | escape }}</h2>
+          <h2 class="lt-card__title">
+            <a href="{{ article.url }}" class="lt-card__title-link">{{ article.title | escape }}</a>
+          </h2>
 
           {%- if event_location != blank -%}
             <p class="lt-card__location">
