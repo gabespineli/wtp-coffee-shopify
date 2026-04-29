@@ -59,6 +59,22 @@
     "hero_product_tabs_pjfVTt": {
       "type": "hero-product-tabs",
       "blocks": {
+        "featured_product_rpazYn": {
+          "type": "featured_product",
+          "settings": {
+            "product": "colombia-tolima",
+            "variant_title": "",
+            "tab_name": "COLOMBIA TOLIMA",
+            "descriptor": "",
+            "card_subtitle": "Filter · 200g",
+            "bg_image": "shopify://shop_images/L1250860.jpg",
+            "bg_position_x": 50,
+            "bg_position_y": 50,
+            "bg_scale": 100,
+            "mobile_content_bg": "",
+            "mobile_content_text": ""
+          }
+        },
         "featured_product_9cpayX": {
           "type": "featured_product",
           "settings": {
@@ -67,7 +83,7 @@
             "tab_name": "Community",
             "descriptor": "Designed to cut through milk while standing strong on its own, the Community blend is the reliable backbone of our cafes.",
             "card_subtitle": "Whole Bean · 200g",
-            "bg_image": "shopify://shop_images/COMMUNITY.png",
+            "bg_image": "shopify://shop_images/L1250867.jpg",
             "bg_position_x": 50,
             "bg_position_y": 50,
             "bg_scale": 100,
@@ -84,7 +100,7 @@
             "tab_name": "Cosmopolitan",
             "descriptor": "The Cosmopolitan blend leans into the natural sweetness and vibrant acidity of its components, bringing forward nostalgic, fruit-forward notes of arnibal and sampaloc balanced by warm cinnamon.",
             "card_subtitle": "Whole Bean · 200g",
-            "bg_image": "shopify://shop_images/COSMOPOLITAN_2e79e6f7-cd5b-4a9b-a1b5-878c509713ad.png",
+            "bg_image": "shopify://shop_images/L1250868.jpg",
             "bg_position_x": 50,
             "bg_position_y": 50,
             "bg_scale": 100,
@@ -95,6 +111,7 @@
         }
       },
       "block_order": [
+        "featured_product_rpazYn",
         "featured_product_9cpayX",
         "featured_product_W6b9en"
       ],
