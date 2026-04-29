@@ -56,10 +56,10 @@
         "padding_bottom": 52
       }
     },
-    "hero_product_tabs_pjfVTt": {
+    "hero_product_tabs_bRwBmC": {
       "type": "hero-product-tabs",
       "blocks": {
-        "featured_product_rpazYn": {
+        "featured_product_mffQPV": {
           "type": "featured_product",
           "settings": {
             "product": "colombia-tolima",
@@ -71,11 +71,12 @@
             "bg_position_x": 50,
             "bg_position_y": 50,
             "bg_scale": 100,
+            "bg_image_mobile": "shopify://shop_images/tolima_square.jpg",
             "mobile_content_bg": "",
             "mobile_content_text": ""
           }
         },
-        "featured_product_9cpayX": {
+        "featured_product_7MYrYh": {
           "type": "featured_product",
           "settings": {
             "product": "community-blend",
@@ -87,12 +88,12 @@
             "bg_position_x": 50,
             "bg_position_y": 50,
             "bg_scale": 100,
-            "bg_image_mobile": "shopify://shop_images/COMMUNITY_SQAURE.png",
+            "bg_image_mobile": "shopify://shop_images/commu_square.jpg",
             "mobile_content_bg": "#1b3a2d",
             "mobile_content_text": "#fcfaed"
           }
         },
-        "featured_product_W6b9en": {
+        "featured_product_nzqJKp": {
           "type": "featured_product",
           "settings": {
             "product": "cosmopolitan-blend",
@@ -104,16 +105,16 @@
             "bg_position_x": 50,
             "bg_position_y": 50,
             "bg_scale": 100,
-            "bg_image_mobile": "shopify://shop_images/COSMOPOLITAN_SQAURE.png",
+            "bg_image_mobile": "shopify://shop_images/cosmo_square.jpg",
             "mobile_content_bg": "#fcfaed",
             "mobile_content_text": "#1b3a2d"
           }
         }
       },
       "block_order": [
-        "featured_product_rpazYn",
-        "featured_product_9cpayX",
-        "featured_product_W6b9en"
+        "featured_product_mffQPV",
+        "featured_product_7MYrYh",
+        "featured_product_nzqJKp"
       ],
       "name": "Hero Product Tabs",
       "settings": {
@@ -180,7 +181,7 @@
   "order": [
     "scroll_expansion_hero_mDakNp",
     "rich_text_kttX4Y",
-    "hero_product_tabs_pjfVTt",
+    "hero_product_tabs_bRwBmC",
     "wtp_brand_story_3Vdqdj",
     "wtp_product_marquee_UNzYca",
     "wtp_collab_banner_eLzHUq",
