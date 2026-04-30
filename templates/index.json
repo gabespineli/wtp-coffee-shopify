@@ -72,8 +72,8 @@
             "bg_position_y": 50,
             "bg_scale": 100,
             "bg_image_mobile": "shopify://shop_images/tolima_square.jpg",
-            "mobile_content_bg": "",
-            "mobile_content_text": ""
+            "mobile_content_bg": "#d3a525",
+            "mobile_content_text": "#1b3a2d"
           }
         },
         "featured_product_7MYrYh": {
