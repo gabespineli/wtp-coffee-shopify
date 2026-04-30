@@ -11,6 +11,15 @@
   "sections": {
     "main": {
       "type": "wtp-main-product",
+      "blocks": {
+        "roast_profile": {
+          "type": "roast_profile",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "roast_profile"
+      ],
       "settings": {
         "show_dynamic_checkout": false
       }

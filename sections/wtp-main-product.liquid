@@ -49,7 +49,7 @@
   .wtp-main-image-wrapper {
     background: #FFFFFF;
     padding: 0.8rem 0.8rem 4rem 0.8rem;
-    box-shadow: 
+    box-shadow:
       0 4px 15px rgba(0,0,0,0.05),
       0 20px 50px rgba(0,0,0,0.1);
     border-radius: 8px;
@@ -619,6 +619,128 @@
     .profile-tasting__notes {
       font-size: 1.15rem;
     }
+
+    .roast-profile {
+      padding: 1.5rem;
+    }
+
+    .roast-profile__value {
+      font-size: 1rem;
+    }
+
+    .roast-profile__tasting-notes {
+      font-size: 1.15rem;
+    }
+
+    .roast-profile__row {
+      grid-template-columns: 100px 1fr;
+    }
+
+    .roast-profile__header {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .roast-profile__illustration {
+      width: 120px;
+      margin: 0 auto;
+    }
+  }
+
+  /* ── Roast Profile Block ── */
+  .roast-profile {
+    background: #F5F0E8;
+    border-radius: 16px;
+    padding: 2.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .roast-profile__header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2.5rem;
+    align-items: stretch;
+  }
+
+  .roast-profile__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .roast-profile__brew-type {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: #C8A96E;
+    margin: 0;
+  }
+
+  .roast-profile__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .roast-profile__row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .roast-profile__label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(27,58,45,0.5);
+  }
+
+  .roast-profile__value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1B3A2D;
+  }
+
+  .roast-profile__tasting-label {
+    font-size: 0.9rem;
+    color: rgba(27,58,45,0.55);
+    margin: 0 0 0.4rem;
+    font-style: italic;
+  }
+
+  .roast-profile__tasting-notes {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1B3A2D;
+    margin: 0;
+  }
+
+  .roast-profile__illustration {
+    flex-shrink: 0;
+    width: 150px;
+    height: 170px; /* Fixed height to match text column */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .roast-profile__illustration img {
+    width: 100%;
+    height: 100%; /* Over-scaled to hide the 'illustration' text at the bottom */
+    object-fit: contain;
+    object-position: top;
+    display: block;
+  }
+
+  .roast-profile__tasting {
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(27,58,45,0.1);
   }
 </style>
 
@@ -650,7 +772,11 @@
           <div class="wtp-main-viewport">
             <div class="wtp-main-track" id="WTPMainTrack-{{ section.id }}">
               {%- for media in product.media -%}
-                <div class="wtp-main-slide {% if media.preview_image.src == main_img.src %}is-active{% endif %}" data-media-id="{{ media.id }}" data-image-src="{{ media.preview_image | image_url: width: 1000 }}">
+                <div
+                  class="wtp-main-slide {% if media.preview_image.src == main_img.src %}is-active{% endif %}"
+                  data-media-id="{{ media.id }}"
+                  data-image-src="{{ media.preview_image | image_url: width: 1000 }}"
+                >
                   <img
                     src="{{ media.preview_image | image_url: width: 1000 }}"
                     srcset="{{ media.preview_image | image_url: width: 600 }} 600w, {{ media.preview_image | image_url: width: 800 }} 800w, {{ media.preview_image | image_url: width: 1000 }} 1000w"
@@ -687,63 +813,83 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} ── Flavor & Roast Profile ── {%- endcomment -%}
-      {%- assign roast_level   = product.metafields.custom.roast_level   | plus: 0 -%}
-      {%- assign roast_body    = product.metafields.custom.roast_body    | plus: 0 -%}
-      {%- assign roast_acidity = product.metafields.custom.roast_acidity | plus: 0 -%}
-      {%- assign flavor_text   = product.metafields.custom.flavor_profile -%}
-      {%- assign tasting_notes = product.metafields.custom.tasting_notes -%}
+      {%- comment -%} ── Dynamic Blocks Loop ── {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'roast_profile' -%}
+            {%- liquid
+              assign brew_type = product.metafields.custom.brew_type
+              assign roast_process = product.metafields.custom.roast_process
+              assign roast_aroma = product.metafields.custom.roast_aroma
+              assign roast_body = product.metafields.custom.roast_body
+              assign roast_acidity = product.metafields.custom.roast_acidity
+              assign roast_level = product.metafields.custom.roast_level
+              assign tasting_notes = product.metafields.custom.tasting_notes
+              assign signature_image = product.metafields.custom.signature_image
+            -%}
 
-      {%- if product.metafields.custom.roast_level != blank -%}
-        <div class="product-roast-profile">
-          <div class="profile-layout">
+            <div class="roast-profile" {{ block.shopify_attributes }}>
+              <div class="roast-profile__header">
+                <div class="roast-profile__info">
+                  {%- if brew_type != blank -%}
+                    <p class="roast-profile__brew-type">{{ brew_type | upcase }}</p>
+                  {%- endif -%}
 
-            <div class="profile-scales">
-              {%- if flavor_text != blank -%}
-                <p class="profile-subtitle">{{ flavor_text | escape }}</p>
-              {%- endif -%}
-
-              {%- comment -%} Roast Level {%- endcomment -%}
-              <div class="profile-scale-row">
-                <span class="profile-scale-label">Roast Level</span>
-                <div class="profile-dots" aria-label="Roast level: {{ roast_level }} of 8">
-                  {%- for i in (1..8) -%}
-                    <span class="profile-dot{% if i <= roast_level %} is-filled{% endif %}"></span>
-                  {%- endfor -%}
+                  <div class="roast-profile__grid">
+                    {%- if roast_process != blank -%}
+                      <div class="roast-profile__row">
+                        <span class="roast-profile__label">Process</span>
+                        <span class="roast-profile__value">{{ roast_process }}</span>
+                      </div>
+                    {%- endif -%}
+                    {%- if roast_aroma != blank -%}
+                      <div class="roast-profile__row">
+                        <span class="roast-profile__label">Aroma</span>
+                        <span class="roast-profile__value">{{ roast_aroma }}</span>
+                      </div>
+                    {%- endif -%}
+                    {%- if roast_body != blank -%}
+                      <div class="roast-profile__row">
+                        <span class="roast-profile__label">Body</span>
+                        <span class="roast-profile__value">{{ roast_body }}</span>
+                      </div>
+                    {%- endif -%}
+                    {%- if roast_acidity != blank -%}
+                      <div class="roast-profile__row">
+                        <span class="roast-profile__label">Acidity</span>
+                        <span class="roast-profile__value">{{ roast_acidity }}</span>
+                      </div>
+                    {%- endif -%}
+                    {%- if roast_level != blank -%}
+                      <div class="roast-profile__row">
+                        <span class="roast-profile__label">Roast Level</span>
+                        <span class="roast-profile__value">{{ roast_level }}</span>
+                      </div>
+                    {%- endif -%}
+                  </div>
                 </div>
-              </div>
 
-              {%- comment -%} Body {%- endcomment -%}
-              <div class="profile-scale-row">
-                <span class="profile-scale-label">Body</span>
-                <div class="profile-dots" aria-label="Body: {{ roast_body }} of 8">
-                  {%- for i in (1..8) -%}
-                    <span class="profile-dot{% if i <= roast_body %} is-filled{% endif %}"></span>
-                  {%- endfor -%}
-                </div>
-              </div>
-
-              {%- comment -%} Acidity {%- endcomment -%}
-              <div class="profile-scale-row">
-                <span class="profile-scale-label">Acidity</span>
-                <div class="profile-dots" aria-label="Acidity: {{ roast_acidity }} of 8">
-                  {%- for i in (1..8) -%}
-                    <span class="profile-dot{% if i <= roast_acidity %} is-filled{% endif %}"></span>
-                  {%- endfor -%}
-                </div>
+                {%- if signature_image != blank -%}
+                  <div class="roast-profile__illustration">
+                    {{
+                      signature_image
+                      | image_url: width: 400
+                      | image_tag: loading: 'lazy', alt: product.title
+                      | escape
+                    }}
+                  </div>
+                {%- endif -%}
               </div>
 
               {%- if tasting_notes != blank -%}
-                <div class="profile-tasting">
-                  <p class="profile-tasting__intro">We're tasting notes of</p>
-                  <p class="profile-tasting__notes">{{ tasting_notes | escape }}</p>
+                <div class="roast-profile__tasting">
+                  <p class="roast-profile__tasting-label">We're tasting notes of</p>
+                  <p class="roast-profile__tasting-notes">{{ tasting_notes }}</p>
                 </div>
               {%- endif -%}
-            </div>{%- comment -%} /.profile-scales {%- endcomment -%}
-
-          </div>{%- comment -%} /.profile-layout {%- endcomment -%}
-        </div>{%- comment -%} /.product-roast-profile {%- endcomment -%}
-      {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
 
       <!-- Description -->
       {%- if product.description != blank -%}
@@ -758,7 +904,13 @@
           <span class="svg-wrapper">{{- 'icon-error.svg' | inline_asset_content -}}</span>
           <span class="product-form__error-message"></span>
         </div>
-        {%- form 'product', product, id: form_id, class: 'wtp-pdp__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+        {%- form 'product',
+          product,
+          id: form_id,
+          class: 'wtp-pdp__form',
+          novalidate: 'novalidate',
+          data-type: 'add-to-cart-form'
+        -%}
           <!-- Hidden variant ID — kept in sync by JS -->
           <input
             type="hidden"
@@ -848,7 +1000,9 @@
                 disabled
               {% endunless %}
             >
-              <span>{%- if current_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}</span>
+              <span>
+                {%- if current_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
+              </span>
               {%- render 'loading-spinner' -%}
             </button>
 
@@ -860,7 +1014,6 @@
           </div>
         {%- endform -%}
       </product-form>
-
     </div>
     <!-- /.wtp-pdp__info -->
   </div>
@@ -933,7 +1086,7 @@
       /* ── Update main image (Track Slide) ── */
       function setMainImage(src) {
         if (!track || !src || !slides.length) return;
-        
+
         var targetIndex = -1;
         var normalizedTarget = normalizeUrl(src);
 
@@ -1101,6 +1254,14 @@
       "label": "Show Dynamic Checkout Button (Buy it Now)",
       "info": "Renders Shop Pay, PayPal, and other express checkout options.",
       "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "roast_profile",
+      "name": "Roast Profile",
+      "limit": 1,
+      "settings": []
     }
   ],
   "presets": [
