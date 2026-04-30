@@ -22,16 +22,20 @@
   <div id="CartDrawer" class="cart-drawer">
     <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
 
-    {%- unless cart == empty -%}
-      {%- assign cds_collection = settings.cart_drawer_collection | default: collections.all -%}
-      {%- if cds_collection.products.size > 0 -%}
-        <div class="cds__sidebar">
-          <div class="cds__sidebar-inner">
-            <p class="cds__sidebar-eyebrow">Explore</p>
-            <h2 class="cds__sidebar-heading">
+    {%- assign cds_collection = settings.cart_drawer_collection | default: collections.all -%}
+    {%- if cds_collection.products.size > 0 -%}
+      <div class="cds__sidebar">
+        <div class="cds__sidebar-inner">
+          <p class="cds__sidebar-eyebrow">Explore</p>
+          <h2 class="cds__sidebar-heading">
+            {%- if cart == empty -%}
+              Stocked<br>
+              For Today
+            {%- else -%}
               You may<br>
               also like
-            </h2>
+            {%- endif -%}
+          </h2>
             <div class="cds__scroll-wrapper">
               <button class="cds__scroll-btn cds__scroll-btn--up" aria-label="Scroll up">
                 <svg
@@ -81,7 +85,6 @@
           </div>
         </div>
       {%- endif -%}
-    {%- endunless -%}
     <div
       class="drawer__inner gradient color-{{ settings.cart_color_scheme }}"
       role="dialog"
@@ -104,7 +107,7 @@
                   {{- 'icon-close.svg' | inline_asset_content -}}
                 </span>
               </button>
-              <a href="{{ routes.all_products_collection_url }}" class="button">
+              <a href="/pages/shop" class="button">
                 {{ 'general.continue_shopping' | t }}
               </a>
 
@@ -119,6 +122,39 @@
           {%- if settings.cart_drawer_collection != blank -%}
             <div class="cart-drawer__collection">
               {% render 'card-collection', card_collection: settings.cart_drawer_collection, columns: 1 %}
+            </div>
+          {%- endif -%}
+
+          {%- assign cds_collection = settings.cart_drawer_collection | default: collections.all -%}
+          {%- if cds_collection.products.size > 0 -%}
+            <div class="cds__mobile-strip">
+              <div class="cds__mobile-strip-header">
+                <p class="cds__mobile-strip-heading">Stocked For Today</p>
+                <div class="cds__mobile-arrows">
+                  <button class="cds__mobile-arrow cds__mobile-arrow--left" aria-label="Scroll left">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                  </button>
+                  <button class="cds__mobile-arrow cds__mobile-arrow--right" aria-label="Scroll right">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="cds__mobile-strip-scroll">
+                {%- assign cart_product_ids_mobile = cart.items | map: 'product_id' -%}
+                {%- assign shown_count_mobile = 0 -%}
+                {%- for product in cds_collection.products limit: 50 -%}
+                  {%- if product.available -%}
+                    {%- unless cart_product_ids_mobile contains product.id -%}
+                      {%- if shown_count_mobile < 6 -%}
+                        <div class="cds__mobile-strip-item">
+                          {%- render 'product-card', product: product -%}
+                        </div>
+                        {%- assign shown_count_mobile = shown_count_mobile | plus: 1 -%}
+                      {%- endif -%}
+                    {%- endunless -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
             </div>
           {%- endif -%}
         </div>
@@ -569,12 +605,17 @@
           </details>
         {%- endif -%}
 
-        {%- unless cart == empty -%}
-          {%- assign cds_collection = settings.cart_drawer_collection | default: collections.all -%}
-          {%- if cds_collection.products.size > 0 -%}
-            <div class="cds__mobile-strip">
-              <div class="cds__mobile-strip-header">
-                <p class="cds__mobile-strip-heading">You may also like</p>
+        {%- assign cds_collection = settings.cart_drawer_collection | default: collections.all -%}
+        {%- if cds_collection.products.size > 0 -%}
+          <div class="cds__mobile-strip">
+            <div class="cds__mobile-strip-header">
+              <p class="cds__mobile-strip-heading">
+                {%- if cart == empty -%}
+                  Stocked For Today
+                {%- else -%}
+                  You may also like
+                {%- endif -%}
+              </p>
                 <div class="cds__mobile-arrows">
                   <button class="cds__mobile-arrow cds__mobile-arrow--left" aria-label="Scroll left">
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -602,7 +643,6 @@
               </div>
             </div>
           {%- endif -%}
-        {%- endunless -%}
 
         <!-- Start blocks -->
         <!-- Subtotals -->
@@ -692,29 +732,3 @@
   </div>
 </cart-drawer>
 
-<script>
-  (function () {
-    function initCdsScroll() {
-      const list = document.querySelector('.cds__sidebar-products');
-      const btnUp = document.querySelector('.cds__scroll-btn--up');
-      const btnDown = document.querySelector('.cds__scroll-btn--down');
-      if (!list || !btnUp || !btnDown) return;
-
-      function update() {
-        btnUp.classList.toggle('is-visible', list.scrollTop > 4);
-        btnDown.classList.toggle('is-visible', list.scrollTop + list.clientHeight < list.scrollHeight - 4);
-      }
-
-      list.addEventListener('scroll', update, { passive: true });
-      btnUp.addEventListener('click', () => list.scrollBy({ top: -230, behavior: 'smooth' }));
-      btnDown.addEventListener('click', () => list.scrollBy({ top: 230, behavior: 'smooth' }));
-      setTimeout(update, 200);
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initCdsScroll);
-    } else {
-      initCdsScroll();
-    }
-  })();
-</script>

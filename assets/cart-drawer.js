@@ -6,6 +6,7 @@ class CartDrawer extends HTMLElement {
     this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
     this.setHeaderCartIconAccessibility();
     this.initMobileScroll();
+    this.initSidebarScroll();
   }
 
   initMobileScroll() {
@@ -18,7 +19,7 @@ class CartDrawer extends HTMLElement {
       const scrollContainer = this.querySelector('.cds__mobile-strip-scroll');
       if (!scrollContainer) return;
 
-      const scrollAmount = 250; // pixels to scroll
+      const scrollAmount = 250;
 
       if (leftArrow) {
         scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -27,12 +28,45 @@ class CartDrawer extends HTMLElement {
       }
     });
 
-    // We use event capturing/delegation for the scroll event
     this.addEventListener('scroll', (event) => {
       if (event.target.classList && event.target.classList.contains('cds__mobile-strip-scroll')) {
         this.updateMobileScrollArrows(event.target);
       }
     }, true);
+  }
+
+  initSidebarScroll() {
+    this.addEventListener('click', (event) => {
+      const btnUp = event.target.closest('.cds__scroll-btn--up');
+      const btnDown = event.target.closest('.cds__scroll-btn--down');
+      
+      if (!btnUp && !btnDown) return;
+      
+      const list = this.querySelector('.cds__sidebar-products');
+      if (!list) return;
+
+      if (btnUp) {
+        list.scrollBy({ top: -230, behavior: 'smooth' });
+      } else if (btnDown) {
+        list.scrollBy({ top: 230, behavior: 'smooth' });
+      }
+    });
+
+    this.addEventListener('scroll', (event) => {
+      if (event.target.classList && event.target.classList.contains('cds__sidebar-products')) {
+        this.updateSidebarScrollArrows(event.target);
+      }
+    }, true);
+  }
+
+  updateSidebarScrollArrows(list) {
+    if (!list) return;
+    const btnUp = this.querySelector('.cds__scroll-btn--up');
+    const btnDown = this.querySelector('.cds__scroll-btn--down');
+    if (!btnUp || !btnDown) return;
+
+    btnUp.classList.toggle('is-visible', list.scrollTop > 4);
+    btnDown.classList.toggle('is-visible', list.scrollTop + list.clientHeight < list.scrollHeight - 4);
   }
 
   updateMobileScrollArrows(scrollContainer) {
@@ -134,6 +168,14 @@ class CartDrawer extends HTMLElement {
 
     setTimeout(() => {
       this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
+      
+      // Refresh arrow visibility after content update
+      const mobileScroll = this.querySelector('.cds__mobile-strip-scroll');
+      if (mobileScroll) this.updateMobileScrollArrows(mobileScroll);
+      
+      const sidebarScroll = this.querySelector('.cds__sidebar-products');
+      if (sidebarScroll) this.updateSidebarScrollArrows(sidebarScroll);
+
       this.open();
     });
   }
@@ -172,6 +214,11 @@ class CartDrawerItems extends CartItems {
         id: 'CartDrawer',
         section: 'cart-drawer',
         selector: '.drawer__inner',
+      },
+      {
+        id: 'CartDrawer',
+        section: 'cart-drawer',
+        selector: '.cds__sidebar',
       },
       {
         id: 'cart-icon-bubble',
