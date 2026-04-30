@@ -170,7 +170,8 @@
   }
 
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs:hover .wtp-ht__tab.is-active::before,
-  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs.is-paused .wtp-ht__tab.is-active::before {
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs.is-paused .wtp-ht__tab.is-active::before,
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs.is-offscreen .wtp-ht__tab.is-active::before {
     animation-play-state: paused;
   }
 
@@ -931,6 +932,20 @@
       card.addEventListener('mouseleave', function () { container.classList.remove('is-paused'); });
       card.addEventListener('touchstart', function () { container.classList.add('is-paused'); }, {passive: true});
       card.addEventListener('touchend', function () { container.classList.remove('is-paused'); }, {passive: true});
+      
+      /* ── Visibility Pause — Pause animation when section is out of view ── */
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              container.classList.remove('is-offscreen');
+            } else {
+              container.classList.add('is-offscreen');
+            }
+          });
+        }, { threshold: 0.05 });
+        observer.observe(sectionEl);
+      }
 
       /* ── Add to Cart — Handled by <product-form> ── */
 
