@@ -169,10 +169,15 @@
     animation: wtpTabProgress 5s linear forwards;
   }
 
-  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs:hover .wtp-ht__tab.is-active::before,
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs.is-paused .wtp-ht__tab.is-active::before,
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs.is-offscreen .wtp-ht__tab.is-active::before {
     animation-play-state: paused;
+  }
+
+  @media screen and (min-width: 769px) {
+    .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__tabs:hover .wtp-ht__tab.is-active::before {
+      animation-play-state: paused;
+    }
   }
 
   @keyframes wtpTabProgress {
@@ -930,8 +935,6 @@
       /* ── Card Hover Pause ── */
       card.addEventListener('mouseenter', function () { container.classList.add('is-paused'); });
       card.addEventListener('mouseleave', function () { container.classList.remove('is-paused'); });
-      card.addEventListener('touchstart', function () { container.classList.add('is-paused'); }, {passive: true});
-      card.addEventListener('touchend', function () { container.classList.remove('is-paused'); }, {passive: true});
       
       /* ── Visibility Pause — Pause animation when section is out of view ── */
       if ('IntersectionObserver' in window) {
