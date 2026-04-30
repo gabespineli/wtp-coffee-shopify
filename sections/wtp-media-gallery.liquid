@@ -91,6 +91,11 @@
     border-radius: 14px;
     overflow: hidden;
     display: block; /* keeps anchor semantics */
+    isolation: isolate; /* Fixes Safari overflow-hidden/border-radius/transform bugs */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transition: box-shadow 0.5s ease;
   }
 
   /* strict portrait aspect ratio for all media */
@@ -104,13 +109,20 @@
     object-fit: cover;
     display: block;
     border-radius: 14px;
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                box-shadow 0.5s ease;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .mg-item:hover {
+    box-shadow: 0 20px 45px -10px rgba(27, 58, 45, 0.28);
+    z-index: 2;
   }
 
   .mg-item:hover .mg-img {
-    transform: scale(1.03);
-    box-shadow: 0 20px 45px -10px rgba(27, 58, 45, 0.28);
+    transform: scale(1.03) translateZ(0);
   }
 
   /* Placeholder SVG treatment */
