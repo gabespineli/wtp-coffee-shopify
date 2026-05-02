@@ -17,27 +17,10 @@
         "padding_bottom": 28
       }
     },
-    "hero_product_tabs_EhjMRP": {
+    "hero_product_tabs_KBVwhy": {
       "type": "hero-product-tabs",
       "blocks": {
-        "featured_product_GHJBR3": {
-          "type": "featured_product",
-          "settings": {
-            "product": "colombia-tolima",
-            "variant_title": "",
-            "tab_name": "COLOMBIA TOLIMA",
-            "descriptor": "Roasted light to preserve its inherent vibrancy, this coffee presents a dynamic aroma of sweet cherry and rich cacao nibs.",
-            "card_subtitle": "Filter · 200g",
-            "bg_image": "shopify://shop_images/L1250860.jpg",
-            "bg_position_x": 50,
-            "bg_position_y": 50,
-            "bg_scale": 100,
-            "bg_image_mobile": "shopify://shop_images/tolima_square.jpg",
-            "mobile_content_bg": "",
-            "mobile_content_text": ""
-          }
-        },
-        "featured_product_txXkak": {
+        "featured_product_AWqXFw": {
           "type": "featured_product",
           "settings": {
             "product": "community-blend",
@@ -54,7 +37,24 @@
             "mobile_content_text": "#fcfaed"
           }
         },
-        "featured_product_Qpr7xx": {
+        "featured_product_BCdmeF": {
+          "type": "featured_product",
+          "settings": {
+            "product": "colombia-tolima",
+            "variant_title": "",
+            "tab_name": "COLOMBIA TOLIMA",
+            "descriptor": "Roasted light to preserve its inherent vibrancy, this coffee presents a dynamic aroma of sweet cherry and rich cacao nibs.",
+            "card_subtitle": "Filter · 200g",
+            "bg_image": "shopify://shop_images/L1250860.jpg",
+            "bg_position_x": 50,
+            "bg_position_y": 50,
+            "bg_scale": 100,
+            "bg_image_mobile": "shopify://shop_images/tolima_square.jpg",
+            "mobile_content_bg": "#e5c878",
+            "mobile_content_text": "#1b3a2d"
+          }
+        },
+        "featured_product_QCBdxL": {
           "type": "featured_product",
           "settings": {
             "product": "cosmopolitan-blend",
@@ -73,9 +73,9 @@
         }
       },
       "block_order": [
-        "featured_product_GHJBR3",
-        "featured_product_txXkak",
-        "featured_product_Qpr7xx"
+        "featured_product_AWqXFw",
+        "featured_product_BCdmeF",
+        "featured_product_QCBdxL"
       ],
       "name": "Hero Product Tabs",
       "settings": {
@@ -184,7 +184,7 @@
   },
   "order": [
     "main",
-    "hero_product_tabs_EhjMRP",
+    "hero_product_tabs_KBVwhy",
     "wtp_featured_arrivals_kjnNqL",
     "wtp_shop_category_CibFJi"
   ]
