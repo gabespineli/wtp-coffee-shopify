@@ -59,23 +59,6 @@
     "hero_product_tabs_bRwBmC": {
       "type": "hero-product-tabs",
       "blocks": {
-        "featured_product_mffQPV": {
-          "type": "featured_product",
-          "settings": {
-            "product": "colombia-tolima",
-            "variant_title": "",
-            "tab_name": "COLOMBIA TOLIMA",
-            "descriptor": "Roasted light to preserve its inherent vibrancy, this coffee presents a dynamic aroma of sweet cherry and rich cacao nibs.",
-            "card_subtitle": "Filter · 200g",
-            "bg_image": "shopify://shop_images/L1250860.jpg",
-            "bg_position_x": 50,
-            "bg_position_y": 50,
-            "bg_scale": 100,
-            "bg_image_mobile": "shopify://shop_images/tolima_square.jpg",
-            "mobile_content_bg": "#e5c878",
-            "mobile_content_text": "#1b3a2d"
-          }
-        },
         "featured_product_7MYrYh": {
           "type": "featured_product",
           "settings": {
@@ -91,6 +74,23 @@
             "bg_image_mobile": "shopify://shop_images/commu_square.jpg",
             "mobile_content_bg": "#1b3a2d",
             "mobile_content_text": "#fcfaed"
+          }
+        },
+        "featured_product_mffQPV": {
+          "type": "featured_product",
+          "settings": {
+            "product": "colombia-tolima",
+            "variant_title": "",
+            "tab_name": "COLOMBIA TOLIMA",
+            "descriptor": "Roasted light to preserve its inherent vibrancy, this coffee presents a dynamic aroma of sweet cherry and rich cacao nibs.",
+            "card_subtitle": "Filter · 200g",
+            "bg_image": "shopify://shop_images/L1250860.jpg",
+            "bg_position_x": 50,
+            "bg_position_y": 50,
+            "bg_scale": 100,
+            "bg_image_mobile": "shopify://shop_images/tolima_square.jpg",
+            "mobile_content_bg": "#e5c878",
+            "mobile_content_text": "#1b3a2d"
           }
         },
         "featured_product_nzqJKp": {
@@ -112,8 +112,8 @@
         }
       },
       "block_order": [
-        "featured_product_mffQPV",
         "featured_product_7MYrYh",
+        "featured_product_mffQPV",
         "featured_product_nzqJKp"
       ],
       "name": "Hero Product Tabs",
