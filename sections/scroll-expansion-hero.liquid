@@ -63,17 +63,27 @@
         {%- endif -%}
       </div>
       <div class="scroll-expansion-hero__subtitle-row">
-        {%- if section.settings.subtitle_left != blank -%}
-          <span class="scroll-expansion-hero__title-left scroll-expansion-hero__subtitle">
-            {{- section.settings.subtitle_left -}}
-          </span>
-        {%- endif -%}
-        {%- if section.settings.subtitle_right != blank -%}
-          <span class="scroll-expansion-hero__title-right scroll-expansion-hero__subtitle">
-            {{- section.settings.subtitle_right -}}
+        {%- if section.settings.subtitle != blank -%}
+          <span class="scroll-expansion-hero__subtitle">
+            {{- section.settings.subtitle -}}
           </span>
         {%- endif -%}
       </div>
+
+      {%- if section.settings.button_label != blank or section.settings.button_label_2 != blank -%}
+        <div class="scroll-expansion-hero__buttons">
+          {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+            <a href="{{ section.settings.button_link }}" class="scroll-expansion-hero__cta scroll-expansion-hero__cta--primary">
+              {{ section.settings.button_label }}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.button_label_2 != blank and section.settings.button_link_2 != blank -%}
+            <a href="{{ section.settings.button_link_2 }}" class="scroll-expansion-hero__cta scroll-expansion-hero__cta--secondary">
+              {{ section.settings.button_label_2 }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </div>
@@ -133,7 +143,6 @@
     max-width: 100vw;
     border-radius: calc(2rem - 0.5rem * var(--scroll-progress));
     overflow: hidden;
-    box-shadow: 0 15px 45px -10px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -212,14 +221,22 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.05em;
+    gap: 0;
     width: 100%;
     pointer-events: none;
     color: var(--title-color, #fff);
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    background: radial-gradient(circle, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0) 60%);
     min-height: 100vh;
     white-space: nowrap;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.4) 100%);
+    opacity: calc(1 - var(--scroll-progress));
+    pointer-events: none;
   }
 
   #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-row,
@@ -231,14 +248,15 @@
   }
 
   #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-row {
-    font-size: clamp(3rem, 8vw, 8rem);
+    font-size: clamp(3rem, 11vw, 13rem);
     font-weight: 800;
     text-transform: uppercase;
     font-family: var(--font-heading-family);
+    line-height: 0.95;
   }
 
   #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__subtitle-row {
-    font-size: clamp(1rem, 3vw, 2.5rem);
+    font-size: clamp(0.85rem, 2.8vw, 2.5rem);
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.15em;
@@ -247,7 +265,101 @@
   }
 
   #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-left {
-    margin-right: 0.25em;
+    margin-right: 0.3em;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-left {
+    margin-right: 0.3em;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__buttons {
+    margin-top: 3.5rem;
+    pointer-events: auto;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 30;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__cta {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    text-decoration: none;
+    border-radius: 50px;
+    font-family: var(--font-body-family);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__cta--primary {
+    background-color: #1B3A2D;
+    color: var(--color-cream, #F5F0E8);
+    border: 2px solid #1B3A2D;
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__cta--secondary {
+    background-color: transparent;
+    color: var(--color-cream, #F5F0E8);
+    border: 2px solid rgba(245, 240, 232, 0.4);
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__cta:hover {
+    transform: translateY(-4px) scale(1.02);
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__cta--primary:hover {
+    background-color: var(--color-cream, #F5F0E8);
+    color: #1B3A2D;
+    border-color: var(--color-cream, #F5F0E8);
+  }
+
+  #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__cta--secondary:hover {
+    background-color: rgba(245, 240, 232, 0.1);
+    border-color: var(--color-cream, #F5F0E8);
+  }
+
+  @media screen and (max-width: 750px) {
+    #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-row {
+      flex-direction: column;
+      font-size: clamp(3.5rem, 20vw, 8rem);
+      line-height: 0.85;
+      margin-bottom: 0.5rem;
+    }
+
+    #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-left {
+      margin-right: 0;
+    }
+
+    #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__subtitle-row {
+      font-size: clamp(0.75rem, 4.4vw, 1.2rem);
+      letter-spacing: 0.1em;
+      width: 100%;
+      max-width: 92vw;
+      text-align: center;
+    }
+
+    #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__buttons {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: 0.8rem;
+      margin-top: 2.5rem;
+      width: auto;
+      padding: 0 1rem;
+    }
+
+    #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__cta {
+      width: auto;
+      flex: 1;
+      text-align: center;
+      padding: 0.8rem 1rem;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
   }
 
   #ScrollExpansionHero-{{ section.id }} .scroll-expansion-hero__title-right {
@@ -404,15 +516,9 @@
     },
     {
       "type": "text",
-      "id": "subtitle_left",
-      "label": "Subtitle — Left",
-      "default": "Experience"
-    },
-    {
-      "type": "text",
-      "id": "subtitle_right",
-      "label": "Subtitle — Right",
-      "default": "The Moment"
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "WHERE COFFEE CREATES COMMUNITY"
     },
     {
       "type": "header",
@@ -429,6 +535,36 @@
       "id": "subtitle_color",
       "label": "Subtitle Color",
       "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Join Our Community"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Secondary Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Button Label 2",
+      "default": "Explore Products"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Button Link 2"
     }
   ],
   "presets": [
