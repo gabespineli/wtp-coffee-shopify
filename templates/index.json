@@ -19,10 +19,13 @@
         "loading_logo_image": "shopify://shop_images/LOGO.png",
         "title_left": "WE THE",
         "title_right": "PEOPLE",
-        "subtitle_left": "WHERE COFFEE",
-        "subtitle_right": "CREATES COMMUNITY",
+        "subtitle": "WHERE COFFEE CREATES COMMUNITY",
         "title_color": "#fcfaed",
-        "subtitle_color": "#fcfaed"
+        "subtitle_color": "#fcfaed",
+        "button_label": "Explore Our Community",
+        "button_link": "shopify://pages/community",
+        "button_label_2": "View Products",
+        "button_link_2": "shopify://pages/shop"
       }
     },
     "rich_text_kttX4Y": {
