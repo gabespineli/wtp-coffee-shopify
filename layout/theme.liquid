@@ -580,6 +580,8 @@
 
         // Show on link click
         document.addEventListener('click', (e) => {
+          if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return; // Skip if opening in new tab
+
           const link = e.target.closest('a');
           if (!link) return;
 
@@ -639,7 +641,11 @@
         // Optional: show on form submit (GET only for navigation)
         document.addEventListener('submit', (e) => {
           if (e.target.method === 'get') {
-            showLoader();
+            // Use setTimeout to check if event was prevented by search JS
+            setTimeout(() => {
+              if (e.defaultPrevented) return;
+              showLoader();
+            }, 0);
           }
         });
       })();
