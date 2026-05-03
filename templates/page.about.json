@@ -119,7 +119,11 @@
         "mission_eyebrow": "Our",
         "mission_heading": "Mission",
         "mission_quote": "Every cup we serve and every interaction we make is an opportunity to create connection and care.",
-        "mission_desc": "That’s why we made it our mission to inspire community through coffee—crafting meaningful experiences that bring people together, celebrate the people behind every cup, and leave everyone a little better than before."
+        "mission_desc": "That’s why we made it our mission to inspire community through coffee—crafting meaningful experiences that bring people together, celebrate the people behind every cup, and leave everyone a little better than before.",
+        "mission_img_1": "shopify://shop_images/mission1.jpg",
+        "mission_img_2": "shopify://shop_images/mission2.jpg",
+        "mission_img_3": "shopify://shop_images/mission3.jpg",
+        "mission_img_4": "shopify://shop_images/mission4.jpg"
       }
     },
     "wtp_values_b7X8yn": {
