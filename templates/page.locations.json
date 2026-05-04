@@ -69,26 +69,6 @@
         "bg_color": "#ffffff"
       }
     },
-    "wtp_catering_teaser_rwLed7": {
-      "type": "wtp-catering-teaser",
-      "name": "Catering Teaser",
-      "settings": {
-        "bg_color": "#1b3a2d",
-        "text_color": "#ffffff",
-        "accent_color": "#c8a96e",
-        "eyebrow": "EXPERIENCE EXCELLENCE ANYWHERE",
-        "heading": "Host an Event with WTP Coffee.",
-        "description": "From intimate private gatherings to large-scale corporate functions, our catering and event service brings the complete WTP Coffee experience directly to you.",
-        "bullet_1": "Coffee Cart Service",
-        "bullet_2": "Wholesale Programs",
-        "bullet_3": "Wholesale & Custom Blends — For cafés and businesses",
-        "button_label": "Inquire for Bookings",
-        "button_url": "shopify://pages/bookings",
-        "image": "shopify://shop_images/coffee_cart_3.jpg",
-        "quote": "Their baristas transformed our wedding morning into something truly unforgettable.",
-        "quote_attr": "Angela R., Private Event Client"
-      }
-    },
     "wtp_newsletter_LKh3Mz": {
       "type": "wtp-newsletter",
       "name": "WTP Newsletter",
@@ -107,7 +87,6 @@
     "main",
     "wtp_map_hero_4bckVm",
     "wtp_location_cards_7rEkw9",
-    "wtp_catering_teaser_rwLed7",
     "wtp_newsletter_LKh3Mz"
   ]
 }
