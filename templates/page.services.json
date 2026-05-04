@@ -21,9 +21,6 @@
       "type": "wtp-catering-teaser",
       "name": "Catering Teaser",
       "settings": {
-        "bg_color": "#1b3a2d",
-        "text_color": "#ffffff",
-        "accent_color": "#c8a96e",
         "eyebrow": "EXPERIENCE EXCELLENCE ANYWHERE",
         "heading": "Host an Event with WTP Coffee.",
         "description": "From intimate private gatherings to large-scale corporate functions, our catering and event service brings the complete WTP Coffee experience directly to you.",
@@ -36,10 +33,111 @@
         "quote": "Their baristas transformed our wedding morning into something truly unforgettable.",
         "quote_attr": "Angela R., Private Event Client"
       }
+    },
+    "services_third_space_teaser_qAj97b": {
+      "type": "services-third-space-teaser",
+      "name": "Third Space Teaser",
+      "settings": {
+        "eyebrow": "THE THIRD SPACE",
+        "heading": "Find Your <em>Third Place.</em>",
+        "subtitle": "A quiet corner to work, a table for a meeting, or the entire space for an event — we have a spot for you.",
+        "btn_1_label": "Reserve at Alabang",
+        "btn_1_url": "",
+        "btn_2_label": "Reserve at Opus",
+        "btn_2_url": ""
+      }
+    },
+    "services_why_choose_us_QzmGdY": {
+      "type": "services-why-choose-us",
+      "blocks": {
+        "editorial_row_FtANdJ": {
+          "type": "editorial_row",
+          "settings": {
+            "headline": "Crafted With Intention",
+            "description": "Every cup we serve begins long before the brew. We source, roast, and serve with a commitment to transparency and quality that you can taste in every sip."
+          }
+        },
+        "editorial_row_6AQrEx": {
+          "type": "editorial_row",
+          "settings": {
+            "headline": "A Space Made for People",
+            "description": "Our cafés are designed as third spaces — places between home and work where community is built, ideas are sparked, and good coffee brings people together."
+          }
+        },
+        "editorial_row_Cgb7PQ": {
+          "type": "editorial_row",
+          "settings": {
+            "headline": "Rooted in the Philippines",
+            "description": "From our locally sourced ingredients to our Filipino-inspired approach to hospitality, WTP is proudly made here — for the people who call this home."
+          }
+        }
+      },
+      "block_order": [
+        "editorial_row_FtANdJ",
+        "editorial_row_6AQrEx",
+        "editorial_row_Cgb7PQ"
+      ],
+      "name": "Why Choose Us",
+      "settings": {
+        "eyebrow": "WE THE PEOPLE ROASTERY",
+        "title": "Why Choose Us?"
+      }
+    },
+    "services_ecosystem_Qdrkpz": {
+      "type": "services-ecosystem",
+      "blocks": {
+        "service_item_CgccnT": {
+          "type": "service_item",
+          "settings": {
+            "item_title": "B2B Solutions",
+            "item_desc": "Tailored coffee programs for businesses — from office setups to retail partnerships built on quality and consistency."
+          }
+        },
+        "service_item_inAGgG": {
+          "type": "service_item",
+          "settings": {
+            "item_title": "Coffee Consultancy",
+            "item_desc": "Expert guidance on sourcing, roasting, and brewing — helping cafés and brands elevate their coffee experience."
+          }
+        },
+        "service_item_bN4Tmn": {
+          "type": "service_item",
+          "settings": {
+            "item_title": "Event Services",
+            "item_desc": "From intimate gatherings to large-scale functions, our mobile coffee cart brings the full WTP experience to your event."
+          }
+        }
+      },
+      "block_order": [
+        "service_item_CgccnT",
+        "service_item_inAGgG",
+        "service_item_bN4Tmn"
+      ],
+      "name": "Ecosystem of Care",
+      "settings": {
+        "title": "Ecosystem of Care",
+        "subtitle": "Cultivating community through every pour.",
+        "btn_label": "Inquire for Bookings →",
+        "btn_url": ""
+      }
+    },
+    "services_cta_banner_q6XVqi": {
+      "type": "services-cta-banner",
+      "name": "Services CTA Banner",
+      "settings": {
+        "heading": "Ready to Work With Us?",
+        "subtitle": "Whether it's an event, a wholesale partnership, or a custom blend — let's talk.",
+        "btn_label": "Get in Touch →",
+        "btn_url": ""
+      }
     }
   },
   "order": [
     "main",
-    "wtp_catering_teaser_3NMK9A"
+    "wtp_catering_teaser_3NMK9A",
+    "services_third_space_teaser_qAj97b",
+    "services_why_choose_us_QzmGdY",
+    "services_ecosystem_Qdrkpz",
+    "services_cta_banner_q6XVqi"
   ]
 }
