@@ -42,9 +42,9 @@
         "heading": "Find Your <em>Third Place.</em>",
         "subtitle": "A quiet corner to work, a table for a meeting, or the entire space for an event — we have a spot for you.",
         "btn_1_label": "Reserve at Alabang",
-        "btn_1_url": "",
+        "btn_1_url": "shopify://pages/third-space",
         "btn_2_label": "Reserve at Opus",
-        "btn_2_url": ""
+        "btn_2_url": "shopify://pages/third-space"
       }
     },
     "services_why_choose_us_QzmGdY": {
