@@ -478,12 +478,13 @@
       background: transparent;
       border: 1px solid var(--cart-border);
       border-radius: 12px;
-      padding: 1rem 1.25rem;
-      min-height: 120px;
+      padding: 1rem 1.25rem !important;
+      min-height: 130px !important;
       resize: vertical;
       color: var(--cart-green);
       font-family: var(--font-body-family);
-      font-size: 1rem;
+      font-size: 1.6rem !important;
+      line-height: 1.2 !important;
       outline: none;
       transition: border-color 0.2s ease;
     }
@@ -494,6 +495,7 @@
 
     .wtp-cart-note-input::placeholder {
       color: var(--cart-muted);
+      font-size: 1.6rem !important;
     }
 
     @media screen and (max-width: 480px) {
@@ -831,6 +833,10 @@
                               </div>
                             {%- endfor -%}
                           {%- endif -%}
+
+                          <div class="product-option">
+                            {{ item.original_price | money }}
+                          </div>
 
                           {%- for property in item.properties -%}
                             {%- assign property_first_char = property.first | slice: 0 -%}

@@ -89,19 +89,20 @@
   }
 
   .wtp-cart-note__body.is-open {
-    max-height: 200px;
+    max-height: 500px;
     padding-bottom: 1.25rem;
   }
 
   .wtp-cart-note__textarea {
     width: 100%;
-    min-height: 100px;
+    min-height: 200px;
     background: transparent;
     border: 1.5px solid var(--cart-border);
     border-radius: 12px;
-    padding: 0.85rem 1rem;
+    padding: 1.5rem 1.5rem;
     font-family: var(--font-body-family);
-    font-size: 1.3rem;
+    font-size: 3.5rem !important;
+    line-height: 1.2;
     color: var(--cart-green);
     resize: vertical;
     outline: none;
@@ -115,6 +116,7 @@
 
   .wtp-cart-note__textarea::placeholder {
     color: rgba(27, 58, 45, 0.3);
+    font-size: 3.5rem !important;
   }
 
   /* ════════════════════════════════════════
@@ -280,33 +282,8 @@
 >
   <div class="page-width">
     <div class="cart__footer isolate section-{{ section.id }}-padding">
-
       {%- comment -%} ── ORDER NOTE — Accordion ── {%- endcomment -%}
-      {%- if settings.show_cart_note -%}
-        <div class="wtp-cart-note">
-          <button
-            type="button"
-            class="wtp-cart-note__toggle"
-            aria-expanded="false"
-            aria-controls="wtp-cart-note-body"
-            id="wtp-cart-note-btn"
-          >
-            <span>{{ 'sections.cart.note' | t }}</span>
-            <span class="wtp-cart-note__icon" aria-hidden="true">+</span>
-          </button>
-          <div class="wtp-cart-note__body" id="wtp-cart-note-body" aria-labelledby="wtp-cart-note-btn" role="region">
-            <cart-note>
-              <textarea
-                class="wtp-cart-note__textarea"
-                name="note"
-                form="cart"
-                id="Cart-note"
-                placeholder="{{ 'sections.cart.note' | t }}"
-              >{{ cart.note }}</textarea>
-            </cart-note>
-          </div>
-        </div>
-      {%- endif -%}
+
 
       {%- comment -%} ── SUMMARY BOX ── {%- endcomment -%}
       <div class="cart__blocks">
@@ -339,25 +316,37 @@
                     {%- if shop.shipping_policy.body == blank -%}
                       {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_without_policy' | t }}
                     {%- else -%}
-                      {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
+                      {{
+                        'sections.cart.duties_and_taxes_included_shipping_at_checkout_with_policy_html'
+                        | t: link: shop.shipping_policy.url
+                      }}
                     {%- endif -%}
                   {%- elsif cart.duties_included == false and cart.taxes_included -%}
                     {%- if shop.shipping_policy.body == blank -%}
                       {{ 'sections.cart.taxes_included_shipping_at_checkout_without_policy' | t }}
                     {%- else -%}
-                      {{ 'sections.cart.taxes_included_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
+                      {{
+                        'sections.cart.taxes_included_shipping_at_checkout_with_policy_html'
+                        | t: link: shop.shipping_policy.url
+                      }}
                     {%- endif -%}
                   {%- elsif cart.duties_included and cart.taxes_included == false -%}
                     {%- if shop.shipping_policy.body == blank -%}
                       {{ 'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
                     {%- else -%}
-                      {{ 'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
+                      {{
+                        'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html'
+                        | t: link: shop.shipping_policy.url
+                      }}
                     {%- endif -%}
                   {%- elsif cart.duties_included == false and cart.taxes_included == false -%}
                     {%- if shop.shipping_policy.body == blank -%}
                       {{ 'sections.cart.taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
                     {%- else -%}
-                      {{ 'sections.cart.taxes_at_checkout_shipping_at_checkout_with_policy_html' | t: link: shop.shipping_policy.url }}
+                      {{
+                        'sections.cart.taxes_at_checkout_shipping_at_checkout_with_policy_html'
+                        | t: link: shop.shipping_policy.url
+                      }}
                     {%- endif -%}
                   {%- endif -%}
                 </small>
@@ -371,7 +360,9 @@
                     id="checkout"
                     class="cart__checkout-button button"
                     name="checkout"
-                    {% if cart == empty %}disabled{% endif %}
+                    {% if cart == empty %}
+                      disabled
+                    {% endif %}
                     form="cart"
                   >
                     {{ 'sections.cart.checkout' | t }}
@@ -389,11 +380,9 @@
 
         <div id="cart-errors"></div>
       </div>
-
     </div>
   </div>
 </div>
-
 
 <script>
   (function () {
