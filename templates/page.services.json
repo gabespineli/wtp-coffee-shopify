@@ -118,7 +118,7 @@
         "title": "Ecosystem of Care",
         "subtitle": "Cultivating community through every pour.",
         "btn_label": "Inquire for Bookings →",
-        "btn_url": ""
+        "btn_url": "shopify://pages/bookings"
       }
     },
     "services_cta_banner_q6XVqi": {
@@ -128,7 +128,7 @@
         "heading": "Ready to Work With Us?",
         "subtitle": "Whether it's an event, a wholesale partnership, or a custom blend — let's talk.",
         "btn_label": "Get in Touch →",
-        "btn_url": ""
+        "btn_url": "shopify://pages/bookings"
       }
     }
   },
