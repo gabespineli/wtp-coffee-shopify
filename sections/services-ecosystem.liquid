@@ -1,6 +1,6 @@
 {%- style -%}
   /* ═══════════════════════════════════════
-     WTP — Ecosystem of Care
+     WTP — Ecosystem of Care (Numbered)
   ═══════════════════════════════════════ */
   #wtp-ecosystem-{{ section.id }} {
     background: #F5F0E8;
@@ -8,7 +8,7 @@
   }
 
   .eco-inner {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
   }
 
@@ -39,55 +39,61 @@
   .eco-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    border-top: 1px solid rgba(27, 58, 45, 0.12);
+    gap: 3rem;
     margin-bottom: 4.5rem;
   }
 
   .eco-item {
-    padding: 3rem 3rem 3rem 0;
-    border-right: 1px solid rgba(27, 58, 45, 0.12);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    border-top: 2px solid #C8A96E;
+    padding-top: 2.5rem;
   }
 
-  .eco-item:first-child {
-    padding-left: 0;
-  }
-
-  .eco-item:last-child {
-    border-right: none;
-    padding-right: 0;
-    padding-left: 3rem;
-  }
-
-  .eco-item:not(:first-child):not(:last-child) {
-    padding-left: 3rem;
+  .eco-item-number {
+    font-family: var(--font-heading-family);
+    font-size: 3rem;
+    font-weight: 700;
+    color: #C8A96E;
+    line-height: 1;
+    margin: 0 0 1.5rem;
   }
 
   .eco-item-title {
     font-family: var(--font-heading-family);
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     font-weight: 700;
     line-height: 1.15;
     color: #1B3A2D;
-    margin: 0;
-  }
-
-  .eco-accent-line {
-    width: 36px;
-    height: 2.5px;
-    background: #C8A96E;
-    border-radius: 2px;
-    flex-shrink: 0;
+    margin: 0 0 1rem;
   }
 
   .eco-item-desc {
     font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
+    font-size: 1.05rem;
     line-height: 1.75;
-    color: rgba(27, 58, 45, 0.7);
+    color: rgba(27, 58, 45, 0.8);
+    margin: 0 0 1.5rem;
+  }
+
+  .eco-item-bullets {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #1B3A2D;
+  }
+
+  .eco-item-bullets ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    list-style-type: disc;
+  }
+
+  .eco-item-bullets li {
+    margin-bottom: 0.5rem;
+  }
+
+  .eco-item-bullets p {
     margin: 0;
   }
 
@@ -95,6 +101,7 @@
   .eco-cta-wrap {
     display: flex;
     justify-content: center;
+    margin-top: 2rem;
   }
 
   .eco-cta {
@@ -124,22 +131,10 @@
   /* ═══════════════════════════════════════
      Responsive — Mobile
   ═══════════════════════════════════════ */
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 900px) {
     .eco-grid {
       grid-template-columns: 1fr;
-    }
-
-    .eco-item,
-    .eco-item:first-child,
-    .eco-item:last-child,
-    .eco-item:not(:first-child):not(:last-child) {
-      padding: 2.5rem 0;
-      border-right: none;
-      border-bottom: 1px solid rgba(27, 58, 45, 0.12);
-    }
-
-    .eco-item:last-child {
-      border-bottom: none;
+      gap: 4rem;
     }
   }
 
@@ -147,11 +142,9 @@
     #wtp-ecosystem-{{ section.id }} {
       padding: 5rem 1.25rem;
     }
-
     .eco-header {
-      margin-bottom: 3rem;
+      margin-bottom: 3.5rem;
     }
-
     .eco-cta {
       width: 100%;
     }
@@ -175,13 +168,22 @@
     {%- if section.blocks.size > 0 -%}
       <div class="eco-grid">
         {%- for block in section.blocks -%}
+          {%- assign item_num = forloop.index | prepend: '0' | slice: -2, 2 -%}
           <div class="eco-item" {{ block.shopify_attributes }}>
+            <span class="eco-item-number">{{ item_num }}</span>
+            
             {%- if block.settings.item_title != blank -%}
               <h3 class="eco-item-title">{{ block.settings.item_title | escape }}</h3>
             {%- endif -%}
-            <div class="eco-accent-line" aria-hidden="true"></div>
+            
             {%- if block.settings.item_desc != blank -%}
               <p class="eco-item-desc">{{ block.settings.item_desc | escape }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.item_bullets != blank -%}
+              <div class="eco-item-bullets">
+                {{ block.settings.item_bullets }}
+              </div>
             {%- endif -%}
           </div>
         {%- endfor -%}
@@ -250,13 +252,19 @@
           "type": "text",
           "id": "item_title",
           "label": "Title",
-          "default": "B2B Solutions"
+          "default": "B2B Solutions (Wholesale)"
         },
         {
           "type": "textarea",
           "id": "item_desc",
           "label": "Description",
           "default": "Tailored coffee programs for businesses — from office setups to retail partnerships built on quality and consistency."
+        },
+        {
+          "type": "richtext",
+          "id": "item_bullets",
+          "label": "Bullet List",
+          "default": "<ul><li>Custom Blends</li><li>White Labelling</li></ul>"
         }
       ]
     }
@@ -269,22 +277,25 @@
         {
           "type": "service_item",
           "settings": {
-            "item_title": "B2B Solutions",
-            "item_desc": "Tailored coffee programs for businesses — from office setups to retail partnerships built on quality and consistency."
+            "item_title": "B2B Solutions (Wholesale)",
+            "item_desc": "Tailored coffee programs for businesses — from office setups to retail partnerships built on quality and consistency.",
+            "item_bullets": "<ul><li>Custom Blends</li><li>White Labelling</li></ul>"
           }
         },
         {
           "type": "service_item",
           "settings": {
-            "item_title": "Coffee Consultancy",
-            "item_desc": "Expert guidance on sourcing, roasting, and brewing — helping cafés and brands elevate their coffee experience."
+            "item_title": "Coffee Consultancy + Partnership",
+            "item_desc": "Expert guidance on sourcing, roasting, and brewing — helping cafés and brands elevate their coffee experience.",
+            "item_bullets": "<ul><li>Basic Coffee Training</li><li>Menu Development</li></ul>"
           }
         },
         {
           "type": "service_item",
           "settings": {
-            "item_title": "Event Services",
-            "item_desc": "From intimate gatherings to large-scale functions, our mobile coffee cart brings the full WTP experience to your event."
+            "item_title": "Event Coffee Services (Coffee Cart)",
+            "item_desc": "From intimate gatherings to large-scale functions, our mobile coffee cart brings the full WTP experience to your event.",
+            "item_bullets": "<ul><li>Mobile coffee cart for weddings</li><li>Corporate events</li><li>Private gatherings</li></ul>"
           }
         }
       ]
