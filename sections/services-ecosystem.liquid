@@ -180,11 +180,15 @@
               <p class="eco-item-desc">{{ block.settings.item_desc | escape }}</p>
             {%- endif -%}
 
-            {%- if block.settings.item_bullets != blank -%}
-              <div class="eco-item-bullets">
-                {{ block.settings.item_bullets }}
-              </div>
-            {%- endif -%}
+            <div class="eco-item-bullets">
+              <ul>
+                {%- if block.settings.bullet_1 != blank -%}<li>{{ block.settings.bullet_1 | escape }}</li>{%- endif -%}
+                {%- if block.settings.bullet_2 != blank -%}<li>{{ block.settings.bullet_2 | escape }}</li>{%- endif -%}
+                {%- if block.settings.bullet_3 != blank -%}<li>{{ block.settings.bullet_3 | escape }}</li>{%- endif -%}
+                {%- if block.settings.bullet_4 != blank -%}<li>{{ block.settings.bullet_4 | escape }}</li>{%- endif -%}
+                {%- if block.settings.bullet_5 != blank -%}<li>{{ block.settings.bullet_5 | escape }}</li>{%- endif -%}
+              </ul>
+            </div>
           </div>
         {%- endfor -%}
       </div>
@@ -261,10 +265,33 @@
           "default": "Tailored coffee programs for businesses — from office setups to retail partnerships built on quality and consistency."
         },
         {
-          "type": "richtext",
-          "id": "item_bullets",
-          "label": "Bullet List",
-          "default": "<ul><li>Custom Blends</li><li>White Labelling</li></ul>"
+          "type": "header",
+          "content": "Bullets"
+        },
+        {
+          "type": "text",
+          "id": "bullet_1",
+          "label": "Bullet 1"
+        },
+        {
+          "type": "text",
+          "id": "bullet_2",
+          "label": "Bullet 2"
+        },
+        {
+          "type": "text",
+          "id": "bullet_3",
+          "label": "Bullet 3"
+        },
+        {
+          "type": "text",
+          "id": "bullet_4",
+          "label": "Bullet 4"
+        },
+        {
+          "type": "text",
+          "id": "bullet_5",
+          "label": "Bullet 5"
         }
       ]
     }
@@ -279,7 +306,8 @@
           "settings": {
             "item_title": "B2B Solutions (Wholesale)",
             "item_desc": "Tailored coffee programs for businesses — from office setups to retail partnerships built on quality and consistency.",
-            "item_bullets": "<ul><li>Custom Blends</li><li>White Labelling</li></ul>"
+            "bullet_1": "Custom Blends",
+            "bullet_2": "White Labelling"
           }
         },
         {
@@ -287,7 +315,8 @@
           "settings": {
             "item_title": "Coffee Consultancy + Partnership",
             "item_desc": "Expert guidance on sourcing, roasting, and brewing — helping cafés and brands elevate their coffee experience.",
-            "item_bullets": "<ul><li>Basic Coffee Training</li><li>Menu Development</li></ul>"
+            "bullet_1": "Basic Coffee Training",
+            "bullet_2": "Menu Development"
           }
         },
         {
@@ -295,7 +324,9 @@
           "settings": {
             "item_title": "Event Coffee Services (Coffee Cart)",
             "item_desc": "From intimate gatherings to large-scale functions, our mobile coffee cart brings the full WTP experience to your event.",
-            "item_bullets": "<ul><li>Mobile coffee cart for weddings</li><li>Corporate events</li><li>Private gatherings</li></ul>"
+            "bullet_1": "Mobile coffee cart for weddings",
+            "bullet_2": "Corporate events",
+            "bullet_3": "Private gatherings"
           }
         }
       ]
