@@ -81,20 +81,23 @@
     font-size: 1rem;
     line-height: 1.6;
     color: #1B3A2D;
+    margin-top: auto; /* Pushes bullets to bottom if needed, or just provides gap */
+    padding-top: 1rem;
   }
 
   .eco-item-bullets ul {
     margin: 0;
-    padding-left: 1.25rem;
+    padding: 0;
     list-style-type: disc;
+    list-style-position: inside;
   }
 
   .eco-item-bullets li {
     margin-bottom: 0.5rem;
   }
 
-  .eco-item-bullets p {
-    margin: 0;
+  .eco-item-bullets li::marker {
+    color: #C8A96E; /* Gold markers for better visual feedback */
   }
 
   /* ── Shared CTA ── */
@@ -180,15 +183,19 @@
               <p class="eco-item-desc">{{ block.settings.item_desc | escape }}</p>
             {%- endif -%}
 
-            <div class="eco-item-bullets">
-              <ul>
-                {%- if block.settings.bullet_1 != blank -%}<li>{{ block.settings.bullet_1 | escape }}</li>{%- endif -%}
-                {%- if block.settings.bullet_2 != blank -%}<li>{{ block.settings.bullet_2 | escape }}</li>{%- endif -%}
-                {%- if block.settings.bullet_3 != blank -%}<li>{{ block.settings.bullet_3 | escape }}</li>{%- endif -%}
-                {%- if block.settings.bullet_4 != blank -%}<li>{{ block.settings.bullet_4 | escape }}</li>{%- endif -%}
-                {%- if block.settings.bullet_5 != blank -%}<li>{{ block.settings.bullet_5 | escape }}</li>{%- endif -%}
-              </ul>
-            </div>
+            {%- capture bullets_html -%}
+              {%- if block.settings.bullet_1 != blank -%}<li>{{ block.settings.bullet_1 | escape }}</li>{%- endif -%}
+              {%- if block.settings.bullet_2 != blank -%}<li>{{ block.settings.bullet_2 | escape }}</li>{%- endif -%}
+              {%- if block.settings.bullet_3 != blank -%}<li>{{ block.settings.bullet_3 | escape }}</li>{%- endif -%}
+              {%- if block.settings.bullet_4 != blank -%}<li>{{ block.settings.bullet_4 | escape }}</li>{%- endif -%}
+              {%- if block.settings.bullet_5 != blank -%}<li>{{ block.settings.bullet_5 | escape }}</li>{%- endif -%}
+            {%- endcapture -%}
+
+            {%- if bullets_html != blank -%}
+              <div class="eco-item-bullets">
+                <ul>{{ bullets_html }}</ul>
+              </div>
+            {%- endif -%}
           </div>
         {%- endfor -%}
       </div>
