@@ -1,33 +1,39 @@
 {%- style -%}
   #wtp-catering-teaser-{{ section.id }} {
-    background: {{ section.settings.bg_color }};
+    background: #F5F0E8;
     padding: 6rem 5%;
-    color: {{ section.settings.text_color }};
     overflow: hidden;
   }
 
-  .ct-container {
-    max-width: 1380px;
+  .ct-card {
+    max-width: 1200px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 7rem;
-    align-items: center;
+    border-radius: 16px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.08);
+    overflow: hidden;
+    background: #1B3A2D;
   }
 
-  /* ── Text Side ── */
-  .ct-text {
+  /* ── Left Column (Text) ── */
+  .ct-left-col {
+    padding: 48px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 1.5rem;
+    background: #1B3A2D;
+    color: #F5F0E8;
   }
 
   .ct-eyebrow {
+    font-family: 'Poppins', sans-serif;
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: {{ section.settings.accent_color }};
+    color: #C8A96E;
     margin: 0;
   }
 
@@ -35,17 +41,17 @@
     font-family: var(--font-heading-family);
     font-size: clamp(2.4rem, 4vw, 3.5rem);
     font-weight: 700;
-    font-style: italic;
     line-height: 1.1;
-    color: {{ section.settings.text_color }};
+    color: #F5F0E8;
     margin: 0;
   }
 
   .ct-desc {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: {{ section.settings.text_color }};
-    opacity: 0.8;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #F5F0E8;
+    opacity: 0.85;
     margin: 0;
     max-width: 520px;
   }
@@ -54,76 +60,74 @@
   .ct-bullets {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.2rem;
     margin: 0.5rem 0;
   }
 
   .ct-bullet {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.05rem;
-    font-weight: 600;
-    color: {{ section.settings.text_color }};
+    font-weight: 500;
+    color: #F5F0E8;
   }
 
   .ct-bullet-icon {
-    width: 42px;
-    height: 42px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    border: 1.5px solid {{ section.settings.accent_color }};
+    background: rgba(245, 240, 232, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    color: {{ section.settings.accent_color }};
+    color: #C8A96E;
   }
 
   .ct-bullet-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
   }
 
   /* ── CTA Button ── */
   .ct-cta {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: center;
     align-self: flex-start;
-    padding: 1.1rem 2.5rem;
-    background: {{ section.settings.text_color }};
-    color: {{ section.settings.bg_color }};
+    padding: 1rem 2.5rem;
+    background: transparent;
+    color: #F5F0E8;
     border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.85rem;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     text-decoration: none;
-    border: 1.5px solid {{ section.settings.text_color }};
-    transition: background 0.25s ease, color 0.25s ease;
-    margin-top: 0.5rem;
+    border: 1.5px solid #F5F0E8;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    margin-top: 1rem;
   }
 
   .ct-cta:hover {
-    background: transparent;
-    color: {{ section.settings.text_color }};
+    background: #C8A96E;
+    color: #1B3A2D;
+    border-color: #C8A96E;
   }
 
-  /* ── Image Side ── */
-  .ct-image-col {
+  /* ── Right Column (Image) ── */
+  .ct-right-col {
     position: relative;
-  }
-
-  .ct-img-wrap {
     width: 100%;
-    aspect-ratio: 4/5;
-    border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+    height: 100%;
+    min-height: 450px;
+    display: flex;
   }
 
-  .ct-img-wrap img {
+  .ct-right-col img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -133,7 +137,7 @@
   .ct-img-placeholder {
     width: 100%;
     height: 100%;
-    background: rgba(255,255,255,0.06);
+    background: #E8E2D5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -142,93 +146,86 @@
   .ct-img-placeholder svg {
     width: 60px;
     height: 60px;
-    opacity: 0.2;
-    color: #fff;
+    opacity: 0.5;
+    color: #C8A96E;
   }
 
   /* ── Overlapping Quote Card ── */
   .ct-quote-card {
     position: absolute;
-    bottom: -2rem;
-    left: -2.5rem;
-    background: #FFFFFF;
-    border-radius: 16px;
-    padding: 2rem 2.2rem;
+    bottom: 2rem;
+    right: 2rem;
+    background: #F5F0E8;
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
     max-width: 320px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
     z-index: 2;
   }
 
   .ct-quote-mark {
     font-family: var(--font-heading-family);
-    font-size: 4rem;
-    color: {{ section.settings.accent_color }};
+    font-size: 3.5rem;
+    color: #C8A96E;
     line-height: 0.5;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     display: block;
-    opacity: 0.5;
   }
 
   .ct-quote-text {
     font-family: var(--font-heading-family);
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-style: italic;
     font-weight: 600;
-    line-height: 1.5;
+    line-height: 1.4;
     color: #1B3A2D;
     margin: 0 0 1rem;
   }
 
   .ct-quote-attr {
+    font-family: 'Poppins', sans-serif;
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: {{ section.settings.accent_color }};
+    color: #C8A96E;
     margin: 0;
   }
 
   /* ── Mobile ── */
   @media screen and (max-width: 900px) {
-    .ct-container {
+    .ct-card {
       grid-template-columns: 1fr;
-      gap: 4rem;
     }
 
-    .ct-image-col {
-      order: -1;
-      padding-bottom: 3.5rem;
+    .ct-left-col {
+      padding: 3rem 2rem;
     }
 
-    .ct-img-wrap {
-      aspect-ratio: 3/2;
+    .ct-right-col {
+      min-height: 400px;
     }
 
     .ct-quote-card {
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: -3rem;
-      width: 90%;
-      max-width: 380px;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      left: 1.5rem;
+      max-width: none;
     }
   }
 
   @media screen and (max-width: 600px) {
     #wtp-catering-teaser-{{ section.id }} {
-      padding: 5rem 5%;
-    }
-
-    .ct-image-col {
-      padding-bottom: 4rem;
+      padding: 4rem 1.25rem;
     }
   }
 {%- endstyle -%}
 
 <section id="wtp-catering-teaser-{{ section.id }}" aria-label="{{ section.settings.heading | escape }}">
-  <div class="ct-container">
+  <div class="ct-card">
 
     {%- comment -%} ── Text Column ── {%- endcomment -%}
-    <div class="ct-text">
+    <div class="ct-left-col">
       {%- if section.settings.eyebrow != blank -%}
         <p class="ct-eyebrow">{{ section.settings.eyebrow | escape }}</p>
       {%- endif -%}
@@ -292,23 +289,17 @@
           {%- if section.settings.button_url == blank -%} aria-disabled="true" {%- endif -%}
         >
           {{ section.settings.button_label | escape }}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="16" height="16">
-            <line x1="5" y1="12" x2="19" y2="12"/>
-            <polyline points="12 5 19 12 12 19"/>
-          </svg>
         </a>
       {%- endif -%}
     </div>
 
     {%- comment -%} ── Image Column ── {%- endcomment -%}
-    <div class="ct-image-col">
-      <div class="ct-img-wrap">
-        {%- if section.settings.image != blank -%}
-          {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy' }}
-        {%- else -%}
-          <div class="ct-img-placeholder">{{ 'lifestyle-2' | placeholder_svg_tag }}</div>
-        {%- endif -%}
-      </div>
+    <div class="ct-right-col">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy' }}
+      {%- else -%}
+        <div class="ct-img-placeholder">{{ 'lifestyle-2' | placeholder_svg_tag }}</div>
+      {%- endif -%}
 
       {%- if section.settings.quote != blank -%}
         <div class="ct-quote-card">
@@ -330,41 +321,19 @@
   "settings": [
     {
       "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background Color",
-      "default": "#1B3A2D"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accent / Eyebrow Color",
-      "default": "#C8A96E"
-    },
-    {
-      "type": "header",
       "content": "Text Content"
     },
     {
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "Event Coffee Services"
+      "default": "EXPERIENCE EXCELLENCE ANYWHERE"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Bring WTP to Your Event."
+      "default": "Host an Event with WTP Coffee."
     },
     {
       "type": "textarea",
@@ -376,19 +345,19 @@
       "type": "text",
       "id": "bullet_1",
       "label": "Bullet 1 Label",
-      "default": "Coffee Cart — Mobile specialty bar for your event"
+      "default": "Coffee Cart Service"
     },
     {
       "type": "text",
       "id": "bullet_2",
       "label": "Bullet 2 Label",
-      "default": "Third Space — Host at our café in Alabang or Bridgetowne"
+      "default": "Wholesale Programs"
     },
     {
       "type": "text",
       "id": "bullet_3",
       "label": "Bullet 3 Label",
-      "default": "Wholesale & Custom Blends — For cafés and businesses"
+      "default": "Wholesale & Custom Blends"
     },
     {
       "type": "header",
@@ -398,7 +367,7 @@
       "type": "text",
       "id": "button_label",
       "label": "Button Label",
-      "default": "Inquire for Bookings"
+      "default": "Inquire for Bookings →"
     },
     {
       "type": "url",

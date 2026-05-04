@@ -1,0 +1,197 @@
+{%- style -%}
+  #wtp-third-space-teaser-{{ section.id }} {
+    background: #1B3A2D;
+    padding: 8rem 5%;
+    text-align: center;
+  }
+
+  .ts-teaser-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ts-eyebrow {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #C8A96E;
+    margin: 0 0 1.5rem;
+  }
+
+  .ts-heading {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #F5F0E8;
+    margin: 0 0 1.5rem;
+  }
+
+  .ts-heading em {
+    font-style: italic;
+  }
+
+  .ts-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #F5F0E8;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 0 3rem;
+  }
+
+  .ts-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .ts-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.1rem 2.5rem;
+    background: transparent;
+    color: #F5F0E8;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1.5px solid #F5F0E8;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .ts-button:hover {
+    background: #C8A96E;
+    color: #1B3A2D;
+    border-color: #C8A96E;
+  }
+
+  /* ── Mobile ── */
+  @media screen and (max-width: 600px) {
+    #wtp-third-space-teaser-{{ section.id }} {
+      padding: 5rem 5%;
+    }
+
+    .ts-actions {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .ts-button {
+      width: 100%;
+    }
+  }
+{%- endstyle -%}
+
+<section id="wtp-third-space-teaser-{{ section.id }}" aria-label="{{ section.settings.heading | escape }}">
+  <div class="ts-teaser-inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="ts-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="ts-heading">
+        {{ section.settings.heading }}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.settings.subtitle != blank -%}
+      <p class="ts-subtitle">{{ section.settings.subtitle | escape }}</p>
+    {%- endif -%}
+
+    <div class="ts-actions">
+      {%- if section.settings.btn_1_label != blank -%}
+        <a 
+          href="{{ section.settings.btn_1_url }}" 
+          class="ts-button"
+          {% if section.settings.btn_1_url == blank %}aria-disabled="true"{% endif %}
+        >
+          {{ section.settings.btn_1_label | escape }}
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.btn_2_label != blank -%}
+        <a 
+          href="{{ section.settings.btn_2_url }}" 
+          class="ts-button"
+          {% if section.settings.btn_2_url == blank %}aria-disabled="true"{% endif %}
+        >
+          {{ section.settings.btn_2_label | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Third Space Teaser",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "THE THIRD SPACE"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading (HTML allowed)",
+      "default": "Find Your <em>Third Place.</em>",
+      "info": "Use <em> tags to italicize text."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "A quiet corner to work, a table for a meeting, or the entire space for an event — we have a spot for you."
+    },
+    {
+      "type": "header",
+      "content": "Button 1"
+    },
+    {
+      "type": "text",
+      "id": "btn_1_label",
+      "label": "Button 1 Label",
+      "default": "Reserve at Opus"
+    },
+    {
+      "type": "url",
+      "id": "btn_1_url",
+      "label": "Button 1 URL"
+    },
+    {
+      "type": "header",
+      "content": "Button 2"
+    },
+    {
+      "type": "text",
+      "id": "btn_2_label",
+      "label": "Button 2 Label",
+      "default": "Reserve at Alabang"
+    },
+    {
+      "type": "url",
+      "id": "btn_2_url",
+      "label": "Button 2 URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Third Space Teaser"
+    }
+  ]
+}
+{% endschema %}

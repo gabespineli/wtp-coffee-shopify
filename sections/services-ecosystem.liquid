@@ -1,0 +1,294 @@
+{%- style -%}
+  /* ═══════════════════════════════════════
+     WTP — Ecosystem of Care
+  ═══════════════════════════════════════ */
+  #wtp-ecosystem-{{ section.id }} {
+    background: #F5F0E8;
+    padding: 8rem 5%;
+  }
+
+  .eco-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── Section Header ── */
+  .eco-header {
+    margin-bottom: 5rem;
+    max-width: 640px;
+  }
+
+  .eco-title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.6rem, 5vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1.08;
+    color: #1B3A2D;
+    margin: 0 0 1rem;
+  }
+
+  .eco-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: rgba(27, 58, 45, 0.65);
+    margin: 0;
+  }
+
+  /* ── Three-column grid ── */
+  .eco-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid rgba(27, 58, 45, 0.12);
+    margin-bottom: 4.5rem;
+  }
+
+  .eco-item {
+    padding: 3rem 3rem 3rem 0;
+    border-right: 1px solid rgba(27, 58, 45, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .eco-item:first-child {
+    padding-left: 0;
+  }
+
+  .eco-item:last-child {
+    border-right: none;
+    padding-right: 0;
+    padding-left: 3rem;
+  }
+
+  .eco-item:not(:first-child):not(:last-child) {
+    padding-left: 3rem;
+  }
+
+  .eco-item-title {
+    font-family: var(--font-heading-family);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #1B3A2D;
+    margin: 0;
+  }
+
+  .eco-accent-line {
+    width: 36px;
+    height: 2.5px;
+    background: #C8A96E;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .eco-item-desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: rgba(27, 58, 45, 0.7);
+    margin: 0;
+  }
+
+  /* ── Shared CTA ── */
+  .eco-cta-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  .eco-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.1rem 2.8rem;
+    background: #1B3A2D;
+    color: #F5F0E8;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1.5px solid #1B3A2D;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .eco-cta:hover {
+    background: #C8A96E;
+    border-color: #C8A96E;
+    color: #1B3A2D;
+  }
+
+  /* ═══════════════════════════════════════
+     Responsive — Mobile
+  ═══════════════════════════════════════ */
+  @media screen and (max-width: 768px) {
+    .eco-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .eco-item,
+    .eco-item:first-child,
+    .eco-item:last-child,
+    .eco-item:not(:first-child):not(:last-child) {
+      padding: 2.5rem 0;
+      border-right: none;
+      border-bottom: 1px solid rgba(27, 58, 45, 0.12);
+    }
+
+    .eco-item:last-child {
+      border-bottom: none;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    #wtp-ecosystem-{{ section.id }} {
+      padding: 5rem 1.25rem;
+    }
+
+    .eco-header {
+      margin-bottom: 3rem;
+    }
+
+    .eco-cta {
+      width: 100%;
+    }
+  }
+{%- endstyle -%}
+
+<section id="wtp-ecosystem-{{ section.id }}" aria-label="{{ section.settings.title | escape }}">
+  <div class="eco-inner">
+
+    {%- comment -%} ── Section Header ── {%- endcomment -%}
+    <div class="eco-header">
+      {%- if section.settings.title != blank -%}
+        <h2 class="eco-title">{{ section.settings.title | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="eco-subtitle">{{ section.settings.subtitle | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ── Three-column grid ── {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="eco-grid">
+        {%- for block in section.blocks -%}
+          <div class="eco-item" {{ block.shopify_attributes }}>
+            {%- if block.settings.item_title != blank -%}
+              <h3 class="eco-item-title">{{ block.settings.item_title | escape }}</h3>
+            {%- endif -%}
+            <div class="eco-accent-line" aria-hidden="true"></div>
+            {%- if block.settings.item_desc != blank -%}
+              <p class="eco-item-desc">{{ block.settings.item_desc | escape }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── Shared CTA ── {%- endcomment -%}
+    {%- if section.settings.btn_label != blank -%}
+      <div class="eco-cta-wrap">
+        <a
+          href="{{ section.settings.btn_url }}"
+          class="eco-cta"
+          {% if section.settings.btn_url == blank %}aria-disabled="true"{% endif %}
+        >
+          {{ section.settings.btn_label | escape }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ecosystem of Care",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Ecosystem of Care"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Cultivating community through every pour."
+    },
+    {
+      "type": "header",
+      "content": "CTA Button"
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Inquire for Bookings →"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service_item",
+      "name": "Service Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "item_title",
+          "label": "Title",
+          "default": "B2B Solutions"
+        },
+        {
+          "type": "textarea",
+          "id": "item_desc",
+          "label": "Description",
+          "default": "Tailored coffee programs for businesses — from office setups to retail partnerships built on quality and consistency."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Ecosystem of Care",
+      "blocks": [
+        {
+          "type": "service_item",
+          "settings": {
+            "item_title": "B2B Solutions",
+            "item_desc": "Tailored coffee programs for businesses — from office setups to retail partnerships built on quality and consistency."
+          }
+        },
+        {
+          "type": "service_item",
+          "settings": {
+            "item_title": "Coffee Consultancy",
+            "item_desc": "Expert guidance on sourcing, roasting, and brewing — helping cafés and brands elevate their coffee experience."
+          }
+        },
+        {
+          "type": "service_item",
+          "settings": {
+            "item_title": "Event Services",
+            "item_desc": "From intimate gatherings to large-scale functions, our mobile coffee cart brings the full WTP experience to your event."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,723 @@
+{%- comment -%}
+  Third Space Reservation — WTP Coffee
+  Hero + two-column reservation form using Shopify's native contact form.
+  All content and images are schema-controlled.
+{%- endcomment -%}
+
+{%- style -%}
+  /* ═══════════════════════════════════════════════════
+     WTP Third Space — Design Tokens
+  ═══════════════════════════════════════════════════ */
+  .wtp-ts-section-{{ section.id }} {
+    --ts-cream:        #F5F0E8;
+    --ts-green:        #1B3A2D;
+    --ts-green-dark:   #0F2318;
+    --ts-gold:         #C8A96E;
+    --ts-gold-hover:   #B8965A;
+    --ts-muted:        rgba(27, 58, 45, 0.55);
+    --ts-border:       rgba(27, 58, 45, 0.14);
+    --ts-input-bg:     #FDFAF5;
+    --ts-shadow:       0 12px 48px rgba(27, 58, 45, 0.10);
+    --ts-radius-pill:  50px;
+    --ts-radius-card:  20px;
+    --ts-section-pad:  7rem;
+    font-family: 'Poppins', sans-serif;
+    color: var(--ts-green);
+  }
+
+  /* ═══════════════════════════════════════════════════
+     1. HERO BLOCK
+  ═══════════════════════════════════════════════════ */
+  .wtp-ts-hero {
+    position: relative;
+    width: 100%;
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .wtp-ts-hero__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+  }
+
+  .wtp-ts-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 35, 24, 0.55) 0%,
+      rgba(15, 35, 24, 0.72) 60%,
+      rgba(15, 35, 24, 0.85) 100%
+    );
+    z-index: 1;
+  }
+
+  .wtp-ts-hero__content {
+    position: relative;
+    z-index: 2;
+    max-width: 780px;
+    padding: 5rem 2rem;
+    margin: 0 auto;
+  }
+
+  .wtp-ts-hero__eyebrow {
+    display: inline-block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ts-gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .wtp-ts-hero__headline {
+    font-family: var(--font-heading-family);
+    color: #FFFFFF;
+    line-height: 1.08;
+    margin: 0 0 1.75rem;
+    font-size: clamp(3.2rem, 7vw, 6rem);
+  }
+
+  .wtp-ts-hero__headline em {
+    font-style: italic;
+    color: var(--ts-gold);
+  }
+
+  .wtp-ts-hero__subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    line-height: 1.75;
+    color: rgba(245, 240, 232, 0.85);
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     2. RESERVATION FORM BLOCK
+  ═══════════════════════════════════════════════════ */
+  .wtp-ts-form-section {
+    background: var(--ts-cream);
+    padding: var(--ts-section-pad) 5%;
+    box-sizing: border-box;
+  }
+
+  .wtp-ts-form-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  /* ── Left: Image Collage ── */
+  .wtp-ts-collage {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    position: sticky;
+    top: 5rem;
+  }
+
+  .wtp-ts-collage__item {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: rgba(27, 58, 45, 0.06);
+  }
+
+  .wtp-ts-collage__item:nth-child(1) { aspect-ratio: 16 / 9; }
+  .wtp-ts-collage__item:nth-child(2) { aspect-ratio: 4 / 3; }
+  .wtp-ts-collage__item:nth-child(3) { aspect-ratio: 1 / 1; }
+
+  .wtp-ts-collage__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .wtp-ts-collage__item:hover img {
+    transform: scale(1.04);
+  }
+
+  /* ── Right: Form card ── */
+  .wtp-ts-form-card {
+    background: #FFFFFF;
+    border-radius: var(--ts-radius-card);
+    box-shadow: var(--ts-shadow);
+    padding: 3.5rem 3rem;
+    border: 1px solid rgba(200, 169, 110, 0.15);
+  }
+
+  .wtp-ts-form-card__eyebrow {
+    display: block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ts-gold);
+    margin-bottom: 0.6rem;
+  }
+
+  .wtp-ts-form-card__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    color: var(--ts-green);
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+  }
+
+  .wtp-ts-form-card__subtitle {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--ts-muted);
+    margin: 0 0 2.5rem;
+    max-width: 50ch;
+  }
+
+  /* ── Grid of fields ── */
+  .wtp-ts-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem 1.5rem;
+  }
+
+  .wtp-ts-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .wtp-ts-field--full {
+    grid-column: 1 / -1;
+  }
+
+  .wtp-ts-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ts-green);
+    padding-left: 0.2rem;
+  }
+
+  .wtp-ts-input,
+  .wtp-ts-select,
+  .wtp-ts-textarea {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    color: var(--ts-green);
+    background: var(--ts-input-bg);
+    border: 1.5px solid var(--ts-border);
+    border-radius: var(--ts-radius-pill);
+    padding: 0.75rem 1.4rem;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    line-height: 1.5;
+  }
+
+  .wtp-ts-textarea {
+    border-radius: 16px;
+    min-height: 110px;
+    resize: vertical;
+  }
+
+  .wtp-ts-input::placeholder,
+  .wtp-ts-textarea::placeholder {
+    color: var(--ts-muted);
+    font-size: 0.88rem;
+  }
+
+  .wtp-ts-input:focus,
+  .wtp-ts-select:focus,
+  .wtp-ts-textarea:focus {
+    border-color: var(--ts-gold);
+    box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.18);
+  }
+
+  /* Custom select arrow */
+  .wtp-ts-select-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .wtp-ts-select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 1.3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--ts-gold);
+    pointer-events: none;
+  }
+
+  .wtp-ts-select-wrap .wtp-ts-select {
+    padding-right: 3rem;
+    cursor: pointer;
+  }
+
+  /* Date / time inputs */
+  .wtp-ts-input[type="date"],
+  .wtp-ts-input[type="time"] {
+    cursor: pointer;
+    color-scheme: light;
+  }
+
+  /* Number input */
+  .wtp-ts-input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  .wtp-ts-input[type="number"]::-webkit-inner-spin-button,
+  .wtp-ts-input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* ── Submit Button ── */
+  .wtp-ts-submit-wrap {
+    margin-top: 2rem;
+    grid-column: 1 / -1;
+  }
+
+  .wtp-ts-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ts-cream);
+    background: var(--ts-green);
+    border: 2px solid var(--ts-green);
+    border-radius: var(--ts-radius-pill);
+    padding: 1.1rem 2.8rem;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .wtp-ts-submit:hover {
+    background: var(--ts-gold);
+    border-color: var(--ts-gold);
+    color: var(--ts-green-dark);
+    transform: scale(1.02);
+  }
+
+  .wtp-ts-submit:active {
+    transform: scale(0.99);
+  }
+
+  /* ── Success / Error notice ── */
+  .wtp-ts-notice {
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    display: none;
+  }
+
+  .wtp-ts-notice--success {
+    background: rgba(27, 58, 45, 0.07);
+    border: 1px solid rgba(27, 58, 45, 0.2);
+    color: var(--ts-green);
+    display: block;
+  }
+
+  .wtp-ts-notice--error {
+    background: rgba(200, 80, 80, 0.07);
+    border: 1px solid rgba(200, 80, 80, 0.2);
+    color: #8B2020;
+    display: block;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     RESPONSIVE — Mobile
+  ═══════════════════════════════════════════════════ */
+  @media screen and (max-width: 900px) {
+    .wtp-ts-form-inner {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .wtp-ts-collage {
+      display: none; /* Hide collage on mobile as specified */
+    }
+
+    .wtp-ts-form-section {
+      padding: 4rem 1.25rem;
+    }
+
+    .wtp-ts-form-card {
+      padding: 2.25rem 1.5rem;
+      border-radius: 16px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .wtp-ts-form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .wtp-ts-field--full {
+      grid-column: 1;
+    }
+
+    .wtp-ts-hero__headline {
+      font-size: 2.8rem;
+    }
+  }
+{%- endstyle -%}
+
+<div class="wtp-ts-section-{{ section.id }}">
+
+  {%- comment -%} ── 1. HERO BLOCK ── {%- endcomment -%}
+  <section class="wtp-ts-hero" aria-label="Third Space Hero">
+    {%- if section.settings.hero_image != blank -%}
+      {{
+        section.settings.hero_image
+        | image_url: width: 2400
+        | image_tag:
+          class: 'wtp-ts-hero__bg',
+          loading: 'eager',
+          fetchpriority: 'high',
+          sizes: '100vw',
+          alt: section.settings.hero_image.alt | default: 'WTP Third Space'
+      }}
+    {%- else -%}
+      <div class="wtp-ts-hero__bg" style="background: var(--ts-green-dark);"></div>
+    {%- endif -%}
+
+    <div class="wtp-ts-hero__overlay" aria-hidden="true"></div>
+
+    <div class="wtp-ts-hero__content">
+      <span class="wtp-ts-hero__eyebrow">{{ section.settings.eyebrow_text | default: 'The Third Space' }}</span>
+
+      <h1 class="wtp-ts-hero__headline">
+        {{ section.settings.headline_line1 | default: 'Reserve Your' }}<br>
+        <em>{{ section.settings.headline_line2 | default: 'Space' }}</em>
+      </h1>
+
+      {%- if section.settings.hero_subtitle != blank -%}
+        <p class="wtp-ts-hero__subtitle">{{ section.settings.hero_subtitle }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- comment -%} ── 2. RESERVATION FORM BLOCK ── {%- endcomment -%}
+  <section class="wtp-ts-form-section" aria-label="Reservation Form">
+    <div class="wtp-ts-form-inner">
+
+      {%- comment -%} Left: Image Collage {%- endcomment -%}
+      <aside class="wtp-ts-collage" aria-hidden="true">
+        {%- if section.settings.collage_image_1 != blank -%}
+          <div class="wtp-ts-collage__item">
+            {{
+              section.settings.collage_image_1
+              | image_url: width: 800
+              | image_tag:
+                loading: 'lazy',
+                sizes: '(min-width: 900px) 35vw, 90vw',
+                alt: section.settings.collage_image_1.alt | default: 'WTP Coffee Space'
+            }}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.collage_image_2 != blank -%}
+          <div class="wtp-ts-collage__item">
+            {{
+              section.settings.collage_image_2
+              | image_url: width: 800
+              | image_tag:
+                loading: 'lazy',
+                sizes: '(min-width: 900px) 35vw, 90vw',
+                alt: section.settings.collage_image_2.alt | default: 'WTP Coffee Space'
+            }}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.collage_image_3 != blank -%}
+          <div class="wtp-ts-collage__item">
+            {{
+              section.settings.collage_image_3
+              | image_url: width: 800
+              | image_tag:
+                loading: 'lazy',
+                sizes: '(min-width: 900px) 35vw, 90vw',
+                alt: section.settings.collage_image_3.alt | default: 'WTP Coffee Space'
+            }}
+          </div>
+        {%- endif -%}
+      </aside>
+
+      {%- comment -%} Right: Form Card {%- endcomment -%}
+      <div class="wtp-ts-form-card">
+        <span class="wtp-ts-form-card__eyebrow">Make a Reservation</span>
+        <h2 class="wtp-ts-form-card__title">{{ section.settings.form_title | default: 'Reservation Details' }}</h2>
+        <p class="wtp-ts-form-card__subtitle">{{ section.settings.form_subtitle | default: 'Please fill out the form below to request a reservation at one of our locations.' }}</p>
+
+        {%- form 'contact', id: 'wtp-reservation-form', class: 'wtp-ts-contact-form' -%}
+
+          {%- if form.posted_successfully? -%}
+            <div class="wtp-ts-notice wtp-ts-notice--success" role="status">
+              ✓ &nbsp;Thank you! Your reservation request has been received. We'll get back to you within 24 hours to confirm your booking.
+            </div>
+          {%- elsif form.errors -%}
+            <div class="wtp-ts-notice wtp-ts-notice--error" role="alert">
+              There was an issue submitting your request. Please check the form and try again.
+            </div>
+          {%- endif -%}
+
+          <input type="hidden" name="contact[tags]" value="reservation-request">
+
+          <div class="wtp-ts-form-grid">
+
+            <div class="wtp-ts-field">
+              <label class="wtp-ts-label" for="wtp-ts-type">Reservation Type</label>
+              <div class="wtp-ts-select-wrap">
+                <select
+                  id="wtp-ts-type"
+                  name="contact[reservation_type]"
+                  class="wtp-ts-select"
+                  required
+                  aria-required="true"
+                >
+                  <option value="" disabled selected>Select type…</option>
+                  <option value="Table Reservation">Table Reservation</option>
+                  <option value="Event Reservation">Event Reservation</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="wtp-ts-field">
+              <label class="wtp-ts-label" for="wtp-ts-branch">Branch Location</label>
+              <div class="wtp-ts-select-wrap">
+                <select
+                  id="wtp-ts-branch"
+                  name="contact[branch_location]"
+                  class="wtp-ts-select"
+                  required
+                  aria-required="true"
+                >
+                  <option value="" disabled selected>Select branch…</option>
+                  <option value="WTP Opus">WTP Opus</option>
+                  <option value="WTP Alabang">WTP Alabang</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="wtp-ts-field">
+              <label class="wtp-ts-label" for="wtp-ts-date">Date</label>
+              <input
+                type="date"
+                id="wtp-ts-date"
+                name="contact[reservation_date]"
+                class="wtp-ts-input"
+                required
+                aria-required="true"
+              >
+            </div>
+
+            <div class="wtp-ts-field">
+              <label class="wtp-ts-label" for="wtp-ts-time">Time</label>
+              <input
+                type="time"
+                id="wtp-ts-time"
+                name="contact[reservation_time]"
+                class="wtp-ts-input"
+                required
+                aria-required="true"
+              >
+            </div>
+
+            <div class="wtp-ts-field">
+              <label class="wtp-ts-label" for="wtp-ts-pax">No. of Guests</label>
+              <input
+                type="number"
+                id="wtp-ts-pax"
+                name="contact[number_of_guests]"
+                class="wtp-ts-input"
+                min="1"
+                max="200"
+                placeholder="e.g. 4"
+                required
+                aria-required="true"
+              >
+            </div>
+
+            <div class="wtp-ts-field">
+              <label class="wtp-ts-label" for="wtp-ts-name">Contact Person</label>
+              <input
+                type="text"
+                id="wtp-ts-name"
+                name="contact[name]"
+                class="wtp-ts-input"
+                placeholder="Full Name"
+                required
+                aria-required="true"
+                autocomplete="name"
+              >
+            </div>
+
+            <div class="wtp-ts-field">
+              <label class="wtp-ts-label" for="wtp-ts-phone">Contact Number</label>
+              <input
+                type="tel"
+                id="wtp-ts-phone"
+                name="contact[phone]"
+                class="wtp-ts-input"
+                placeholder="+63 900 000 0000"
+                autocomplete="tel"
+              >
+            </div>
+
+            <div class="wtp-ts-field">
+              <label class="wtp-ts-label" for="wtp-ts-email">Email Address</label>
+              <input
+                type="email"
+                id="wtp-ts-email"
+                name="contact[email]"
+                class="wtp-ts-input"
+                placeholder="you@example.com"
+                required
+                aria-required="true"
+                autocomplete="email"
+              >
+            </div>
+
+            <div class="wtp-ts-field wtp-ts-field--full">
+              <label class="wtp-ts-label" for="wtp-ts-body">Special Requests</label>
+              <textarea
+                id="wtp-ts-body"
+                name="contact[body]"
+                class="wtp-ts-textarea"
+                placeholder="Any dietary restrictions, seating preferences, or occasion details?"
+                rows="4"
+              ></textarea>
+            </div>
+
+            <div class="wtp-ts-submit-wrap">
+              <button type="submit" class="wtp-ts-submit" id="wtp-ts-submit-btn">
+                <span>Request Reservation</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6"/>
+                </svg>
+              </button>
+            </div>
+
+          </div>
+        {%- endform -%}
+
+      </div>{%- comment -%} /.wtp-ts-form-card {%- endcomment -%}
+    </div>{%- comment -%} /.wtp-ts-form-inner {%- endcomment -%}
+  </section>
+
+</div>{%- comment -%} /.wtp-ts-section-{{ section.id }} {%- endcomment -%}
+
+{% schema %}
+{
+  "name": "Third Space Reservation",
+  "tag": "section",
+  "class": "wtp-third-space-reservation",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Block"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow Label",
+      "default": "The Third Space"
+    },
+    {
+      "type": "text",
+      "id": "headline_line1",
+      "label": "Headline — Line 1",
+      "default": "Reserve Your"
+    },
+    {
+      "type": "text",
+      "id": "headline_line2",
+      "label": "Headline — Line 2 (italic + gold)",
+      "default": "Space"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subtitle",
+      "label": "Hero Subtitle",
+      "default": "Whether you need a quiet corner to write, a table for a meeting, or the entire space for an event, we have a spot for you."
+    },
+    {
+      "type": "header",
+      "content": "Image Collage (Desktop Only)"
+    },
+    {
+      "type": "image_picker",
+      "id": "collage_image_1",
+      "label": "Collage Image 1 (Wide)"
+    },
+    {
+      "type": "image_picker",
+      "id": "collage_image_2",
+      "label": "Collage Image 2 (Medium)"
+    },
+    {
+      "type": "image_picker",
+      "id": "collage_image_3",
+      "label": "Collage Image 3 (Square)"
+    },
+    {
+      "type": "header",
+      "content": "Form Block"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Heading",
+      "default": "Reservation Details"
+    },
+    {
+      "type": "textarea",
+      "id": "form_subtitle",
+      "label": "Form Subheading",
+      "default": "Please fill out the form below to request a reservation at one of our locations."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Third Space Reservation"
+    }
+  ]
+}
+{% endschema %}
