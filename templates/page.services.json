@@ -93,21 +93,36 @@
           "type": "service_item",
           "settings": {
             "item_title": "B2B Solutions",
-            "item_desc": "Tailored coffee programs for businesses — from office setups to retail partnerships built on quality and consistency."
+            "item_desc": "Tailored coffee programs for businesses — from office setups to retail partnerships built on quality and consistency.",
+            "bullet_1": "Custom blends",
+            "bullet_2": "White Labelling",
+            "bullet_3": "",
+            "bullet_4": "",
+            "bullet_5": ""
           }
         },
         "service_item_inAGgG": {
           "type": "service_item",
           "settings": {
             "item_title": "Coffee Consultancy",
-            "item_desc": "Expert guidance on sourcing, roasting, and brewing — helping cafés and brands elevate their coffee experience."
+            "item_desc": "Expert guidance on sourcing, roasting, and brewing — helping cafés and brands elevate their coffee experience.",
+            "bullet_1": "Basic Coffee Training",
+            "bullet_2": "Menu Development",
+            "bullet_3": "",
+            "bullet_4": "",
+            "bullet_5": ""
           }
         },
         "service_item_bN4Tmn": {
           "type": "service_item",
           "settings": {
             "item_title": "Event Services",
-            "item_desc": "From intimate gatherings to large-scale functions, our mobile coffee cart brings the full WTP experience to your event."
+            "item_desc": "From intimate gatherings to large-scale functions, our mobile coffee cart brings the full WTP experience to your event.",
+            "bullet_1": "Coffee Cart",
+            "bullet_2": "Third Space (our cafe as venue)",
+            "bullet_3": "",
+            "bullet_4": "",
+            "bullet_5": ""
           }
         }
       },
