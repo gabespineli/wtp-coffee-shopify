@@ -342,6 +342,7 @@
 
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-actions {
     display: flex;
+    align-items: center;
     gap: 1rem;
     margin-top: 1.25rem;
   }
@@ -359,11 +360,14 @@
     white-space: nowrap;
     text-align: center;
     text-decoration: none;
-    align-self: flex-start;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc {
-    color: var(--color-dark);
+    color: #FFFFFF;
     background: var(--color-accent);
     border: none;
   }
@@ -374,8 +378,10 @@
     border: 1px solid var(--color-cream-muted);
   }
 
-  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc:hover {
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc:hover,
+  .wtp-hero-tabs-wrapper-{{ section.id }} .wtp-ht__card-atc:active {
     background: var(--color-cream);
+    color: #1B3A2D;
     transform: scale(1.03);
   }
 
