@@ -148,26 +148,32 @@
       display: table-header-group;
     }
 
-    .wtp-cart__col-header {
+    .wtp-cart .wtp-cart__col-header {
       font-family: var(--font-heading-family);
       font-size: 1rem;
       font-weight: 900;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--cart-green);
-      padding-bottom: 0.85rem;
+      padding: 0 0.75rem 0.85rem 0 !important;
       border-bottom: 2px solid var(--cart-border);
-      text-align: center;
+      text-align: left !important;
     }
 
-    .wtp-cart__col-header--qty {
-      text-align: center;
+    .wtp-cart .wtp-cart__col-header--qty {
+      text-align: left !important;
+      padding-left: 0 !important;
+      width: 140px;
+      min-width: 140px;
+      max-width: 140px;
+    }
+
+    .wtp-cart .wtp-cart__col-header--total {
+      text-align: right !important;
       width: 150px;
-    }
-
-    .wtp-cart__col-header--total {
-      text-align: center;
-      width: 120px;
+      min-width: 150px;
+      max-width: 150px;
+      padding-right: 0 !important;
     }
 
     /* ── Cart Table ── */
@@ -242,17 +248,37 @@
 
     /* ── Quantity column ── */
     .wtp-cart .cart-item__quantity {
-      text-align: center;
-      width: 150px;
+      text-align: left !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      vertical-align: middle !important;
+      width: 140px;
+      min-width: 140px;
+      max-width: 140px;
     }
 
-    /* ── Totals column ── */
     .wtp-cart .cart-item__totals {
-      text-align: right;
-      width: 120px;
-      font-size: 1.15rem;
+      text-align: right !important;
+      padding-right: 0 !important;
+      vertical-align: middle !important;
+      width: 150px;
+      min-width: 150px;
+      max-width: 150px;
+      font-size: 1.5rem;
       font-weight: 700;
       color: var(--cart-green);
+      position: relative !important; /* Critical for spinner anchoring */
+    }
+
+    .wtp-cart .cart-item__totals .cart-item__price-wrapper {
+      display: block;
+      width: 100%;
+      text-align: right !important;
+      margin-top: -15px; /* Manual Tweak: Set this to match your spinner offset (e.g. -30px) */
+    }
+
+    .wtp-cart .cart-item__totals .cart-item__price-wrapper * {
+      text-align: right !important;
     }
 
     .wtp-cart .quantity.cart-quantity {
@@ -262,8 +288,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: space-between;
-      width: 100px;
-      height: 38px;
+      width: 110px;
+      height: 46px;
       padding: 0;
       box-shadow: none !important;
       outline: none !important;
@@ -336,8 +362,8 @@
     .wtp-qty-row {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      justify-content: center;
+      gap: 0.3rem;
+      justify-content: flex-start;
     }
 
     .wtp-qty-pill,
@@ -347,30 +373,61 @@
       align-items: center;
     }
 
-    /* ── Loading skeleton pulse ── */
-    @keyframes wtp-skeleton-pulse {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 1; }
+    .wtp-cart .wtp-qty-trash .button {
+      padding: 0 !important;
+      min-width: 0 !important;
+      min-height: 0 !important;
+      width: auto !important;
+      height: auto !important;
+      background: transparent !important;
+    }
+
+    .wtp-cart .wtp-qty-trash .svg-wrapper svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+
+
+    .wtp-cart .cart-item__totals .loading__spinner {
+      position: absolute !important;
+      top: 50% !important;
+      right: 0 !important;
+      left: auto !important;
+      margin: 0 !important;
+      transform: translateY(-50%) !important;
+      width: 22px !important;
+      height: 22px !important;
+      display: none !important;
+      z-index: 5 !important;
+    }
+
+    .wtp-cart .cart-item__totals .loading__spinner:not(.hidden) {
+      display: block !important;
+      margin-top: -33px !important; /* Manual Tweak: Adjust this for vertical shift (decrease to go DOWN, increase to go UP) */
+      margin-right: 10px !important; /* Manual Tweak: Adjust this for horizontal shift */
+    }
+
+    .wtp-cart .loading__spinner .svg-wrapper {
+      width: 22px !important;
+      height: 22px !important;
+    }
+
+    .wtp-cart .loading__spinner .path {
+      stroke: var(--cart-green);
+    }
+
+    /* Hide price when loading to avoid overlap */
+    .wtp-cart .loading__spinner:not(.hidden) ~ .cart-item__price-wrapper {
+      visibility: hidden !important;
     }
 
     .wtp-cart__price-skeleton {
-      display: none;
-      width: 80px;
-      height: 1.25rem;
-      background: rgba(27, 58, 45, 0.12);
-      border-radius: 6px;
-      animation: wtp-skeleton-pulse 1.2s ease-in-out infinite;
-    }
-
-    cart-items.cart--loading .price,
-    cart-items.cart--loading .cart-item__price-wrapper,
-    cart-items.cart--loading .cart-item__totals .price {
       display: none !important;
     }
 
-    cart-items.cart--loading .wtp-cart__price-skeleton {
-      display: inline-block !important;
-    }
+
 
     /* ── Accordion Note ── */
     .wtp-cart-note-accordion {
@@ -630,19 +687,22 @@
       display: block !important;
       grid-column: 2;
       grid-row: 2;
-      text-align: left !important;
-      font-size: 1.15rem;
+      text-align: right !important;
+      font-size: 1.4rem;
       font-weight: 700;
       color: var(--cart-green);
-      margin: 0.35rem 0;
+      margin: 0.25rem 0;
+      min-height: 1.5rem;
     }
 
     /* Quantity + trash bottom right */
     .wtp-cart .cart-item__quantity {
+      display: block !important;
       grid-column: 2;
       grid-row: 3;
       padding-left: 0 !important;
       text-align: left;
+      margin-top: 0.5rem;
     }
 
     .wtp-qty-row {
@@ -1008,21 +1068,24 @@
 
                     {%- comment -%} ── TD 4: Line Total (desktop only displayed as right-aligned total) ── {%- endcomment -%}
                     <td class="cart-item__totals">
+                      {%- render 'loading-spinner' -%}
                       <span class="wtp-cart__price-skeleton"></span>
-                      {%- if item.original_line_price != item.final_line_price -%}
-                        <dl class="cart-item__discounted-prices">
-                          <dt class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</dt>
-                          <dd>
-                            <s class="cart-item__old-price price price--end">
-                              {{- item.original_line_price | money -}}
-                            </s>
-                          </dd>
-                          <dt class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</dt>
-                          <dd class="price price--end">{{ item.final_line_price | money }}</dd>
-                        </dl>
-                      {%- else -%}
-                        <span class="price price--end">{{ item.original_line_price | money }}</span>
-                      {%- endif -%}
+                      <div class="cart-item__price-wrapper">
+                        {%- if item.original_line_price != item.final_line_price -%}
+                          <dl class="cart-item__discounted-prices">
+                            <dt class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</dt>
+                            <dd>
+                              <s class="cart-item__old-price price price--end">
+                                {{- item.original_line_price | money -}}
+                              </s>
+                            </dd>
+                            <dt class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</dt>
+                            <dd class="price price--end">{{ item.final_line_price | money }}</dd>
+                          </dl>
+                        {%- else -%}
+                          <span class="price price--end">{{ item.original_line_price | money }}</span>
+                        {%- endif -%}
+                      </div>
                     </td>
                   </tr>
                 {%- endfor -%}
