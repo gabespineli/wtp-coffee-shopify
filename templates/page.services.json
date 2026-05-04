@@ -54,21 +54,24 @@
           "type": "editorial_row",
           "settings": {
             "headline": "Crafted With Intention",
-            "description": "Every cup we serve begins long before the brew. We source, roast, and serve with a commitment to transparency and quality that you can taste in every sip."
+            "description": "Every cup we serve begins long before the brew. We source, roast, and serve with a commitment to transparency and quality that you can taste in every sip.",
+            "image": "shopify://shop_images/L1230853.jpg"
           }
         },
         "editorial_row_6AQrEx": {
           "type": "editorial_row",
           "settings": {
             "headline": "A Space Made for People",
-            "description": "Our cafés are designed as third spaces — places between home and work where community is built, ideas are sparked, and good coffee brings people together."
+            "description": "Our cafés are designed as third spaces — places between home and work where community is built, ideas are sparked, and good coffee brings people together.",
+            "image": "shopify://shop_images/L1250329.jpg"
           }
         },
         "editorial_row_Cgb7PQ": {
           "type": "editorial_row",
           "settings": {
             "headline": "Rooted in the Philippines",
-            "description": "From our locally sourced ingredients to our Filipino-inspired approach to hospitality, WTP is proudly made here — for the people who call this home."
+            "description": "From our locally sourced ingredients to our Filipino-inspired approach to hospitality, WTP is proudly made here — for the people who call this home.",
+            "image": "shopify://shop_images/L1140754.jpg"
           }
         }
       },
