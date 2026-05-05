@@ -1,25 +1,12 @@
 {%- style -%}
-  #wtp-third-space-teaser-{{ section.id }} {
+  #ts-{{ section.id }} {
     background: #1B3A2D;
     padding: 8rem 5%;
-    color: #F5F0E8;
+    box-sizing: border-box;
+    width: 100%;
   }
 
-  .ts-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 5rem;
-  }
-
-  .ts-intro {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .ts-eyebrow {
+  #ts-{{ section.id }} .ts-eyebrow {
     font-family: 'Poppins', sans-serif;
     font-size: 0.85rem;
     font-weight: 600;
@@ -29,7 +16,7 @@
     margin: 0 0 1.5rem;
   }
 
-  .ts-heading {
+  #ts-{{ section.id }} .ts-heading {
     font-family: var(--font-heading-family);
     font-size: clamp(2.4rem, 5vw, 4rem);
     font-weight: 700;
@@ -38,11 +25,11 @@
     margin: 0 0 1.5rem;
   }
 
-  .ts-heading em {
+  #ts-{{ section.id }} .ts-heading em {
     font-style: italic;
   }
 
-  .ts-subtitle {
+  #ts-{{ section.id }} .ts-subtitle {
     font-family: 'Poppins', sans-serif;
     font-size: 1.15rem;
     line-height: 1.7;
@@ -51,79 +38,36 @@
     margin: 0;
   }
 
-  .ts-branches {
-    display: grid;
-    grid-template-columns: 1fr 1px 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-
-  .ts-divider {
-    width: 1px;
-    height: 100%;
-    background-color: #C8A96E;
-    opacity: 0.5;
-  }
-
-  .ts-branch-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0 1rem;
-  }
-
-  .ts-branch-image {
-    width: 100%;
-    height: 320px;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 2rem;
-  }
-
-  .ts-branch-image-placeholder {
-    width: 100%;
-    height: 320px;
-    background-color: rgba(245, 240, 232, 0.1);
-    border-radius: 12px;
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #F5F0E8;
+  #ts-{{ section.id }} .ts-branch-label {
     font-family: 'Poppins', sans-serif;
-  }
-
-  .ts-branch-label {
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #C8A96E;
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.6rem;
   }
 
-  .ts-branch-name {
+  #ts-{{ section.id }} .ts-branch-name {
     font-family: var(--font-heading-family);
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
     font-weight: 700;
     line-height: 1.2;
     color: #F5F0E8;
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.6rem;
   }
 
-  .ts-branch-vibe {
+  #ts-{{ section.id }} .ts-branch-vibe {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-style: italic;
-    line-height: 1.6;
+    line-height: 1.65;
     color: #F5F0E8;
-    opacity: 0.9;
+    opacity: 0.85;
     margin: 0 0 2rem;
   }
 
-  .ts-button {
+  #ts-{{ section.id }} .ts-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -132,115 +76,119 @@
     color: #F5F0E8;
     border-radius: 50px;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     text-decoration: none;
-    border: 1.5px solid #F5F0E8;
-    transition: all 0.3s ease;
+    border: 1.5px solid rgba(245, 240, 232, 0.6);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    white-space: nowrap;
   }
 
-  .ts-button:hover {
+  #ts-{{ section.id }} .ts-button:hover {
     background: #C8A96E;
     color: #1B3A2D;
     border-color: #C8A96E;
   }
 
-  @media screen and (max-width: 900px) {
-    .ts-branches {
-      grid-template-columns: 1fr;
-      gap: 4rem;
-    }
-
-    .ts-divider {
-      display: none;
-    }
-
-    .ts-branch-col {
-      padding: 0;
-    }
+  #ts-{{ section.id }} .ts-img-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   @media screen and (max-width: 749px) {
-    #wtp-third-space-teaser-{{ section.id }} {
+    #ts-{{ section.id }} {
       padding: 6rem 5%;
+    }
+    #ts-{{ section.id }} .ts-branches-row {
+      flex-direction: column !important;
+      gap: 4rem !important;
+    }
+    #ts-{{ section.id }} .ts-branch-divider {
+      display: none !important;
+    }
+    #ts-{{ section.id }} .ts-branch-col {
+      padding: 0 !important;
     }
   }
 {%- endstyle -%}
 
-<section id="wtp-third-space-teaser-{{ section.id }}" aria-label="The Third Space">
-  <div class="ts-container">
-    <div class="ts-intro">
+<section id="ts-{{ section.id }}" aria-label="The Third Space">
+
+  {%- comment -%}── Page Container ──{%- endcomment -%}
+  <div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:5rem;">
+
+    {%- comment -%}── Part 1: Intro ──{%- endcomment -%}
+    <div style="max-width:800px;margin:0 auto;text-align:center;">
       {%- if section.settings.eyebrow != blank -%}
         <p class="ts-eyebrow">{{ section.settings.eyebrow | escape }}</p>
       {%- endif -%}
-
       {%- if section.settings.heading != blank -%}
-        <h2 class="ts-heading">
-          {{ section.settings.heading }}
-        </h2>
+        <h2 class="ts-heading">{{ section.settings.heading }}</h2>
       {%- endif -%}
-
       {%- if section.settings.subtitle != blank -%}
         <p class="ts-subtitle">{{ section.settings.subtitle | escape }}</p>
       {%- endif -%}
     </div>
 
-    <div class="ts-branches">
-      <div class="ts-branch-col">
-        {%- if section.settings.branch_1_image != blank -%}
-          {{ section.settings.branch_1_image | image_url: width: 800 | image_tag: class: 'ts-branch-image', loading: 'lazy' }}
-        {%- else -%}
-          <div class="ts-branch-image-placeholder">Image (800x640 recommended)</div>
-        {%- endif -%}
-        
+    {%- comment -%}── Part 2: Branch Columns ──{%- endcomment -%}
+    <div class="ts-branches-row" style="display:flex;flex-direction:row;align-items:flex-start;gap:0;">
+
+      {%- comment -%}Branch 1{%- endcomment -%}
+      <div class="ts-branch-col" style="flex:1 1 0%;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 3rem;box-sizing:border-box;">
+        <div style="position:relative;width:100%;padding-bottom:62.5%;border-radius:12px;overflow:hidden;margin-bottom:2rem;background:rgba(245,240,232,0.08);flex-shrink:0;">
+          {%- if section.settings.branch_1_image != blank -%}
+            {{ section.settings.branch_1_image | image_url: width: 900 | image_tag: class: 'ts-img-inner', loading: 'lazy' }}
+          {%- endif -%}
+        </div>
         {%- if section.settings.branch_1_label != blank -%}
           <p class="ts-branch-label">{{ section.settings.branch_1_label | escape }}</p>
         {%- endif -%}
-        
         {%- if section.settings.branch_1_name != blank -%}
           <h3 class="ts-branch-name">{{ section.settings.branch_1_name | escape }}</h3>
         {%- endif -%}
-        
         {%- if section.settings.branch_1_vibe != blank -%}
           <p class="ts-branch-vibe">{{ section.settings.branch_1_vibe | escape }}</p>
         {%- endif -%}
-        
         {%- if section.settings.branch_1_btn_label != blank -%}
-          <a href="{{ section.settings.branch_1_btn_url }}" class="ts-button" {% if section.settings.branch_1_btn_url == blank %}aria-disabled="true"{% endif %}>
+          <a href="{{ section.settings.branch_1_btn_url }}" class="ts-button">
             {{ section.settings.branch_1_btn_label | escape }}
           </a>
         {%- endif -%}
       </div>
 
-      <div class="ts-divider" aria-hidden="true"></div>
+      {%- comment -%}Gold Divider{%- endcomment -%}
+      <div class="ts-branch-divider" style="width:1px;align-self:stretch;background:#C8A96E;opacity:0.4;flex-shrink:0;" aria-hidden="true"></div>
 
-      <div class="ts-branch-col">
-        {%- if section.settings.branch_2_image != blank -%}
-          {{ section.settings.branch_2_image | image_url: width: 800 | image_tag: class: 'ts-branch-image', loading: 'lazy' }}
-        {%- else -%}
-          <div class="ts-branch-image-placeholder">Image (800x640 recommended)</div>
-        {%- endif -%}
-        
+      {%- comment -%}Branch 2{%- endcomment -%}
+      <div class="ts-branch-col" style="flex:1 1 0%;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 3rem;box-sizing:border-box;">
+        <div style="position:relative;width:100%;padding-bottom:62.5%;border-radius:12px;overflow:hidden;margin-bottom:2rem;background:rgba(245,240,232,0.08);flex-shrink:0;">
+          {%- if section.settings.branch_2_image != blank -%}
+            {{ section.settings.branch_2_image | image_url: width: 900 | image_tag: class: 'ts-img-inner', loading: 'lazy' }}
+          {%- endif -%}
+        </div>
         {%- if section.settings.branch_2_label != blank -%}
           <p class="ts-branch-label">{{ section.settings.branch_2_label | escape }}</p>
         {%- endif -%}
-        
         {%- if section.settings.branch_2_name != blank -%}
           <h3 class="ts-branch-name">{{ section.settings.branch_2_name | escape }}</h3>
         {%- endif -%}
-        
         {%- if section.settings.branch_2_vibe != blank -%}
           <p class="ts-branch-vibe">{{ section.settings.branch_2_vibe | escape }}</p>
         {%- endif -%}
-        
         {%- if section.settings.branch_2_btn_label != blank -%}
-          <a href="{{ section.settings.branch_2_btn_url }}" class="ts-button" {% if section.settings.branch_2_btn_url == blank %}aria-disabled="true"{% endif %}>
+          <a href="{{ section.settings.branch_2_btn_url }}" class="ts-button">
             {{ section.settings.branch_2_btn_label | escape }}
           </a>
         {%- endif -%}
       </div>
+
     </div>
   </div>
 </section>
