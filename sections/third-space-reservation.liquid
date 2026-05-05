@@ -285,6 +285,13 @@
   .wtp-ts-input[type="time"] {
     cursor: pointer;
     color-scheme: light;
+    height: 3.2rem;
+    min-height: 3.2rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 3.2rem;
+    display: flex;
+    align-items: center;
   }
 
   /* Number input */
@@ -534,24 +541,30 @@
             <div class="wtp-ts-field">
               <label class="wtp-ts-label" for="wtp-ts-date">Date</label>
               <input
-                type="date"
+                type="text"
                 id="wtp-ts-date"
                 name="contact[reservation_date]"
                 class="wtp-ts-input"
+                placeholder="dd/mm/yyyy"
                 required
                 aria-required="true"
+                onfocus="(this.type='date')"
+                onblur="(this.value === '' ? this.type='text' : this.type='date')"
               >
             </div>
 
             <div class="wtp-ts-field">
               <label class="wtp-ts-label" for="wtp-ts-time">Time</label>
               <input
-                type="time"
+                type="text"
                 id="wtp-ts-time"
                 name="contact[reservation_time]"
                 class="wtp-ts-input"
+                placeholder="--:--"
                 required
                 aria-required="true"
+                onfocus="(this.type='time')"
+                onblur="(this.value === '' ? this.type='text' : this.type='time')"
               >
             </div>
 

@@ -255,6 +255,18 @@
     padding-right: 1.5rem;
   }
 
+  /* Safari Date Input Fix */
+  .bk-form__input[type="date"] {
+    color-scheme: light;
+    height: 2.85rem;
+    min-height: 2.85rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 2.85rem;
+    display: flex;
+    align-items: center;
+  }
+
   .bk-form__select option {
     color: #1B3A2D;
     background: #F5F0E8;
@@ -467,10 +479,13 @@
           <label class="bk-form__label" for="BookingEventDate">Event Date</label>
           <input
             id="BookingEventDate"
-            type="date"
+            type="text"
             name="contact[Event Date]"
             class="bk-form__input"
+            placeholder="Select date..."
             value="{{ form['Event Date'] }}"
+            onfocus="(this.type='date')"
+            onblur="(this.value === '' ? this.type='text' : this.type='date')"
           >
         </div>
 

@@ -593,12 +593,9 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
 }
 
 .cart-item.is-new .cds__item-success-overlay {
-  opacity: 1;
-  visibility: visible;
   animation: hideItemOverlay 3s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
@@ -626,13 +623,21 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
   justify-content: center;
   transform: scale(0.5);
   opacity: 0;
-  transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.4s ease;
 }
 
 .cart-item.is-new .cds__item-success-icon {
-  transform: scale(1);
-  opacity: 1;
-  transition-delay: 0.1s;
+  animation: popInSuccessIcon 0.6s cubic-bezier(0.19, 1, 0.22, 1) 0.1s forwards;
+}
+
+@keyframes popInSuccessIcon {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .cds__item-success-icon svg {
@@ -641,12 +646,19 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
   color: #F5F0E8;
   stroke-dasharray: 50;
   stroke-dashoffset: 50;
-  transition: stroke-dashoffset 0.6s ease;
 }
 
 .cart-item.is-new .cds__item-success-icon svg {
-  stroke-dashoffset: 0;
-  transition-delay: 0.3s;
+  animation: drawCheckmark 0.6s ease 0.3s forwards;
+}
+
+@keyframes drawCheckmark {
+  0% {
+    stroke-dashoffset: 50;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
 }
 
 /* ── Premium Staggered Reveal ── */
