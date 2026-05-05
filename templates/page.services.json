@@ -41,10 +41,18 @@
         "eyebrow": "THE THIRD SPACE",
         "heading": "Find Your <em>Third Place.</em>",
         "subtitle": "A quiet corner to work, a table for a meeting, or the entire space for an event — we have a spot for you.",
-        "btn_1_label": "Reserve at Alabang",
-        "btn_1_url": "shopify://pages/third-space",
-        "btn_2_label": "Reserve at Opus",
-        "btn_2_url": "shopify://pages/third-space"
+        "branch_1_image": "shopify://shop_images/8.jpg",
+        "branch_1_label": "WTP OPUS",
+        "branch_1_name": "Opus Mall, Bridgetowne",
+        "branch_1_vibe": "A vibrant oasis in the heart of Bridgetowne.",
+        "branch_1_btn_label": "Reserve at Opus",
+        "branch_1_btn_url": "",
+        "branch_2_image": "shopify://shop_images/mission4.jpg",
+        "branch_2_label": "WTP ALABANG",
+        "branch_2_name": "Ayala Alabang, Muntinlupa",
+        "branch_2_vibe": "Your cozy neighborhood retreat in the south.",
+        "branch_2_btn_label": "Reserve at Alabang",
+        "branch_2_btn_url": ""
       }
     },
     "services_why_choose_us_QzmGdY": {
