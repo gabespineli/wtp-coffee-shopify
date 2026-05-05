@@ -403,6 +403,26 @@
     opacity: 0 !important;
     visibility: hidden !important;
   }
+  
+  /* ── MOBILE MENU BACKDROP (CLICK TO CLOSE) ── */
+  .menu-drawer__backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    cursor: pointer;
+    background: transparent;
+  }
+  
+  /* Ensure the inner container stays on top of the backdrop */
+  .menu-drawer__inner-container {
+    position: relative;
+    z-index: 1;
+    background: inherit;
+    border-radius: inherit;
+  }
 
   /* ── PAGE CONTENT BLUR (workaround for backdrop-filter stacking context trap) ── */
   /*
@@ -1073,6 +1093,13 @@
         }
       });
       observer.observe(details, { attributes: true, attributeFilter: ['open'] });
+      
+      /* Close drawer when clicking backdrop */
+      headerSection.addEventListener('click', function(e) {
+        if (e.target.classList.contains('js-drawer-close')) {
+          details.removeAttribute('open');
+        }
+      });
     }
 
     if (document.readyState === 'loading') {
