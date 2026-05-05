@@ -199,18 +199,40 @@
     }
 
     .ct-left-col {
-      padding: 3rem 2rem;
+      padding: 3rem 2rem 4rem;
     }
 
     .ct-right-col {
-      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      height: auto;
+      min-height: auto;
+    }
+
+    .ct-right-col img,
+    .ct-img-placeholder {
+      height: 350px;
+      order: 2;
     }
 
     .ct-quote-card {
-      bottom: 1.5rem;
-      right: 1.5rem;
-      left: 1.5rem;
+      position: relative;
+      order: 1;
+      top: auto;
+      right: auto;
+      left: auto;
+      bottom: auto;
+      margin: -2.5rem 1.5rem 1.5rem;
       max-width: none;
+      padding: 1.5rem;
+    }
+
+    .ct-quote-text {
+      font-size: 1rem;
+    }
+
+    .ct-quote-mark {
+      font-size: 2.5rem;
     }
   }
 
