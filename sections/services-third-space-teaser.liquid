@@ -157,7 +157,7 @@
           <p class="ts-branch-vibe">{{ section.settings.branch_1_vibe | escape }}</p>
         {%- endif -%}
         {%- if section.settings.branch_1_btn_label != blank -%}
-          <a href="{{ section.settings.branch_1_btn_url }}" class="ts-button">
+          <a href="{{ section.settings.branch_1_btn_url }}?branch=opus" class="ts-button">
             {{ section.settings.branch_1_btn_label | escape }}
           </a>
         {%- endif -%}
@@ -183,7 +183,7 @@
           <p class="ts-branch-vibe">{{ section.settings.branch_2_vibe | escape }}</p>
         {%- endif -%}
         {%- if section.settings.branch_2_btn_label != blank -%}
-          <a href="{{ section.settings.branch_2_btn_url }}" class="ts-button">
+          <a href="{{ section.settings.branch_2_btn_url }}?branch=alabang" class="ts-button">
             {{ section.settings.branch_2_btn_label | escape }}
           </a>
         {%- endif -%}

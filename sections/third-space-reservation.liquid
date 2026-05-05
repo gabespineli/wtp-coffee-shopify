@@ -637,8 +637,25 @@
     </div>{%- comment -%} /.wtp-ts-form-inner {%- endcomment -%}
   </section>
 
-</div>{%- comment -%} /.wtp-ts-section-{{ section.id }} {%- endcomment -%}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    const branch = params.get('branch');
+    if (branch) {
+      const select = document.getElementById('wtp-ts-branch');
+      if (select) {
+        const match = Array.from(select.options).find(
+          opt => opt.value.toLowerCase().replace(/\s+/g, '-') === branch.toLowerCase()
+        );
+        if (match) {
+          match.selected = true;
+        }
+      }
+    }
+  });
+</script>
 
+</div>{%- comment -%} /.wtp-ts-section-{{ section.id }} {%- endcomment -%}
 {% schema %}
 {
   "name": "Third Space Reservation",
