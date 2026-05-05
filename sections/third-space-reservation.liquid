@@ -114,9 +114,9 @@
 
   .wtp-ts-form-inner {
     display: grid;
-    grid-template-columns: 1fr 1.6fr;
-    gap: 5rem;
-    max-width: 1200px;
+    grid-template-columns: 0.8fr 2.2fr;
+    gap: 4rem;
+    max-width: 1400px;
     margin: 0 auto;
     align-items: start;
   }
@@ -132,9 +132,8 @@
 
   .wtp-ts-collage__item {
     width: 100%;
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
-    aspect-ratio: 4 / 3;
     background: rgba(27, 58, 45, 0.06);
   }
 
@@ -159,48 +158,48 @@
     background: #FFFFFF;
     border-radius: var(--ts-radius-card);
     box-shadow: var(--ts-shadow);
-    padding: 3.5rem 3rem;
+    padding: 5rem 4.5rem;
     border: 1px solid rgba(200, 169, 110, 0.15);
   }
 
   .wtp-ts-form-card__eyebrow {
     display: block;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--ts-gold);
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
   }
 
   .wtp-ts-form-card__title {
     font-family: var(--font-heading-family);
-    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
     color: var(--ts-green);
-    line-height: 1.15;
-    margin: 0 0 0.5rem;
+    line-height: 1.1;
+    margin: 0 0 0.8rem;
   }
 
   .wtp-ts-form-card__subtitle {
-    font-size: 0.95rem;
-    line-height: 1.7;
+    font-size: 1.1rem;
+    line-height: 1.8;
     color: var(--ts-muted);
-    margin: 0 0 2.5rem;
-    max-width: 50ch;
+    margin: 0 0 3.5rem;
+    max-width: 60ch;
   }
 
   /* ── Grid of fields ── */
   .wtp-ts-form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.25rem 1.5rem;
+    gap: 2rem 1.8rem;
   }
 
   .wtp-ts-field {
     display: flex;
     flex-direction: column;
-    gap: 0.45rem;
+    gap: 0.75rem;
   }
 
   .wtp-ts-field--full {
@@ -209,9 +208,9 @@
 
   .wtp-ts-label {
     font-family: 'Poppins', sans-serif;
-    font-size: 0.68rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ts-green);
     padding-left: 0.2rem;
@@ -221,12 +220,12 @@
   .wtp-ts-select,
   .wtp-ts-textarea {
     font-family: 'Poppins', sans-serif;
-    font-size: 0.92rem;
+    font-size: 1.05rem;
     color: var(--ts-green);
     background: var(--ts-input-bg);
     border: 1.5px solid var(--ts-border);
     border-radius: var(--ts-radius-pill);
-    padding: 0.75rem 1.4rem;
+    padding: 1rem 1.6rem;
     width: 100%;
     box-sizing: border-box;
     outline: none;
@@ -285,11 +284,11 @@
   .wtp-ts-input[type="time"] {
     cursor: pointer;
     color-scheme: light;
-    height: 3.2rem;
-    min-height: 3.2rem;
+    height: 3.6rem;
+    min-height: 3.6rem;
     padding-top: 0;
     padding-bottom: 0;
-    line-height: 3.2rem;
+    line-height: 3.6rem;
     display: flex;
     align-items: center;
   }
@@ -314,17 +313,17 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.6rem;
+    gap: 0.75rem;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 700;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--ts-cream);
     background: var(--ts-green);
     border: 2px solid var(--ts-green);
     border-radius: var(--ts-radius-pill);
-    padding: 1.1rem 2.8rem;
+    padding: 1.3rem 3.5rem;
     cursor: pointer;
     transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.15s ease;
     white-space: nowrap;
@@ -343,11 +342,11 @@
 
   /* ── Success / Error notice ── */
   .wtp-ts-notice {
-    padding: 1rem 1.5rem;
+    padding: 1.25rem 1.75rem;
     border-radius: 12px;
-    font-size: 0.92rem;
+    font-size: 1.05rem;
     line-height: 1.6;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     display: none;
   }
 
