@@ -39,7 +39,7 @@
       "name": "Third Space Teaser",
       "settings": {
         "eyebrow": "THE THIRD SPACE",
-        "heading": "Find Your <em>Third Place.</em>",
+        "heading": "Find Your <em>Creative Space.</em>",
         "subtitle": "A quiet corner to work, a table for a meeting, or the entire space for an event — we have a spot for you.",
         "branch_1_image": "shopify://shop_images/8.jpg",
         "branch_1_label": "WTP OPUS",
@@ -61,24 +61,24 @@
         "editorial_row_FtANdJ": {
           "type": "editorial_row",
           "settings": {
-            "headline": "Crafted With Intention",
-            "description": "Every cup we serve begins long before the brew. We source, roast, and serve with a commitment to transparency and quality that you can taste in every sip.",
+            "headline": "Meticulously Crafted.",
+            "description": "We roast every batch with \nprecision, ensuring consistency, \nrich flavors, and the perfect \nbalance in every bean. Quality isn’t \njust a goal—it’s our standard.",
             "image": "shopify://shop_images/L1230853.jpg"
           }
         },
         "editorial_row_6AQrEx": {
           "type": "editorial_row",
           "settings": {
-            "headline": "A Space Made for People",
-            "description": "Our cafés are designed as third spaces — places between home and work where community is built, ideas are sparked, and good coffee brings people together.",
+            "headline": "Tailored Just For You.",
+            "description": "We create custom roast profiles \nand blends to match your vision, \ngiving you a signature taste that \nstands out.",
             "image": "shopify://shop_images/L1250329.jpg"
           }
         },
         "editorial_row_Cgb7PQ": {
           "type": "editorial_row",
           "settings": {
-            "headline": "Rooted in the Philippines",
-            "description": "From our locally sourced ingredients to our Filipino-inspired approach to hospitality, WTP is proudly made here — for the people who call this home.",
+            "headline": "Small Roastery, Big Impact.",
+            "description": "We're a passionate micro-roastery, \ncapable of producing up to 1,000 \nkg of specialty coffee per \nmonth—without compromise.",
             "image": "shopify://shop_images/L1140754.jpg"
           }
         }
