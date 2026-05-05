@@ -46,13 +46,13 @@
         "branch_1_name": "Opus Mall, Bridgetowne",
         "branch_1_vibe": "A vibrant oasis in the heart of Bridgetowne.",
         "branch_1_btn_label": "Reserve at Opus",
-        "branch_1_btn_url": "",
+        "branch_1_btn_url": "shopify://pages/third-space",
         "branch_2_image": "shopify://shop_images/mission4.jpg",
         "branch_2_label": "WTP ALABANG",
         "branch_2_name": "Ayala Alabang, Muntinlupa",
         "branch_2_vibe": "Your cozy neighborhood retreat in the south.",
         "branch_2_btn_label": "Reserve at Alabang",
-        "branch_2_btn_url": ""
+        "branch_2_btn_url": "shopify://pages/third-space"
       }
     },
     "services_why_choose_us_QzmGdY": {
