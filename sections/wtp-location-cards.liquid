@@ -662,6 +662,20 @@
     const closeEls = document.querySelectorAll('#wtp-menu-lightbox-{{ section.id }} .js-lightbox-close');
 
     if (lightbox && lightboxImg) {
+      // Preload images in the background so they appear instantly when clicked
+      // Wrapped in a slight delay to ensure it doesn't interfere with global site loaders
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          triggers.forEach(function(btn) {
+            const src = btn.getAttribute('data-menu-src');
+            if (src) {
+              const img = new Image();
+              img.src = src;
+            }
+          });
+        }, 1200); // 1.2s delay ensures the main thread is idle and preloader is gone
+      });
+
       // Move lightbox to the body to ensure it's not trapped in a transformed stacking context
       if (lightbox.parentNode !== document.body) {
         document.body.appendChild(lightbox);
