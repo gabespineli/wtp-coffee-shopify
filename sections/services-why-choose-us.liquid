@@ -98,13 +98,17 @@
 
   .wcu-img-wrap {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    position: relative;
+    padding-bottom: 75%; /* 4:3 aspect ratio fallback */
     border-radius: 16px;
     overflow: hidden;
     background: rgba(27, 58, 45, 0.06);
   }
 
   .wcu-img-wrap img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -117,6 +121,9 @@
   }
 
   .wcu-img-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     display: flex;
@@ -131,36 +138,17 @@
   }
 
   /* ═══════════════════════════════════════
-     Fade-up Scroll Animation
+     Fade-up Scroll Transition
   ═══════════════════════════════════════ */
-  @keyframes wcuFadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(36px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   .wcu-row {
     opacity: 0;
     transform: translateY(36px);
-    transition: none;
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .wcu-row.is-visible {
-    animation: wcuFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
-  /* Stagger delays for text vs image sub-elements once row is visible */
-  .wcu-row.is-visible .wcu-text-col {
-    animation: wcuFadeUp 0.7s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .wcu-row.is-visible .wcu-img-col {
-    animation: wcuFadeUp 0.7s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   /* ═══════════════════════════════════════
@@ -196,7 +184,7 @@
     }
 
     .wcu-img-wrap {
-      aspect-ratio: 3 / 2;
+      padding-bottom: 66.666%; /* 3:2 aspect ratio fallback */
     }
   }
 {%- endstyle -%}
