@@ -1,9 +1,24 @@
 {%- style -%}
+  /* Base (Mobile First) */
   #ts-{{ section.id }} {
     background: #1B3A2D;
-    padding: 8rem 5%;
+    padding: 6rem 5%;
     box-sizing: border-box;
     width: 100%;
+  }
+
+  #ts-{{ section.id }} .ts-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+  }
+
+  #ts-{{ section.id }} .ts-intro {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
   }
 
   #ts-{{ section.id }} .ts-eyebrow {
@@ -36,6 +51,44 @@
     color: #F5F0E8;
     opacity: 0.9;
     margin: 0;
+  }
+
+  #ts-{{ section.id }} .ts-branches-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  #ts-{{ section.id }} .ts-branch-col {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  #ts-{{ section.id }} .ts-branch-img-wrap {
+    position: relative;
+    width: 100%;
+    padding-bottom: 62.5%;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    background: rgba(245, 240, 232, 0.08);
+    flex-shrink: 0;
+  }
+
+  #ts-{{ section.id }} .ts-img-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   #ts-{{ section.id }} .ts-branch-label {
@@ -92,29 +145,35 @@
     border-color: #C8A96E;
   }
 
-  #ts-{{ section.id }} .ts-img-inner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  #ts-{{ section.id }} .ts-branch-divider {
+    display: none;
   }
 
-  @media screen and (max-width: 749px) {
+  /* Desktop (min-width: 750px) */
+  @media screen and (min-width: 750px) {
     #ts-{{ section.id }} {
-      padding: 6rem 5%;
+      padding: 8rem 5%;
     }
+
     #ts-{{ section.id }} .ts-branches-row {
-      flex-direction: column !important;
-      gap: 4rem !important;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0;
     }
-    #ts-{{ section.id }} .ts-branch-divider {
-      display: none !important;
-    }
+
     #ts-{{ section.id }} .ts-branch-col {
-      padding: 0 !important;
+      flex: 1 1 0%;
+      min-width: 0;
+      padding: 0 3rem;
+    }
+
+    #ts-{{ section.id }} .ts-branch-divider {
+      display: block;
+      width: 1px;
+      align-self: stretch;
+      background: #C8A96E;
+      opacity: 0.4;
+      flex-shrink: 0;
     }
   }
 {%- endstyle -%}
@@ -122,10 +181,10 @@
 <section id="ts-{{ section.id }}" aria-label="The Third Space">
 
   {%- comment -%}── Page Container ──{%- endcomment -%}
-  <div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:5rem;">
+  <div class="ts-container">
 
     {%- comment -%}── Part 1: Intro ──{%- endcomment -%}
-    <div style="max-width:800px;margin:0 auto;text-align:center;">
+    <div class="ts-intro">
       {%- if section.settings.eyebrow != blank -%}
         <p class="ts-eyebrow">{{ section.settings.eyebrow | escape }}</p>
       {%- endif -%}
@@ -138,11 +197,11 @@
     </div>
 
     {%- comment -%}── Part 2: Branch Columns ──{%- endcomment -%}
-    <div class="ts-branches-row" style="display:flex;flex-direction:row;align-items:flex-start;gap:0;">
+    <div class="ts-branches-row">
 
       {%- comment -%}Branch 1{%- endcomment -%}
-      <div class="ts-branch-col" style="flex:1 1 0%;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 3rem;box-sizing:border-box;">
-        <div style="position:relative;width:100%;padding-bottom:62.5%;border-radius:12px;overflow:hidden;margin-bottom:2rem;background:rgba(245,240,232,0.08);flex-shrink:0;">
+      <div class="ts-branch-col">
+        <div class="ts-branch-img-wrap">
           {%- if section.settings.branch_1_image != blank -%}
             {{ section.settings.branch_1_image | image_url: width: 900 | image_tag: class: 'ts-img-inner', loading: 'lazy' }}
           {%- endif -%}
@@ -164,11 +223,11 @@
       </div>
 
       {%- comment -%}Gold Divider{%- endcomment -%}
-      <div class="ts-branch-divider" style="width:1px;align-self:stretch;background:#C8A96E;opacity:0.4;flex-shrink:0;" aria-hidden="true"></div>
+      <div class="ts-branch-divider" aria-hidden="true"></div>
 
       {%- comment -%}Branch 2{%- endcomment -%}
-      <div class="ts-branch-col" style="flex:1 1 0%;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 3rem;box-sizing:border-box;">
-        <div style="position:relative;width:100%;padding-bottom:62.5%;border-radius:12px;overflow:hidden;margin-bottom:2rem;background:rgba(245,240,232,0.08);flex-shrink:0;">
+      <div class="ts-branch-col">
+        <div class="ts-branch-img-wrap">
           {%- if section.settings.branch_2_image != blank -%}
             {{ section.settings.branch_2_image | image_url: width: 900 | image_tag: class: 'ts-img-inner', loading: 'lazy' }}
           {%- endif -%}
