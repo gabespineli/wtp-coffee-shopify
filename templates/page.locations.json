@@ -42,7 +42,7 @@
             "display_hours": "Sun-Wed, 7 AM - 7 PM & Thurs-Sat, 7 AM - 9 PM",
             "amenities": "Free WiFi, Parking Available, Dine-in",
             "map_url": "https://maps.app.goo.gl/FuTHvNqSsSBECL8R8",
-            "menu_image": "shopify://shop_images/ALABANG_MENU.jpg",
+            "drinks_menu_image": "shopify://shop_images/ALABANG_MENU.jpg",
             "hours_json": "{\n  \"sun\": [\"07:00\", \"19:00\"],\n  \"mon\": [\"07:00\", \"19:00\"],\n  \"tue\": [\"07:00\", \"19:00\"],\n  \"wed\": [\"07:00\", \"19:00\"],\n  \"thu\": [\"07:00\", \"21:00\"],\n  \"fri\": [\"07:00\", \"21:00\"],\n  \"sat\": [\"07:00\", \"21:00\"]\n}"
           }
         },
@@ -55,7 +55,7 @@
             "display_hours": "Mon-Fri, 11 AM - 10 PM & Thurs-Sat, 10 AM - 10 PM",
             "amenities": "Free WiFi, Dine-in",
             "map_url": "https://maps.app.goo.gl/Ufv1vS3H9tKPwEJQA",
-            "menu_image": "shopify://shop_images/OPUS_MENU.png",
+            "drinks_menu_image": "shopify://shop_images/OPUS_MENU.png",
             "hours_json": "{\n  \"mon\": [\"11:00\", \"22:00\"],\n  \"tue\": [\"11:00\", \"22:00\"],\n  \"wed\": [\"11:00\", \"22:00\"],\n  \"thu\": [\"10:00\", \"22:00\"],\n  \"fri\": [\"10:00\", \"22:00\"],\n  \"sat\": [\"10:00\", \"22:00\"]\n}"
           }
         }
