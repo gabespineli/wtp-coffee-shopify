@@ -645,7 +645,7 @@
       const select = document.getElementById('wtp-ts-branch');
       if (select) {
         const match = Array.from(select.options).find(
-          opt => opt.value.toLowerCase().replace(/\s+/g, '-') === branch.toLowerCase()
+          opt => opt.value.toLowerCase().includes(branch.toLowerCase())
         );
         if (match) {
           match.selected = true;
