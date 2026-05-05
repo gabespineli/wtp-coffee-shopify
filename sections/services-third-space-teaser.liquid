@@ -2,22 +2,28 @@
   #wtp-third-space-teaser-{{ section.id }} {
     background: #1B3A2D;
     padding: 8rem 5%;
-    text-align: center;
+    color: #F5F0E8;
   }
 
-  .ts-teaser-inner {
-    max-width: 800px;
+  .ts-container {
+    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 5rem;
+  }
+
+  .ts-intro {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
   }
 
   .ts-eyebrow {
     font-family: 'Poppins', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: #C8A96E;
     margin: 0 0 1.5rem;
@@ -38,37 +44,101 @@
 
   .ts-subtitle {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     line-height: 1.7;
     color: #F5F0E8;
     opacity: 0.9;
-    max-width: 600px;
-    margin: 0 0 3rem;
+    margin: 0;
   }
 
-  .ts-actions {
+  .ts-branches {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .ts-divider {
+    width: 1px;
+    height: 100%;
+    background-color: #C8A96E;
+    opacity: 0.5;
+  }
+
+  .ts-branch-col {
     display: flex;
-    gap: 1.5rem;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 1rem;
+  }
+
+  .ts-branch-image {
     width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .ts-branch-image-placeholder {
+    width: 100%;
+    height: 320px;
+    background-color: rgba(245, 240, 232, 0.1);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #F5F0E8;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .ts-branch-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #C8A96E;
+    margin: 0 0 0.5rem;
+  }
+
+  .ts-branch-name {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #F5F0E8;
+    margin: 0 0 0.5rem;
+  }
+
+  .ts-branch-vibe {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    line-height: 1.6;
+    color: #F5F0E8;
+    opacity: 0.9;
+    margin: 0 0 2rem;
   }
 
   .ts-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 1.1rem 2.5rem;
+    padding: 1rem 2.2rem;
     background: transparent;
     color: #F5F0E8;
     border-radius: 50px;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
     border: 1.5px solid #F5F0E8;
-    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    transition: all 0.3s ease;
   }
 
   .ts-button:hover {
@@ -77,59 +147,100 @@
     border-color: #C8A96E;
   }
 
-  /* ── Mobile ── */
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 900px) {
+    .ts-branches {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+
+    .ts-divider {
+      display: none;
+    }
+
+    .ts-branch-col {
+      padding: 0;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
     #wtp-third-space-teaser-{{ section.id }} {
-      padding: 5rem 5%;
-    }
-
-    .ts-actions {
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .ts-button {
-      width: 100%;
+      padding: 6rem 5%;
     }
   }
 {%- endstyle -%}
 
-<section id="wtp-third-space-teaser-{{ section.id }}" aria-label="{{ section.settings.heading | escape }}">
-  <div class="ts-teaser-inner">
-    {%- if section.settings.eyebrow != blank -%}
-      <p class="ts-eyebrow">{{ section.settings.eyebrow | escape }}</p>
-    {%- endif -%}
-
-    {%- if section.settings.heading != blank -%}
-      <h2 class="ts-heading">
-        {{ section.settings.heading }}
-      </h2>
-    {%- endif -%}
-
-    {%- if section.settings.subtitle != blank -%}
-      <p class="ts-subtitle">{{ section.settings.subtitle | escape }}</p>
-    {%- endif -%}
-
-    <div class="ts-actions">
-      {%- if section.settings.btn_1_label != blank -%}
-        <a 
-          href="{{ section.settings.btn_1_url }}" 
-          class="ts-button"
-          {% if section.settings.btn_1_url == blank %}aria-disabled="true"{% endif %}
-        >
-          {{ section.settings.btn_1_label | escape }}
-        </a>
+<section id="wtp-third-space-teaser-{{ section.id }}" aria-label="The Third Space">
+  <div class="ts-container">
+    <div class="ts-intro">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="ts-eyebrow">{{ section.settings.eyebrow | escape }}</p>
       {%- endif -%}
 
-      {%- if section.settings.btn_2_label != blank -%}
-        <a 
-          href="{{ section.settings.btn_2_url }}" 
-          class="ts-button"
-          {% if section.settings.btn_2_url == blank %}aria-disabled="true"{% endif %}
-        >
-          {{ section.settings.btn_2_label | escape }}
-        </a>
+      {%- if section.settings.heading != blank -%}
+        <h2 class="ts-heading">
+          {{ section.settings.heading }}
+        </h2>
       {%- endif -%}
+
+      {%- if section.settings.subtitle != blank -%}
+        <p class="ts-subtitle">{{ section.settings.subtitle | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="ts-branches">
+      <div class="ts-branch-col">
+        {%- if section.settings.branch_1_image != blank -%}
+          {{ section.settings.branch_1_image | image_url: width: 800 | image_tag: class: 'ts-branch-image', loading: 'lazy' }}
+        {%- else -%}
+          <div class="ts-branch-image-placeholder">Image (800x640 recommended)</div>
+        {%- endif -%}
+        
+        {%- if section.settings.branch_1_label != blank -%}
+          <p class="ts-branch-label">{{ section.settings.branch_1_label | escape }}</p>
+        {%- endif -%}
+        
+        {%- if section.settings.branch_1_name != blank -%}
+          <h3 class="ts-branch-name">{{ section.settings.branch_1_name | escape }}</h3>
+        {%- endif -%}
+        
+        {%- if section.settings.branch_1_vibe != blank -%}
+          <p class="ts-branch-vibe">{{ section.settings.branch_1_vibe | escape }}</p>
+        {%- endif -%}
+        
+        {%- if section.settings.branch_1_btn_label != blank -%}
+          <a href="{{ section.settings.branch_1_btn_url }}" class="ts-button" {% if section.settings.branch_1_btn_url == blank %}aria-disabled="true"{% endif %}>
+            {{ section.settings.branch_1_btn_label | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="ts-divider" aria-hidden="true"></div>
+
+      <div class="ts-branch-col">
+        {%- if section.settings.branch_2_image != blank -%}
+          {{ section.settings.branch_2_image | image_url: width: 800 | image_tag: class: 'ts-branch-image', loading: 'lazy' }}
+        {%- else -%}
+          <div class="ts-branch-image-placeholder">Image (800x640 recommended)</div>
+        {%- endif -%}
+        
+        {%- if section.settings.branch_2_label != blank -%}
+          <p class="ts-branch-label">{{ section.settings.branch_2_label | escape }}</p>
+        {%- endif -%}
+        
+        {%- if section.settings.branch_2_name != blank -%}
+          <h3 class="ts-branch-name">{{ section.settings.branch_2_name | escape }}</h3>
+        {%- endif -%}
+        
+        {%- if section.settings.branch_2_vibe != blank -%}
+          <p class="ts-branch-vibe">{{ section.settings.branch_2_vibe | escape }}</p>
+        {%- endif -%}
+        
+        {%- if section.settings.branch_2_btn_label != blank -%}
+          <a href="{{ section.settings.branch_2_btn_url }}" class="ts-button" {% if section.settings.branch_2_btn_url == blank %}aria-disabled="true"{% endif %}>
+            {{ section.settings.branch_2_btn_label | escape }}
+          </a>
+        {%- endif -%}
+      </div>
     </div>
   </div>
 </section>
@@ -138,6 +249,10 @@
 {
   "name": "Third Space Teaser",
   "settings": [
+    {
+      "type": "header",
+      "content": "Intro Block"
+    },
     {
       "type": "text",
       "id": "eyebrow",
@@ -159,33 +274,79 @@
     },
     {
       "type": "header",
-      "content": "Button 1"
+      "content": "Branch 1 (Opus)"
+    },
+    {
+      "type": "image_picker",
+      "id": "branch_1_image",
+      "label": "Branch 1 Image"
     },
     {
       "type": "text",
-      "id": "btn_1_label",
-      "label": "Button 1 Label",
+      "id": "branch_1_label",
+      "label": "Branch 1 Label",
+      "default": "WTP OPUS"
+    },
+    {
+      "type": "text",
+      "id": "branch_1_name",
+      "label": "Branch 1 Name",
+      "default": "Opus Mall, Bridgetowne"
+    },
+    {
+      "type": "text",
+      "id": "branch_1_vibe",
+      "label": "Branch 1 Vibe Description",
+      "default": "A vibrant oasis in the heart of Bridgetowne."
+    },
+    {
+      "type": "text",
+      "id": "branch_1_btn_label",
+      "label": "Branch 1 Button Label",
       "default": "Reserve at Opus"
     },
     {
       "type": "url",
-      "id": "btn_1_url",
-      "label": "Button 1 URL"
+      "id": "branch_1_btn_url",
+      "label": "Branch 1 Button URL"
     },
     {
       "type": "header",
-      "content": "Button 2"
+      "content": "Branch 2 (Alabang)"
+    },
+    {
+      "type": "image_picker",
+      "id": "branch_2_image",
+      "label": "Branch 2 Image"
     },
     {
       "type": "text",
-      "id": "btn_2_label",
-      "label": "Button 2 Label",
+      "id": "branch_2_label",
+      "label": "Branch 2 Label",
+      "default": "WTP ALABANG"
+    },
+    {
+      "type": "text",
+      "id": "branch_2_name",
+      "label": "Branch 2 Name",
+      "default": "Ayala Alabang, Muntinlupa"
+    },
+    {
+      "type": "text",
+      "id": "branch_2_vibe",
+      "label": "Branch 2 Vibe Description",
+      "default": "Your cozy neighborhood retreat in the south."
+    },
+    {
+      "type": "text",
+      "id": "branch_2_btn_label",
+      "label": "Branch 2 Button Label",
       "default": "Reserve at Alabang"
     },
     {
       "type": "url",
-      "id": "btn_2_url",
-      "label": "Button 2 URL"
+      "id": "branch_2_btn_url",
+      "label": "Branch 2 Button URL"
     }
   ],
   "presets": [
