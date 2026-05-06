@@ -612,22 +612,13 @@
           </p>
         </div>
 
-        {%- comment -%} Perks list {%- endcomment -%}
-        {%- assign alabang_perks = '' -%}
-        {%- for i in (1..4) -%}
-          {%- assign perk_key = 'alabang_perk_' | append: i -%}
-          {%- assign perk_val = section.settings[perk_key] -%}
-          {%- if perk_val != blank -%}
-            {%- unless forloop.first -%}{%- assign alabang_perks = alabang_perks | append: '|||' -%}{%- endunless -%}
-            {%- assign alabang_perks = alabang_perks | append: perk_val -%}
-          {%- endif -%}
-        {%- endfor -%}
-        {%- assign alabang_perk_arr = alabang_perks | split: '|||' -%}
-        {%- if alabang_perk_arr.size > 0 and alabang_perks != blank -%}
+        {%- comment -%} Perks list (blocks) {%- endcomment -%}
+        {%- assign alabang_blocks = section.blocks | where: 'type', 'alabang_perk' -%}
+        {%- if alabang_blocks.size > 0 -%}
           <ul class="lc-perks">
-            {%- for perk in alabang_perk_arr -%}
-              {%- if perk != blank -%}
-                <li>{{ perk | escape }}</li>
+            {%- for block in alabang_blocks -%}
+              {%- if block.settings.text != blank -%}
+                <li {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
               {%- endif -%}
             {%- endfor -%}
           </ul>
@@ -682,22 +673,13 @@
           <p class="lc-card-action-label">Scan to Apply</p>
         </div>
 
-        {%- comment -%} Perks list {%- endcomment -%}
-        {%- assign opus_perks = '' -%}
-        {%- for i in (1..4) -%}
-          {%- assign perk_key = 'opus_perk_' | append: i -%}
-          {%- assign perk_val = section.settings[perk_key] -%}
-          {%- if perk_val != blank -%}
-            {%- unless forloop.first -%}{%- assign opus_perks = opus_perks | append: '|||' -%}{%- endunless -%}
-            {%- assign opus_perks = opus_perks | append: perk_val -%}
-          {%- endif -%}
-        {%- endfor -%}
-        {%- assign opus_perk_arr = opus_perks | split: '|||' -%}
-        {%- if opus_perk_arr.size > 0 and opus_perks != blank -%}
+        {%- comment -%} Perks list (blocks) {%- endcomment -%}
+        {%- assign opus_blocks = section.blocks | where: 'type', 'opus_perk' -%}
+        {%- if opus_blocks.size > 0 -%}
           <ul class="lc-perks">
-            {%- for perk in opus_perk_arr -%}
-              {%- if perk != blank -%}
-                <li>{{ perk | escape }}</li>
+            {%- for block in opus_blocks -%}
+              {%- if block.settings.text != blank -%}
+                <li {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
               {%- endif -%}
             {%- endfor -%}
           </ul>
@@ -813,7 +795,7 @@
     {
       "type": "text",
       "id": "alabang_eyebrow",
-      "label": "Alabang Eyebrow Label",
+      "label": "Eyebrow Label",
       "default": "WTP ALABANG"
     },
     {
@@ -845,40 +827,10 @@
       "default": "Claim yours in-store"
     },
     {
-      "type": "text",
-      "id": "alabang_perk_1",
-      "label": "Perk 1",
-      "default": "Buy 9 handcrafted drinks, enjoy your 10th on us"
-    },
-    {
-      "type": "text",
-      "id": "alabang_perk_2",
-      "label": "Perk 2",
-      "default": "A special complimentary treat on your birthday"
-    },
-    {
-      "type": "text",
-      "id": "alabang_perk_3",
-      "label": "Perk 3",
-      "default": "VIP early access to seasonal and limited releases"
-    },
-    {
-      "type": "text",
-      "id": "alabang_perk_4",
-      "label": "Perk 4",
-      "default": "Exclusive members-only pricing on WTP merch"
-    },
-    {
       "type": "textarea",
       "id": "alabang_tnc",
       "label": "Terms & Conditions Text",
       "default": "Card is non-transferable. Stamps are earned per transaction, not per item. Management reserves the right to modify the program at any time. Valid at WTP Alabang only."
-    },
-    {
-      "type": "text",
-      "id": "alabang_cta",
-      "label": "CTA Button Label",
-      "default": "Get Your Card In-Store"
     },
     {
       "type": "header",
@@ -887,7 +839,7 @@
     {
       "type": "text",
       "id": "opus_eyebrow",
-      "label": "Opus Eyebrow Label",
+      "label": "Eyebrow Label",
       "default": "WTP OPUS"
     },
     {
@@ -914,39 +866,10 @@
       "default": "Log in now for rewards"
     },
     {
-      "type": "text",
-      "id": "opus_perk_1",
-      "label": "Perk 1",
-      "default": "Seamless digital stamp card — always in your pocket"
-    },
-    {
-      "type": "text",
-      "id": "opus_perk_2",
-      "label": "Perk 2",
-      "default": "Collect 10 stamps to earn your exclusive WTP tumbler"
-    },
-    {
-      "type": "text",
-      "id": "opus_perk_3",
-      "label": "Perk 3",
-      "default": "Unlock resident-only flash deals and secret promos"
-    },
-    {
-      "type": "text",
-      "id": "opus_perk_4",
-      "label": "Perk 4",
-      "default": "Priority seating and invites to WTP Opus community events"
-    },
-    {
-      "type": "text",
-      "id": "opus_cta",
-      "label": "CTA Button Label",
-      "default": "Apply for Resident Card"
-    },
-    {
       "type": "url",
       "id": "opus_cta_url",
-      "label": "CTA Button URL"
+      "label": "Badge Link URL",
+      "info": "Optional — makes the badge a clickable link."
     },
     {
       "type": "header",
@@ -971,9 +894,45 @@
       "default": "Subscribe"
     }
   ],
+  "blocks": [
+    {
+      "type": "alabang_perk",
+      "name": "Alabang Perk",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Perk",
+          "default": "New loyalty perk"
+        }
+      ]
+    },
+    {
+      "type": "opus_perk",
+      "name": "Opus Perk",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Perk",
+          "default": "New resident perk"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Loyalty Cards"
+      "name": "Loyalty Cards",
+      "blocks": [
+        { "type": "alabang_perk", "settings": { "text": "Buy 9 handcrafted drinks, enjoy your 10th on us" } },
+        { "type": "alabang_perk", "settings": { "text": "A special complimentary treat on your birthday" } },
+        { "type": "alabang_perk", "settings": { "text": "VIP early access to seasonal and limited releases" } },
+        { "type": "alabang_perk", "settings": { "text": "Exclusive members-only pricing on WTP merch" } },
+        { "type": "opus_perk", "settings": { "text": "Seamless digital stamp card — always in your pocket" } },
+        { "type": "opus_perk", "settings": { "text": "Collect 10 stamps to earn your exclusive WTP tumbler" } },
+        { "type": "opus_perk", "settings": { "text": "Unlock resident-only flash deals and secret promos" } },
+        { "type": "opus_perk", "settings": { "text": "Priority seating and invites to WTP Opus community events" } }
+      ]
     }
   ]
 }
