@@ -723,6 +723,7 @@
             {% if cart == empty %}
               disabled
             {% endif %}
+            onclick="if(document.querySelector('.cart-item__error-text:not(:empty)')) { event.preventDefault(); return false; }"
           >
             {{ 'sections.cart.checkout' | t }}
           </button>

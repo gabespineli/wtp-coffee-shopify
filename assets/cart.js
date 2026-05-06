@@ -23,6 +23,13 @@ class CartItems extends HTMLElement {
     }, ON_CHANGE_DEBOUNCE_TIMER);
 
     this.addEventListener('change', debouncedOnChange.bind(this));
+
+    this.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        this.onChange(event);
+      }
+    });
   }
 
   cartUpdateUnsubscriber = undefined;
