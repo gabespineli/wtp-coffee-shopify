@@ -246,11 +246,7 @@
   display: flex;
   align-items: flex-start;
   gap: 0.8rem;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--lc-green);
-  line-height: 1.5;
-  letter-spacing: 0.01em;
+  line-height: 1.4;
 }
 
 .lc-perks li::before {
@@ -259,8 +255,28 @@
   font-size: 0.9rem;
   font-weight: 700;
   flex-shrink: 0;
-  margin-top: 0.1em;
+  margin-top: 0.25em;
   letter-spacing: -0.05em;
+}
+
+.lc-perk-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.lc-perk-heading {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--lc-green);
+  letter-spacing: 0.01em;
+}
+
+.lc-perk-desc {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--lc-muted);
+  line-height: 1.55;
 }
 
 /* ── T&C Accordion ── */
@@ -612,13 +628,27 @@
           </p>
         </div>
 
-        {%- comment -%} Perks list (blocks) {%- endcomment -%}
-        {%- assign alabang_blocks = section.blocks | where: 'type', 'alabang_perk' -%}
-        {%- if alabang_blocks.size > 0 -%}
+        {%- comment -%} Perks list {%- endcomment -%}
+        {%- assign has_alabang_perks = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'perk' and block.settings.card == 'alabang' -%}
+            {%- assign has_alabang_perks = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if has_alabang_perks -%}
           <ul class="lc-perks">
-            {%- for block in alabang_blocks -%}
-              {%- if block.settings.text != blank -%}
-                <li {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'perk' and block.settings.card == 'alabang' -%}
+                <li {{ block.shopify_attributes }}>
+                  <div class="lc-perk-body">
+                    {%- if block.settings.heading != blank -%}
+                      <span class="lc-perk-heading">{{ block.settings.heading | escape }}</span>
+                    {%- endif -%}
+                    {%- if block.settings.description != blank -%}
+                      <span class="lc-perk-desc">{{ block.settings.description | escape }}</span>
+                    {%- endif -%}
+                  </div>
+                </li>
               {%- endif -%}
             {%- endfor -%}
           </ul>
@@ -673,13 +703,27 @@
           <p class="lc-card-action-label">Scan to Apply</p>
         </div>
 
-        {%- comment -%} Perks list (blocks) {%- endcomment -%}
-        {%- assign opus_blocks = section.blocks | where: 'type', 'opus_perk' -%}
-        {%- if opus_blocks.size > 0 -%}
+        {%- comment -%} Perks list {%- endcomment -%}
+        {%- assign has_opus_perks = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'perk' and block.settings.card == 'opus' -%}
+            {%- assign has_opus_perks = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if has_opus_perks -%}
           <ul class="lc-perks">
-            {%- for block in opus_blocks -%}
-              {%- if block.settings.text != blank -%}
-                <li {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'perk' and block.settings.card == 'opus' -%}
+                <li {{ block.shopify_attributes }}>
+                  <div class="lc-perk-body">
+                    {%- if block.settings.heading != blank -%}
+                      <span class="lc-perk-heading">{{ block.settings.heading | escape }}</span>
+                    {%- endif -%}
+                    {%- if block.settings.description != blank -%}
+                      <span class="lc-perk-desc">{{ block.settings.description | escape }}</span>
+                    {%- endif -%}
+                  </div>
+                </li>
               {%- endif -%}
             {%- endfor -%}
           </ul>
@@ -896,26 +940,30 @@
   ],
   "blocks": [
     {
-      "type": "alabang_perk",
-      "name": "Alabang Perk",
+      "type": "perk",
+      "name": "Perk",
       "settings": [
         {
-          "type": "text",
-          "id": "text",
-          "label": "Perk",
-          "default": "New loyalty perk"
-        }
-      ]
-    },
-    {
-      "type": "opus_perk",
-      "name": "Opus Perk",
-      "settings": [
+          "type": "select",
+          "id": "card",
+          "label": "Card",
+          "options": [
+            { "value": "alabang", "label": "Alabang — Loyalty Card" },
+            { "value": "opus",    "label": "Opus — Resident Card" }
+          ],
+          "default": "alabang"
+        },
         {
           "type": "text",
-          "id": "text",
-          "label": "Perk",
-          "default": "New resident perk"
+          "id": "heading",
+          "label": "Perk Heading",
+          "default": "Perk headline"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Perk Description",
+          "default": "A short description of this perk."
         }
       ]
     }
@@ -924,14 +972,70 @@
     {
       "name": "Loyalty Cards",
       "blocks": [
-        { "type": "alabang_perk", "settings": { "text": "Buy 9 handcrafted drinks, enjoy your 10th on us" } },
-        { "type": "alabang_perk", "settings": { "text": "A special complimentary treat on your birthday" } },
-        { "type": "alabang_perk", "settings": { "text": "VIP early access to seasonal and limited releases" } },
-        { "type": "alabang_perk", "settings": { "text": "Exclusive members-only pricing on WTP merch" } },
-        { "type": "opus_perk", "settings": { "text": "Seamless digital stamp card — always in your pocket" } },
-        { "type": "opus_perk", "settings": { "text": "Collect 10 stamps to earn your exclusive WTP tumbler" } },
-        { "type": "opus_perk", "settings": { "text": "Unlock resident-only flash deals and secret promos" } },
-        { "type": "opus_perk", "settings": { "text": "Priority seating and invites to WTP Opus community events" } }
+        {
+          "type": "perk",
+          "settings": {
+            "card": "alabang",
+            "heading": "Buy 9, get your 10th free",
+            "description": "Every handcrafted drink earns a stamp. Your 10th is on us."
+          }
+        },
+        {
+          "type": "perk",
+          "settings": {
+            "card": "alabang",
+            "heading": "Birthday treat, on the house",
+            "description": "Celebrate with a complimentary drink on your special day."
+          }
+        },
+        {
+          "type": "perk",
+          "settings": {
+            "card": "alabang",
+            "heading": "First access to seasonal drops",
+            "description": "Be the first to try limited releases before anyone else."
+          }
+        },
+        {
+          "type": "perk",
+          "settings": {
+            "card": "alabang",
+            "heading": "Members-only merch pricing",
+            "description": "Exclusive discounts on WTP merchandise, just for card holders."
+          }
+        },
+        {
+          "type": "perk",
+          "settings": {
+            "card": "opus",
+            "heading": "Always in your pocket",
+            "description": "A seamless digital stamp card — no physical card required."
+          }
+        },
+        {
+          "type": "perk",
+          "settings": {
+            "card": "opus",
+            "heading": "10 stamps, earn a WTP tumbler",
+            "description": "Collect 10 stamps and claim your exclusive WTP tumbler."
+          }
+        },
+        {
+          "type": "perk",
+          "settings": {
+            "card": "opus",
+            "heading": "Resident-only flash deals",
+            "description": "Unlock secret promos and deals exclusive to Opus residents."
+          }
+        },
+        {
+          "type": "perk",
+          "settings": {
+            "card": "opus",
+            "heading": "Priority at WTP events",
+            "description": "Guaranteed seating and early invites to Opus community events."
+          }
+        }
       ]
     }
   ]
