@@ -55,6 +55,41 @@
         "events_blog": "events"
       }
     },
+    "community_loyalty_cards_wMWHJJ": {
+      "type": "community-loyalty-cards",
+      "name": "Loyalty Cards",
+      "settings": {
+        "eyebrow": "LOYALTY & MEMBERSHIP",
+        "headline": "Perks for the People.",
+        "subtitle": "Join our loyalty programs and enjoy exclusive rewards at your nearest WTP Coffee location.",
+        "alabang_eyebrow": "WTP ALABANG",
+        "alabang_title": "The Loyalty Card",
+        "alabang_desc": "Earn stamps with every visit and unlock exclusive perks designed for our most devoted regulars. Your loyalty, rewarded.",
+        "alabang_card_front": "shopify://shop_images/front_card.png",
+        "alabang_card_back": "shopify://shop_images/back_card.jpg",
+        "alabang_badge": "Claim yours in-store",
+        "alabang_perk_1": "Buy 9 handcrafted drinks, enjoy your 10th on us",
+        "alabang_perk_2": "A special complimentary treat on your birthday",
+        "alabang_perk_3": "VIP early access to seasonal and limited releases",
+        "alabang_perk_4": "Exclusive members-only pricing on WTP merch",
+        "alabang_tnc": "Card is non-transferable. Stamps are earned per transaction, not per item. Management reserves the right to modify the program at any time. Valid at WTP Alabang only.",
+        "alabang_cta": "Get Your Card In-Store",
+        "opus_eyebrow": "WTP OPUS",
+        "opus_title": "The Resident Card",
+        "opus_desc": "A digital stamp card built for Opus residents. Collect stamps, earn a free tumbler, and enjoy the perks of being a true WTP regular.",
+        "opus_card_image": "shopify://shop_images/Loyalty_Card_Opus.jpg",
+        "opus_badge": "Log in now for rewards",
+        "opus_perk_1": "Seamless digital stamp card — always in your pocket",
+        "opus_perk_2": "Collect 10 stamps to earn your exclusive WTP tumbler",
+        "opus_perk_3": "Unlock resident-only flash deals and secret promos",
+        "opus_perk_4": "Priority seating and invites to WTP Opus community events",
+        "opus_cta": "Apply for Resident Card",
+        "opus_cta_url": "",
+        "nl_copy": "Stay updated on promos and loyalty perks.",
+        "nl_placeholder": "Your email address",
+        "nl_btn": "Subscribe"
+      }
+    },
     "community_events_gallery_UEFVKi": {
       "type": "community-events-gallery",
       "name": "Community Stories",
@@ -77,6 +112,7 @@
     "main",
     "community_hero_hNMpgx",
     "community_calendar_GwEMbj",
+    "community_loyalty_cards_wMWHJJ",
     "community_events_gallery_UEFVKi"
   ]
 }
