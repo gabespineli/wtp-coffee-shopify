@@ -1,0 +1,980 @@
+{%- comment -%}
+  Community Loyalty Cards — WTP Coffee
+  Two-column loyalty card section: Alabang flip card + Opus resident card,
+  with newsletter strip below. All CSS scoped to #loyalty-{{ section.id }}.
+{%- endcomment -%}
+
+{%- style -%}
+/* ═══════════════════════════════════════════════
+   LOYALTY CARDS — WTP Coffee
+   All selectors scoped via #loyalty-{id}
+═══════════════════════════════════════════════ */
+#loyalty-{{ section.id }} {
+  --lc-cream:  #F5F0E8;
+  --lc-green:  #1B3A2D;
+  --lc-gold:   #C8A96E;
+  --lc-gold40: rgba(200, 169, 110, 0.4);
+  --lc-muted:  rgba(27, 58, 45, 0.65);
+  --lc-shadow: 0 8px 32px rgba(27, 58, 45, 0.12);
+  background: var(--lc-cream);
+  font-family: 'Poppins', var(--font-body-family), sans-serif;
+  color: var(--lc-green);
+  box-sizing: border-box;
+}
+
+#loyalty-{{ section.id }} *,
+#loyalty-{{ section.id }} *::before,
+#loyalty-{{ section.id }} *::after {
+  box-sizing: border-box;
+}
+
+/* ── Section Header ── */
+.lc-header {
+  text-align: center;
+  padding: clamp(5rem, 8vw, 9rem) 5% 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.lc-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lc-gold);
+  margin: 0 0 1.1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.lc-headline {
+  font-family: var(--font-heading-family);
+  font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  color: var(--lc-green);
+  margin: 0 0 1.25rem;
+}
+
+.lc-subtitle {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: var(--lc-muted);
+  margin: 0;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Two-Column Split ── */
+.lc-columns-wrap {
+  padding: 0 5% 2rem;
+}
+
+.lc-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 0;
+}
+
+/* Gold vertical divider */
+.lc-columns::after {
+  content: '';
+  position: absolute;
+  top: 5%;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  background: var(--lc-gold40);
+}
+
+/* ── Individual Columns ── */
+.lc-col {
+  padding: 3.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.lc-col--right {
+  padding-left: 4.5rem;
+}
+
+.lc-col-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lc-gold);
+  margin: 0;
+}
+
+.lc-col-title {
+  font-family: var(--font-heading-family);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--lc-green);
+  margin: 0 0 0.5rem;
+}
+
+.lc-col-desc {
+  font-size: 1.1rem;
+  line-height: 1.78;
+  color: var(--lc-muted);
+  margin: 0;
+}
+
+/* ── Flip Card ── */
+.lc-flip-wrap {
+  perspective: 1200px;
+  width: 100%;
+  max-width: 240px;
+  margin: 0 auto;
+  /* Fixed zone — never grows beyond min-height */
+  flex: 0 0 auto;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.lc-flip-inner {
+  position: relative;
+  width: 100%;
+  max-width: 240px;
+  max-height: 420px;
+  aspect-ratio: 3 / 5;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+  cursor: pointer;
+  border-radius: 16px;
+  transform: rotateY(-12deg) rotateX(6deg);
+}
+
+.lc-flip-inner:hover {
+  transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+}
+
+.lc-flip-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.lc-flip-inner.is-flipped:hover {
+  transform: rotateY(180deg) scale(1.02);
+}
+
+.lc-flip-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  box-shadow: -12px 24px 32px rgba(27, 58, 45, 0.25),
+              0 6px 12px rgba(27, 58, 45, 0.12);
+}
+
+.lc-flip-face--front {
+  z-index: 2;
+}
+
+.lc-flip-face--back {
+  transform: rotateY(180deg);
+}
+
+.lc-flip-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+}
+
+.lc-flip-placeholder {
+  width: 100%;
+  height: 100%;
+  background: rgba(27, 58, 45, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lc-gold);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 16px;
+}
+
+/* ── Card action labels (shared: flip + scan) ── */
+.lc-card-action-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lc-gold);
+  text-align: center;
+  margin: 1rem 0 0;
+}
+
+.lc-card-action-label .lc-wiggle {
+  display: inline-block;
+  animation: lc-wiggle 1.8s ease-in-out infinite;
+}
+
+@keyframes lc-wiggle {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-4px); }
+  75%       { transform: translateX(4px); }
+}
+
+/* ── Perks List ── */
+.lc-perks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.lc-perks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--lc-green);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+.lc-perks li::before {
+  content: '—';
+  color: var(--lc-gold);
+  font-size: 0.9rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 0.1em;
+  letter-spacing: -0.05em;
+}
+
+/* ── T&C Accordion ── */
+.lc-accordion {
+  border-top: 1px solid rgba(27, 58, 45, 0.12);
+  padding-top: 1rem;
+}
+
+.lc-accordion-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--lc-green);
+}
+
+.lc-accordion-icon {
+  color: var(--lc-gold);
+  font-size: 1.2rem;
+  font-weight: 400;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  line-height: 1;
+}
+
+.lc-accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.lc-accordion-body.is-open {
+  max-height: 600px;
+}
+
+.lc-accordion-body p {
+  font-size: 0.82rem;
+  line-height: 1.75;
+  color: var(--lc-muted);
+  margin: 1rem 0 0;
+  padding-bottom: 0.5rem;
+}
+
+/* ── Newsletter as card ── */
+.lc-newsletter-wrap {
+  padding: 0 5% clamp(3rem, 5vw, 6rem);
+}
+
+.lc-newsletter {
+  background: var(--lc-green);
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* ── CTA Badge ── */
+.lc-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--lc-green);
+  color: var(--lc-cream);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 50px;
+  padding: 0.4rem 1rem;
+  margin-bottom: 0.5rem;
+  align-self: center;
+}
+
+.lc-card-badge--link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.lc-card-badge--link:hover {
+  opacity: 0.8;
+}
+
+/* ── Opus Phone Mockup ── */
+.lc-opus-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  perspective: 1200px;
+  /* Fixed zone — never grows beyond min-height */
+  flex: 0 0 auto;
+  min-height: 480px;
+}
+
+.lc-phone-img {
+  width: auto;
+  max-width: 240px;
+  max-height: 420px;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: -12px 24px 32px rgba(27, 58, 45, 0.25),
+              0 6px 12px rgba(27, 58, 45, 0.12);
+  display: block;
+  transform: rotateY(15deg) rotateX(10deg);
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.lc-phone-img:hover {
+  transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+  box-shadow: 0 12px 28px rgba(27, 58, 45, 0.15);
+}
+
+.lc-phone-placeholder {
+  width: 200px;
+  height: 300px;
+  border-radius: 16px;
+  background: rgba(27, 58, 45, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lc-gold);
+  font-size: 0.9rem;
+  box-shadow: -12px 24px 32px rgba(27, 58, 45, 0.25),
+              0 6px 12px rgba(27, 58, 45, 0.12);
+  transform: rotateY(15deg) rotateX(10deg);
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.lc-phone-placeholder:hover {
+  transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+  box-shadow: 0 12px 28px rgba(27, 58, 45, 0.15);
+}
+
+/* (lc-qr-label now merged into lc-card-action-label above) */
+
+.lc-newsletter-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.lc-newsletter-copy {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: rgba(245, 240, 232, 0.85);
+  margin: 0;
+}
+
+.lc-nl-form-pill {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 50px;
+  padding: 0.4rem 0.4rem 0.4rem 1.5rem;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 620px;
+}
+
+.lc-nl-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  color: var(--lc-green);
+  padding: 0.6rem 0;
+  min-width: 0;
+}
+
+.lc-nl-input::placeholder {
+  color: rgba(27, 58, 45, 0.45);
+}
+
+.lc-nl-btn {
+  background: var(--lc-green);
+  color: var(--lc-cream);
+  border: none;
+  border-radius: 50px;
+  padding: 1rem 2rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.lc-nl-btn:hover {
+  opacity: 0.85;
+}
+
+.lc-nl-success {
+  color: var(--lc-gold);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.lc-nl-error {
+  color: #f9a8a8;
+  font-size: 0.9rem;
+}
+
+/* ── Responsive: 900px ── */
+@media screen and (max-width: 900px) {
+  .lc-columns {
+    grid-template-columns: 1fr;
+  }
+  .lc-columns::after {
+    display: none;
+  }
+  .lc-col {
+    padding: 3rem 2rem;
+    min-height: 0;
+  }
+  .lc-col--right {
+    padding-left: 2rem;
+    border-top: 1px solid var(--lc-gold40);
+  }
+}
+
+/* ── Responsive: 600px ── */
+@media screen and (max-width: 600px) {
+  .lc-header {
+    padding: 4rem 1.25rem 2.5rem;
+  }
+  .lc-columns-wrap {
+    padding: 0 0 2rem;
+  }
+  .lc-col {
+    padding: 2.5rem 1.25rem;
+  }
+  .lc-col--right {
+    padding-left: 1.25rem;
+  }
+  .lc-newsletter-wrap {
+    padding: 0 1.25rem 4rem;
+  }
+  .lc-newsletter {
+    padding: 2rem 1.25rem;
+    border-radius: 16px;
+  }
+  .lc-nl-form-pill {
+    flex-direction: row;
+    border-radius: 50px;
+    padding: 0.35rem 0.35rem 0.35rem 1.25rem;
+    background: #fff;
+    gap: 0.25rem;
+    max-width: 100%;
+  }
+  .lc-nl-input {
+    background: transparent;
+    padding: 0.7rem 0;
+    font-size: 0.9rem;
+  }
+  .lc-nl-btn {
+    padding: 0.8rem 1.25rem;
+    font-size: 0.85rem;
+  }
+}
+{%- endstyle -%}
+
+<section id="loyalty-{{ section.id }}" aria-label="{{ section.settings.headline | default: 'Loyalty & Membership' | escape }}">
+
+  {%- comment -%} ── Section Header ── {%- endcomment -%}
+  <div class="lc-header">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="lc-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    {%- if section.settings.headline != blank -%}
+      <h2 class="lc-headline">{{ section.settings.headline | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subtitle != blank -%}
+      <p class="lc-subtitle">{{ section.settings.subtitle | escape }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} ── Two-Column Split ── {%- endcomment -%}
+  <div class="lc-columns-wrap">
+    <div class="lc-columns">
+
+      {%- comment -%} ── LEFT: ALABANG ── {%- endcomment -%}
+      <div class="lc-col lc-col--left">
+        <p class="lc-col-eyebrow">{{ section.settings.alabang_eyebrow | default: 'WTP Alabang' | escape }}</p>
+        {%- if section.settings.alabang_title != blank -%}
+          <h3 class="lc-col-title">{{ section.settings.alabang_title | escape }}</h3>
+        {%- endif -%}
+        {%- if section.settings.alabang_desc != blank -%}
+          <p class="lc-col-desc">{{ section.settings.alabang_desc | escape }}</p>
+        {%- endif -%}
+
+        {%- comment -%} Flip Card {%- endcomment -%}
+        <div class="lc-flip-wrap">
+          {%- assign alabang_badge = section.settings.alabang_badge | default: 'Claim yours in-store' -%}
+          <span class="lc-card-badge">{{ alabang_badge | escape }}</span>
+          <div class="lc-flip-inner" id="lc-flip-{{ section.id }}" role="button" tabindex="0" aria-label="Loyalty card — click to flip">
+            <div class="lc-flip-face lc-flip-face--front">
+              {%- if section.settings.alabang_card_front != blank -%}
+                {{
+                  section.settings.alabang_card_front
+                  | image_url: width: 680
+                  | image_tag:
+                    loading: 'eager',
+                    sizes: '(max-width: 600px) 90vw, 340px',
+                    alt: section.settings.alabang_card_front.alt | default: 'Alabang Loyalty Card Front'
+                }}
+              {%- else -%}
+                <div class="lc-flip-placeholder">Card Front</div>
+              {%- endif -%}
+            </div>
+            <div class="lc-flip-face lc-flip-face--back">
+              {%- if section.settings.alabang_card_back != blank -%}
+                {{
+                  section.settings.alabang_card_back
+                  | image_url: width: 680
+                  | image_tag:
+                    loading: 'lazy',
+                    sizes: '(max-width: 600px) 90vw, 340px',
+                    alt: section.settings.alabang_card_back.alt | default: 'Alabang Loyalty Card Back'
+                }}
+              {%- else -%}
+                <div class="lc-flip-placeholder">Card Back</div>
+              {%- endif -%}
+            </div>
+          </div>
+          <p class="lc-card-action-label" id="lc-flip-hint-{{ section.id }}">
+            <span class="lc-wiggle">↺</span>&nbsp;Click to Flip
+          </p>
+        </div>
+
+        {%- comment -%} Perks list {%- endcomment -%}
+        {%- assign alabang_perks = '' -%}
+        {%- for i in (1..4) -%}
+          {%- assign perk_key = 'alabang_perk_' | append: i -%}
+          {%- assign perk_val = section.settings[perk_key] -%}
+          {%- if perk_val != blank -%}
+            {%- unless forloop.first -%}{%- assign alabang_perks = alabang_perks | append: '|||' -%}{%- endunless -%}
+            {%- assign alabang_perks = alabang_perks | append: perk_val -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- assign alabang_perk_arr = alabang_perks | split: '|||' -%}
+        {%- if alabang_perk_arr.size > 0 and alabang_perks != blank -%}
+          <ul class="lc-perks">
+            {%- for perk in alabang_perk_arr -%}
+              {%- if perk != blank -%}
+                <li>{{ perk | escape }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- comment -%} T&C Accordion {%- endcomment -%}
+        {%- if section.settings.alabang_tnc != blank -%}
+          <div class="lc-accordion">
+            <button class="lc-accordion-toggle" id="lc-acc-btn-{{ section.id }}" aria-expanded="false" aria-controls="lc-acc-body-{{ section.id }}">
+              <span>Terms &amp; Conditions</span>
+              <span class="lc-accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="lc-accordion-body" id="lc-acc-body-{{ section.id }}" role="region" aria-labelledby="lc-acc-btn-{{ section.id }}">
+              <p>{{ section.settings.alabang_tnc | escape }}</p>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ── RIGHT: OPUS ── {%- endcomment -%}
+      <div class="lc-col lc-col--right">
+        <p class="lc-col-eyebrow">{{ section.settings.opus_eyebrow | default: 'WTP Opus' | escape }}</p>
+        {%- if section.settings.opus_title != blank -%}
+          <h3 class="lc-col-title">{{ section.settings.opus_title | escape }}</h3>
+        {%- endif -%}
+        {%- if section.settings.opus_desc != blank -%}
+          <p class="lc-col-desc">{{ section.settings.opus_desc | escape }}</p>
+        {%- endif -%}
+
+        {%- comment -%} Phone mockup {%- endcomment -%}
+        <div class="lc-opus-card">
+          {%- assign opus_badge = section.settings.opus_badge | default: 'Log in now for rewards' -%}
+          {%- if section.settings.opus_cta_url != blank -%}
+            <a href="{{ section.settings.opus_cta_url | escape }}" class="lc-card-badge lc-card-badge--link">{{ opus_badge | escape }}</a>
+          {%- else -%}
+            <span class="lc-card-badge">{{ opus_badge | escape }}</span>
+          {%- endif -%}
+          {%- if section.settings.opus_card_image != blank -%}
+            {{
+              section.settings.opus_card_image
+              | image_url: width: 480
+              | image_tag:
+                loading: 'lazy',
+                class: 'lc-phone-img',
+                sizes: '240px',
+                alt: section.settings.opus_card_image.alt | default: 'Opus Resident Card'
+            }}
+          {%- else -%}
+            <div class="lc-phone-placeholder">Card Preview</div>
+          {%- endif -%}
+
+          <p class="lc-card-action-label">Scan to Apply</p>
+        </div>
+
+        {%- comment -%} Perks list {%- endcomment -%}
+        {%- assign opus_perks = '' -%}
+        {%- for i in (1..4) -%}
+          {%- assign perk_key = 'opus_perk_' | append: i -%}
+          {%- assign perk_val = section.settings[perk_key] -%}
+          {%- if perk_val != blank -%}
+            {%- unless forloop.first -%}{%- assign opus_perks = opus_perks | append: '|||' -%}{%- endunless -%}
+            {%- assign opus_perks = opus_perks | append: perk_val -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- assign opus_perk_arr = opus_perks | split: '|||' -%}
+        {%- if opus_perk_arr.size > 0 and opus_perks != blank -%}
+          <ul class="lc-perks">
+            {%- for perk in opus_perk_arr -%}
+              {%- if perk != blank -%}
+                <li>{{ perk | escape }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+
+  {%- comment -%} ── Newsletter Card ── {%- endcomment -%}
+  <div class="lc-newsletter-wrap">
+    <div class="lc-newsletter">
+      <div class="lc-newsletter-inner">
+        {%- if section.settings.nl_copy != blank -%}
+          <p class="lc-newsletter-copy">{{ section.settings.nl_copy | escape }}</p>
+        {%- endif -%}
+
+        {%- form 'customer', id: 'lc-nl-form-{{ section.id }}' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter-signup">
+          {%- if form.posted_successfully? -%}
+            <p class="lc-nl-success">You're in! Thanks for subscribing. ☕</p>
+          {%- else -%}
+            <div class="lc-nl-form-pill">
+              <input
+                type="email"
+                name="contact[email]"
+                class="lc-nl-input"
+                placeholder="{{ section.settings.nl_placeholder | default: 'Your email address' | escape }}"
+                required
+                aria-label="Email address"
+              >
+              <button type="submit" class="lc-nl-btn">
+                {{ section.settings.nl_btn | default: 'Subscribe' | escape }}
+              </button>
+            </div>
+            {%- if form.errors -%}
+              <p class="lc-nl-error">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+(function () {
+  /* ── Flip Card ── */
+  var flip = document.getElementById('lc-flip-{{ section.id }}');
+  var hint = document.getElementById('lc-flip-hint-{{ section.id }}');
+
+  if (flip) {
+    function doFlip() {
+      flip.classList.toggle('is-flipped');
+    }
+
+    flip.addEventListener('click', doFlip);
+    flip.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        doFlip();
+      }
+    });
+  }
+
+  /* ── Accordion ── */
+  var accBtn  = document.getElementById('lc-acc-btn-{{ section.id }}');
+  var accBody = document.getElementById('lc-acc-body-{{ section.id }}');
+
+  if (accBtn && accBody) {
+    var accIcon = accBtn.querySelector('.lc-accordion-icon');
+    accBtn.addEventListener('click', function () {
+      var isOpen = accBody.classList.contains('is-open');
+      accBody.classList.toggle('is-open');
+      accBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      if (accIcon) accIcon.textContent = isOpen ? '+' : '−';
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Loyalty Cards",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "LOYALTY & MEMBERSHIP"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Perks for the People."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Join our loyalty programs and enjoy exclusive rewards at your nearest WTP Coffee location."
+    },
+    {
+      "type": "header",
+      "content": "Alabang — Loyalty Card"
+    },
+    {
+      "type": "text",
+      "id": "alabang_eyebrow",
+      "label": "Alabang Eyebrow Label",
+      "default": "WTP ALABANG"
+    },
+    {
+      "type": "text",
+      "id": "alabang_title",
+      "label": "Column Title",
+      "default": "The Loyalty Card"
+    },
+    {
+      "type": "textarea",
+      "id": "alabang_desc",
+      "label": "Description",
+      "default": "Earn stamps with every visit and unlock exclusive perks designed for our most devoted regulars. Your loyalty, rewarded."
+    },
+    {
+      "type": "image_picker",
+      "id": "alabang_card_front",
+      "label": "Card Front Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "alabang_card_back",
+      "label": "Card Back Image"
+    },
+    {
+      "type": "text",
+      "id": "alabang_badge",
+      "label": "Card Badge Label",
+      "default": "Claim yours in-store"
+    },
+    {
+      "type": "text",
+      "id": "alabang_perk_1",
+      "label": "Perk 1",
+      "default": "Buy 9 handcrafted drinks, enjoy your 10th on us"
+    },
+    {
+      "type": "text",
+      "id": "alabang_perk_2",
+      "label": "Perk 2",
+      "default": "A special complimentary treat on your birthday"
+    },
+    {
+      "type": "text",
+      "id": "alabang_perk_3",
+      "label": "Perk 3",
+      "default": "VIP early access to seasonal and limited releases"
+    },
+    {
+      "type": "text",
+      "id": "alabang_perk_4",
+      "label": "Perk 4",
+      "default": "Exclusive members-only pricing on WTP merch"
+    },
+    {
+      "type": "textarea",
+      "id": "alabang_tnc",
+      "label": "Terms & Conditions Text",
+      "default": "Card is non-transferable. Stamps are earned per transaction, not per item. Management reserves the right to modify the program at any time. Valid at WTP Alabang only."
+    },
+    {
+      "type": "text",
+      "id": "alabang_cta",
+      "label": "CTA Button Label",
+      "default": "Get Your Card In-Store"
+    },
+    {
+      "type": "header",
+      "content": "Opus — Resident Card"
+    },
+    {
+      "type": "text",
+      "id": "opus_eyebrow",
+      "label": "Opus Eyebrow Label",
+      "default": "WTP OPUS"
+    },
+    {
+      "type": "text",
+      "id": "opus_title",
+      "label": "Column Title",
+      "default": "The Resident Card"
+    },
+    {
+      "type": "textarea",
+      "id": "opus_desc",
+      "label": "Description",
+      "default": "A digital stamp card built for Opus residents. Collect stamps, earn a free tumbler, and enjoy the perks of being a true WTP regular."
+    },
+    {
+      "type": "image_picker",
+      "id": "opus_card_image",
+      "label": "Card Image (Including QR)"
+    },
+    {
+      "type": "text",
+      "id": "opus_badge",
+      "label": "Card Badge Label",
+      "default": "Log in now for rewards"
+    },
+    {
+      "type": "text",
+      "id": "opus_perk_1",
+      "label": "Perk 1",
+      "default": "Seamless digital stamp card — always in your pocket"
+    },
+    {
+      "type": "text",
+      "id": "opus_perk_2",
+      "label": "Perk 2",
+      "default": "Collect 10 stamps to earn your exclusive WTP tumbler"
+    },
+    {
+      "type": "text",
+      "id": "opus_perk_3",
+      "label": "Perk 3",
+      "default": "Unlock resident-only flash deals and secret promos"
+    },
+    {
+      "type": "text",
+      "id": "opus_perk_4",
+      "label": "Perk 4",
+      "default": "Priority seating and invites to WTP Opus community events"
+    },
+    {
+      "type": "text",
+      "id": "opus_cta",
+      "label": "CTA Button Label",
+      "default": "Apply for Resident Card"
+    },
+    {
+      "type": "url",
+      "id": "opus_cta_url",
+      "label": "CTA Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter Strip"
+    },
+    {
+      "type": "textarea",
+      "id": "nl_copy",
+      "label": "Newsletter Copy",
+      "default": "Stay updated on promos and loyalty perks."
+    },
+    {
+      "type": "text",
+      "id": "nl_placeholder",
+      "label": "Email Placeholder",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "nl_btn",
+      "label": "Subscribe Button Label",
+      "default": "Subscribe"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Loyalty Cards"
+    }
+  ]
+}
+{% endschema %}
