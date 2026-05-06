@@ -57,6 +57,73 @@
     },
     "community_loyalty_cards_wMWHJJ": {
       "type": "community-loyalty-cards",
+      "blocks": {
+        "perk_yjTt9m": {
+          "type": "perk",
+          "settings": {
+            "card": "alabang",
+            "heading": "10% Off Milestone",
+            "description": "Enjoy a 10% discount on your 5th handcrafted drink."
+          }
+        },
+        "perk_mWW9pq": {
+          "type": "perk",
+          "settings": {
+            "card": "alabang",
+            "heading": "The 10th Cup is on Us",
+            "description": "Buy 9 handcrafted drinks and get your 10th completely free."
+          }
+        },
+        "perk_4wqCpY": {
+          "type": "perk",
+          "settings": {
+            "card": "alabang",
+            "heading": "Drink Your Way",
+            "description": "Valid for all hot and iced handcrafted beverages (excludes pastries, food, and retail beans)."
+          }
+        },
+        "perk_DUHWGJ": {
+          "type": "perk",
+          "settings": {
+            "card": "alabang",
+            "heading": "Claim In-Store",
+            "description": "Ask our baristas at Alabang branch for your Collective card today."
+          }
+        },
+        "perk_tnCPMU": {
+          "type": "perk",
+          "settings": {
+            "card": "opus",
+            "heading": "Fully Digital",
+            "description": "Apply online in seconds and store your Resident Card directly on your phone—no physical cards to lose."
+          }
+        },
+        "perk_FKMDMx": {
+          "type": "perk",
+          "settings": {
+            "card": "opus",
+            "heading": "Scan to Collect",
+            "description": "Simply present your personal QR code to our baristas at the Opus Mall café to earn a stamp with every visit."
+          }
+        },
+        "perk_xD8eTn": {
+          "type": "perk",
+          "settings": {
+            "card": "opus",
+            "heading": "The Resident Reward",
+            "description": "Complete all 10 stamps on your digital card to unlock an exclusive WTP Tumbler on us."
+          }
+        }
+      },
+      "block_order": [
+        "perk_yjTt9m",
+        "perk_mWW9pq",
+        "perk_4wqCpY",
+        "perk_DUHWGJ",
+        "perk_tnCPMU",
+        "perk_FKMDMx",
+        "perk_xD8eTn"
+      ],
       "name": "Loyalty Cards",
       "settings": {
         "eyebrow": "LOYALTY & MEMBERSHIP",
@@ -68,22 +135,12 @@
         "alabang_card_front": "shopify://shop_images/front_card.png",
         "alabang_card_back": "shopify://shop_images/back_card.jpg",
         "alabang_badge": "Claim yours in-store",
-        "alabang_perk_1": "Buy 9 handcrafted drinks, enjoy your 10th on us",
-        "alabang_perk_2": "A special complimentary treat on your birthday",
-        "alabang_perk_3": "VIP early access to seasonal and limited releases",
-        "alabang_perk_4": "Exclusive members-only pricing on WTP merch",
         "alabang_tnc": "Card is non-transferable. Stamps are earned per transaction, not per item. Management reserves the right to modify the program at any time. Valid at WTP Alabang only.",
-        "alabang_cta": "Get Your Card In-Store",
         "opus_eyebrow": "WTP OPUS",
         "opus_title": "The Resident Card",
         "opus_desc": "A digital stamp card built for Opus residents. Collect stamps, earn a free tumbler, and enjoy the perks of being a true WTP regular.",
         "opus_card_image": "shopify://shop_images/Loyalty_Card_Opus.jpg",
         "opus_badge": "Log in now for rewards",
-        "opus_perk_1": "Seamless digital stamp card — always in your pocket",
-        "opus_perk_2": "Collect 10 stamps to earn your exclusive WTP tumbler",
-        "opus_perk_3": "Unlock resident-only flash deals and secret promos",
-        "opus_perk_4": "Priority seating and invites to WTP Opus community events",
-        "opus_cta": "Apply for Resident Card",
         "opus_cta_url": "",
         "nl_copy": "Stay updated on promos and loyalty perks.",
         "nl_placeholder": "Your email address",
