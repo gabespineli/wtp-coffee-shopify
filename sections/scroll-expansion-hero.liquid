@@ -1,13 +1,16 @@
 <div class="scroll-expansion-hero" id="ScrollExpansionHero-{{ section.id }}">
   <div class="scroll-expansion-hero__sticky-container">
     {%- if section.settings.background_image != blank -%}
-      {{ section.settings.background_image | image_url: width: 1200 | image_tag: 
-        class: 'scroll-expansion-hero__bg',
-        loading: 'eager',
-        fetchpriority: 'high',
-        preload: true,
-        widths: '750, 1100, 1600',
-        sizes: '100vw'
+      {{
+        section.settings.background_image
+        | image_url: width: 1200
+        | image_tag:
+          class: 'scroll-expansion-hero__bg',
+          loading: 'eager',
+          fetchpriority: 'high',
+          preload: true,
+          widths: '750, 1100, 1600',
+          sizes: '100vw'
       }}
     {%- else -%}
       <div class="scroll-expansion-hero__bg scroll-expansion-hero__bg--placeholder">
@@ -73,12 +76,18 @@
       {%- if section.settings.button_label != blank or section.settings.button_label_2 != blank -%}
         <div class="scroll-expansion-hero__buttons">
           {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
-            <a href="{{ section.settings.button_link }}" class="scroll-expansion-hero__cta scroll-expansion-hero__cta--primary">
+            <a
+              href="{{ section.settings.button_link }}"
+              class="scroll-expansion-hero__cta scroll-expansion-hero__cta--primary"
+            >
               {{ section.settings.button_label }}
             </a>
           {%- endif -%}
           {%- if section.settings.button_label_2 != blank and section.settings.button_link_2 != blank -%}
-            <a href="{{ section.settings.button_link_2 }}" class="scroll-expansion-hero__cta scroll-expansion-hero__cta--secondary">
+            <a
+              href="{{ section.settings.button_link_2 }}"
+              class="scroll-expansion-hero__cta scroll-expansion-hero__cta--secondary"
+            >
               {{ section.settings.button_label_2 }}
             </a>
           {%- endif -%}
@@ -91,7 +100,7 @@
 <style>
   #ScrollExpansionHero-{{ section.id }} {
     --scroll-progress: 0;
-    height: 125vh;
+    height: 155vh;
     position: relative;
     width: 100%;
     display: block;
@@ -425,7 +434,10 @@
 
         if (rect.top <= 0 && rect.bottom >= wh) {
           var scrollable = rect.height - wh;
-          targetProgress = Math.max(0, Math.min(1, Math.abs(rect.top) / scrollable));
+          var rawFraction = Math.max(0, Math.min(1, Math.abs(rect.top) / scrollable));
+          /* Expansion completes at 45% of scroll; remainder is dwell at full expansion */
+          var expansionEnd = 0.45;
+          targetProgress = Math.min(1, rawFraction / expansionEnd);
         } else if (rect.top > 0) {
           targetProgress = 0;
         } else {

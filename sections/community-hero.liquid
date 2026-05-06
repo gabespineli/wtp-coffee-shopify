@@ -311,7 +311,7 @@
 
       <div class="ch-ctas">
         {%- if section.settings.cta_primary_label != blank -%}
-          <a href="{{ section.settings.cta_primary_url | default: '#' }}" class="ch-btn-primary">
+          <a href="{{ section.settings.cta_primary_url | default: '/pages/community#events' }}" class="ch-btn-primary">
             {{ section.settings.cta_primary_label | escape }}
           </a>
         {%- endif -%}
@@ -492,8 +492,7 @@
     {
       "type": "url",
       "id": "cta_primary_url",
-      "label": "Button URL",
-      "default": "/pages/community#events"
+      "label": "Button URL"
     },
     {
       "type": "header",
