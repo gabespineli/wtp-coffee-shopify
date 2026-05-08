@@ -742,7 +742,7 @@
         {%- endif -%}
 
         {%- form 'customer', id: 'lc-nl-form-{{ section.id }}' -%}
-          <input type="hidden" name="contact[tags]" value="newsletter-signup">
+          <input type="hidden" name="contact[tags]" value="newsletter, loyalty-program">
           {%- if form.posted_successfully? -%}
             <p class="lc-nl-success">You're in! Thanks for subscribing. ☕</p>
           {%- else -%}

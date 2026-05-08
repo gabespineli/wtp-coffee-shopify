@@ -346,51 +346,49 @@
 {%- comment -%} ── HERO ── {%- endcomment -%}
 <div class="bk-hero-wrapper">
   <div class="bk-hero">
+    {%- comment -%} Left: Copy {%- endcomment -%}
+    <div class="bk-hero__copy">
+      <p class="bk-hero__eyebrow">WTP Coffee</p>
+      <h1 class="bk-hero__title">{{ page.title | escape }}</h1>
+      <hr class="bk-hero__divider" aria-hidden="true">
+      {%- if section.settings.hero_subtitle != blank -%}
+        <p class="bk-hero__subtitle">{{ section.settings.hero_subtitle | escape }}</p>
+      {%- endif -%}
+    </div>
 
-  {%- comment -%} Left: Copy {%- endcomment -%}
-  <div class="bk-hero__copy">
-    <p class="bk-hero__eyebrow">WTP Coffee</p>
-    <h1 class="bk-hero__title">{{ page.title | escape }}</h1>
-    <hr class="bk-hero__divider" aria-hidden="true">
-    {%- if section.settings.hero_subtitle != blank -%}
-      <p class="bk-hero__subtitle">{{ section.settings.hero_subtitle | escape }}</p>
-    {%- endif -%}
-  </div>
-
-  {%- comment -%} Right: Image {%- endcomment -%}
-  <div class="bk-hero__media">
-    {%- if section.settings.hero_image != blank -%}
-      {{
-        section.settings.hero_image
-        | image_url: width: 1200
-        | image_tag:
-          loading: 'eager',
-          fetchpriority: 'high',
-          widths: '600, 900, 1200',
-          sizes: '(min-width: 750px) 60vw, 100vw',
-          alt: section.settings.hero_image.alt | default: page.title
-      }}
-    {%- else -%}
-      <div class="bk-hero__media-placeholder">
-        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-      </div>
-    {%- endif -%}
-  </div>
-
+    {%- comment -%} Right: Image {%- endcomment -%}
+    <div class="bk-hero__media">
+      {%- if section.settings.hero_image != blank -%}
+        {{
+          section.settings.hero_image
+          | image_url: width: 1200
+          | image_tag:
+            loading: 'eager',
+            fetchpriority: 'high',
+            widths: '600, 900, 1200',
+            sizes: '(min-width: 750px) 60vw, 100vw',
+            alt: section.settings.hero_image.alt
+          | default: page.title
+        }}
+      {%- else -%}
+        <div class="bk-hero__media-placeholder">
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {%- endif -%}
+    </div>
   </div>
 </div>
 
 {%- comment -%} ── LEAD CAPTURE FORM ── {%- endcomment -%}
 <div class="bk-form-section">
   <div class="bk-form-inner">
-
     <div class="bk-form-heading">
       <span class="bk-form-heading__label">Get in Touch</span>
       <h2 class="bk-form-heading__title">Submit Your Inquiry</h2>
     </div>
 
     {%- form 'contact' -%}
-      <input type="hidden" name="contact[Lead Source]" value="WTP Coffee Event & Wholesale Inquiry">
+      <input type="hidden" name="contact[tags]" value="wholesale-inquiry">
 
       {%- comment -%} Success Message {%- endcomment -%}
       {%- if form.posted_successfully? -%}
@@ -405,14 +403,16 @@
           <strong>Please review the following:</strong>
           <ul style="margin: 0.5rem 0 0; padding-left: 1.25rem;">
             {%- for field in form.errors -%}
-              <li>{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</li>
+              <li>
+                {{ form.errors.translated_fields[field] | capitalize }}
+                {{ form.errors.messages[field] }}
+              </li>
             {%- endfor -%}
           </ul>
         </div>
       {%- endif -%}
 
       <div class="bk-form__grid">
-
         {%- comment -%} First Name {%- endcomment -%}
         <div class="bk-form__field">
           <label class="bk-form__label" for="BookingFirstName">First Name</label>
@@ -541,10 +541,8 @@
           <a href="mailto:kirsten@wtpcoffee.com">kirsten@wtpcoffee.com</a>
           or <a href="tel:+639623360361">+63 962 336 0361</a>.
         </p>
-
       </div>
     {%- endform -%}
-
   </div>
 </div>
 

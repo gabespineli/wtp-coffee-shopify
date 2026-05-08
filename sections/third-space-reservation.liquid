@@ -488,6 +488,7 @@
         <p class="wtp-ts-form-card__subtitle">{{ section.settings.form_subtitle | default: 'Please fill out the form below to request a reservation at one of our locations.' }}</p>
 
         {%- form 'contact', id: 'wtp-reservation-form', class: 'wtp-ts-contact-form' -%}
+          <input type="hidden" name="contact[tags]" value="reservation-request">
 
           {%- if form.posted_successfully? -%}
             <div class="wtp-ts-notice wtp-ts-notice--success" role="status">
@@ -498,9 +499,6 @@
               There was an issue submitting your request. Please check the form and try again.
             </div>
           {%- endif -%}
-
-          <input type="hidden" name="contact[tags]" value="reservation-request">
-
           <div class="wtp-ts-form-grid">
 
             <div class="wtp-ts-field">
