@@ -388,7 +388,7 @@
     </div>
 
     {%- form 'customer' -%}
-      <input type="hidden" name="contact[tags]" value="wholesale-inquiry">
+      <input type="hidden" name="customer[tags]" value="wholesale-inquiry">
 
       {%- comment -%} Success Message {%- endcomment -%}
       {%- if form.posted_successfully? -%}
@@ -419,7 +419,7 @@
           <input
             id="BookingFirstName"
             type="text"
-            name="contact[First Name]"
+            name="customer[first_name]"
             class="bk-form__input"
             autocomplete="given-name"
             value="{{ form['First Name'] }}"
@@ -432,7 +432,7 @@
           <input
             id="BookingLastName"
             type="text"
-            name="contact[Last Name]"
+            name="customer[last_name]"
             class="bk-form__input"
             autocomplete="family-name"
             value="{{ form['Last Name'] }}"
@@ -445,7 +445,7 @@
           <input
             id="BookingEmail"
             type="email"
-            name="contact[email]"
+            name="customer[email]"
             class="bk-form__input"
             autocomplete="email"
             autocorrect="off"
@@ -462,7 +462,7 @@
           <input
             id="BookingPhone"
             type="tel"
-            name="contact[note][Phone]"
+            name="customer[note][Phone]"
             class="bk-form__input"
             autocomplete="tel"
             value="{{ form['Phone'] }}"
@@ -474,7 +474,7 @@
           <label class="bk-form__label" for="BookingServiceType">Service Type</label>
           <select
             id="BookingServiceType"
-            name="contact[note][Service Type]"
+            name="customer[note][Service Type]"
             class="bk-form__select"
             required
             aria-required="true"
@@ -494,7 +494,7 @@
           <input
             id="BookingEventDate"
             type="text"
-            name="contact[note][Event Date]"
+            name="customer[note][Event Date]"
             class="bk-form__input"
             placeholder="Select date..."
             value="{{ form['Event Date'] }}"
@@ -509,7 +509,7 @@
           <input
             id="BookingGuestCount"
             type="number"
-            name="contact[note][Guest Count]"
+            name="customer[note][Guest Count]"
             class="bk-form__input"
             min="1"
             placeholder="e.g. 100"
@@ -522,7 +522,7 @@
           <label class="bk-form__label bk-form__label--required" for="BookingDetails">Event Details</label>
           <textarea
             id="BookingDetails"
-            name="contact[note][body]"
+            name="customer[note][body]"
             class="bk-form__textarea"
             rows="5"
             required
