@@ -487,7 +487,7 @@
         <h2 class="wtp-ts-form-card__title">{{ section.settings.form_title | default: 'Reservation Details' }}</h2>
         <p class="wtp-ts-form-card__subtitle">{{ section.settings.form_subtitle | default: 'Please fill out the form below to request a reservation at one of our locations.' }}</p>
 
-        {%- form 'contact', id: 'wtp-reservation-form', class: 'wtp-ts-contact-form' -%}
+        {%- form 'customer', id: 'wtp-reservation-form', class: 'wtp-ts-contact-form' -%}
           <input type="hidden" name="contact[tags]" value="reservation-request">
 
           {%- if form.posted_successfully? -%}
@@ -506,7 +506,7 @@
               <div class="wtp-ts-select-wrap">
                 <select
                   id="wtp-ts-type"
-                  name="contact[reservation_type]"
+                  name="contact[note][reservation_type]"
                   class="wtp-ts-select"
                   required
                   aria-required="true"
@@ -523,7 +523,7 @@
               <div class="wtp-ts-select-wrap">
                 <select
                   id="wtp-ts-branch"
-                  name="contact[branch_location]"
+                  name="contact[note][branch_location]"
                   class="wtp-ts-select"
                   required
                   aria-required="true"
@@ -540,7 +540,7 @@
               <input
                 type="text"
                 id="wtp-ts-date"
-                name="contact[reservation_date]"
+                name="contact[note][reservation_date]"
                 class="wtp-ts-input"
                 placeholder="dd/mm/yyyy"
                 required
@@ -555,7 +555,7 @@
               <input
                 type="text"
                 id="wtp-ts-time"
-                name="contact[reservation_time]"
+                name="contact[note][reservation_time]"
                 class="wtp-ts-input"
                 placeholder="--:--"
                 required
@@ -570,7 +570,7 @@
               <input
                 type="number"
                 id="wtp-ts-pax"
-                name="contact[number_of_guests]"
+                name="contact[note][number_of_guests]"
                 class="wtp-ts-input"
                 min="1"
                 max="200"
@@ -585,7 +585,7 @@
               <input
                 type="text"
                 id="wtp-ts-name"
-                name="contact[name]"
+                name="contact[note][name]"
                 class="wtp-ts-input"
                 placeholder="Full Name"
                 required
@@ -599,7 +599,7 @@
               <input
                 type="tel"
                 id="wtp-ts-phone"
-                name="contact[phone]"
+                name="contact[note][phone]"
                 class="wtp-ts-input"
                 placeholder="+63 900 000 0000"
                 autocomplete="tel"
@@ -624,7 +624,7 @@
               <label class="wtp-ts-label" for="wtp-ts-body">Special Requests</label>
               <textarea
                 id="wtp-ts-body"
-                name="contact[body]"
+                name="contact[note][body]"
                 class="wtp-ts-textarea"
                 placeholder="Any dietary restrictions, seating preferences, or occasion details?"
                 rows="4"

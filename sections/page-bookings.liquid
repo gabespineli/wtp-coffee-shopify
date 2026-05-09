@@ -387,7 +387,7 @@
       <h2 class="bk-form-heading__title">Submit Your Inquiry</h2>
     </div>
 
-    {%- form 'contact' -%}
+    {%- form 'customer' -%}
       <input type="hidden" name="contact[tags]" value="wholesale-inquiry">
 
       {%- comment -%} Success Message {%- endcomment -%}
@@ -462,7 +462,7 @@
           <input
             id="BookingPhone"
             type="tel"
-            name="contact[Phone]"
+            name="contact[note][Phone]"
             class="bk-form__input"
             autocomplete="tel"
             value="{{ form['Phone'] }}"
@@ -474,7 +474,7 @@
           <label class="bk-form__label" for="BookingServiceType">Service Type</label>
           <select
             id="BookingServiceType"
-            name="contact[Service Type]"
+            name="contact[note][Service Type]"
             class="bk-form__select"
             required
             aria-required="true"
@@ -494,7 +494,7 @@
           <input
             id="BookingEventDate"
             type="text"
-            name="contact[Event Date]"
+            name="contact[note][Event Date]"
             class="bk-form__input"
             placeholder="Select date..."
             value="{{ form['Event Date'] }}"
@@ -509,7 +509,7 @@
           <input
             id="BookingGuestCount"
             type="number"
-            name="contact[Guest Count]"
+            name="contact[note][Guest Count]"
             class="bk-form__input"
             min="1"
             placeholder="e.g. 100"
@@ -522,7 +522,7 @@
           <label class="bk-form__label bk-form__label--required" for="BookingDetails">Event Details</label>
           <textarea
             id="BookingDetails"
-            name="contact[body]"
+            name="contact[note][body]"
             class="bk-form__textarea"
             rows="5"
             required
