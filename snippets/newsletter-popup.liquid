@@ -11,455 +11,452 @@
 {% endcomment %}
 
 {%- unless customer -%}
-<style>
-  /* ============================================================
+  <style>
+    /* ============================================================
      WTP Newsletter Popup — Overlay & Modal Box
   ============================================================ */
-  #wtp-newsletter-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    background: rgba(15, 25, 20, 0.72);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                visibility 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  #wtp-newsletter-overlay.is-active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  /* ---- Modal Box ---- */
-  .wtp-popup {
-    position: relative;
-    background: #F5F0E8;
-    color: #1B3A2D;
-    border-radius: 16px;
-    padding: 3.2rem 2.4rem 2.8rem;
-    width: 100%;
-    max-width: 480px;
-    box-shadow: 0 24px 64px rgba(10, 20, 14, 0.28);
-    transform: translateY(24px) scale(0.97);
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  #wtp-newsletter-overlay.is-active .wtp-popup {
-    transform: translateY(0) scale(1);
-  }
-
-  @media screen and (min-width: 750px) {
-    .wtp-popup {
-      padding: 4rem 4rem 3.6rem;
+    #wtp-newsletter-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: rgba(15, 25, 20, 0.72);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
-  }
 
-  /* ---- Close Button ---- */
-  .wtp-popup__close {
-    position: absolute;
-    top: 1.4rem;
-    right: 1.4rem;
-    width: 36px;
-    height: 36px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    color: #1B3A2D;
-    opacity: 0.5;
-    transition: opacity 0.2s ease, background-color 0.2s ease;
-    padding: 0;
-  }
+    #wtp-newsletter-overlay.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
 
-  .wtp-popup__close:hover {
-    opacity: 1;
-    background-color: rgba(27, 58, 45, 0.08);
-  }
+    /* ---- Modal Box ---- */
+    .wtp-popup {
+      position: relative;
+      background: #f5f0e8;
+      color: #1b3a2d;
+      border-radius: 16px;
+      padding: 3.2rem 2.4rem 2.8rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 24px 64px rgba(10, 20, 14, 0.28);
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-  .wtp-popup__close svg {
-    width: 18px;
-    height: 18px;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-  }
+    #wtp-newsletter-overlay.is-active .wtp-popup {
+      transform: translateY(0) scale(1);
+    }
 
-  /* ---- Eyebrow ---- */
-  .wtp-popup__eyebrow {
-    font-family: var(--font-body-family);
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #C8A96E;
-    margin: 0 0 1.2rem;
-    display: block;
-  }
+    @media screen and (min-width: 750px) {
+      .wtp-popup {
+        padding: 4rem 4rem 3.6rem;
+      }
+    }
 
-  /* ---- Heading ---- */
-  .wtp-popup__heading {
-    font-family: var(--font-heading-family);
-    font-size: clamp(2.6rem, 5.5vw, 3.6rem);
-    line-height: 1.1;
-    color: #1B3A2D;
-    margin: 0 0 1.4rem;
-    letter-spacing: -0.01em;
-  }
+    /* ---- Close Button ---- */
+    .wtp-popup__close {
+      position: absolute;
+      top: 1.4rem;
+      right: 1.4rem;
+      width: 36px;
+      height: 36px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #1b3a2d;
+      opacity: 0.5;
+      transition: opacity 0.2s ease, background-color 0.2s ease;
+      padding: 0;
+    }
 
-  /* ---- Subtext ---- */
-  .wtp-popup__subtext {
-    font-family: var(--font-body-family);
-    font-size: 1.4rem;
-    line-height: 1.75;
-    color: rgba(27, 58, 45, 0.72);
-    margin: 0 0 2.8rem;
-  }
+    .wtp-popup__close:hover {
+      opacity: 1;
+      background-color: rgba(27, 58, 45, 0.08);
+    }
 
-  /* ---- Form ---- */
-  .wtp-popup__form {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
+    .wtp-popup__close svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
 
-  /* Email field — borderless bottom-only style */
-  .wtp-popup__field-wrapper {
-    position: relative;
-    margin-bottom: 1.8rem;
-  }
+    /* ---- Eyebrow ---- */
+    .wtp-popup__eyebrow {
+      font-family: var(--font-body-family);
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #c8a96e;
+      margin: 0 0 1.2rem;
+      display: block;
+    }
 
-  .wtp-popup__email-input {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1.5px solid rgba(27, 58, 45, 0.3);
-    border-radius: 0;
-    padding: 0.8rem 0 0.9rem;
-    font-family: var(--font-body-family);
-    font-size: 1.5rem;
-    color: #1B3A2D;
-    outline: none;
-    transition: border-color 0.25s ease;
-    -webkit-appearance: none;
-    appearance: none;
-  }
+    /* ---- Heading ---- */
+    .wtp-popup__heading {
+      font-family: var(--font-heading-family);
+      font-size: clamp(2.6rem, 5.5vw, 3.6rem);
+      line-height: 1.1;
+      color: #1b3a2d;
+      margin: 0 0 1.4rem;
+      letter-spacing: -0.01em;
+    }
 
-  .wtp-popup__email-input::placeholder {
-    color: rgba(27, 58, 45, 0.38);
-  }
+    /* ---- Subtext ---- */
+    .wtp-popup__subtext {
+      font-family: var(--font-body-family);
+      font-size: 1.4rem;
+      line-height: 1.75;
+      color: rgba(27, 58, 45, 0.72);
+      margin: 0 0 2.8rem;
+    }
 
-  .wtp-popup__email-input:focus {
-    border-bottom-color: #1B3A2D;
-  }
+    /* ---- Form ---- */
+    .wtp-popup__form {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
 
-  /* ---- Submit Button — Pill Style ---- */
-  .wtp-popup__submit {
-    display: block;
-    width: 100%;
-    background: #1B3A2D;
-    color: #F5F0E8;
-    border: none;
-    border-radius: 50px;
-    padding: 1.15rem 2.2rem;
-    font-family: var(--font-body-family);
-    font-size: 1.4rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    text-align: center;
-  }
+    /* Email field — borderless bottom-only style */
+    .wtp-popup__field-wrapper {
+      position: relative;
+      margin-bottom: 1.8rem;
+    }
 
-  .wtp-popup__submit:hover {
-    background: #C8A96E;
-    transform: translateY(-1px);
-  }
+    .wtp-popup__email-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1.5px solid rgba(27, 58, 45, 0.3);
+      border-radius: 0;
+      padding: 0.8rem 0 0.9rem;
+      font-family: var(--font-body-family);
+      font-size: 1.5rem;
+      color: #1b3a2d;
+      outline: none;
+      transition: border-color 0.25s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
 
-  .wtp-popup__submit:active {
-    transform: translateY(0);
-  }
+    .wtp-popup__email-input::placeholder {
+      color: rgba(27, 58, 45, 0.38);
+    }
 
-  /* ---- Success State ---- */
-  .wtp-popup__success {
-    display: none;
-    text-align: center;
-    padding: 1.6rem 0 0.8rem;
-  }
+    .wtp-popup__email-input:focus {
+      border-bottom-color: #1b3a2d;
+    }
 
-  .wtp-popup__success-icon {
-    width: 48px;
-    height: 48px;
-    background: rgba(27, 58, 45, 0.08);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.6rem;
-  }
+    /* ---- Submit Button — Pill Style ---- */
+    .wtp-popup__submit {
+      display: block;
+      width: 100%;
+      background: #1b3a2d;
+      color: #f5f0e8;
+      border: none;
+      border-radius: 50px;
+      padding: 1.15rem 2.2rem;
+      font-family: var(--font-body-family);
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      text-align: center;
+    }
 
-  .wtp-popup__success-icon svg {
-    width: 22px;
-    height: 22px;
-    stroke: #1B3A2D;
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    fill: none;
-  }
+    .wtp-popup__submit:hover {
+      background: #c8a96e;
+      transform: translateY(-1px);
+    }
 
-  .wtp-popup__success-heading {
-    font-family: var(--font-heading-family);
-    font-size: 2.2rem;
-    color: #1B3A2D;
-    margin: 0 0 0.8rem;
-    line-height: 1.15;
-  }
+    .wtp-popup__submit:active {
+      transform: translateY(0);
+    }
 
-  .wtp-popup__success-text {
-    font-family: var(--font-body-family);
-    font-size: 1.35rem;
-    color: rgba(27, 58, 45, 0.68);
-    line-height: 1.7;
-    margin: 0;
-  }
+    /* ---- Success State ---- */
+    .wtp-popup__success {
+      display: none;
+      text-align: center;
+      padding: 1.6rem 0 0.8rem;
+    }
 
-  /* ---- Privacy note ---- */
-  .wtp-popup__privacy {
-    margin-top: 1.4rem;
-    font-size: 1.1rem;
-    color: rgba(27, 58, 45, 0.42);
-    text-align: center;
-    font-family: var(--font-body-family);
-  }
+    .wtp-popup__success-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(27, 58, 45, 0.08);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.6rem;
+    }
 
-  /* ---- Error message ---- */
-  .wtp-popup__error {
-    font-size: 1.2rem;
-    color: #c0392b;
-    margin-top: 0.6rem;
-    display: none;
-    font-family: var(--font-body-family);
-  }
+    .wtp-popup__success-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: #1b3a2d;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
 
-  .wtp-popup__error.is-visible {
-    display: block;
-  }
-</style>
+    .wtp-popup__success-heading {
+      font-family: var(--font-heading-family);
+      font-size: 2.2rem;
+      color: #1b3a2d;
+      margin: 0 0 0.8rem;
+      line-height: 1.15;
+    }
 
-{%- comment -%} ====================== HTML ====================== {%- endcomment -%}
-<div
-  id="wtp-newsletter-overlay"
-  role="dialog"
-  aria-modal="true"
-  aria-label="Join the WTP Community"
-  aria-hidden="true"
->
-  <div class="wtp-popup">
-    {%- comment -%} Close Button {%- endcomment -%}
-    <button
-      class="wtp-popup__close"
-      id="wtp-popup-close"
-      type="button"
-      aria-label="Close newsletter popup"
-    >
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <line x1="18" y1="6" x2="6" y2="18"/>
-        <line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
+    .wtp-popup__success-text {
+      font-family: var(--font-body-family);
+      font-size: 1.35rem;
+      color: rgba(27, 58, 45, 0.68);
+      line-height: 1.7;
+      margin: 0;
+    }
 
-    {%- comment -%} Content Body {%- endcomment -%}
-    <div class="wtp-popup__body" id="wtp-popup-body">
-      <span class="wtp-popup__eyebrow">10% Off Your First Bag</span>
-      <h2 class="wtp-popup__heading">Join the<br>Community.</h2>
-      <p class="wtp-popup__subtext">
-        Sign up to our newsletter and enjoy 10% off your first bag of roasted beans. Get early access to events and exclusive drops.
-      </p>
+    /* ---- Privacy note ---- */
+    .wtp-popup__privacy {
+      margin-top: 1.4rem;
+      font-size: 1.1rem;
+      color: rgba(27, 58, 45, 0.42);
+      text-align: center;
+      font-family: var(--font-body-family);
+    }
 
-      {%- comment -%}
-        Shopify native customer form — tags subscriber as 'newsletter' and 'welcome-discount'.
-        The hidden 'contact[tags]' input appends these tags to the customer record.
-        The 'customer[accepts_marketing]' checkbox (hidden/checked) opts them into marketing.
-      {%- endcomment -%}
-      {%- form 'customer', id: 'wtp-newsletter-form', class: 'wtp-popup__form' -%}
-        <input type="hidden" name="contact[tags]" value="newsletter,welcome-discount">
-        <input type="hidden" name="customer[accepts_marketing]" value="true">
+    /* ---- Error message ---- */
+    .wtp-popup__error {
+      font-size: 1.2rem;
+      color: #c0392b;
+      margin-top: 0.6rem;
+      display: none;
+      font-family: var(--font-body-family);
+    }
 
-        <div class="wtp-popup__field-wrapper">
-          <input
-            id="wtp-popup-email"
-            type="email"
-            name="contact[email]"
-            class="wtp-popup__email-input"
-            placeholder="Your email address"
-            autocomplete="email"
-            required
-            aria-required="true"
-            aria-label="Email address"
-            aria-describedby="wtp-popup-error"
-          >
-          <span class="wtp-popup__error" id="wtp-popup-error" role="alert"></span>
-        </div>
+    .wtp-popup__error.is-visible {
+      display: block;
+    }
+  </style>
 
-        <button type="submit" class="wtp-popup__submit" id="wtp-popup-submit">
-          Unlock 10% Off
-        </button>
-      {%- endform -%}
-
-      <p class="wtp-popup__privacy">No spam. Unsubscribe anytime.</p>
-    </div>
-
-    {%- comment -%} Success State {%- endcomment -%}
-    <div class="wtp-popup__success" id="wtp-popup-success" aria-live="polite">
-      <div class="wtp-popup__success-icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <polyline points="20 6 9 17 4 12"/>
+  {%- comment -%} ====================== HTML ====================== {%- endcomment -%}
+  <div
+    id="wtp-newsletter-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Join the WTP Community"
+    aria-hidden="true"
+  >
+    <div class="wtp-popup">
+      {%- comment -%} Close Button {%- endcomment -%}
+      <button
+        class="wtp-popup__close"
+        id="wtp-popup-close"
+        type="button"
+        aria-label="Close newsletter popup"
+      >
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
+      </button>
+
+      {%- comment -%} Content Body {%- endcomment -%}
+      <div class="wtp-popup__body" id="wtp-popup-body">
+        <span class="wtp-popup__eyebrow">10% Off Your First Can</span>
+        <h2 class="wtp-popup__heading">
+          Join the<br>
+          Community.
+        </h2>
+        <p class="wtp-popup__subtext">
+          Sign up to our newsletter and enjoy 10% off your first can of roasted beans. Get early access to events and
+          exclusive drops.
+        </p>
+
+        {%- comment -%}
+          Shopify native customer form — tags subscriber as 'newsletter' and 'welcome-discount'.
+          The hidden 'contact[tags]' input appends these tags to the customer record.
+          The 'customer[accepts_marketing]' checkbox (hidden/checked) opts them into marketing.
+        {%- endcomment -%}
+        {%- form 'customer', id: 'wtp-newsletter-form', class: 'wtp-popup__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter,welcome-discount">
+          <input type="hidden" name="customer[accepts_marketing]" value="true">
+
+          <div class="wtp-popup__field-wrapper">
+            <input
+              id="wtp-popup-email"
+              type="email"
+              name="contact[email]"
+              class="wtp-popup__email-input"
+              placeholder="Your email address"
+              autocomplete="email"
+              required
+              aria-required="true"
+              aria-label="Email address"
+              aria-describedby="wtp-popup-error"
+            >
+            <span class="wtp-popup__error" id="wtp-popup-error" role="alert"></span>
+          </div>
+
+          <button type="submit" class="wtp-popup__submit" id="wtp-popup-submit">Unlock 10% Off</button>
+        {%- endform -%}
+
+        <p class="wtp-popup__privacy">No spam. Unsubscribe anytime.</p>
       </div>
-      <h3 class="wtp-popup__success-heading">You're in.</h3>
-      <p class="wtp-popup__success-text">
-        Your 10% discount code is on its way to your inbox.<br>
-        Welcome to the WTP community.
-      </p>
+
+      {%- comment -%} Success State {%- endcomment -%}
+      <div class="wtp-popup__success" id="wtp-popup-success" aria-live="polite">
+        <div class="wtp-popup__success-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h3 class="wtp-popup__success-heading">You're in.</h3>
+        <p class="wtp-popup__success-text">
+          Your 10% discount code is on its way to your inbox.<br>
+          Welcome to the WTP community.
+        </p>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-  (function () {
-    'use strict';
+  <script>
+    (function () {
+      'use strict';
 
-    const STORAGE_KEY = 'wtp_newsletter_dismissed';
+      const STORAGE_KEY = 'wtp_newsletter_dismissed';
 
-    // Guard: don't show in Shopify design mode, or if already dismissed/submitted
-    if (
-      (typeof Shopify !== 'undefined' && Shopify.designMode) ||
-      localStorage.getItem(STORAGE_KEY)
-    ) return;
+      // Guard: don't show in Shopify design mode, or if already dismissed/submitted
+      if ((typeof Shopify !== 'undefined' && Shopify.designMode) || localStorage.getItem(STORAGE_KEY)) return;
 
-    const overlay   = document.getElementById('wtp-newsletter-overlay');
-    const closeBtn  = document.getElementById('wtp-popup-close');
-    const form      = document.getElementById('wtp-newsletter-form');
-    const bodyEl    = document.getElementById('wtp-popup-body');
-    const successEl = document.getElementById('wtp-popup-success');
-    const emailInput = document.getElementById('wtp-popup-email');
-    const errorEl   = document.getElementById('wtp-popup-error');
+      const overlay = document.getElementById('wtp-newsletter-overlay');
+      const closeBtn = document.getElementById('wtp-popup-close');
+      const form = document.getElementById('wtp-newsletter-form');
+      const bodyEl = document.getElementById('wtp-popup-body');
+      const successEl = document.getElementById('wtp-popup-success');
+      const emailInput = document.getElementById('wtp-popup-email');
+      const errorEl = document.getElementById('wtp-popup-error');
 
-    if (!overlay || !form) return;
+      if (!overlay || !form) return;
 
-    // ---- Open ----
-    function openPopup() {
-      overlay.removeAttribute('aria-hidden');
-      overlay.classList.add('is-active');
-      document.body.style.overflow = 'hidden';
-      // Focus the email input after animation completes
-      setTimeout(() => { if (emailInput) emailInput.focus(); }, 460);
-    }
-
-    // ---- Close ----
-    function closePopup() {
-      overlay.setAttribute('aria-hidden', 'true');
-      overlay.classList.remove('is-active');
-      document.body.style.overflow = '';
-      localStorage.setItem(STORAGE_KEY, '1');
-    }
-
-    // ---- Show success ----
-    function showSuccess() {
-      bodyEl.style.display = 'none';
-      successEl.style.display = 'block';
-      localStorage.setItem(STORAGE_KEY, '1');
-      // Auto-close after 3.5s
-      setTimeout(closePopup, 3500);
-    }
-
-    // ---- Trigger on Scroll Depth (50%) ----
-    function handleScroll() {
-      const scrollHeight = document.documentElement.scrollHeight;
-      const clientHeight = window.innerHeight;
-      const scrollTotal = scrollHeight - clientHeight;
-      const scrollPercent = window.scrollY / scrollTotal;
-
-      if (scrollTotal > 0 && scrollPercent >= 0.5) {
-        openPopup();
-        window.removeEventListener('scroll', handleScroll);
-      }
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // ---- Close button ----
-    closeBtn.addEventListener('click', closePopup);
-
-
-
-    // ---- Escape key ----
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && overlay.classList.contains('is-active')) {
-        closePopup();
-      }
-    });
-
-    // ---- Form submission ----
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      e.stopImmediatePropagation(); // Prevents other theme scripts from interfering
-
-      // Clear previous errors
-      if (errorEl) {
-        errorEl.textContent = '';
-        errorEl.classList.remove('is-visible');
+      // ---- Open ----
+      function openPopup() {
+        overlay.removeAttribute('aria-hidden');
+        overlay.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+        // Focus the email input after animation completes
+        setTimeout(() => {
+          if (emailInput) emailInput.focus();
+        }, 460);
       }
 
-      const email = emailInput ? emailInput.value.trim() : '';
-      if (!email) {
-        if (errorEl) {
-          errorEl.textContent = 'Please enter your email address.';
-          errorEl.classList.add('is-visible');
+      // ---- Close ----
+      function closePopup() {
+        overlay.setAttribute('aria-hidden', 'true');
+        overlay.classList.remove('is-active');
+        document.body.style.overflow = '';
+        localStorage.setItem(STORAGE_KEY, '1');
+      }
+
+      // ---- Show success ----
+      function showSuccess() {
+        bodyEl.style.display = 'none';
+        successEl.style.display = 'block';
+        localStorage.setItem(STORAGE_KEY, '1');
+        // Auto-close after 3.5s
+        setTimeout(closePopup, 3500);
+      }
+
+      // ---- Trigger on Scroll Depth (50%) ----
+      function handleScroll() {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = window.innerHeight;
+        const scrollTotal = scrollHeight - clientHeight;
+        const scrollPercent = window.scrollY / scrollTotal;
+
+        if (scrollTotal > 0 && scrollPercent >= 0.5) {
+          openPopup();
+          window.removeEventListener('scroll', handleScroll);
         }
-        if (emailInput) emailInput.focus();
-        return;
       }
+      window.addEventListener('scroll', handleScroll, { passive: true });
 
-      const submitBtn = document.getElementById('wtp-popup-submit');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Subscribing…';
-      }
+      // ---- Close button ----
+      closeBtn.addEventListener('click', closePopup);
 
-      // Build FormData and post natively to Shopify
-      const formData = new FormData(form);
-      formData.set('form_type', 'customer');
-
-      fetch('/contact', {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      })
-      .then(function (res) {
-        // Shopify returns 200 or 422 (if already exists) — both are "success" for the UI
-        if (res.ok || res.status === 422) {
-          showSuccess();
-        } else {
-          // If we get a redirect (like to a captcha), the browser may have followed it.
-          // In AJAX, we'll just show success to keep the user experience smooth.
-          showSuccess();
+      // ---- Escape key ----
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.classList.contains('is-active')) {
+          closePopup();
         }
-      })
-      .catch(function () {
-        showSuccess();
       });
-    });
 
-  })();
-</script>
+      // ---- Form submission ----
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation(); // Prevents other theme scripts from interfering
+
+        // Clear previous errors
+        if (errorEl) {
+          errorEl.textContent = '';
+          errorEl.classList.remove('is-visible');
+        }
+
+        const email = emailInput ? emailInput.value.trim() : '';
+        if (!email) {
+          if (errorEl) {
+            errorEl.textContent = 'Please enter your email address.';
+            errorEl.classList.add('is-visible');
+          }
+          if (emailInput) emailInput.focus();
+          return;
+        }
+
+        const submitBtn = document.getElementById('wtp-popup-submit');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Subscribing…';
+        }
+
+        // Build FormData and post natively to Shopify
+        const formData = new FormData(form);
+        formData.set('form_type', 'customer');
+
+        fetch('/contact', {
+          method: 'POST',
+          body: formData,
+          headers: { Accept: 'application/json' },
+        })
+          .then(function (res) {
+            // Shopify returns 200 or 422 (if already exists) — both are "success" for the UI
+            if (res.ok || res.status === 422) {
+              showSuccess();
+            } else {
+              // If we get a redirect (like to a captcha), the browser may have followed it.
+              // In AJAX, we'll just show success to keep the user experience smooth.
+              showSuccess();
+            }
+          })
+          .catch(function () {
+            showSuccess();
+          });
+      });
+    })();
+  </script>
 {%- endunless -%}
