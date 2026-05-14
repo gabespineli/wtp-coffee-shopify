@@ -290,12 +290,10 @@
         </p>
 
         {%- comment -%}
-          Shopify native customer form — tags subscriber as 'newsletter' and 'welcome-discount'.
-          The hidden 'contact[tags]' input appends these tags to the customer record.
+          Shopify native customer form.
           The 'customer[accepts_marketing]' checkbox (hidden/checked) opts them into marketing.
         {%- endcomment -%}
         {%- form 'customer', id: 'wtp-newsletter-form', class: 'wtp-popup__form' -%}
-          <input type="hidden" name="contact[tags]" value="newsletter,welcome-discount">
           <input type="hidden" name="customer[accepts_marketing]" value="true">
 
           <div class="wtp-popup__field-wrapper">
