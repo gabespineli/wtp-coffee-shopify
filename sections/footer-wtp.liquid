@@ -557,7 +557,7 @@
   <div class="wtp-footer__bottom">
     {%- comment -%} Copyright — Left {%- endcomment -%}
     <p class="wtp-footer__copyright">
-      &copy; {{ section.settings.copyright_year }}
+      &copy; {{ 'now' | date: '%Y' }}
       {{ section.settings.copyright_brand }}. All rights reserved.
     </p>
 
