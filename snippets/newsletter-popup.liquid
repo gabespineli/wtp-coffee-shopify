@@ -383,21 +383,24 @@
       setTimeout(closePopup, 3500);
     }
 
-    // ---- Trigger after 3 seconds on DOMContentLoaded ----
-    const trigger = () => setTimeout(openPopup, 3000);
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', trigger);
-    } else {
-      trigger();
+    // ---- Trigger on Scroll Depth (50%) ----
+    function handleScroll() {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = window.innerHeight;
+      const scrollTotal = scrollHeight - clientHeight;
+      const scrollPercent = window.scrollY / scrollTotal;
+
+      if (scrollTotal > 0 && scrollPercent >= 0.5) {
+        openPopup();
+        window.removeEventListener('scroll', handleScroll);
+      }
     }
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     // ---- Close button ----
     closeBtn.addEventListener('click', closePopup);
 
-    // ---- Overlay click-outside-to-close ----
-    overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) closePopup();
-    });
+
 
     // ---- Escape key ----
     document.addEventListener('keydown', function (e) {
