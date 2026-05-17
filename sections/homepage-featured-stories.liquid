@@ -230,61 +230,69 @@
     </header>
   {%- endif -%}
 
-  {%- if story_blog != blank -%}
-    {%- liquid
-      assign featured_articles = story_blog.articles | where: 'tags', 'featured'
-    -%}
+  {%- if story_blog != blank and story_blog.articles.size > 0 -%}
+    {%- assign has_featured = false -%}
+    {%- for article in story_blog.articles -%}
+      {%- if article.tags contains 'featured' -%}
+        {%- assign has_featured = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
 
-    {%- if featured_articles.size > 0 -%}
+    {%- if has_featured -%}
       <div class="hfs-grid" role="list">
-        {%- for article in featured_articles limit: 3 -%}
-          {%- liquid
-            assign raw_excerpt = article.excerpt_or_content | strip_html | strip
-            assign excerpt_text = raw_excerpt | truncate: 120
-            assign first_non_featured_tag = ''
-            for tag in article.tags
-              if tag != 'featured' and first_non_featured_tag == ''
-                assign first_non_featured_tag = tag
-              endif
-            endfor
-          -%}
+        {%- assign featured_count = 0 -%}
+        {%- for article in story_blog.articles -%}
+          {%- if article.tags contains 'featured' and featured_count < 3 -%}
+            {%- assign featured_count = featured_count | plus: 1 -%}
+            {%- liquid
+              assign raw_excerpt = article.excerpt_or_content | strip_html | strip
+              assign excerpt_text = raw_excerpt | truncate: 120
+              assign first_non_featured_tag = ''
+              for tag in article.tags
+                if tag != 'featured' and first_non_featured_tag == ''
+                  assign first_non_featured_tag = tag
+                endif
+              endfor
+            -%}
 
-          <article class="hfs-card" role="listitem">
+            <article class="hfs-card" role="listitem">
 
-            <a href="{{ article.url }}" class="hfs-card__img-link" aria-label="{{ article.title | escape }}">
-              {%- if article.image != blank -%}
-                {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: article.image.alt | default: article.title }}
-              {%- else -%}
-                <div class="hfs-card__img-placeholder">
-                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                </div>
-              {%- endif -%}
-            </a>
-
-            <div class="hfs-card__body">
-              {%- if first_non_featured_tag != blank -%}
-                <span class="hfs-card__tag">{{ first_non_featured_tag | escape }}</span>
-              {%- elsif article.tags.size > 0 -%}
-                <span class="hfs-card__tag">{{ article.tags | first | escape }}</span>
-              {%- endif -%}
-
-              <h3 class="hfs-card__title">
-                <a href="{{ article.url }}">{{ article.title | escape }}</a>
-              </h3>
-
-              {%- if excerpt_text != blank -%}
-                <p class="hfs-card__excerpt">{{ excerpt_text }}</p>
-              {%- endif -%}
-
-              <a href="{{ article.url }}" class="hfs-card__read-more" aria-label="Read more about {{ article.title | escape }}">
-                Read More
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+              <a href="{{ article.url }}" class="hfs-card__img-link" aria-label="{{ article.title | escape }}">
+                {%- if article.image != blank -%}
+                  {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: article.image.alt | default: article.title }}
+                {%- else -%}
+                  <div class="hfs-card__img-placeholder">
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {%- endif -%}
               </a>
-            </div>
 
-          </article>
+              <div class="hfs-card__body">
+                {%- if first_non_featured_tag != blank -%}
+                  <span class="hfs-card__tag">{{ first_non_featured_tag | escape }}</span>
+                {%- elsif article.tags.size > 0 -%}
+                  <span class="hfs-card__tag">{{ article.tags | first | escape }}</span>
+                {%- endif -%}
+
+                <h3 class="hfs-card__title">
+                  <a href="{{ article.url }}">{{ article.title | escape }}</a>
+                </h3>
+
+                {%- if excerpt_text != blank -%}
+                  <p class="hfs-card__excerpt">{{ excerpt_text }}</p>
+                {%- endif -%}
+
+                <a href="{{ article.url }}" class="hfs-card__read-more" aria-label="Read more about {{ article.title | escape }}">
+                  Read More
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+
+            </article>
+          {%- endif -%}
         {%- endfor -%}
       </div>
     {%- endif -%}
