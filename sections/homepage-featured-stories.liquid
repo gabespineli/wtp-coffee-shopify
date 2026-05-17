@@ -1,0 +1,333 @@
+{% comment %}
+  Homepage Featured Stories — WTP Coffee
+  Displays up to 3 articles tagged 'featured' from a configurable blog.
+  All CSS is scoped inside this file via {%- style -%}.
+{% endcomment %}
+
+{%- liquid
+  assign blog_handle = section.settings.blog_handle | default: 'community-stories'
+  assign story_blog  = blogs[blog_handle]
+-%}
+
+{%- style -%}
+  /* ── Shell ── */
+  #hfs-{{ section.id }} {
+    background-color: #F5F0E8;
+    padding: 8rem 5%;
+    font-family: var(--font-body-family);
+    box-sizing: border-box;
+  }
+
+  #hfs-{{ section.id }} *,
+  #hfs-{{ section.id }} *::before,
+  #hfs-{{ section.id }} *::after {
+    box-sizing: border-box;
+  }
+
+  /* ── Section Header ── */
+  .hfs-header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .hfs-eyebrow {
+    display: block;
+    font-family: var(--font-body-family);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #C8A96E;
+    margin: 0 0 1rem;
+  }
+
+  .hfs-title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.6rem, 5vw, 4rem);
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.1;
+    color: #1B3A2D;
+    margin: 0;
+  }
+
+  /* ── Grid ── */
+  .hfs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    max-width: 1380px;
+    margin: 0 auto;
+  }
+
+  /* ── Card ── */
+  .hfs-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .hfs-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 44px rgba(27, 58, 45, 0.12);
+  }
+
+  /* ── Card Image ── */
+  .hfs-card__img-link {
+    display: block;
+    text-decoration: none;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .hfs-card__img-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .hfs-card:hover .hfs-card__img-link img {
+    transform: scale(1.04);
+  }
+
+  .hfs-card__img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #E9E4D8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Card Body ── */
+  .hfs-card__body {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.85rem;
+  }
+
+  /* ── Category Tag Pill ── */
+  .hfs-card__tag {
+    display: inline-block;
+    align-self: flex-start;
+    font-family: var(--font-body-family);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1B3A2D;
+    background: rgba(200, 169, 110, 0.18);
+    border: 1px solid rgba(200, 169, 110, 0.45);
+    border-radius: 50px;
+    padding: 0.35rem 1rem;
+    white-space: nowrap;
+  }
+
+  /* ── Card Title ── */
+  .hfs-card__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.3rem, 2.2vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #1B3A2D;
+    margin: 0;
+  }
+
+  .hfs-card__title a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+  }
+
+  .hfs-card__title a:hover {
+    color: #C8A96E;
+  }
+
+  /* ── Card Excerpt ── */
+  .hfs-card__excerpt {
+    font-family: var(--font-body-family);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(27, 58, 45, 0.65);
+    margin: 0;
+    flex: 1;
+  }
+
+  /* ── Read More Link ── */
+  .hfs-card__read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body-family);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #C8A96E;
+    text-decoration: none;
+    margin-top: auto;
+    align-self: flex-start;
+    transition: opacity 0.2s ease;
+  }
+
+  .hfs-card__read-more:hover {
+    opacity: 0.7;
+  }
+
+  .hfs-card__read-more svg {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .hfs-card__read-more:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* ── Tablet: 2-column ── */
+  @media screen and (max-width: 1024px) and (min-width: 751px) {
+    .hfs-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  /* ── Mobile: single column ── */
+  @media screen and (max-width: 750px) {
+    #hfs-{{ section.id }} {
+      padding: 4.5rem 1.25rem;
+    }
+
+    .hfs-header {
+      margin-bottom: 3rem;
+    }
+
+    .hfs-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+  }
+{%- endstyle -%}
+
+<section id="hfs-{{ section.id }}" aria-label="{{ section.settings.section_title | escape }}">
+
+  {%- if section.settings.eyebrow != blank or section.settings.section_title != blank -%}
+    <header class="hfs-header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="hfs-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.section_title != blank -%}
+        <h2 class="hfs-title">{{ section.settings.section_title | escape }}</h2>
+      {%- endif -%}
+    </header>
+  {%- endif -%}
+
+  {%- if story_blog != blank -%}
+    {%- liquid
+      assign featured_articles = story_blog.articles | where: 'tags', 'featured'
+    -%}
+
+    {%- if featured_articles.size > 0 -%}
+      <div class="hfs-grid" role="list">
+        {%- for article in featured_articles limit: 3 -%}
+          {%- liquid
+            assign raw_excerpt = article.excerpt_or_content | strip_html | strip
+            assign excerpt_text = raw_excerpt | truncate: 120
+            assign first_non_featured_tag = ''
+            for tag in article.tags
+              if tag != 'featured' and first_non_featured_tag == ''
+                assign first_non_featured_tag = tag
+              endif
+            endfor
+          -%}
+
+          <article class="hfs-card" role="listitem">
+
+            <a href="{{ article.url }}" class="hfs-card__img-link" aria-label="{{ article.title | escape }}">
+              {%- if article.image != blank -%}
+                {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: article.image.alt | default: article.title }}
+              {%- else -%}
+                <div class="hfs-card__img-placeholder">
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              {%- endif -%}
+            </a>
+
+            <div class="hfs-card__body">
+              {%- if first_non_featured_tag != blank -%}
+                <span class="hfs-card__tag">{{ first_non_featured_tag | escape }}</span>
+              {%- elsif article.tags.size > 0 -%}
+                <span class="hfs-card__tag">{{ article.tags | first | escape }}</span>
+              {%- endif -%}
+
+              <h3 class="hfs-card__title">
+                <a href="{{ article.url }}">{{ article.title | escape }}</a>
+              </h3>
+
+              {%- if excerpt_text != blank -%}
+                <p class="hfs-card__excerpt">{{ excerpt_text }}</p>
+              {%- endif -%}
+
+              <a href="{{ article.url }}" class="hfs-card__read-more" aria-label="Read more about {{ article.title | escape }}">
+                Read More
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+
+</section>
+
+{% schema %}
+{
+  "name": "Featured Stories",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "From the Community"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Stories Worth Sharing"
+    },
+    {
+      "type": "header",
+      "content": "Blog Source"
+    },
+    {
+      "type": "text",
+      "id": "blog_handle",
+      "label": "Blog Handle",
+      "default": "community-stories",
+      "info": "Enter the handle of the blog to pull featured articles from. Only articles tagged 'featured' will display."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Stories"
+    }
+  ]
+}
+{% endschema %}
