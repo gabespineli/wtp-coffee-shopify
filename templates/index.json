@@ -155,6 +155,15 @@
         "speed": 30
       }
     },
+    "homepage_featured_stories_6RE7hB": {
+      "type": "homepage-featured-stories",
+      "name": "Featured Stories",
+      "settings": {
+        "eyebrow": "From the Community",
+        "section_title": "Stories Worth Sharing",
+        "blog_handle": "community-stories"
+      }
+    },
     "wtp_collab_banner_eLzHUq": {
       "type": "wtp-collab-banner",
       "name": "Collab Banner",
@@ -187,6 +196,7 @@
     "hero_product_tabs_bRwBmC",
     "wtp_brand_story_3Vdqdj",
     "wtp_product_marquee_UNzYca",
+    "homepage_featured_stories_6RE7hB",
     "wtp_collab_banner_eLzHUq",
     "wtp_newsletter_6Vd4a7"
   ]
