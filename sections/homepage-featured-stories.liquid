@@ -1,7 +1,8 @@
 {% comment %}
   Homepage Featured Stories — WTP Coffee
-  Displays up to 3 articles tagged 'featured' from a configurable blog.
-  All CSS is scoped inside this file via {%- style -%}.
+  Focus Rail carousel: clean white bg, centered landscape card, soft atmospheric bleed,
+  compact layout, circular/pill nav with dots indicator and circular wrap-around.
+  Tag pills sit on the top-left of each image card.
 {% endcomment %}
 
 {%- liquid
@@ -12,10 +13,12 @@
 {%- style -%}
   /* ── Shell ── */
   #hfs-{{ section.id }} {
-    background-color: #F5F0E8;
-    padding: 8rem 5%;
+    background: #ffffff;
+    padding: 4rem 0 6rem; /* Expanded bottom padding to create breathing room */
     font-family: var(--font-body-family);
     box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
   }
 
   #hfs-{{ section.id }} *,
@@ -24,10 +27,40 @@
     box-sizing: border-box;
   }
 
-  /* ── Section Header ── */
+  /* ── Blurred background atmosphere ── */
+  .hfs-bg-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hfs-bg-slot {
+    position: absolute;
+    inset: -15%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(64px);
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+
+  .hfs-bg-slot--visible {
+    opacity: 0.1;
+  }
+
+  /* ── Header ── */
+  .hfs-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+  }
+
   .hfs-header {
     text-align: center;
-    margin-bottom: 5rem;
+    margin-bottom: 2.5rem;
   }
 
   .hfs-eyebrow {
@@ -38,12 +71,12 @@
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #C8A96E;
-    margin: 0 0 1rem;
+    margin: 0 0 0.5rem;
   }
 
   .hfs-title {
     font-family: var(--font-heading-family);
-    font-size: clamp(2.6rem, 5vw, 4rem);
+    font-size: clamp(2.4rem, 4.5vw, 3.6rem);
     font-weight: 700;
     font-style: italic;
     line-height: 1.1;
@@ -51,38 +84,73 @@
     margin: 0;
   }
 
-  /* ── Grid ── */
-  .hfs-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.5rem;
-    max-width: 1380px;
-    margin: 0 auto;
-  }
-
-  /* ── Card ── */
-  .hfs-card {
-    background: #fff;
-    border-radius: 16px;
-    overflow: hidden;
+  /* ── Focal rail ── */
+  .hfs-focal {
+    position: relative;
+    z-index: 1;
+    height: 340px;
     display: flex;
-    flex-direction: column;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
   }
 
-  .hfs-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 44px rgba(27, 58, 45, 0.12);
+  /* ── Slides: all absolutely positioned from center ── */
+  .hfs-slide {
+    position: absolute;
+    width: 480px;
+    transition:
+      transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity   0.5s ease;
+    will-change: transform, opacity;
   }
 
-  /* ── Card Image ── */
+  .hfs-slide--active {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    z-index: 3;
+    pointer-events: auto;
+  }
+
+  /* Side cards: opacity 0.6 for perfect white-background transparency blending */
+  .hfs-slide--prev {
+    transform: translateX(-500px) scale(0.8);
+    opacity: 0.6;
+    z-index: 2;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .hfs-slide--next {
+    transform: translateX(500px) scale(0.8);
+    opacity: 0.6;
+    z-index: 2;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .hfs-slide--hidden {
+    transform: translateX(1000px) scale(0.65);
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ── Card image (landscape aspect ratio per original rules) ── */
   .hfs-card__img-link {
     display: block;
     text-decoration: none;
-    overflow: hidden;
     aspect-ratio: 16 / 10;
     width: 100%;
-    flex-shrink: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 16px 40px rgba(27, 58, 45, 0.15);
+  }
+
+  .hfs-slide--prev .hfs-card__img-link,
+  .hfs-slide--next .hfs-card__img-link {
+    box-shadow: 0 6px 16px rgba(27, 58, 45, 0.08);
   }
 
   .hfs-card__img-link img {
@@ -93,142 +161,251 @@
     transition: transform 0.4s ease;
   }
 
-  .hfs-card:hover .hfs-card__img-link img {
+  .hfs-slide--active .hfs-card__img-link:hover img {
     transform: scale(1.04);
   }
 
   .hfs-card__img-placeholder {
     width: 100%;
     height: 100%;
-    background: #E9E4D8;
+    background: rgba(27, 58, 45, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  /* ── Card Body ── */
-  .hfs-card__body {
-    padding: 1.75rem;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 0.85rem;
-  }
-
-  /* ── Category Tag Pill ── */
-  .hfs-card__tag {
-    display: inline-block;
-    align-self: flex-start;
+  /* ── Category Tag Pill on Image ── */
+  .hfs-card__tag-pill {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 5;
     font-family: var(--font-body-family);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #1B3A2D;
-    background: rgba(200, 169, 110, 0.18);
-    border: 1px solid rgba(200, 169, 110, 0.45);
+    background: #F5F0E8;
+    border: 1px solid rgba(27, 58, 45, 0.15);
     border-radius: 50px;
-    padding: 0.35rem 1rem;
+    padding: 0.35rem 0.9rem;
     white-space: nowrap;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(27, 58, 45, 0.12);
   }
 
-  /* ── Card Title ── */
-  .hfs-card__title {
+  /* ── Info row ── */
+  .hfs-info-row {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 2.5rem auto 0;
+    padding: 0 5%;
+  }
+
+  .hfs-info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hfs-info-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* ── Info text (JS-populated) ── */
+  .hfs-info__title {
     font-family: var(--font-heading-family);
-    font-size: clamp(1.3rem, 2.2vw, 1.65rem);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.15;
     color: #1B3A2D;
     margin: 0;
+    transition: opacity 0.3s ease;
   }
 
-  .hfs-card__title a {
-    text-decoration: none;
-    color: inherit;
-    transition: color 0.2s ease;
-  }
-
-  .hfs-card__title a:hover {
-    color: #C8A96E;
-  }
-
-  /* ── Card Excerpt ── */
-  .hfs-card__excerpt {
+  .hfs-info__excerpt {
     font-family: var(--font-body-family);
-    font-size: 1.05rem;
-    line-height: 1.75;
-    color: rgba(27, 58, 45, 0.65);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(27, 58, 45, 0.7);
     margin: 0;
-    flex: 1;
+    max-width: 480px;
+    transition: opacity 0.3s ease;
   }
 
-  /* ── Read More Link ── */
+  .hfs-info--fading {
+    opacity: 0;
+  }
+
+  /* ── Unified Nav pill with dots inside ── */
+  .hfs-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(27, 58, 45, 0.05);
+    border: 1px solid rgba(27, 58, 45, 0.12);
+    border-radius: 50px;
+    padding: 0.35rem 0.5rem;
+  }
+
+  .hfs-nav__btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: #1B3A2D;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, opacity 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .hfs-nav__btn svg {
+    flex-shrink: 0;
+  }
+
+  .hfs-nav__btn:hover {
+    background: rgba(27, 58, 45, 0.08);
+  }
+
+  /* Integrated Dots list inside nav pill */
+  .hfs-nav__dots {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0 0.5rem;
+  }
+
+  .hfs-nav__dot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(27, 58, 45, 0.2);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .hfs-nav__dot--active {
+    background: #C8A96E;
+    transform: scale(1.3);
+  }
+
+  /* ── Read More CTA ── */
   .hfs-card__read-more {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.45rem;
     font-family: var(--font-body-family);
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #C8A96E;
+    color: #F5F0E8;
+    background: #1B3A2D;
     text-decoration: none;
-    margin-top: auto;
-    align-self: flex-start;
-    transition: opacity 0.2s ease;
+    border-radius: 50px;
+    padding: 0.7rem 1.4rem;
+    transition: background 0.22s ease, color 0.22s ease;
+    white-space: nowrap;
   }
 
   .hfs-card__read-more:hover {
-    opacity: 0.7;
+    background: #C8A96E;
+    color: #fff;
   }
 
   .hfs-card__read-more svg {
     flex-shrink: 0;
-    transition: transform 0.2s ease;
   }
 
-  .hfs-card__read-more:hover svg {
-    transform: translateX(3px);
-  }
-
-  /* ── Tablet: 2-column ── */
+  /* ── Tablet ── */
   @media screen and (max-width: 1024px) and (min-width: 751px) {
-    .hfs-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
-    }
+    .hfs-focal { height: 280px; }
+
+    .hfs-slide { width: 380px; }
+
+    .hfs-slide--prev { transform: translateX(-400px) scale(0.8); }
+    .hfs-slide--next { transform: translateX(400px) scale(0.8); }
+    .hfs-slide--hidden { transform: translateX(800px) scale(0.65); }
   }
 
-  /* ── Mobile: single column ── */
+  /* ── Mobile ── */
   @media screen and (max-width: 750px) {
     #hfs-{{ section.id }} {
-      padding: 4.5rem 1.25rem;
+      padding: 2.5rem 0 4rem; /* Larger bottom padding on mobile */
     }
 
     .hfs-header {
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
     }
 
-    .hfs-grid {
-      grid-template-columns: 1fr;
-      gap: 1.75rem;
+    .hfs-inner {
+      padding: 0 1.25rem;
     }
+
+    .hfs-focal { height: 220px; }
+
+    .hfs-slide { width: 290px; }
+
+    .hfs-slide--prev {
+      transform: translateX(-300px) scale(0.8);
+      opacity: 0.3;
+    }
+
+    .hfs-slide--next {
+      transform: translateX(300px) scale(0.8);
+      opacity: 0.3;
+    }
+
+    .hfs-slide--hidden { transform: translateX(600px) scale(0.65); }
+
+    .hfs-info-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+      padding: 0 1.25rem;
+    }
+
+    .hfs-info__excerpt { max-width: 100%; }
   }
 {%- endstyle -%}
 
 <section id="hfs-{{ section.id }}" aria-label="{{ section.settings.section_title | escape }}">
 
-  {%- if section.settings.eyebrow != blank or section.settings.section_title != blank -%}
-    <header class="hfs-header">
-      {%- if section.settings.eyebrow != blank -%}
-        <span class="hfs-eyebrow">{{ section.settings.eyebrow | escape }}</span>
-      {%- endif -%}
-      {%- if section.settings.section_title != blank -%}
-        <h2 class="hfs-title">{{ section.settings.section_title | escape }}</h2>
-      {%- endif -%}
-    </header>
-  {%- endif -%}
+  {{- '<!-- bg layer -->' -}}
+  <div class="hfs-bg-layer" aria-hidden="true">
+    <div class="hfs-bg-slot" id="hfs-bg-a-{{ section.id }}"></div>
+    <div class="hfs-bg-slot" id="hfs-bg-b-{{ section.id }}"></div>
+  </div>
+
+  <div class="hfs-inner">
+    {%- if section.settings.eyebrow != blank or section.settings.section_title != blank -%}
+      <header class="hfs-header">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="hfs-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.section_title != blank -%}
+          <h2 class="hfs-title">{{ section.settings.section_title | escape }}</h2>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+  </div>
 
   {%- if story_blog != blank and story_blog.articles.size > 0 -%}
     {%- assign has_featured = false -%}
@@ -240,7 +417,8 @@
     {%- endfor -%}
 
     {%- if has_featured -%}
-      <div class="hfs-grid" role="list">
+
+      <div class="hfs-focal" id="hfs-focal-{{ section.id }}" role="list">
         {%- assign featured_count = 0 -%}
         {%- for article in story_blog.articles -%}
           {%- if article.tags contains 'featured' and featured_count < 3 -%}
@@ -254,51 +432,234 @@
                   assign first_non_featured_tag = tag
                 endif
               endfor
+              assign display_tag = first_non_featured_tag
+              if display_tag == blank and article.tags.size > 0
+                assign display_tag = article.tags | first
+              endif
             -%}
-
-            <article class="hfs-card" role="listitem">
-
+            <div
+              class="hfs-slide{% if featured_count == 1 %} hfs-slide--active{% elsif featured_count == 2 %} hfs-slide--next{% else %} hfs-slide--hidden{% endif %}"
+              data-index="{{ featured_count | minus: 1 }}"
+              data-tag="{{ display_tag | escape }}"
+              data-title="{{ article.title | escape }}"
+              data-excerpt="{{ excerpt_text | escape }}"
+              data-url="{{ article.url }}"
+              data-bg="{{ article.image | image_url: width: 1200 }}"
+              role="listitem"
+            >
               <a href="{{ article.url }}" class="hfs-card__img-link" aria-label="{{ article.title | escape }}">
+                {%- if display_tag != blank -%}
+                  <span class="hfs-card__tag-pill">{{ display_tag | escape }}</span>
+                {%- endif -%}
                 {%- if article.image != blank -%}
-                  {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: article.image.alt | default: article.title }}
+                  {{ article.image | image_url: width: 700 | image_tag: loading: 'lazy', alt: article.image.alt | default: article.title }}
                 {%- else -%}
                   <div class="hfs-card__img-placeholder">
                     {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                   </div>
                 {%- endif -%}
               </a>
-
-              <div class="hfs-card__body">
-                {%- if first_non_featured_tag != blank -%}
-                  <span class="hfs-card__tag">{{ first_non_featured_tag | escape }}</span>
-                {%- elsif article.tags.size > 0 -%}
-                  <span class="hfs-card__tag">{{ article.tags | first | escape }}</span>
-                {%- endif -%}
-
-                <h3 class="hfs-card__title">
-                  <a href="{{ article.url }}">{{ article.title | escape }}</a>
-                </h3>
-
-                {%- if excerpt_text != blank -%}
-                  <p class="hfs-card__excerpt">{{ excerpt_text }}</p>
-                {%- endif -%}
-
-                <a href="{{ article.url }}" class="hfs-card__read-more" aria-label="Read more about {{ article.title | escape }}">
-                  Read More
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
-                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </a>
-              </div>
-
-            </article>
+            </div>
           {%- endif -%}
         {%- endfor -%}
       </div>
+
+      <div class="hfs-info-row" id="hfs-info-{{ section.id }}">
+        <div class="hfs-info-left">
+          <h3 class="hfs-info__title" id="hfs-title-{{ section.id }}"></h3>
+          <p class="hfs-info__excerpt" id="hfs-excerpt-{{ section.id }}"></p>
+        </div>
+        <div class="hfs-info-right">
+          <nav class="hfs-nav" aria-label="Story navigation">
+            <button class="hfs-nav__btn" id="hfs-prev-{{ section.id }}" aria-label="Previous story">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="16" height="16" aria-hidden="true">
+                <path d="M13 15l-5-5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="hfs-nav__dots" id="hfs-nav-dots-{{ section.id }}">
+              {%- assign dot_count = 0 -%}
+              {%- for article in story_blog.articles -%}
+                {%- if article.tags contains 'featured' and dot_count < 3 -%}
+                  {%- assign dot_count = dot_count | plus: 1 -%}
+                  <span class="hfs-nav__dot{% if dot_count == 1 %} hfs-nav__dot--active{% endif %}" data-dot="{{ dot_count | minus: 1 }}"></span>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            <button class="hfs-nav__btn" id="hfs-next-{{ section.id }}" aria-label="Next story">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="16" height="16" aria-hidden="true">
+                <path d="M7 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </nav>
+          <a class="hfs-card__read-more" id="hfs-read-more-{{ section.id }}" href="#">
+            Read More
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" width="13" height="13" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
     {%- endif -%}
   {%- endif -%}
 
 </section>
+
+<script>
+  (function () {
+    function initCarousel(sectionId) {
+      var focal    = document.getElementById('hfs-focal-' + sectionId);
+      var titleEl  = document.getElementById('hfs-title-' + sectionId);
+      var excerptEl= document.getElementById('hfs-excerpt-' + sectionId);
+      var readMore = document.getElementById('hfs-read-more-' + sectionId);
+      var btnPrev  = document.getElementById('hfs-prev-' + sectionId);
+      var btnNext  = document.getElementById('hfs-next-' + sectionId);
+      var dotsDots = document.getElementById('hfs-nav-dots-' + sectionId);
+      var bgA      = document.getElementById('hfs-bg-a-' + sectionId);
+      var bgB      = document.getElementById('hfs-bg-b-' + sectionId);
+
+      if (!focal || !btnPrev || !btnNext) return;
+
+      var slides  = Array.prototype.slice.call(focal.querySelectorAll('.hfs-slide'));
+      var dots    = dotsDots ? Array.prototype.slice.call(dotsDots.querySelectorAll('.hfs-nav__dot')) : [];
+      var total   = slides.length;
+      var current = 0;
+      var bgActive = 'a';
+
+      var CLS = {
+        ACTIVE : 'hfs-slide--active',
+        PREV   : 'hfs-slide--prev',
+        NEXT   : 'hfs-slide--next',
+        HIDDEN : 'hfs-slide--hidden'
+      };
+
+      /* ── Update blurred background with crossfade ── */
+      function updateBg(url) {
+        if (!bgA || !bgB || !url) return;
+        var incoming = bgActive === 'a' ? bgB : bgA;
+        var outgoing = bgActive === 'a' ? bgA : bgB;
+        incoming.style.backgroundImage = 'url(' + url + ')';
+        incoming.classList.add('hfs-bg-slot--visible');
+        outgoing.classList.remove('hfs-bg-slot--visible');
+        bgActive = bgActive === 'a' ? 'b' : 'a';
+      }
+
+      /* ── Fade info text then swap ── */
+      function updateInfo(slide) {
+        var infoEls = [titleEl, excerptEl];
+        infoEls.forEach(function (el) { if (el) el.classList.add('hfs-info--fading'); });
+
+        setTimeout(function () {
+          if (titleEl)   titleEl.textContent   = slide.getAttribute('data-title') || '';
+          if (excerptEl) excerptEl.textContent = slide.getAttribute('data-excerpt') || '';
+          if (readMore)  readMore.href         = slide.getAttribute('data-url') || '#';
+          infoEls.forEach(function (el) { if (el) el.classList.remove('hfs-info--fading'); });
+        }, 160);
+      }
+
+      /* ── Main goTo with circular wrap-around (1 and 3 connected) ── */
+      function goTo(index) {
+        if (index < 0) {
+          current = total - 1;
+        } else if (index >= total) {
+          current = 0;
+        } else {
+          current = index;
+        }
+
+        var prevIndex = (current - 1 + total) % total;
+        var nextIndex = (current + 1) % total;
+
+        slides.forEach(function (slide, i) {
+          slide.classList.remove(CLS.ACTIVE, CLS.PREV, CLS.NEXT, CLS.HIDDEN);
+          if (i === current) {
+            slide.classList.add(CLS.ACTIVE);
+          } else if (i === prevIndex) {
+            slide.classList.add(CLS.PREV);
+          } else if (i === nextIndex) {
+            slide.classList.add(CLS.NEXT);
+          } else {
+            slide.classList.add(CLS.HIDDEN);
+          }
+        });
+
+        /* Update active class on navigation dots inside pill */
+        dots.forEach(function (dot, i) {
+          dot.classList.toggle('hfs-nav__dot--active', i === current);
+        });
+
+        /* Info + background */
+        var active = slides[current];
+        if (active) {
+          updateInfo(active);
+          updateBg(active.getAttribute('data-bg'));
+        }
+      }
+
+      /* ── Arrow clicks ── */
+      btnPrev.addEventListener('click', function () { goTo(current - 1); });
+      btnNext.addEventListener('click', function () { goTo(current + 1); });
+
+      /* ── Clicking a side card brings it into focus ── */
+      slides.forEach(function (slide, i) {
+        slide.addEventListener('click', function (e) {
+          if (i === current) return;
+          e.preventDefault();
+          goTo(i);
+        });
+      });
+
+      /* ── Dot navigation clicks ── */
+      dots.forEach(function (dot) {
+        dot.addEventListener('click', function () {
+          var idx = parseInt(dot.getAttribute('data-dot'), 10);
+          if (!isNaN(idx)) goTo(idx);
+        });
+      });
+
+      /* ── Swipe ── */
+      var touchStartX = 0;
+      var touchDeltaX = 0;
+
+      focal.addEventListener('touchstart', function (e) {
+        touchStartX = e.touches[0].clientX;
+        touchDeltaX = 0;
+      }, { passive: true });
+
+      focal.addEventListener('touchmove', function (e) {
+        touchDeltaX = e.touches[0].clientX - touchStartX;
+      }, { passive: true });
+
+      focal.addEventListener('touchend', function () {
+        if (touchDeltaX < -50) goTo(current + 1);
+        else if (touchDeltaX > 50) goTo(current - 1);
+        touchDeltaX = 0;
+      });
+
+      /* ── Init ── */
+      goTo(0);
+    }
+
+    function init() {
+      if (!document.getElementById('hfs-focal-{{ section.id }}')) return;
+      initCarousel('{{ section.id }}');
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+    if (window.Shopify && window.Shopify.designMode) {
+      document.addEventListener('shopify:section:load', function (e) {
+        if (e.detail && e.detail.sectionId === '{{ section.id }}') {
+          initCarousel('{{ section.id }}');
+        }
+      });
+    }
+  })();
+</script>
 
 {% schema %}
 {

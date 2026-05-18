@@ -5,7 +5,7 @@
 
 <style>
   #wtp-collab-banner-{{ section.id }} {
-    padding: 0 5%;
+    padding: 6rem 5% 0;
     background: #ffffff;
     overflow: hidden;
   }
@@ -95,6 +95,10 @@
 
   /* ── Mobile ── */
   @media (max-width: 768px) {
+    #wtp-collab-banner-{{ section.id }} {
+      padding: 4rem 5% 0;
+    }
+
     .cb-inner {
       height: 320px;
       border-radius: 12px;
