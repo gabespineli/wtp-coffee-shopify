@@ -320,6 +320,11 @@
           </div>
         </div>
       </div>
+      <noscript>
+        <style>
+          .wtp-loader { display: none !important; }
+        </style>
+      </noscript>
     {%- endif -%}
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
@@ -564,7 +569,10 @@
         const loader = document.getElementById('wtp-loader');
         if (!loader) return;
 
+        let failOpenTimer;
+
         const hideLoader = () => {
+          window.clearTimeout(failOpenTimer);
           loader.classList.add('is-hidden');
           document.body.style.overflow = '';
         };
@@ -572,13 +580,20 @@
         const showLoader = () => {
           loader.classList.remove('is-hidden');
           document.body.style.overflow = 'hidden';
+          window.clearTimeout(failOpenTimer);
+          failOpenTimer = window.setTimeout(hideLoader, 5000);
         };
+
+        // Fail open if the load event is delayed or never arrives.
+        failOpenTimer = window.setTimeout(hideLoader, 5000);
 
         // Hide on initial load
         if (document.readyState === 'complete') {
           hideLoader();
         } else {
-          window.addEventListener('load', hideLoader);
+          window.addEventListener('load', () => {
+            hideLoader();
+          }, { once: true });
         }
 
         // Show on link click

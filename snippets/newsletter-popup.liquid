@@ -1,7 +1,7 @@
 {% comment %}
   WTP Welcome Subscriber Discount — Newsletter Popup
   Renders a globally accessible modal that:
-  - Triggers 3 seconds after page load
+  - Triggers after the visitor reaches 50% scroll depth
   - Uses localStorage to never show again after close/submit
   - Submits via Shopify's native {% form 'customer' %} tag
   - Tags the subscriber with 'newsletter' and 'welcome-discount'
@@ -291,16 +291,23 @@
 
         {%- comment -%}
           Shopify native customer form.
-          The 'customer[accepts_marketing]' checkbox (hidden/checked) opts them into marketing.
+          Shopify records the email-marketing subscription. The store-side Flow
+          sends the WTPWELCOME10 discount email after Shopify accepts the signup.
         {%- endcomment -%}
         {%- form 'customer', id: 'wtp-newsletter-form', class: 'wtp-popup__form' -%}
-          <input type="hidden" name="customer[accepts_marketing]" value="true">
+          <input type="hidden" name="contact[tags]" value="newsletter, welcome-discount">
+          <span
+            id="wtp-popup-result"
+            hidden
+            data-newsletter-result="{% if form.posted_successfully? %}success{% elsif form.errors %}error{% endif %}"
+            data-error-message="{% if form.errors %}{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}{% endif %}"
+          ></span>
 
           <div class="wtp-popup__field-wrapper">
             <input
               id="wtp-popup-email"
               type="email"
-              name="customer[email]"
+              name="contact[email]"
               class="wtp-popup__email-input"
               placeholder="Your email address"
               autocomplete="email"
@@ -350,6 +357,8 @@
       const successEl = document.getElementById('wtp-popup-success');
       const emailInput = document.getElementById('wtp-popup-email');
       const errorEl = document.getElementById('wtp-popup-error');
+      const submitBtn = document.getElementById('wtp-popup-submit');
+      const resultEl = document.getElementById('wtp-popup-result');
 
       if (!overlay || !form) return;
 
@@ -381,6 +390,31 @@
         setTimeout(closePopup, 3500);
       }
 
+      function showError(message) {
+        if (errorEl) {
+          errorEl.textContent = message;
+          errorEl.classList.add('is-visible');
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Unlock 10% Off';
+        }
+      }
+
+      // Shopify's server-rendered form state is the source of truth. A success
+      // message is never inferred from a fetch status or client-side response.
+      const serverResult = resultEl ? resultEl.dataset.newsletterResult : '';
+      if (serverResult === 'success') {
+        openPopup();
+        showSuccess();
+        return;
+      }
+      if (serverResult === 'error') {
+        openPopup();
+        showError(resultEl.dataset.errorMessage || 'We could not subscribe you right now. Please try again.');
+        return;
+      }
+
       // ---- Trigger on Scroll Depth (50%) ----
       function handleScroll() {
         const scrollHeight = document.documentElement.scrollHeight;
@@ -406,54 +440,15 @@
       });
 
       // ---- Form submission ----
+      // Allow the native Shopify customer form to submit. Shopify then exposes
+      // the authoritative result through form.posted_successfully? / form.errors.
       form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        e.stopImmediatePropagation(); // Prevents other theme scripts from interfering
+        if (!form.checkValidity()) return;
 
-        // Clear previous errors
-        if (errorEl) {
-          errorEl.textContent = '';
-          errorEl.classList.remove('is-visible');
-        }
-
-        const email = emailInput ? emailInput.value.trim() : '';
-        if (!email) {
-          if (errorEl) {
-            errorEl.textContent = 'Please enter your email address.';
-            errorEl.classList.add('is-visible');
-          }
-          if (emailInput) emailInput.focus();
-          return;
-        }
-
-        const submitBtn = document.getElementById('wtp-popup-submit');
         if (submitBtn) {
           submitBtn.disabled = true;
           submitBtn.textContent = 'Subscribing…';
         }
-
-        // Build FormData and post natively to Shopify
-        const formData = new FormData(form);
-        formData.set('form_type', 'customer');
-
-        fetch('/contact', {
-          method: 'POST',
-          body: formData,
-          headers: { Accept: 'application/json' },
-        })
-          .then(function (res) {
-            // Shopify returns 200 or 422 (if already exists) — both are "success" for the UI
-            if (res.ok || res.status === 422) {
-              showSuccess();
-            } else {
-              // If we get a redirect (like to a captcha), the browser may have followed it.
-              // In AJAX, we'll just show success to keep the user experience smooth.
-              showSuccess();
-            }
-          })
-          .catch(function () {
-            showSuccess();
-          });
       });
     })();
   </script>

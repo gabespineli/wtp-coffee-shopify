@@ -1,0 +1,11 @@
+{%- comment -%}
+  Compatibility shim for Dawn sections that still render `card-product`.
+
+  WTP replaced Dawn's original card with `product-card`. Keep the legacy
+  snippet name available so an older section can be enabled safely without
+  changing the active custom product-card implementation.
+{%- endcomment -%}
+
+{%- if card_product != blank -%}
+  {%- render 'product-card', product: card_product -%}
+{%- endif -%}
