@@ -1,1 +1,25 @@
+# Local guidance and tooling
 shopify-rules.md
+.agents/
+node_modules/
+.shopify/
+.vscode/
+.idea/
+
+# Credentials and machine-specific configuration
+.env
+.env.*
+!.env.example
+shopify.theme.toml
+*.pem
+*.key
+
+# Generated files
+*.log
+*.zip
+.DS_Store
+Thumbs.db
+
+# Licensed font binaries are not distributed with the public source
+assets/Grava*.woff
+assets/Grava*.woff2
